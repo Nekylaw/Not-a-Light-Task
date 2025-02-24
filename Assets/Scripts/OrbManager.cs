@@ -4,6 +4,7 @@ public class OrbManager : MonoBehaviour
 {
     public float speed;
 	private Rigidbody _rb;
+    
 
     void Update()
     {
@@ -22,6 +23,8 @@ public class OrbManager : MonoBehaviour
             
         } 
     }
+
+  
 
     
 }

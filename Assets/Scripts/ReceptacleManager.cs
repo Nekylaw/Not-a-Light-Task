@@ -1,56 +1,42 @@
+using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class ReceptacleManager : MonoBehaviour
-{   [SerializeField] Rigidbody orb_Rb; 
-    
+{
+    private bool isBright = false;
 
-    float snappingRange = 5f; // allowed range for snapping orb to receptacle
-    float snappingForce = 5f; // force that is gonna pull the orb
-
-    void Update()
+    private void Update()
     {
-        SnapToReceptacle();
-        UpdateSnapDirection();
-    }
-
-    void SnapToReceptacle()
-    {
-        float Distance = Vector3.Distance(orb_Rb.transform.position, this.transform.position);
-
-        if (Distance < snappingRange) // orb is in the range of the snapping area
-        {
-            float distanceToSnap = Mathf.InverseLerp(snappingRange, 0f, Distance); 
-            float strength = Mathf.Lerp(0f, snappingForce, distanceToSnap); 
-            Vector3 directionToReceptacle = (this.transform.position - orb_Rb.transform.position).normalized; 
-
-            orb_Rb.AddForce(directionToReceptacle * strength, ForceMode.Force);// apply force to the orb 
-
+        if (isBright)
+        {   
+            GradualIncreaseBrightness();
         }
     }
-
-    void UpdateSnapDirection()
+    private void OnTriggerEnter(Collider other)
     {
-        Vector3 receptacleDir = (orb_Rb.transform.position - transform.position).normalized; // direction to the receptacle
-        transform.forward = receptacleDir; // make the orb go to that direction 
-    }
-    
-    public void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("ahh"); 
-        if (other.gameObject.tag == "Orb")
+        if (other.name == "Orb")
         {
-            Renderer myRenderer = GetComponent<Renderer>();
-            if (myRenderer != null)
-            {
-                myRenderer.material.color = Color.red;
-            } 
-            Debug.Log("Orb collided w receptacle !!!!!");
+            other.transform.position = transform.position; 
+            UnityEngine.Light lighting = GetComponent<UnityEngine.Light>();
+            lighting.enabled = true;
+            Destroy(other.attachedRigidbody);
+            isBright = true;
         }
         
     }
 
 
+    private void GradualIncreaseBrightness()
+    {  UnityEngine.Light brightness = GetComponent<UnityEngine.Light>();
+        if (brightness.intensity <= 20)
+        {
+            brightness.intensity += 5 * Time.deltaTime; 
+        }
+        if (brightness.intensity < 100 && brightness.intensity > 20)
+        {
+           brightness.intensity += 20 * Time.deltaTime; 
+        }
         
-    
+    }
 }
