@@ -15,7 +15,7 @@ public class ReceptacleManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Orb")
+        if (other.CompareTag("Orb") )
         {
             other.transform.position = transform.position; 
             UnityEngine.Light lighting = GetComponent<UnityEngine.Light>();
