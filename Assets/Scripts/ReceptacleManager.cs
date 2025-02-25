@@ -1,15 +1,19 @@
-using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class ReceptacleManager : MonoBehaviour
 {
-    private bool isBright = false;
-
+    private bool _isBright;
+    public int numReceptacles = 10;
+    [SerializeField] string typeOfReceptacle;
+    [SerializeField] private Collider orbCollider;
+    
     private void Update()
     {
-        if (isBright)
+         if (_isBright)
         {   
+            PullOrb(orbCollider);
             GradualIncreaseBrightness();
         }
     }
@@ -17,16 +21,26 @@ public class ReceptacleManager : MonoBehaviour
     {
         if (other.name == "Orb")
         {
-            other.transform.position = transform.position; 
-            UnityEngine.Light lighting = GetComponent<UnityEngine.Light>();
-            lighting.enabled = true;
+            
+            //other.transform.position = transform.position; 
+            
             Destroy(other.attachedRigidbody);
-            isBright = true;
+            Light lighting = GetComponent<Light>();
+            lighting.enabled = true;
+            _isBright = true;
+            if (typeOfReceptacle != "Lampadaire")
+            {
+                Destroy(other.GameObject());
+            }
         }
         
     }
 
-
+    private void PullOrb(Collider other)
+    {
+        var step = 10 * Time.deltaTime;
+        other.transform.position = Vector3.MoveTowards(other.transform.position, transform.position, step);
+    }
     private void GradualIncreaseBrightness()
     {  UnityEngine.Light brightness = GetComponent<UnityEngine.Light>();
         if (brightness.intensity <= 20)
@@ -37,6 +51,10 @@ public class ReceptacleManager : MonoBehaviour
         {
            brightness.intensity += 20 * Time.deltaTime; 
         }
-        
+
+        numReceptacles -= 1;
     }
+    
+    
+    
 }
