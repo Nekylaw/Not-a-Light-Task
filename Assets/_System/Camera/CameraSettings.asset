@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ce6bdb42407c74280ac6961284ba29, type: 3}
+  m_Name: CameraSettings
+  m_EditorClassIdentifier: 
+  ControllerYawSensitivity: 2
+  ControllerPitchSensitivity: 2
+  MouseYawSensitivity: 50
+  MousePitchSensitivity: 50
+  RotationLimits: {x: -80, y: 60}
+  InverseYaxe: 0
