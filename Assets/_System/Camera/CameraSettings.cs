@@ -4,9 +4,11 @@ using UnityEngine;
 public class CameraSettings : ScriptableObject
 {
     [Header("Sensitivity")]
-    public float YawSensitivity = 200;
+    public float ControllerYawSensitivity = 200f;
+    public float ControllerPitchSensitivity = 200f;
 
-    public float PitchSensitivity = 200;
+    public float MouseYawSensitivity = 200f;
+    public float MousePitchSensitivity = 200f;
 
     [Header("Limits")]
     public Vector2 RotationLimits = new Vector2(-30, 45);
