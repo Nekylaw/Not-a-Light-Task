@@ -1,25 +1,36 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using static UnityEditor.SceneView;
 
 public class PlayerController : MonoBehaviour
 {
+
+    #region Nested
+
+    public enum InputMode
+    {
+        Controller,
+        KeyBoard
+    }
+
+    #endregion
 
     #region Fields
 
     private GameInputs _gameInputs = null;
 
     private CameraController _camera = null;
-    private MovementComponent _movement = null;
-    private ShootComponent _shoot = null;
+    private MovementBehaviorComponent _movement = null;
+    private ShootBehaviorComponent _shoot = null;
+    private JumpBehaviorComponent _jump = null;
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _previousMovementDirection = Vector3.zero;
     private Vector2 _cameraLookInput = Vector2.zero;
     private bool _isAiming = false;
     private Ray _aimTargetRay;
+
+
+    private InputMode _inputMode = InputMode.Controller;
 
     #endregion
 
@@ -28,11 +39,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (!TryGetComponent<MovementComponent>(out _movement))
-            Debug.LogError($"{nameof(MovementComponent)} component not found.", this);
+        if (!TryGetComponent<MovementBehaviorComponent>(out _movement))
+            Debug.LogError($"{nameof(MovementBehaviorComponent)} component not found.", this);
 
-        if (!TryGetComponent<ShootComponent>(out _shoot))
-            Debug.LogError($"{nameof(ShootComponent)} component not found", this);
+        if (!TryGetComponent<ShootBehaviorComponent>(out _shoot))
+            Debug.LogError($"{nameof(ShootBehaviorComponent)} component not found", this);
+
+        if (!TryGetComponent<JumpBehaviorComponent>(out _jump))
+            Debug.LogError($"{nameof(JumpBehaviorComponent)} component not found", this);
 
         _camera = GetComponentInChildren<CameraController>();
         if (_camera == null)
@@ -64,19 +78,7 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         float delta = Time.deltaTime;
-        UpdateCameraLook(delta);
-    }
-
-    #endregion
-
-
-    #region Handlers
-
-    private void HandleMovement(InputAction.CallbackContext context)
-    {
-        Debug.Log("Move");
-        var direction = context.ReadValue<Vector2>();
-        Debug.Log("Mvt: " + direction);
+        UpdateCameraLook(_inputMode, delta);
     }
 
     #endregion
@@ -97,6 +99,8 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Shoot.performed += HandleShootInput;
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
+
+        _gameInputs.Player.Jump.started += HandleJumpInput;
     }
 
     private void UnBindInputs()
@@ -112,6 +116,8 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Shoot.performed -= HandleShootInput;
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
+
+        _gameInputs.Player.Jump.started -= HandleJumpInput;
     }
 
     private void UpdateMovement(float delta)
@@ -125,7 +131,6 @@ public class PlayerController : MonoBehaviour
         Vector3 movement3D = cameraForward * _movementDirection.y + cameraRight * _movementDirection.x;
 
         _movement.Move(movement3D, delta, _isAiming);
-
         _previousMovementDirection = movement3D;
     }
 
@@ -136,16 +141,21 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLookInput(InputAction.CallbackContext context)
     {
+        //Debug.Log("Device : " + context.control.device);
+
+
+        _inputMode = context.control.device is Keyboard ? InputMode.KeyBoard : InputMode.Controller;
+        //Debug.Log("Mode : " + _inputMode);
         _cameraLookInput = context.ReadValue<Vector2>();
     }
 
-    private void UpdateCameraLook(float delta)
+    private void UpdateCameraLook(InputMode mode, float delta)
     {
         if (_cameraLookInput == Vector2.zero)
             return;
 
         Vector2.ClampMagnitude(_cameraLookInput, 1);
-        _camera.Look(_cameraLookInput);
+        _camera.Look(mode, _cameraLookInput);
     }
 
     private void HandleAimInput(InputAction.CallbackContext context)
@@ -153,12 +163,12 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             _isAiming = true;
-            Debug.Log("Aim");
+            //Debug.Log("Aim");
         }
         else if (context.canceled)
         {
             _isAiming = false;
-            Debug.Log("Release Aim");
+            //Debug.Log("Release Aim");
         }
     }
 
@@ -171,6 +181,11 @@ public class PlayerController : MonoBehaviour
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
         _shoot.Shoot(_aimTargetRay);
+    }
+
+    private void HandleJumpInput(InputAction.CallbackContext context)
+    {
+        _jump.Jump();
     }
 
     #endregion
