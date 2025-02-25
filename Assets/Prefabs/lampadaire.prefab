@@ -40,12 +40,12 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454573951775296756}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 0.8526963, b: 0.4660377, a: 1}
-  m_Intensity: 50
-  m_Range: 15
+  m_Color: {r: 0.8867924, g: 0.7243691, b: 0.31372374, a: 1}
+  m_Intensity: 1000
+  m_Range: 50
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -87,7 +87,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 2651
+  m_ColorTemperature: 4000
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -243,7 +243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6c83f3b75c65541a86677c81be8a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 0}
 --- !u!54 &9160961642781385150
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -281,7 +280,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_Name
-      value: lampadaire 1
+      value: lampadaire
       objectReference: {fileID: 0}
     - target: {fileID: 4151868716532397928, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_Mesh
@@ -399,4 +398,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6c83f3b75c65541a86677c81be8a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 1454573951775296756}
