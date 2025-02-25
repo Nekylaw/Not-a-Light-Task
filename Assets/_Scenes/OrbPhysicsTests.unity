@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!135 &46776628 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 3381400785716714442, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
+  m_PrefabInstance: {fileID: 3359384338963188546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,6 +662,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6c83f3b75c65541a86677c81be8a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numReceptacles: 10
+  typeOfReceptacle: 
+  orbCollider: {fileID: 0}
 --- !u!54 &1115274208
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -720,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Lightmapping
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5107817760817297299, guid: 90fa4fafea6d7b84b87288d267258d53, type: 3}
+      propertyPath: orbCollider
+      value: 
+      objectReference: {fileID: 46776628}
     - target: {fileID: 6105224036857466857, guid: 90fa4fafea6d7b84b87288d267258d53, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
