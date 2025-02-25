@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MovementSettings", menuName = "Game/Behaviors/Movement Settings")]
-public class MovementSO : ScriptableObject
+public class MovementSettings : ScriptableObject
 {
 
     [Min(1)]
