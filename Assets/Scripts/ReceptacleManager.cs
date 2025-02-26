@@ -1,21 +1,22 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class ReceptacleManager : MonoBehaviour
 {
     private bool isBright = false;
-
+    [SerializeField] private Collider orbCollider;
     private void Update()
     {
         if (isBright)
-        {   
+        {   PullOrb(orbCollider);
             GradualIncreaseBrightness();
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Orb"))
+        if (other.CompareTag("Orb") && isBright != true)
         {
             other.transform.position = transform.position;
             UnityEngine.Light lighting = GetComponent<UnityEngine.Light>();
