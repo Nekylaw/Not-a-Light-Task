@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static PlayerController;
-using static UnityEngine.EventSystems.StandaloneInputModule;
 
 public class CameraController : MonoBehaviour
 {
@@ -20,16 +17,18 @@ public class CameraController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void Look(PlayerController.InputMode inputMode, Vector2 look)
+    public void Look(PlayerController.InputMode inputMode, Vector2 look, float delta)
     {
         float inverse = _settings.InverseYaxe ? -1 : 1;
 
-        //float pitchSensitivity = inputMode == PlayerController.InputMode.KeyBoard ? _settings.MousePitchSensitivity : _settings.ControllerPitchSensitivity;
-        //float yawSensitivity = inputMode == PlayerController.InputMode.KeyBoard ? _settings.MouseYawSensitivity : _settings.ControllerYawSensitivity;
-        //Debug.Log("Sensi " + pitchSensitivity);
+        float pitchSensitivity = inputMode == PlayerController.InputMode.KeyBoard ?
+            _settings.MousePitchSensitivity : _settings.ControllerPitchSensitivity;
 
-        float pitch = look.y * _settings.ControllerPitchSensitivity * inverse;
-        float yaw = look.x * _settings.ControllerYawSensitivity;
+        float yawSensitivity = inputMode == PlayerController.InputMode.KeyBoard ?
+            _settings.MouseYawSensitivity : _settings.ControllerYawSensitivity;
+
+        float pitch = look.y * pitchSensitivity * inverse* delta;
+        float yaw = look.x * yawSensitivity * delta;
 
         xRotation -= pitch;
         xRotation = Mathf.Clamp(xRotation, _settings.RotationLimits.x, _settings.RotationLimits.y);
