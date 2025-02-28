@@ -9,9 +9,6 @@ public class JumpBehaviorComponent : MonoBehaviour
     private Rigidbody _rigidbody = null;
     private DetectionBehaviorComponent _detector = null;
 
-    private float _halfHeight = 0f;
-    private bool _isJumping = false;
-
     private void Awake()
     {
         if (!TryGetComponent<Rigidbody>(out _rigidbody))
@@ -26,12 +23,6 @@ public class JumpBehaviorComponent : MonoBehaviour
         if (_settings == null)
             Debug.LogError($"{nameof(JumpSettings)} component not found", this);
 
-        _halfHeight = GetComponent<Collider>().bounds.extents.y;
-    }
-
-    private void Update()
-    {
-        //Debug.Log("Jumpping ???? " + _isJumping);
     }
 
     public bool Jump()
@@ -42,12 +33,7 @@ public class JumpBehaviorComponent : MonoBehaviour
         _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
         _rigidbody.AddForce(Vector3.up * _settings.JumpForce, ForceMode.Impulse);
 
-        _isJumping = true;
         return true;
     }
-
-
-
-
 
 }

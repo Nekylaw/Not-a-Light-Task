@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class DetectionBehaviorComponent : MonoBehaviour
 {
+
+    #region Fields
+
     [SerializeField]
     private DetectionSettings _settings = null;
+
     private Rigidbody _rigidbody = null;
 
     private float _halfHeight = 0f;
-
     private bool _isGrounded = false;
     private bool _isTouchingWall = false;
-    public bool IsGrounded => _isGrounded;
-    public bool IsTouchingWall => _isTouchingWall;
+    
+    #endregion
+
+    #region Lifecycle
 
     private void Awake()
     {
@@ -30,6 +35,17 @@ public class DetectionBehaviorComponent : MonoBehaviour
         _isTouchingWall = CheckWall();
     }
 
+    #endregion
+    
+    #region Public API
+
+    public bool IsGrounded => _isGrounded;
+    public bool IsTouchingWall => _isTouchingWall;
+
+    #endregion
+
+    #region Private API
+
     private bool CheckGround()
     {
         Vector3 feetPosition = _rigidbody.position - transform.up * _halfHeight;
@@ -43,9 +59,11 @@ public class DetectionBehaviorComponent : MonoBehaviour
         return Physics.OverlapCapsule(start, end, _settings.WallCheckRadius, _settings.WallLayer).Length > 0;
     }
 
+    #endregion
+
     private void OnDrawGizmos()
     {
-        if (_rigidbody == null || _settings == null) 
+        if (_rigidbody == null || _settings == null)
             return;
 
         Vector3 feetPosition = _rigidbody.position - transform.up * _halfHeight;
