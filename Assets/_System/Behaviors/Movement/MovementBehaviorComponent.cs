@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 public class MovementBehaviorComponent : MonoBehaviour
@@ -43,7 +42,6 @@ public class MovementBehaviorComponent : MonoBehaviour
 
     private void AdjustPosition()
     {
-
     }
 
     private void HandleFalling()
