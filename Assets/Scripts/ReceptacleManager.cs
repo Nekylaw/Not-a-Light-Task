@@ -22,6 +22,7 @@ public class ReceptacleManager : MonoBehaviour
             UnityEngine.Light lighting = GetComponent<UnityEngine.Light>();
             lighting.enabled = true;
             Destroy(other.attachedRigidbody);
+
             isBright = true;
         }
     }
@@ -33,6 +34,7 @@ public class ReceptacleManager : MonoBehaviour
     }
     private void GradualIncreaseBrightness()
     {  
+
         UnityEngine.Light brightness = GetComponent<UnityEngine.Light>();
         if (brightness.intensity <= 200)
         {
