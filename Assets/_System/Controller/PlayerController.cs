@@ -142,10 +142,8 @@ public class PlayerController : MonoBehaviour
     private void HandleLookInput(InputAction.CallbackContext context)
     {
         //Debug.Log("Device : " + context.control.device);
-
-
-        _inputMode = context.control.device is Keyboard ? InputMode.KeyBoard : InputMode.Controller;
-        //Debug.Log("Mode : " + _inputMode);
+        InputDevice device = context.control.device;
+        _inputMode = device is Gamepad ? InputMode.Controller : InputMode.KeyBoard;
         _cameraLookInput = context.ReadValue<Vector2>();
     }
 
@@ -155,7 +153,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         Vector2.ClampMagnitude(_cameraLookInput, 1);
-        _camera.Look(mode, _cameraLookInput);
+        _camera.Look(mode, _cameraLookInput, delta);
     }
 
     private void HandleAimInput(InputAction.CallbackContext context)

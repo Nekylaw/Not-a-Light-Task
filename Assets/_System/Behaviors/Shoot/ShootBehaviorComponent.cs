@@ -39,8 +39,8 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         Debug.DrawRay(_firePoint.position, aimRay.direction * 50, Color.yellow, 1f);
 
-        if (Physics.Raycast(aimRay, out RaycastHit hit))
-            Debug.Log("Shoot on " + hit.collider.name);
+        //if (Physics.Raycast(aimRay, out RaycastHit hit))
+        //    Debug.Log("Shoot on " + hit.collider.name);
 
         GameObject bullet = Instantiate(_settings.Bullets[0].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
 
