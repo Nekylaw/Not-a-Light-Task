@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,9 +11,49 @@ public class Creature : MonoBehaviour
     public float height = 1.0f ;
     public float distance = 10 ; 
     public Color meshColor = Color.blue;
+    public int scanFrequency = 30;
+    public LayerMask layer;
+    public List<GameObject> Objects = new List<GameObject>();
+    
+    Collider[] colliders = new Collider[50];
+    Mesh mesh;
+    int count;
+    float scanInterval;
+    float scanTimer;
 
-    private Mesh mesh;
 
+    void Start()
+    {
+        scanInterval = 1.0f / scanFrequency;
+    }
+
+    private void Update()
+    {
+        scanTimer -= Time.deltaTime;
+        if (scanTimer <= 0)
+        {
+            scanTimer += scanInterval;
+            Scan();
+        }
+        
+    }
+    private void Scan()
+    {
+        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, layer, QueryTriggerInteraction.Collide);
+        Objects.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = colliders[i].gameObject;
+            if (IsInSight(obj))
+            {
+                Objects.Add(obj);
+            }
+        }
+        
+    }
+    
+#region FOV-Gizmos
+    
     Mesh CreateFOVMesh()
     {
         Mesh mesh = new Mesh();
@@ -68,6 +109,7 @@ public class Creature : MonoBehaviour
             topLeft = bottomLeft + Vector3.up * height;
             topRight = bottomRight + Vector3.up * height;
             
+            //far side
             vertices[vertexIndex++] = bottomLeft;
             vertices[vertexIndex++] = bottomRight;
             vertices[vertexIndex++] = topRight;
@@ -104,21 +146,57 @@ public class Creature : MonoBehaviour
         
         return mesh;
     }
-
     private void OnValidate()
-    {
-        mesh = CreateFOVMesh();
+         {
+             mesh = CreateFOVMesh();
+             scanInterval = 1.0f / scanFrequency;
+     
+         }
+     
+         private void OnDrawGizmos()
+         {
+             if (mesh)
+             {
+                 Gizmos.color = meshColor;
+                 Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
+             }
+             
+             Gizmos.DrawWireSphere(transform.position, distance);
+             for (int i = 0; i < count; i++)
+             {
+                 Gizmos.DrawSphere(colliders[i].transform.position,1f);
+             }
+             //draw gizmo for objects that are in sight of the creature
+             Gizmos.color =  Color.green;
+             foreach (var obj in Objects)
+             {
+                 Gizmos.DrawSphere(obj.transform.position,1.2f);
+             }
+         }
+         
+#endregion
 
+
+
+public bool IsInSight(GameObject obj)
+{
+    Vector3 origin = transform.position;
+    Vector3 dest = obj.transform.position;
+    Vector3 direction = dest - origin;
+    if (direction.y < 0 || direction.y > height)
+    {
+        return false;
     }
 
-    private void OnDrawGizmos()
+    direction.y = 0;
+    float deltaAngle = Vector3.Angle(direction, transform.forward);
+    if (deltaAngle > angle)
     {
-        if (mesh)
-        {
-            Gizmos.color = meshColor;
-            Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
-        }
+        return false;
     }
+    return true;
+}
+
     
     
 }
