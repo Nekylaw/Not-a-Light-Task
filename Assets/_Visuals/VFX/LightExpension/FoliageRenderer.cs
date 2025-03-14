@@ -5,7 +5,7 @@ public class FoliageRenderer : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("The foliage mesh")]
-    private Mesh foliageMesh;
+    private Mesh foliageMesh; //@todo use 3 meshes if billbording
 
     [SerializeField]
     [Tooltip("The foliage material")]
@@ -132,6 +132,7 @@ public class FoliageRenderer : MonoBehaviour
             Matrix4x4[] batchArray = new Matrix4x4[count]; //Batch Matrices
             visibleInstances.CopyTo(i * maxInstancesPerBatch, batchArray, 0, count);  // Copy the instances into the batch array
 
+            //Graphics.RenderMeshIndirect instead
             // GPU instancing
             Graphics.DrawMeshInstanced(foliageMesh, 0, foliageMaterial, batchArray, batchArray.Length, null, UnityEngine.Rendering.ShadowCastingMode.Off);
         }
