@@ -2,17 +2,21 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
-public class Creature : MonoBehaviour
+public class CreatureBehaviour : MonoBehaviour
 {
+    
+#region FOV-Vars
     public float angle = 30;
     public float height = 1.0f ;
     public float distance = 10 ; 
     public Color meshColor = Color.blue;
     public int scanFrequency = 30;
-    public LayerMask layer;
+    public LayerMask lightLayer;
+    public LayerMask obstacleLayer;
     public List<GameObject> Objects = new List<GameObject>();
     
     Collider[] colliders = new Collider[50];
@@ -20,7 +24,17 @@ public class Creature : MonoBehaviour
     int count;
     float scanInterval;
     float scanTimer;
+    
 
+    #endregion
+
+    private GameObject lightEdibleObject;
+
+    public void Enter()
+    {
+       
+        
+    }
 
     void Start()
     {
@@ -37,20 +51,7 @@ public class Creature : MonoBehaviour
         }
         
     }
-    private void Scan()
-    {
-        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, layer, QueryTriggerInteraction.Collide);
-        Objects.Clear();
-        for (int i = 0; i < count; i++)
-        {
-            GameObject obj = colliders[i].gameObject;
-            if (IsInSight(obj))
-            {
-                Objects.Add(obj);
-            }
-        }
-        
-    }
+    
     
 #region FOV-Gizmos
     
@@ -176,27 +177,53 @@ public class Creature : MonoBehaviour
          
 #endregion
 
-
-
+#region FOV-Detection
+private void Scan()
+    {
+        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, lightLayer, QueryTriggerInteraction.Collide);
+        Objects.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = colliders[i].gameObject;
+            if (IsInSight(obj))
+            {
+                Objects.Add(obj);
+            }
+        }
+        
+    }
 public bool IsInSight(GameObject obj)
 {
     Vector3 origin = transform.position;
     Vector3 dest = obj.transform.position;
     Vector3 direction = dest - origin;
+    
+    //if light not in the range of the creature 
     if (direction.y < 0 || direction.y > height)
     {
         return false;
     }
-
+    
+    //if light not in the sight of the creature
     direction.y = 0;
     float deltaAngle = Vector3.Angle(direction, transform.forward);
     if (deltaAngle > angle)
     {
         return false;
     }
+
+    origin.y += height / 2;
+    dest.y = origin.y;
+    
+    //cant see the light if there's an obstacle in sight of the creature
+    if (Physics.Linecast(origin, dest, obstacleLayer))
+    {
+        return false;
+    }
+    
     return true;
 }
-
+#endregion
     
     
 }
