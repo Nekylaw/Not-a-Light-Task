@@ -11,6 +11,7 @@ Shader "Effect/Fog"
         _FogNoise("Fog noise", 3D) = "white" {}
         _NoiseTiling("Noise tiling", float) = 1
         _DensityThreshold("Density threshold", Range(0, 1)) = 0.1
+        _FogClearAttenuation("Fog Clear Attenuation", Range(0, 10)) = 1
         
         [HDR]_LightContribution("Light contribution", Color) = (1, 1, 1, 1)
         _LightScattering("Light scattering", Range(0, 1)) = 0.2
@@ -36,12 +37,18 @@ Shader "Effect/Fog"
             float _MaxDistance;
             float _DensityMultiplier;
             float _StepSize;
+
             float _NoiseOffset;
             TEXTURE3D(_FogNoise);
-            float _DensityThreshold;
             float _NoiseTiling;
+            float _DensityThreshold;
+            float _FogClearAttenuation;
+
             float4 _LightContribution;
             float _LightScattering;
+
+            StructuredBuffer<float4> _ClearZones; // xyz = position, w = rayon
+            int _ClearZoneCount; // Nombre total de zones
 
             float henyey_greenstein(float angle, float scattering)
             {
@@ -53,6 +60,21 @@ Shader "Effect/Fog"
                 float4 noise = _FogNoise.SampleLevel(sampler_TrilinearRepeat, worldPos * 0.01 * _NoiseTiling, 0);
                 float density = dot(noise, noise);
                 density = saturate(density - _DensityThreshold) * _DensityMultiplier;
+
+                 // Applique les zones de dissipation
+                for (int i = 0; i < _ClearZoneCount; i++)
+                {
+                    float3 clearPos = _ClearZones[i].xyz;  // Position de la zone
+                    float clearRadius = _ClearZones[i].w;  // Rayon de la zone
+                    float dist = distance(worldPos, clearPos); 
+
+                    // Applique un lissage pour éviter une transition trop brutale
+                    float attenuation = smoothstep(0, clearRadius * _FogClearAttenuation, dist);
+
+                    // Réduit progressivement la densité du brouillard
+                    density *= attenuation;
+                }
+
                 return density;
             }
 

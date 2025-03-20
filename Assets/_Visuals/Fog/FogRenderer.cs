@@ -1,33 +1,52 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class FogRenderer : MonoBehaviour
 {
-    private Material fogMaterial;
+    public Material fogMaterial;
+    private ComputeBuffer clearZonesBuffer;
 
-    // Liste des points de dissipation
-    public Vector4[] dissipationPoints;
+    GameObject[] _clearZones = new GameObject[0];
 
-    private void Start()
+    struct ClearZone
     {
-        // Charger le shader de brouillard volumétrique
-        Shader fogShader = Shader.Find("Effect/Fog");
-
-        if (fogShader == null)
-            Debug.Log("Error");
-        else
-            Debug.Log("Found");
-
-
-        fogMaterial = new Material(fogShader);
+        public Vector3 position;
+        public float radius;
     }
 
-    private void OnRenderImage(RenderTexture source, RenderTexture destination)
+    private ClearZone[] clearZones;
+    private const int MAX_ZONES = 100; 
+
+    void Start()
     {
-        // Mettre à jour les points de dissipation dans le shader
-        fogMaterial.SetVectorArray("_FogDissipationPoints", dissipationPoints);
-        // Appliquer le shader de brouillard volumétrique
-        Graphics.Blit(source, destination, fogMaterial);
+        clearZones = new ClearZone[MAX_ZONES];
+        clearZonesBuffer = new ComputeBuffer(MAX_ZONES, sizeof(float) * 4);
+        fogMaterial.SetInt("_ClearZoneCount", 0);
+
+        _clearZones = GameObject.FindGameObjectsWithTag("Receptacle");
+
+        Debug.Log("Clear count: " + _clearZones.Length);
+    }
+
+    void Update()
+    {
+        int count = 0;
+        foreach (var obj in _clearZones)
+        {
+            if (count >= MAX_ZONES) break;
+
+            clearZones[count].position = obj.transform.position;
+            clearZones[count].radius = /*obj.transform.localScale.x * 0.5f*/ 10f;
+            count++;
+        }
+
+        // Envoyer les zones au shader
+        clearZonesBuffer.SetData(clearZones);
+        fogMaterial.SetInt("_ClearZoneCount", count);
+        fogMaterial.SetBuffer("_ClearZones", clearZonesBuffer);
+    }
+
+    void OnDestroy()
+    {
+        if (clearZonesBuffer != null) clearZonesBuffer.Release();
     }
 }
