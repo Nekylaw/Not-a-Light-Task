@@ -48,7 +48,7 @@ Shader "Effect/Fog"
             float _LightScattering;
 
             StructuredBuffer<float4> _ClearZones; // xyz = position, w = rayon
-            int _ClearZoneCount; // Nombre total de zones
+            int _ClearZoneCount; 
 
             float henyey_greenstein(float angle, float scattering)
             {
@@ -61,17 +61,16 @@ Shader "Effect/Fog"
                 float density = dot(noise, noise);
                 density = saturate(density - _DensityThreshold) * _DensityMultiplier;
 
-                 // Applique les zones de dissipation
+                 // Clear fog zones
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
-                    float3 clearPos = _ClearZones[i].xyz;  // Position de la zone
-                    float clearRadius = _ClearZones[i].w;  // Rayon de la zone
+                    float3 clearPos = _ClearZones[i].xyz;  
+                    float clearRadius = _ClearZones[i].w;  
                     float dist = distance(worldPos, clearPos); 
 
-                    // Applique un lissage pour éviter une transition trop brutale
+                   
                     float attenuation = smoothstep(0, clearRadius * _FogClearAttenuation, dist);
 
-                    // Réduit progressivement la densité du brouillard
                     density *= attenuation;
                 }
 

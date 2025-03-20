@@ -114,20 +114,20 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DensityMultiplier: 1
-    - _DensityThreshold: 1
+    - _DensityThreshold: 0.8
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FogAlpha: 0.737
-    - _FogClearAttenuation: 5.31
+    - _FogClearAttenuation: 8
     - _FogDensity: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _LightScattering: 0
-    - _MaxDistance: 100
+    - _LightScattering: 0.5
+    - _MaxDistance: 50
     - _Metallic: 0
     - _NoiseOffset: 0
     - _NoiseTiling: 1
@@ -147,7 +147,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.24452654, g: 0.27128595, b: 0.3301887, a: 1}
+    - _Color: {r: 0.1021271, g: 0.15067846, b: 0.254717, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FogCenter: {r: 0, g: 0, b: 0, a: 0}
     - _FogColor: {r: 0.7, g: 0.7, b: 0.8, a: 1}
