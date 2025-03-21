@@ -1,52 +1,105 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FogRenderer : MonoBehaviour
 {
-    public Material fogMaterial;
-    private ComputeBuffer clearZonesBuffer;
-
-    GameObject[] _clearZones = new GameObject[0];
-
-    struct ClearZone
+    struct ClearZoneData
     {
-        public Vector3 position;
-        public float radius;
+        public Vector3 Position;
+        public float Radius;
     }
 
-    private ClearZone[] clearZones;
-    private const int MAX_ZONES = 100; 
+    [SerializeField]
+    private Material _fogMaterial;
+
+    private ComputeBuffer _clearZonesBuffer;
+
+    private ClearZoneData[] _clearZonesDatas;
+    private const int MaxZones = 100;
+
+    private LightSourcesService _lightService = null;
+
+
+    private void Awake()
+    {
+        _lightService = FindFirstObjectByType<LightSourcesService>();
+
+        if (_lightService == null)
+            Debug.LogWarning("Error, fogRenderer not found.", this);
+    }
 
     void Start()
     {
-        clearZones = new ClearZone[MAX_ZONES];
-        clearZonesBuffer = new ComputeBuffer(MAX_ZONES, sizeof(float) * 4);
-        fogMaterial.SetInt("_ClearZoneCount", 0);
+        _clearZonesDatas = new ClearZoneData[_lightService.LightOnCount];
+        _clearZonesBuffer = new ComputeBuffer(_lightService.LightOnCount, sizeof(float) * 4);
+        _fogMaterial.SetInt("_ClearZoneCount", 0);
 
-        _clearZones = GameObject.FindGameObjectsWithTag("Receptacle");
-
-        Debug.Log("Clear count: " + _clearZones.Length);
+        Render();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        int count = 0;
-        foreach (var obj in _clearZones)
-        {
-            if (count >= MAX_ZONES) break;
+        _lightService.OnSwitchOnLight += HandleLightOn;
+        _lightService.OnSwitchOffLight += HandleLightOff;
+    }
 
-            clearZones[count].position = obj.transform.position;
-            clearZones[count].radius = /*obj.transform.localScale.x * 0.5f*/ 10f;
-            count++;
+    private void OnDisable()
+    {
+        _lightService.OnSwitchOnLight -= HandleLightOn;
+        _lightService.OnSwitchOffLight -= HandleLightOff;
+    }
+
+    private void Render()
+    {
+        int lightCount = _lightService.LightOnCount;
+
+        if (lightCount <= 0)
+        {
+            _fogMaterial.SetInt("_ClearZoneCount", 0);
+            return;
         }
 
-        // Envoyer les zones au shader
-        clearZonesBuffer.SetData(clearZones);
-        fogMaterial.SetInt("_ClearZoneCount", count);
-        fogMaterial.SetBuffer("_ClearZones", clearZonesBuffer);
+        if (_clearZonesBuffer == null || _clearZonesDatas.Length != lightCount)
+        {
+            if (_clearZonesBuffer != null)
+                _clearZonesBuffer.Release();
+
+            _clearZonesDatas = new ClearZoneData[lightCount];
+            _clearZonesBuffer = new ComputeBuffer(lightCount, sizeof(float) * 4);
+        }
+
+        for (int i = 0; i < lightCount; i++)
+        {
+            _clearZonesDatas[i].Position = _lightService.LightSourceList[i].transform.position;
+            _clearZonesDatas[i].Radius = 10f;
+        }
+
+        _clearZonesBuffer.SetData(_clearZonesDatas);
+        _fogMaterial.SetInt("_ClearZoneCount", lightCount);
+        _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
+
+        Debug.Log("Fog updated with " + lightCount + " light sources.");
+    }
+
+    private void HandleLightOn(LightSourceComponent light)
+    {
+        Render();
+        Debug.Log("Fog register source");
+    }
+
+    private void HandleLightOff(LightSourceComponent light)
+    {
+        Render();
+        Debug.Log("Fog remove source");
     }
 
     void OnDestroy()
     {
-        if (clearZonesBuffer != null) clearZonesBuffer.Release();
+        if (_clearZonesBuffer != null)
+        {
+            _clearZonesBuffer.Release();
+            _clearZonesBuffer = null;
+        }
     }
 }
