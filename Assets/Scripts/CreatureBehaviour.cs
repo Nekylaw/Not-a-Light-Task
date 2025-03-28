@@ -1,9 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
 public class CreatureBehaviour : MonoBehaviour
@@ -29,16 +31,22 @@ public class CreatureBehaviour : MonoBehaviour
     #endregion
 
     private GameObject lightEdibleObject;
+    private Transform lightSource;
+    [SerializeField] GameObject player;
+    private NavMeshAgent creature;
+    [SerializeField] private LayerMask groundLayer, playerLayer;
 
-    public void Enter()
-    {
-       
-        
-    }
+    private Vector3 destPoint;
+    //creature has a destination?
+    private bool walkpointSet;
+    //how far is going to walk the creature?
+    [SerializeField] private float walkRange;
+    
 
     void Start()
-    {
+    {   
         scanInterval = 1.0f / scanFrequency;
+        creature = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -49,8 +57,59 @@ public class CreatureBehaviour : MonoBehaviour
             scanTimer += scanInterval;
             Scan();
         }
-        
+        Wander();
     }
+
+    
+    #region Navigation 
+    public void GoToLight()
+    { 
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        foreach (var obj in Objects)
+        {
+            if (obj.layer.ToString() == "LightObjects")
+            {
+                agent.destination = obj.transform.position;
+            }
+        }
+    }
+
+    private void Wander()
+    {
+        if (walkpointSet == false)
+        {
+            SearchForDest();
+        }
+
+        if (walkpointSet)
+        { 
+            creature.SetDestination(destPoint); 
+        }
+
+        if (Vector3.Distance(transform.position, destPoint) < 10)
+        {
+            walkpointSet = false;
+        }
+    }
+
+
+    private void SearchForDest()
+    { 
+        float z = Random.Range(-walkRange, walkRange);
+        float x = Random.Range(-walkRange, walkRange);
+        
+        destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+        if (Physics.Raycast(destPoint, Vector3.down, groundLayer))
+        {
+            walkpointSet = true;
+        }
+    }
+    
+    
+    
+
+    #endregion
+    
     
     
 #region FOV-Gizmos
