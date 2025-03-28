@@ -49,13 +49,8 @@ Shader "Custom/GlowEffect"
 
             half4 frag (v2f i) : SV_Target
             {
-                // Distance du pixel actuel au centre du glow
                 float dist = distance(i.uv, _GlowCenter.xy);
-
-                // Calcul de l'intensité du glow (plus on est loin, plus il diminue)
                 float glow = _GlowIntensity * saturate(1.0 - (dist / _GlowRadius));
-
-                // Couleur du glow avec transparence
                 return half4(_GlowColor.rgb * glow, glow);
             }
             ENDHLSL
