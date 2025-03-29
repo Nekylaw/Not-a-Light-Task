@@ -18,7 +18,7 @@ public class LightSourcesService : MonoBehaviour, IDisposable
             return;
         }
         Instance = this;
-        Debug.Log("Ligth Service ''-----------");
+        Debug.LogWarning("@todo Ligth Service as service instance");
     }
 
     #endregion
@@ -87,13 +87,15 @@ public class LightSourcesService : MonoBehaviour, IDisposable
 
     #region Public API
 
-    public LightSourceComponent[] LightSourceList => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
+    public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
     public int LightSourceCount => _lightSourceList.Count;
 
     public bool SwitchOn(LightSourceComponent light)
     {
         if (!light.SwitchOn())
             return false;
+
+        Debug.Log("Light ON");
 
         OnSwitchOnLight?.Invoke(light);
         return true;

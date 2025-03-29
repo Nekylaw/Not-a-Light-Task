@@ -7,24 +7,39 @@ public class LightSourceComponent : MonoBehaviour
 
     private LightSourcesService _lightService = null;
 
+    [SerializeField]
+    private Transform _lightPoint = null;
+
     private bool _isLightOn = false;
 
     //@todo light settings asset
+
+    // public orb required to ligth on setting
+    public float AttractRange = 0f;
 
     #endregion
 
 
     #region Lifecycle
 
-    private void Start()
+    private void Awake()
     {
         _lightService = LightSourcesService.Instance;
         if (_lightService == null)
-            Debug.LogWarning("Error, fogRenderer not found.", this);
-
-        Debug.Log("Ligth Componrent ''-----------");
+            return;
 
         Register();
+    }
+
+    private void Start()
+    {
+        //@todo remove
+        AttractRange = 2;
+    }
+
+    private void Update()
+    {
+        DetectBullet();
     }
 
     private void OnEnable()
@@ -43,12 +58,29 @@ public class LightSourceComponent : MonoBehaviour
         Unregister();
     }
 
+    private bool Register()
+    {
+        if (_lightService == null)
+            return false;
+
+        return _lightService.RegisterLightSource(this);
+    }
+
+    private bool Unregister()
+    {
+        if (_lightService == null)
+            return false;
+
+        return _lightService.UnregisterLightSource(this);
+    }
+
     #endregion
 
 
     #region Public API
 
     public bool IsLightOn => _isLightOn;
+    public Vector3 LightPoint => _lightPoint.position;
 
     public bool SwitchOn()
     {
@@ -77,25 +109,25 @@ public class LightSourceComponent : MonoBehaviour
 
     #region Private API
 
-    private bool Register()
+    private bool DetectBullet()
     {
-        Debug.Log("Try register");
+        if (_isLightOn)
+            return false;
 
-        if (_lightService == null)
+        Collider[] colliders = Physics.OverlapSphere(_lightPoint.position, AttractRange); //@todo bullet layer
+
+        if (colliders.Length <= 0)
+            return false;
+
+        foreach (Collider collider in colliders)
         {
-            Debug.Log("registering Flop");
-            return false;
+            if (!collider.TryGetComponent<BulletComponent>(out BulletComponent bullet))
+                continue;
+
+            Debug.Log("Hittttttt");
+            bullet.AttractTo(_lightPoint.position, this);
         }
-
-        return _lightService.RegisterLightSource(this);
-    }
-
-    private bool Unregister()
-    {
-        if (_lightService == null)
-            return false;
-
-        return _lightService.UnregisterLightSource(this);
+        return true;
     }
 
     private bool CanLightOn()
