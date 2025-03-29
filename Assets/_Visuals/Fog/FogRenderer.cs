@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class FogRenderer : MonoBehaviour, IDisposable
@@ -17,10 +17,10 @@ public class FogRenderer : MonoBehaviour, IDisposable
             return;
         }
         Instance = this;
+
         _lightService = LightSourcesService.Instance;
-
-        Debug.Log("Fog render''-----------");
-
+        if (_lightService == null)
+            Debug.LogError($"Error, {nameof(LightSourcesService)} not found.", this);
     }
 
     #endregion
@@ -39,10 +39,10 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     #region Fields
 
-    private LightSourcesService _lightService = null;
-
     [SerializeField]
     private Material _fogMaterial = null;
+
+    private LightSourcesService _lightService = null;
 
     private ComputeBuffer _clearZonesBuffer = null;
 
@@ -57,34 +57,21 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     private void Start()
     {
-        if (_lightService == null)
-            Debug.Log("Service null!", this);
-        else
-            Debug.Log("Service found!", this);
-
         if (_lightService == null || _lightService.LightSourceCount <= 0)
             return;
 
         _clearZonesDatas = new ClearZoneData[_lightService.LightSourceCount];
         _clearZonesBuffer = new ComputeBuffer(_lightService.LightSourceCount, sizeof(float) * 4);
-        _fogMaterial.SetInt("_ClearZoneCount", 0);
-
-        Render();
     }
 
     private void OnEnable()
     {
-        //_lightService = LightSourcesService.Instance;
-
-
         if (_lightService == null)
-            Debug.Log("Fog Eneable Service null!", this);
+            return;
 
-        if (_lightService != null)
-        {
-            _lightService.OnSwitchOnLight += HandleLightOn;
-            _lightService.OnSwitchOffLight += HandleLightOff;
-        }
+        //OnlightChange instead
+        _lightService.OnSwitchOnLight += HandleLightOn;
+        _lightService.OnSwitchOffLight += HandleLightOff;
     }
 
     private void OnDisable()
@@ -114,40 +101,57 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     #region Private API
 
-    private void Render()
+    private void AnimateFogDissipation(int index, float endRadius)
+    {
+        StartCoroutine(AnimateFogDissipationCoroutine(index, endRadius));
+    }
+
+    private IEnumerator AnimateFogDissipationCoroutine(int index, float endRadius)
     {
         int lightCount = _lightService.LightSourceCount;
-        Debug.Log("Light on: " + lightCount);
+        float animDuration = 3f; // @todo light on animation settings
+        float elapsedTime = 0f;
+        float baseRadius = _clearZonesDatas[index].Radius;
 
-
-        if (lightCount <= 0)
+        while (elapsedTime < animDuration)
         {
-            _fogMaterial.SetInt("_ClearZoneCount", 0);
-            return;
+            elapsedTime += Time.deltaTime;
+            float ratio = elapsedTime / animDuration;
+
+            _clearZonesDatas[index].Radius = Mathf.Lerp(baseRadius, endRadius, ratio);
+            _clearZonesDatas[index].Position = _lightService.LightSources[index].LightPoint;
+
+            _clearZonesBuffer.SetData(_clearZonesDatas);
+
+            _fogMaterial.SetInt("_ClearZoneCount", lightCount);
+            _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
+
+            yield return null;
         }
 
-        for (int i = 0; i < lightCount; i++)
-        {
-            _clearZonesDatas[i].Position = _lightService.LightSourceList[i].transform.position;
-            _clearZonesDatas[i].Radius = _lightService.LightSourceList[i].IsLightOn ? 10f : 0f; //@todo set radius to light asset brightness radius.
-        }
+        _clearZonesDatas[index].Radius = endRadius;
+        _clearZonesDatas[index].Position = _lightService.LightSources[index].LightPoint;
 
         _clearZonesBuffer.SetData(_clearZonesDatas);
         _fogMaterial.SetInt("_ClearZoneCount", lightCount);
         _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
-
-        Debug.Log("Fog updated with " + lightCount + " light sources.");
     }
 
     private void HandleLightOn(LightSourceComponent light)
     {
-        Debug.Log("Light on Invoked on fog");
-        Render();
+        int index = Array.IndexOf(_lightService.LightSources, light);
+
+        if (index < 0)
+            return;
+
+        AnimateFogDissipation(index, 10f); // @max redius setting
     }
 
     private void HandleLightOff(LightSourceComponent light)
     {
-        Render();
+        int index = Array.IndexOf(_lightService.LightSources, light);
+        if (index >= 0)
+            AnimateFogDissipation(index, 0f); // min radius setting
     }
 
     private bool ReleaseBuffer()
@@ -162,10 +166,6 @@ public class FogRenderer : MonoBehaviour, IDisposable
         return false;
     }
 
-    #endregion
-
-
-    #region Public API
     #endregion
 
 }
