@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]

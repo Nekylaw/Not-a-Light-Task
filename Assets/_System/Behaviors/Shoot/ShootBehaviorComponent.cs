@@ -49,4 +49,17 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         return true;
     }
+
+    public bool PacifyShoot(Ray aimRay)
+    {
+        if ( _timer > 0)
+            return false;
+
+        _timer = _settings.Rate;
+
+        GameObject bullet = Instantiate(_settings.Bullets[1].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
+
+        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction*_settings.FireForce, ForceMode.Impulse);
+        return true;
+    }
 }

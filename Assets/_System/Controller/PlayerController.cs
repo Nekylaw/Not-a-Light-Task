@@ -101,6 +101,8 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
 
         _gameInputs.Player.Jump.started += HandleJumpInput;
+
+        _gameInputs.Player.PacifyShoot.performed += HandlePacifyShootInput;
     }
 
     private void UnBindInputs()
@@ -118,6 +120,8 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
+
+        _gameInputs.Player.PacifyShoot.performed -= HandlePacifyShootInput;
     }
 
     private void UpdateMovement(float delta)
@@ -179,6 +183,17 @@ public class PlayerController : MonoBehaviour
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
         _shoot.Shoot(_aimTargetRay);
+    }
+
+    private void HandlePacifyShootInput(InputAction.CallbackContext context)
+    {
+        if (!_isAiming)
+            return;
+
+        Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+        _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
+
+        _shoot.PacifyShoot(_aimTargetRay);
     }
 
     private void HandleJumpInput(InputAction.CallbackContext context)
