@@ -16,13 +16,21 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Time.timeScale = 0;
+        gameState = GameState.StartMenu;
         
         Cursor.lockState = CursorLockMode.Confined;
     }
     
-    #region PRIVATE ATTRIBUTES
-    
+    #region PUBLIC PROPERTIES
+
+    public GameState gameState;
+    public enum GameState
+    {
+        StartMenu,
+        Paused,
+        Playing,
+        GameOver
+    }
     #endregion
     
     #region PUBLIC METHODS
@@ -32,7 +40,7 @@ public class GameManager : MonoBehaviour
         UiManager.Instance.UIStartGame();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Time.timeScale = 1;
+        gameState = GameState.Playing;
     }
 
     public void PauseGame(GameObject panel)
@@ -41,7 +49,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         
         Cursor.lockState = CursorLockMode.Confined;
-        Time.timeScale = 0;
+        gameState = GameState.Paused;
     }
 
     public void QuitGame()
@@ -59,7 +67,7 @@ public class GameManager : MonoBehaviour
         UiManager.Instance.UIEndGame();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-        Time.timeScale = 0;
+        gameState = GameState.GameOver;
     }
 
     public void Back()
