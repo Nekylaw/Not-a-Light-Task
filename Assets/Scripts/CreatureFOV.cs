@@ -1,29 +1,48 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
-public class Creature : MonoBehaviour
+public class CreatureFOV : MonoBehaviour
 {
+    
+#region FOV-Vars
     public float angle = 30;
     public float height = 1.0f ;
     public float distance = 10 ; 
     public Color meshColor = Color.blue;
     public int scanFrequency = 30;
-    public LayerMask layer;
-    public List<GameObject> Objects = new List<GameObject>();
+    public LayerMask lightLayer;
+    public LayerMask obstacleLayer;
+    public static List<GameObject> objectsInSight = new List<GameObject>();
     
     Collider[] colliders = new Collider[50];
     Mesh mesh;
     int count;
     float scanInterval;
     float scanTimer;
+    
 
+    #endregion
+
+    private GameObject lightEdibleObject;
+    private Transform lightSource;
+    
+
+    // private Vector3 destPoint;
+    // //creature has a destination?
+    // private bool walkpointSet;
+    // //how far is going to walk the creature?
+    // [SerializeField] private float walkRange;
+    
 
     void Start()
-    {
+    {   
         scanInterval = 1.0f / scanFrequency;
     }
 
@@ -35,22 +54,51 @@ public class Creature : MonoBehaviour
             scanTimer += scanInterval;
             Scan();
         }
-        
+       
     }
-    private void Scan()
-    {
-        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, layer, QueryTriggerInteraction.Collide);
-        Objects.Clear();
-        for (int i = 0; i < count; i++)
-        {
-            GameObject obj = colliders[i].gameObject;
-            if (IsInSight(obj))
-            {
-                Objects.Add(obj);
-            }
-        }
-        
-    }
+   
+
+    
+    #region Navigation 
+    
+
+    // private void Wander()
+    // {
+    //     if (walkpointSet == false)
+    //     {
+    //         SearchForDest();
+    //     }
+    //
+    //     if (walkpointSet)
+    //     { 
+    //         creature.SetDestination(destPoint); 
+    //     }
+    //
+    //     if (Vector3.Distance(transform.position, destPoint) < 10)
+    //     {
+    //         walkpointSet = false;
+    //     }
+    // }
+    //
+    //
+    // private void SearchForDest()
+    // { 
+    //     float z = Random.Range(-walkRange, walkRange);
+    //     float x = Random.Range(-walkRange, walkRange);
+    //     
+    //     destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+    //     if (Physics.Raycast(destPoint, Vector3.down, groundLayer))
+    //     {
+    //         walkpointSet = true;
+    //     }
+    // }
+    //
+    //
+    
+
+    #endregion
+    
+    
     
 #region FOV-Gizmos
     
@@ -168,7 +216,7 @@ public class Creature : MonoBehaviour
              }
              //draw gizmo for objects that are in sight of the creature
              Gizmos.color =  Color.green;
-             foreach (var obj in Objects)
+             foreach (var obj in objectsInSight)
              {
                  Gizmos.DrawSphere(obj.transform.position,1.2f);
              }
@@ -176,27 +224,53 @@ public class Creature : MonoBehaviour
          
 #endregion
 
-
-
+#region FOV-Detection
+private void Scan()
+    {
+        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, lightLayer, QueryTriggerInteraction.Collide);
+        objectsInSight.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = colliders[i].gameObject;
+            if (IsInSight(obj))
+            {
+                objectsInSight.Add(obj);
+            }
+        }
+        
+    }
 public bool IsInSight(GameObject obj)
 {
     Vector3 origin = transform.position;
     Vector3 dest = obj.transform.position;
     Vector3 direction = dest - origin;
+    
+    //if light not in the range of the creature 
     if (direction.y < 0 || direction.y > height)
     {
         return false;
     }
-
+    
+    //if light not in the sight of the creature
     direction.y = 0;
     float deltaAngle = Vector3.Angle(direction, transform.forward);
     if (deltaAngle > angle)
     {
         return false;
     }
+
+    origin.y += height / 2;
+    dest.y = origin.y;
+    
+    //cant see the light if there's an obstacle in sight of the creature
+    if (Physics.Linecast(origin, dest, obstacleLayer))
+    {
+        return false;
+    }
+    
     return true;
 }
-
+#endregion
     
     
 }
