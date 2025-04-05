@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
-public class FogRenderer : MonoBehaviour, IDisposable
+public class FogRenderer : MonoBehaviour, IService, IDisposable
 {
 
     #region Singleton
@@ -41,7 +40,16 @@ public class FogRenderer : MonoBehaviour, IDisposable
     #endregion
 
 
+    #region Delegates
+
+    public delegate void ServiceInitializedDelegate(IService service);
+
+    #endregion
+
+
     #region Fields
+
+    public event ServiceInitializedDelegate OnServiceInitialized = null;
 
     [SerializeField]
     private Material _fogMaterial = null;
@@ -53,6 +61,18 @@ public class FogRenderer : MonoBehaviour, IDisposable
     private ClearZoneData[] _clearZonesDatas;
 
     private bool _disposed = false;
+
+    private bool _initialized = false;
+
+    public bool IsServiceInitialized
+    {
+        get => _initialized; set
+        {
+            _initialized = value;
+            if (_initialized)
+                OnServiceInitialized?.Invoke(this);
+        }
+    }
 
     #endregion
 
@@ -67,7 +87,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
         _clearZonesDatas = new ClearZoneData[_lightService.LightSourceCount];
         _clearZonesBuffer = new ComputeBuffer(_lightService.LightSourceCount, sizeof(float) * 4);
 
-        Debug.Log("Light sources count: " +  _lightService.LightSourceCount);
+        Debug.Log("Light sources count: " + _lightService.LightSourceCount);
 
         Debug.Log($"Init {nameof(FogRenderer)} Buffer");
 
@@ -117,7 +137,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     private IEnumerator AnimateFogDissipationCoroutine(int index, float endRadius)
     {
-            Debug.Log("Start Defog");
+        Debug.Log("Start Defog");
 
         int lightCount = _lightService.LightSourceCount;
         float animDuration = 3f; // @todo light on animation settings
@@ -184,6 +204,19 @@ public class FogRenderer : MonoBehaviour, IDisposable
         }
 
         return false;
+    }
+
+    public void Tick()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator Init()
+    {
+        Debug.Log("GameManager Initialization : " + nameof(FogRenderer));
+        IsServiceInitialized = true;
+
+        yield break;
     }
 
     #endregion

@@ -1,30 +1,34 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightSourcesService : MonoBehaviour, IDisposable
+public sealed class LightSourcesService : IService, IDisposable
 {
 
     #region Singleton
 
-    public static LightSourcesService Instance { get; private set; }
+    private static LightSourcesService _instance;
 
-    private void Awake()
+    public static LightSourcesService Instance
     {
-
-        if (Instance != null && Instance != this)
+        get
         {
-            Destroy(gameObject);
-            return;
+            if (_instance == null)
+            {
+                _instance = new LightSourcesService();
+                Debug.Log("Creating Light Service");
+            }
+            return _instance;
         }
-        Instance = this;
-        Debug.LogWarning("@todo Ligth Service as service instance");
     }
 
     #endregion
 
 
     #region Delegates
+
+    public delegate void ServiceInitializedDelegate(IService service);
 
     public delegate void SwitchOnLightDelegate(LightSourceComponent light);
 
@@ -35,6 +39,7 @@ public class LightSourcesService : MonoBehaviour, IDisposable
 
     #region Fields
 
+    public event ServiceInitializedDelegate OnServiceInitialized = null;
     public event SwitchOnLightDelegate OnSwitchOnLight = null;
     public event SwitchOffLightDelegate OnSwitchOffLight = null;
 
@@ -51,17 +56,7 @@ public class LightSourcesService : MonoBehaviour, IDisposable
 
     #region Lifecycle
 
-    //@todo delete Test
-    bool done = false;
-    private void Update()
-    {
-
-        if (_lightTest != null && !done)
-        {
-            SwitchOn(_lightTest);
-            done = true;
-        }
-    }
+    private LightSourcesService() { }
 
     public void Dispose()
     {
@@ -73,13 +68,7 @@ public class LightSourcesService : MonoBehaviour, IDisposable
         OnSwitchOffLight = null;
 
         _isDisposed = true;
-    }
-
-    private void OnDestroy()
-    {
-        Dispose();
-        if (Instance == this)
-            Instance = null;
+        _instance = null;
     }
 
     #endregion
@@ -88,7 +77,19 @@ public class LightSourcesService : MonoBehaviour, IDisposable
     #region Public API
 
     public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
+
     public int LightSourceCount => _lightSourceList.Count;
+
+    private bool _initialized = false;
+
+    public bool IsServiceInitialized
+    {
+        get => _initialized; set
+        {
+            _initialized = value;
+            OnServiceInitialized?.Invoke(this);
+        }
+    }
 
     public bool SwitchOn(LightSourceComponent light)
     {
@@ -116,6 +117,7 @@ public class LightSourcesService : MonoBehaviour, IDisposable
             return false;
 
         _lightSourceList.Add(source);
+        Debug.Log($"Init {nameof(LightSourceComponent)} register ");
 
         Debug.Log("Ligth service light count: " + _lightSourceList.Count);
         return true;
@@ -128,6 +130,21 @@ public class LightSourcesService : MonoBehaviour, IDisposable
 
         _lightSourceList.Remove(source);
         return true;
+    }
+
+    public void Tick()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator Init()
+    {
+        Debug.Log("GameManager Initialization : " + nameof(LightSourcesService));
+
+        IsServiceInitialized = true;
+        OnServiceInitialized?.Invoke(this);
+
+        yield break;
     }
 
     #endregion

@@ -24,15 +24,18 @@ public class LightSourceComponent : MonoBehaviour
 
     private void Awake()
     {
-        _lightService = LightSourcesService.Instance;
-        if (_lightService == null)
-            return;
+        //_lightService = LightSourcesService.Instance;
+        //if (_lightService == null)
+        //    return;
 
-        Register();
+        //Register();
     }
 
     private void Start()
     {
+        //if (_lightService == null)
+        //    return;
+
         //@todo remove
         AttractRange = 2;
     }
@@ -44,24 +47,28 @@ public class LightSourceComponent : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_lightService == null)
-            return;
+        Debug.Log("Enable light Compoennt ");
 
         Register();
     }
 
     private void OnDisable()
     {
-        if (_lightService == null)
-            return;
-
         Unregister();
     }
 
     private bool Register()
     {
         if (_lightService == null)
-            return false;
+        {
+            Debug.Log("Init light Compoennt before the service ");
+            //return false;
+        }
+        else
+            Debug.Log("Init light Compoennt SUCCESS");
+
+
+        _lightService = LightSourcesService.Instance;
 
         return _lightService.RegisterLightSource(this);
     }
@@ -80,6 +87,7 @@ public class LightSourceComponent : MonoBehaviour
     #region Public API
 
     public bool IsLightOn => _isLightOn;
+
     public Vector3 LightPoint => _lightPoint.position;
 
     public bool SwitchOn()
@@ -134,6 +142,17 @@ public class LightSourceComponent : MonoBehaviour
     {
         //@todo check for light on
         return true;
+    }
+
+    #endregion
+
+
+    #region Debug
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(_lightPoint.position, AttractRange);
     }
 
     #endregion
