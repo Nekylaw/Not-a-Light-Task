@@ -14,7 +14,7 @@ Shader "Effect/Fog"
         _FogClearAttenuation("Fog Clear Attenuation", Range(0, 10)) = 1
         
         [HDR]_LightContribution("Light contribution", Color) = (1, 1, 1, 1)
-        _LightScattering("Light scattering", Range(0, 1)) = 0.2
+        _LightScattering("Light scattering", Range(-1, 1)) = 0.2
     }
 
     SubShader
@@ -102,12 +102,13 @@ Shader "Effect/Fog"
                     {
                         Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
                         fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb * henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) * density * mainLight.shadowAttenuation * _StepSize;
-                        transmittance *= exp(-density * _StepSize);
+                        // transmittance *= exp(-density * _StepSize); 
+                        transmittance *= pow(exp(-density * _StepSize), 2);
                     }
                     distTravelled += _StepSize;
                 }
                 
-                return lerp(col, fogCol, 1.0 - saturate(transmittance));
+                return lerp(col, fogCol, 0.99 - saturate(transmittance));
             }
             ENDHLSL
         }

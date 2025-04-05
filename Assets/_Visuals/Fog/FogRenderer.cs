@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class FogRenderer : MonoBehaviour, IDisposable
@@ -21,6 +22,9 @@ public class FogRenderer : MonoBehaviour, IDisposable
         _lightService = LightSourcesService.Instance;
         if (_lightService == null)
             Debug.LogError($"Error, {nameof(LightSourcesService)} not found.", this);
+
+        Debug.Log($"Init {nameof(FogRenderer)}");
+
     }
 
     #endregion
@@ -62,6 +66,11 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
         _clearZonesDatas = new ClearZoneData[_lightService.LightSourceCount];
         _clearZonesBuffer = new ComputeBuffer(_lightService.LightSourceCount, sizeof(float) * 4);
+
+        Debug.Log("Light sources count: " +  _lightService.LightSourceCount);
+
+        Debug.Log($"Init {nameof(FogRenderer)} Buffer");
+
     }
 
     private void OnEnable()
@@ -108,27 +117,37 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     private IEnumerator AnimateFogDissipationCoroutine(int index, float endRadius)
     {
+            Debug.Log("Start Defog");
+
         int lightCount = _lightService.LightSourceCount;
         float animDuration = 3f; // @todo light on animation settings
         float elapsedTime = 0f;
-        float baseRadius = _clearZonesDatas[index].Radius;
+        float startRadius = _clearZonesDatas[index].Radius;
 
         while (elapsedTime < animDuration)
         {
             elapsedTime += Time.deltaTime;
-            float ratio = elapsedTime / animDuration;
+            float ratio = Mathf.SmoothStep(0f, 1f, elapsedTime / animDuration); // Ease-in/out pour une animation fluide
 
-            _clearZonesDatas[index].Radius = Mathf.Lerp(baseRadius, endRadius, ratio);
-            _clearZonesDatas[index].Position = _lightService.LightSources[index].LightPoint;
+            float stepRadius = Mathf.Lerp(startRadius, endRadius, ratio);
 
-            _clearZonesBuffer.SetData(_clearZonesDatas);
+            // Pass frame if not necessary to set buffer
+            if (Mathf.Abs(stepRadius - _clearZonesDatas[index].Radius) > 0.01f) // @todo settings _stepRadiusThreshold
+            {
+                _clearZonesDatas[index].Radius = stepRadius;
+                _clearZonesDatas[index].Position = _lightService.LightSources[index].LightPoint;
 
-            _fogMaterial.SetInt("_ClearZoneCount", lightCount);
-            _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
+                _clearZonesBuffer.SetData(_clearZonesDatas);
+                _fogMaterial.SetInt("_ClearZoneCount", lightCount);
+                _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
+            }
+
+            Debug.Log("Defog");
 
             yield return null;
         }
 
+        // Ensure apply effects
         _clearZonesDatas[index].Radius = endRadius;
         _clearZonesDatas[index].Position = _lightService.LightSources[index].LightPoint;
 
@@ -137,6 +156,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
         _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
     }
 
+
     private void HandleLightOn(LightSourceComponent light)
     {
         int index = Array.IndexOf(_lightService.LightSources, light);
@@ -144,7 +164,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
         if (index < 0)
             return;
 
-        AnimateFogDissipation(index, 10f); // @max redius setting
+        AnimateFogDissipation(index, 10f); // @todo max redius setting
     }
 
     private void HandleLightOff(LightSourceComponent light)
