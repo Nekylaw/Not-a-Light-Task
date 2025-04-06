@@ -1,156 +1,156 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public sealed class LightSourcesService : IService, IDisposable
+namespace Game.Services.LightSources
 {
-
-    #region Singleton
-
-    private static LightSourcesService _instance;
-
-    public static LightSourcesService Instance
+    public sealed class LightSourcesService : IService, IDisposable
     {
-        get
+
+        #region Singleton
+
+        private static LightSourcesService _instance;
+
+        public static LightSourcesService Instance
         {
-            if (_instance == null)
+            get
             {
-                _instance = new LightSourcesService();
-                Debug.Log("Creating Light Service");
+                if (_instance == null)
+                {
+                    _instance = new LightSourcesService();
+                    Debug.Log("Creating Light Service");
+                }
+                return _instance;
             }
-            return _instance;
         }
-    }
 
-    #endregion
-
-
-    #region Delegates
-
-    public delegate void ServiceInitializedDelegate(IService service);
-
-    public delegate void SwitchOnLightDelegate(LightSourceComponent light);
-
-    public delegate void SwitchOffLightDelegate(LightSourceComponent light);
-
-    #endregion
+        #endregion
 
 
-    #region Fields
+        #region Delegates
 
-    public event ServiceInitializedDelegate OnServiceInitialized = null;
-    public event SwitchOnLightDelegate OnSwitchOnLight = null;
-    public event SwitchOffLightDelegate OnSwitchOffLight = null;
+        public delegate void ServiceInitializedDelegate(IService service);
 
-    private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
+        public delegate void SwitchOnLightDelegate(LightSourceComponent light);
 
-    private bool _isDisposed = false;
+        public delegate void SwitchOffLightDelegate(LightSourceComponent light);
 
-    //@todo delete Test
-    [SerializeField]
-    private LightSourceComponent _lightTest = null;
-
-    #endregion
+        #endregion
 
 
-    #region Lifecycle
+        #region Fields
 
-    private LightSourcesService() { }
+        public event ServiceInitializedDelegate OnServiceInitialized = null;
+        public event SwitchOnLightDelegate OnSwitchOnLight = null;
+        public event SwitchOffLightDelegate OnSwitchOffLight = null;
 
-    public void Dispose()
-    {
-        if (_isDisposed)
-            return;
+        private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
 
-        _lightSourceList.Clear();
-        OnSwitchOnLight = null;
-        OnSwitchOffLight = null;
+        private bool _isDisposed = false;
 
-        _isDisposed = true;
-        _instance = null;
-    }
+        //@todo delete Test
+        [SerializeField]
+        private LightSourceComponent _lightTest = null;
 
-    #endregion
+        #endregion
 
 
-    #region Public API
+        #region Lifecycle
 
-    public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
+        private LightSourcesService() { }
 
-    public int LightSourceCount => _lightSourceList.Count;
-
-    private bool _initialized = false;
-
-    public bool IsServiceInitialized
-    {
-        get => _initialized; set
+        public void Dispose()
         {
-            _initialized = value;
-            OnServiceInitialized?.Invoke(this);
+            if (_isDisposed)
+                return;
+
+            _lightSourceList.Clear();
+            OnSwitchOnLight = null;
+            OnSwitchOffLight = null;
+
+            _isDisposed = true;
+            _instance = null;
         }
+
+        #endregion
+
+
+        #region Public API
+
+        public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
+
+        public int LightSourceCount => _lightSourceList.Count;
+
+        private bool _initialized = false;
+
+        public bool IsServiceInitialized
+        {
+            get => _initialized; set
+            {
+                _initialized = value;
+                OnServiceInitialized?.Invoke(this);
+            }
+        }
+
+        public bool SwitchOn(LightSourceComponent light)
+        {
+            if (!light.SwitchOn())
+                return false;
+
+            Debug.Log("Light ON");
+
+            OnSwitchOnLight?.Invoke(light);
+            return true;
+        }
+
+        public bool SwitchOff(LightSourceComponent light)
+        {
+            if (!light.SwitchOff())
+                return false;
+
+            OnSwitchOffLight?.Invoke(light);
+            return true;
+        }
+
+        public bool RegisterLightSource(LightSourceComponent source)
+        {
+            if (_lightSourceList.Contains(source))
+                return false;
+
+            _lightSourceList.Add(source);
+            Debug.Log($"Init {nameof(LightSourceComponent)} register ");
+
+            Debug.Log("Ligth service light count: " + _lightSourceList.Count);
+            return true;
+        }
+
+        public bool UnregisterLightSource(LightSourceComponent source)
+        {
+            if (!_lightSourceList.Contains(source))
+                return false;
+
+            _lightSourceList.Remove(source);
+            return true;
+        }
+
+        public IEnumerator Init()
+        {
+            Debug.Log("GameManager Initialization : " + nameof(LightSourcesService));
+
+            IsServiceInitialized = true;
+            OnServiceInitialized?.Invoke(this);
+
+            yield break;
+        }
+
+        public void Tick(float delta)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
     }
-
-    public bool SwitchOn(LightSourceComponent light)
-    {
-        if (!light.SwitchOn())
-            return false;
-
-        Debug.Log("Light ON");
-
-        OnSwitchOnLight?.Invoke(light);
-        return true;
-    }
-
-    public bool SwitchOff(LightSourceComponent light)
-    {
-        if (!light.SwitchOff())
-            return false;
-
-        OnSwitchOffLight?.Invoke(light);
-        return true;
-    }
-
-    public bool RegisterLightSource(LightSourceComponent source)
-    {
-        if (_lightSourceList.Contains(source))
-            return false;
-
-        _lightSourceList.Add(source);
-        Debug.Log($"Init {nameof(LightSourceComponent)} register ");
-
-        Debug.Log("Ligth service light count: " + _lightSourceList.Count);
-        return true;
-    }
-
-    public bool UnregisterLightSource(LightSourceComponent source)
-    {
-        if (!_lightSourceList.Contains(source))
-            return false;
-
-        _lightSourceList.Remove(source);
-        return true;
-    }
-
-    public void Tick()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerator Init()
-    {
-        Debug.Log("GameManager Initialization : " + nameof(LightSourcesService));
-
-        IsServiceInitialized = true;
-        OnServiceInitialized?.Invoke(this);
-
-        yield break;
-    }
-
-    #endregion
-
-
-    #region Private API
-    #endregion
-
 }
