@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Game.Services.LightSources;
+using Game.Services.Fog;
+
 public class GameManager : MonoBehaviour
 {
 
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour
     private LightSourcesService _lightService = null;
 
     [SerializeField]
-    private FogRenderer _fogRenderer = null;
+    private FogService _fogRenderer = null;
 
     //[SerializeField]
     //private EnemyAIManager _enemyAI;
@@ -77,6 +80,11 @@ public class GameManager : MonoBehaviour
     {
         //BindServices();
         //StartCoroutine(OrderedInitializationCoroutine());
+    }
+
+    private void Update()
+    {
+        // @todo tick services.
     }
 
     #endregion

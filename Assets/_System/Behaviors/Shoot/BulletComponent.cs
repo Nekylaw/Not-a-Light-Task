@@ -1,3 +1,4 @@
+using Game.Services.LightSources;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;

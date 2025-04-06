@@ -3,11 +3,11 @@ using UnityEngine;
 
 public interface IService
 {
-     delegate void ServiceInitializedDelegate(IService service);
+    delegate void ServiceInitializedDelegate(IService service);
 
     bool IsServiceInitialized { get; set; }
 
-    void Tick();
+    void Tick(float delta);
 
     IEnumerator Init();
 }
