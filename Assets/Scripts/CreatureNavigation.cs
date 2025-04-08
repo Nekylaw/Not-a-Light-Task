@@ -22,6 +22,8 @@ public class CreatureNavigation : MonoBehaviour
 
     private List<GameObject> objs = CreatureFOV.objectsInSight;
 
+    private bool canEatLight = false;
+
     // Use this for initialization
     void OnEnable () {
         creature = GetComponent<NavMeshAgent> ();
@@ -69,15 +71,25 @@ public class CreatureNavigation : MonoBehaviour
             { 
                 transform.position = Vector3.MoveTowards(transform.position, obj.transform.position, step);
                 Debug.Log("Light detected : creature walks toward it");
-                if (transform.position == obj.transform.position)
-                {
-                    obj.gameObject.SetActive(false);
-                    Debug.Log("Creature ate light");
-                }
+            }
+
+            if (canEatLight == true)
+            {
+                obj.SetActive(false);
+                Debug.Log("Light touched: creature eat it");
             }
         }
     }
-    
+
+    public void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Orb"))
+        {
+            canEatLight = true;
+            Debug.Log("collision light");
+        }
+    }
+
 
     void FaceTarget(Vector3 targetPosition )
     {
