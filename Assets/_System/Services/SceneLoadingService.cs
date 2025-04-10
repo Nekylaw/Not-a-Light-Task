@@ -41,8 +41,8 @@ namespace Game.Scenes
 
         #region Fields
 
-        private const string PersistentSceneName = "SC_Persistent";
-        private const string GameSceneName = "SC_Game";
+        public const string PersistentSceneName = "SC_Persistent"; // _Scenes/SC_Persistent
+        public const string GameSceneName = "SC_Game"; // _Scenes/SC_Game
 
         public event StartLoadingSceneDelegate OnBeginNavigation;
         public event EndLoadingDelegate OnEndNavigation;
@@ -52,7 +52,7 @@ namespace Game.Scenes
         /// </summary>
         private SceneLoaderComponent _sceneLoaderComponent = null;
 
-        private bool _isDisposed = false;   
+        private bool _isDisposed = false;
 
         #endregion
 
@@ -60,21 +60,25 @@ namespace Game.Scenes
         #region Public API
 
         /// <inheritdoc cref="SceneLoaderComponent.IsProcessing"/>
-        public bool IsProcessing => _sceneLoaderComponent.IsProcessing;
+        public bool IsProcessing => SceneLoader.IsProcessing;
 
         public void LoadScene(string scene)
         {
             if (string.IsNullOrEmpty(scene))
                 return;
 
-            _sceneLoaderComponent.LoadScene(scene);
+            Debug.Log("_sceneLoaderComponent in Service found? " + (SceneLoader != null));
+            Debug.Log("Xcene to load " + scene);
+            SceneLoader.LoadScene(scene);
             OnBeginNavigation?.Invoke(scene, SceneManager.GetActiveScene().name == scene ? null : new string[] { SceneManager.GetActiveScene().name });
+
+            Debug.Log("Load scene:" + scene);
         }
 
         public void UnloadScenes(params string[] scenes)
         {
             foreach (string scene in scenes)
-                _sceneLoaderComponent.UnloadScene(scene);
+                SceneLoader.UnloadScene(scene);
         }
 
         #endregion
@@ -105,20 +109,8 @@ namespace Game.Scenes
         {
             Debug.Log("GameManager Initialization : " + nameof(SceneLoadingService));
 
-            if (_sceneLoaderComponent != null)
-                yield break;
-
-            _sceneLoaderComponent = Object.FindFirstObjectByType<SceneLoaderComponent>();
-
-            if (_sceneLoaderComponent == null)
-            {
-                GameObject obj = new GameObject("Scene Loader");
-                _sceneLoaderComponent = obj.AddComponent<SceneLoaderComponent>();
-            }
-
-            _sceneLoaderComponent.Init(this);
-
             IsServiceInitialized = true;
+            yield return null;
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
@@ -129,6 +121,30 @@ namespace Game.Scenes
 
             _isDisposed = true;
             _instance = null;
+        }
+
+        #endregion
+
+
+        #region Private API
+
+        private SceneLoaderComponent SceneLoader
+        {
+            get
+            {
+                if (_sceneLoaderComponent == null)
+                {
+
+                    if (_sceneLoaderComponent == null)
+                    {
+                        GameObject obj = new GameObject("Scene Loader");
+                        _sceneLoaderComponent = obj.AddComponent<SceneLoaderComponent>();
+                    }
+
+                    _sceneLoaderComponent.Init(this);
+                }
+                return _sceneLoaderComponent;
+            }
         }
 
         #endregion

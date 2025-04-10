@@ -27,11 +27,8 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         Debug.Log($"Init {nameof(GameManager)}");
-        BindServices();
-        StartCoroutine(OrderedInitializationCoroutine());
 
-        if (_forceInitServices)
-            StartCoroutine(InitializeUnregisteredServices());
+        //DontDestroyOnLoad(this);
     }
 
     #endregion
@@ -78,6 +75,15 @@ public class GameManager : MonoBehaviour
 
     #region Lifecycle
 
+    private void Start()
+    {
+        BindServices();
+        StartCoroutine(OrderedInitializationCoroutine());
+
+        if (_forceInitServices)
+            StartCoroutine(InitializeUnregisteredServices());
+    }
+
     private void Update()
     {
         // @todo tick services.
@@ -112,7 +118,9 @@ public class GameManager : MonoBehaviour
             yield return StartCoroutine(InitializeServiceCoroutine(service));
         }
 
-        yield return null;
+        yield return new WaitForSeconds(1);
+        // If all services are initialized
+        SceneLoadingService.Instance.LoadScene(SceneLoadingService.GameSceneName);
     }
 
     private IEnumerator InitializeServiceCoroutine(Service service)

@@ -13,7 +13,7 @@ namespace Game.Scenes
 
         private SceneLoadingService _sceneLoadingService = null;
 
-        private Coroutine _sceneProcessRoutine = null;
+        private Coroutine _sceneProcessCoroutine = null;
 
         private bool _isProcessing;
 
@@ -24,9 +24,27 @@ namespace Game.Scenes
 
 
         #region Lifecycle
+
+        public static SceneLoaderComponent Instance { get; private set; }
+
         private void Awake()
         {
-            DontDestroyOnLoad(this);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject); // Évite d'avoir des doublons
+                return;
+            }
+
+            Instance = this;
+        }
+
+        internal void Init(SceneLoadingService sceneLoadingService)
+        {
+            _sceneLoadingService = sceneLoadingService;
+            Debug.Log("Init Loader comp" + "ref is null? " + (_sceneLoadingService == null));
+
+            //DontDestroyOnLoad(gameObject);
+            Debug.Log("Init Loader comp");
         }
 
         #endregion
@@ -59,26 +77,20 @@ namespace Game.Scenes
 
         #region Internal API
 
-        internal void Init(SceneLoadingService sceneLoadingService)
-        {
-            Debug.Log("Init Loader comp");
-            _sceneLoadingService = sceneLoadingService;
-        }
-
         private void ProcessScenes()
         {
-            if (_sceneProcessRoutine != null)
+            if (_sceneProcessCoroutine != null)
                 return;
 
             if (_scenesToUnload.Count > 0)
             {
                 string scene = _scenesToUnload.Dequeue();
-                _sceneProcessRoutine = StartCoroutine(InternalUnloadScene(scene));
+                _sceneProcessCoroutine = StartCoroutine(InternalUnloadScene(scene));
             }
             else if (_scenesToLoad.Count > 0)
             {
                 string scene = _scenesToLoad.Dequeue();
-                _sceneProcessRoutine = StartCoroutine(InternalLoadScene(scene));
+                _sceneProcessCoroutine = StartCoroutine(InternalLoadScene(scene));
             }
         }
 
@@ -95,20 +107,20 @@ namespace Game.Scenes
             while (!op.isDone)
                 yield return null;
 
-            _sceneProcessRoutine = null;
+            _sceneProcessCoroutine = null;
             ProcessScenes();
         }
 
         private IEnumerator InternalLoadScene(string scene)
         {
-            AsyncOperation op = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive); 
-            
+            AsyncOperation op = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+
             while (!op.isDone)
-                        yield return null;
+                yield return null;
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
 
-            _sceneProcessRoutine = null;
+            _sceneProcessCoroutine = null;
             ProcessScenes();
         }
 

@@ -32,7 +32,7 @@ public class BulletComponent : MonoBehaviour
         while (Vector3.Distance(transform.position, lightPoint) > 1)
         {
             transform.position = Vector3.MoveTowards(transform.position, lightPoint, 10 * Time.deltaTime); //@todo orbital effect here
-            Debug.Log("Attract");
+            //Debug.Log("Attract");
 
             yield return null;
         }
