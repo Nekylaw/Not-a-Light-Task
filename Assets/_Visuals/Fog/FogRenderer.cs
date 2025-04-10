@@ -13,7 +13,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     public static FogRenderer Instance { get; private set; }
 
-    private void Start()
+    public void Start()
     {
         if (Instance != null && Instance != this)
         {
@@ -22,20 +22,13 @@ public class FogRenderer : MonoBehaviour, IDisposable
         }
         Instance = this;
 
-        _fogService = FogService.Instance;
-        if (_fogService == null)
-            Debug.LogError($"{nameof(FogService)} service not found.", this);
 
-
-        Init();
-        Debug.Log($"Init {nameof(FogRenderer)}");
     }
 
     #endregion
 
 
     #region Fields
-
 
     [SerializeField]
     private Material _fogMaterial = null;
@@ -49,8 +42,6 @@ public class FogRenderer : MonoBehaviour, IDisposable
     private bool _disposed = false;
 
     private bool _initialized = false;
-
-
 
     #endregion
 
@@ -71,6 +62,10 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     private void OnEnable()
     {
+        _fogService = FogService.Instance;
+        Init();
+        Debug.Log($"Init {nameof(FogRenderer)}");
+
         //@todo OnlightChange instead ?
         _fogService.OnFogDissipationStart += HandleLightOn;
 
@@ -152,21 +147,25 @@ public class FogRenderer : MonoBehaviour, IDisposable
     }
 
 
-    private void HandleLightOn(LightSourceComponent light)
+    private void HandleLightOn(LightSourceComponent light, float baseRadius)
     {
-        //int index = Array.IndexOf(_fogService.LightSources, light);
+        int index = Array.IndexOf(_fogService.ClearZonesDatas, light);
 
-        //if (index < 0)
-        //    return;
+        Debug.Log("FOg  render Handle Light");
 
-        //AnimateFogDissipation(index, 50f); // @todo max redius setting
+        if (index < 0)
+            return;
+
+
+
+        AnimateFogDissipation(index, 50f); // @todo max redius setting
     }
 
     private void HandleLightOff(LightSourceComponent light)
     {
-        //int index = Array.IndexOf(_fogService.LightSources, light);
-        //if (index >= 0)
-        //    AnimateFogDissipation(index, 0f); // min radius setting
+        int index = Array.IndexOf(_fogService.ClearZonesDatas, light);
+        if (index >= 0)
+            AnimateFogDissipation(index, 0f); // min radius setting
     }
 
     private bool ReleaseBuffer()

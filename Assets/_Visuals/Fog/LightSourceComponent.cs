@@ -14,8 +14,6 @@ namespace Game.Services.LightSources
 
         private bool _isLightOn = false;
 
-        //@todo light settings asset
-
         // public orb required to ligth on setting
         public float AttractRange = 0f;
 
@@ -24,10 +22,9 @@ namespace Game.Services.LightSources
 
         #region Lifecycle
 
-
-
         private void Start()
         {
+            Debug.Log("@todo light settings asset");
             AttractRange = 2;
         }
 
@@ -38,6 +35,7 @@ namespace Game.Services.LightSources
 
         private void OnEnable()
         {
+            _lightService = LightSourcesService.Instance;
             Register();
         }
 
@@ -49,15 +47,9 @@ namespace Game.Services.LightSources
         private bool Register()
         {
             if (_lightService == null)
-            {
-                Debug.Log("Init light Compoennt before the service ");
-                //return false;
-            }
-            else
-                Debug.Log("Init light Compoennt SUCCESS");
+                return false;
 
-
-            _lightService = LightSourcesService.Instance;
+            //Debug.Log("Register Light Compoennt");
 
             return _lightService.RegisterLightSource(this);
         }
@@ -121,7 +113,7 @@ namespace Game.Services.LightSources
                 if (!collider.TryGetComponent(out BulletComponent bullet))
                     continue;
 
-                Debug.Log("Hittttttt");
+                //Debug.Log("Hittttttt");
                 bullet.AttractTo(_lightPoint.position, this);
             }
             return true;
