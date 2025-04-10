@@ -19,6 +19,11 @@ public class ServicesOrdererWindow : EditorWindow
     /// </summary>
     private SerializedProperty _servicesOrderProperty;
 
+    /// <summary>
+    /// Force init flag serialized property 
+    /// </summary>
+    private SerializedProperty _forceInitServicesProperty;
+    
     private ReorderableList _serviceOrderReorderableList;
 
     #endregion
@@ -37,10 +42,11 @@ public class ServicesOrdererWindow : EditorWindow
 
         _serializedGameManager = new SerializedObject(gameManager);
         _servicesOrderProperty = _serializedGameManager.FindProperty("_servicesOrder");
+        _forceInitServicesProperty = _serializedGameManager.FindProperty("_forceInitServices");
 
-        if (_servicesOrderProperty == null)
+        if (_servicesOrderProperty == null || _forceInitServicesProperty == null)
         {
-            Debug.LogError($"Services order property not found", this);
+            Debug.LogError($"Serialized property/ies not found", this);
             return;
         }
 
@@ -112,7 +118,13 @@ public class ServicesOrdererWindow : EditorWindow
         }
 
         _serializedGameManager.Update();
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Service Initialization Settings", EditorStyles.boldLabel);
+        _forceInitServicesProperty.boolValue = EditorGUILayout.Toggle("Force Init Services", _forceInitServicesProperty.boolValue);
+
         _serviceOrderReorderableList.DoLayoutList();
+        
         _serializedGameManager.ApplyModifiedProperties();
     }
 

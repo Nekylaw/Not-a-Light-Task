@@ -1,12 +1,15 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
+using Game.Services;
 using Game.Services.LightSources;
 using Game.Services.Fog;
 
+[DefaultExecutionOrder(-1001)]
 public class GameManager : MonoBehaviour
 {
 
@@ -25,6 +28,9 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Init {nameof(GameManager)}");
         BindServices();
         StartCoroutine(OrderedInitializationCoroutine());
+
+        if (_forceInitServices)
+            StartCoroutine(InitializeUnregisteredServices());
     }
 
     #endregion
@@ -35,10 +41,10 @@ public class GameManager : MonoBehaviour
     //[Serializable]
     public enum EService
     {
-        LightService,
-        FogService,
-        AIService,
-        AudioService
+        LightsService,
+        FogService
+        //AIService,
+        //AudioService
     }
 
     #endregion
@@ -46,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     #region Delegates
 
-    public delegate void ServiceInitializedDelegate(IService service);
+    public delegate void ServiceInitializedDelegate(Service service);
 
     #endregion
 
@@ -55,32 +61,21 @@ public class GameManager : MonoBehaviour
 
     public event ServiceInitializedDelegate OnServiceInitialized = null;
 
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private EService[] _servicesOrder = { };
 
-    private LightSourcesService _lightService = null;
+    [SerializeField, HideInInspector]
+    private bool _forceInitServices = false;
 
-    [SerializeField]
-    private FogService _fogRenderer = null;
-
-    //[SerializeField]
-    //private EnemyAIManager _enemyAI;
-
-    //[SerializeField]
-    //private AudioManager _audioManager;
-
-    private Dictionary<EService, IService> _serviceValues = new Dictionary<EService, IService>();
+    /// <summary>
+    /// Associate enum values to the related service.
+    /// </summary>
+    private Dictionary<EService, Type> _serviceValues = new Dictionary<EService, Type>();
 
     #endregion
 
 
     #region Lifecycle
-
-    private void Start()
-    {
-        //BindServices();
-        //StartCoroutine(OrderedInitializationCoroutine());
-    }
 
     private void Update()
     {
@@ -94,11 +89,8 @@ public class GameManager : MonoBehaviour
 
     private void BindServices()
     {
-        // @todo Light Service is MB but make it instance
-        // @todo Split fog Service and fog renderer and make service as instance
-
-        _serviceValues[EService.LightService] = LightSourcesService.Instance;
-        _serviceValues[EService.FogService] = _fogRenderer;
+        _serviceValues[EService.LightsService] = typeof(LightSourcesService);
+        _serviceValues[EService.FogService] = typeof(FogService);
 
         foreach (EService service in Enum.GetValues(typeof(EService)))
         {
@@ -111,43 +103,69 @@ public class GameManager : MonoBehaviour
     {
         foreach (EService serviceIndex in _servicesOrder)
         {
-            if (_serviceValues.TryGetValue(serviceIndex, out IService service))
-                yield return StartCoroutine(InitializeServiceCoroutine(service));
+            if (!_serviceValues.TryGetValue(serviceIndex, out Type type) || typeof(Service).IsAssignableFrom(type))
+                continue;
+
+            Service service = (Service)Activator.CreateInstance(type);
+            Debug.Log("GM Service init: " + service);
+
+            //yield return StartCoroutine(InitializeServiceCoroutine(service));
+
+            InitializeService(service);
         }
+        yield return null;
     }
 
-    private IEnumerator InitializeServiceCoroutine(IService service)
+    private IEnumerator InitializeServiceCoroutine(Service service)
     {
+        if (service != null && service.IsServiceInitialized)
+            Debug.Log("Service already init: " + service);
+
         if (service == null || service.IsServiceInitialized)
             yield break;
 
         yield return service.Init();
         service.IsServiceInitialized = true;
+
         OnServiceInitialized?.Invoke(service);
     }
 
-    ///// <summary>
-    ///// Forces forgotten services to be initialized.
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerator InitializeUnregisteredServices()
-    //{
-    //    List<IService> initializedServices = new List<IService>(_serviceValues.Values);
+    private void InitializeService(Service service)
+    {
+        if (service != null && service.IsServiceInitialized)
+            Debug.Log("Service already init: " + service);
 
-    //    // Trouver dynamiquement tous les services existants
-    //    Type interfaceType = typeof(IService);
-    //    IEnumerable<Type> serviceTypes = AppDomain.CurrentDomain.GetAssemblies()
-    //        .SelectMany(a => a.GetTypes())
-    //        .Where(t => interfaceType.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+        if (service == null || service.IsServiceInitialized)
+            return;
 
-    //    foreach (Type serviceType in serviceTypes)
-    //    {
-    //        IService serviceInstance = (IService)Activator.CreateInstance(serviceType);
+        service.Init();
+        service.IsServiceInitialized = true;
 
-    //        if (!initializedServices.Contains(serviceInstance))
-    //            yield return StartCoroutine(InitializeServiceCoroutine(serviceInstance));
-    //    }
-    //}
+        OnServiceInitialized?.Invoke(service);
+    }
+
+    /// <summary>
+    /// Forces forgotten services to be initialized.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator InitializeUnregisteredServices()
+    {
+        // Initialized services
+        List<Type> initializedServices = new List<Type>(_serviceValues.Values);
+
+        IEnumerable<Type> serviceTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+            .Where(t => typeof(Service).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+
+        foreach (Type serviceType in serviceTypes)
+        {
+            if (initializedServices.Contains(serviceType))
+                continue;
+
+            Service serviceInstance = (Service)Activator.CreateInstance(serviceType);
+            yield return StartCoroutine(InitializeServiceCoroutine(serviceInstance));
+        }
+    }
 
     #endregion
 
