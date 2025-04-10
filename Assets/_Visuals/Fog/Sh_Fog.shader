@@ -8,6 +8,9 @@ Shader "Effect/Fog"
         _DensityMultiplier("Density multiplier", Range(0, 10)) = 1
         _NoiseOffset("Noise offset", float) = 0
         
+        _Speed("Speed", Range(0, 10)) = 1
+        _Direction("Direction", float) = 1
+
         _FogNoise("Fog noise", 3D) = "white" {}
         _NoiseTiling("Noise tiling", float) = 1
         _DensityThreshold("Density threshold", Range(0, 1)) = 0.1
@@ -38,6 +41,9 @@ Shader "Effect/Fog"
             float _DensityMultiplier;
             float _StepSize;
 
+            float _Speed;
+            float _Direction;
+
             float _NoiseOffset;
             TEXTURE3D(_FogNoise);
             float _NoiseTiling;
@@ -57,7 +63,11 @@ Shader "Effect/Fog"
             
             float get_density(float3 worldPos)
             {
-                float4 noise = _FogNoise.SampleLevel(sampler_TrilinearRepeat, worldPos * 0.01 * _NoiseTiling, 0);
+                float3 fogMovement = _Direction * _Time.y * _Speed; 
+                float3 fogPosAnim = worldPos * 0.01 * _NoiseTiling + fogMovement;
+
+                float4 noise = _FogNoise.SampleLevel(sampler_TrilinearRepeat, fogPosAnim, 0);
+
                 float density = dot(noise, noise);
                 density = saturate(density - _DensityThreshold) * _DensityMultiplier;
 
