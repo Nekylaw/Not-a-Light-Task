@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Game.Scenes;
 using Game.Services;
 using Game.Services.LightSources;
 using Game.Services.Fog;
@@ -38,11 +39,11 @@ public class GameManager : MonoBehaviour
 
     #region Sub-Class
 
-    //[Serializable]
     public enum EService
     {
         LightsService,
-        FogService
+        FogService,
+        SceneLoadingService
         //AIService,
         //AudioService
     }
@@ -91,6 +92,7 @@ public class GameManager : MonoBehaviour
     {
         _serviceValues[EService.LightsService] = typeof(LightSourcesService);
         _serviceValues[EService.FogService] = typeof(FogService);
+        _serviceValues[EService.SceneLoadingService] = typeof(SceneLoadingService);
 
         foreach (EService service in Enum.GetValues(typeof(EService)))
         {
@@ -103,16 +105,13 @@ public class GameManager : MonoBehaviour
     {
         foreach (EService serviceIndex in _servicesOrder)
         {
-            if (!_serviceValues.TryGetValue(serviceIndex, out Type type) || typeof(Service).IsAssignableFrom(type))
+            if (!_serviceValues.TryGetValue(serviceIndex, out Type type) || !typeof(Service).IsAssignableFrom(type))
                 continue;
 
             Service service = (Service)Activator.CreateInstance(type);
-            Debug.Log("GM Service init: " + service);
-
-            //yield return StartCoroutine(InitializeServiceCoroutine(service));
-
-            InitializeService(service);
+            yield return StartCoroutine(InitializeServiceCoroutine(service));
         }
+
         yield return null;
     }
 
@@ -130,19 +129,19 @@ public class GameManager : MonoBehaviour
         OnServiceInitialized?.Invoke(service);
     }
 
-    private void InitializeService(Service service)
-    {
-        if (service != null && service.IsServiceInitialized)
-            Debug.Log("Service already init: " + service);
+    //private void InitializeService(Service service)
+    //{
+    //    if (service != null && service.IsServiceInitialized)
+    //        Debug.Log("Service already init: " + service);
 
-        if (service == null || service.IsServiceInitialized)
-            return;
+    //    if (service == null || service.IsServiceInitialized)
+    //        return;
 
-        service.Init();
-        service.IsServiceInitialized = true;
+    //    service.Init();
+    //    service.IsServiceInitialized = true;
 
-        OnServiceInitialized?.Invoke(service);
-    }
+    //    OnServiceInitialized?.Invoke(service);
+    //}
 
     /// <summary>
     /// Forces forgotten services to be initialized.
