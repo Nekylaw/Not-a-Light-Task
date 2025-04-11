@@ -3,7 +3,6 @@ using System.Collections;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 using Game.Services;
 
@@ -107,8 +106,6 @@ namespace Game.Scenes
 
         public override IEnumerator Init()
         {
-            Debug.Log("GameManager Initialization : " + nameof(SceneLoadingService));
-
             IsServiceInitialized = true;
             yield return null;
         }
@@ -134,7 +131,6 @@ namespace Game.Scenes
             {
                 if (_sceneLoaderComponent == null)
                 {
-
                     if (_sceneLoaderComponent == null)
                     {
                         GameObject obj = new GameObject("Scene Loader");

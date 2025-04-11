@@ -66,9 +66,11 @@ public class GameManager : MonoBehaviour
     private bool _forceInitServices = false;
 
     /// <summary>
-    /// Associate enum values to the related service.
+    /// Associates enum values to the related service.
     /// </summary>
     private Dictionary<EService, Type> _serviceValues = new Dictionary<EService, Type>();
+
+    private Dictionary<Type, Service> _servicesInstances = new Dictionary<Type, Service>(); //@todo create struct to centralize EService, Type, Service instance
 
     #endregion
 
@@ -86,7 +88,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // @todo tick services.
+        float delta = Time.deltaTime;
+
+        foreach (Service service in _servicesInstances.Values)
+        {
+            if (service == null)
+                continue;
+
+            service.Tick(delta);
+        }
     }
 
     #endregion
@@ -115,6 +125,8 @@ public class GameManager : MonoBehaviour
                 continue;
 
             Service service = (Service)Activator.CreateInstance(type);
+            _servicesInstances.Add(type, service);
+
             yield return StartCoroutine(InitializeServiceCoroutine(service));
         }
 
@@ -131,6 +143,7 @@ public class GameManager : MonoBehaviour
         if (service == null || service.IsServiceInitialized)
             yield break;
 
+        //yield return service.Init();
         yield return service.Init();
         service.IsServiceInitialized = true;
 

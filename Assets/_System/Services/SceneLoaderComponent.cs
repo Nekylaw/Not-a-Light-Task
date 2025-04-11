@@ -31,20 +31,17 @@ namespace Game.Scenes
         {
             if (Instance != null && Instance != this)
             {
-                Destroy(gameObject); // Évite d'avoir des doublons
+                Destroy(gameObject);
                 return;
             }
 
             Instance = this;
+            //DontDestroyOnLoad(gameObject);
         }
 
         internal void Init(SceneLoadingService sceneLoadingService)
         {
             _sceneLoadingService = sceneLoadingService;
-            Debug.Log("Init Loader comp" + "ref is null? " + (_sceneLoadingService == null));
-
-            //DontDestroyOnLoad(gameObject);
-            Debug.Log("Init Loader comp");
         }
 
         #endregion
