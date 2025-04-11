@@ -45,7 +45,6 @@ namespace Game.Services.LightSources
 
         private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
 
-        private bool _initialized = false;
         private bool _isDisposed = false;
 
         #endregion
@@ -109,14 +108,14 @@ namespace Game.Services.LightSources
 
         public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
 
-        public int LightSourceCount => _lightSourceList.Count;
+        public int TotalLightSources => _lightSourceList.Count;
 
         public bool SwitchOn(LightSourceComponent light)
         {
+            Debug.Log(message: "LightService Light On");
             if (!light.SwitchOn())
                 return false;
 
-            Debug.Log(message: "Light Light invoke");
 
             OnSwitchOnLight?.Invoke(light);
             return true;

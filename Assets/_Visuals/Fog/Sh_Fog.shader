@@ -53,8 +53,9 @@ Shader "Effect/Fog"
             float4 _LightContribution;
             float _LightScattering;
 
-            StructuredBuffer<float4> _ClearZones; // xyz = position, w = rayon
             int _ClearZoneCount; 
+            StructuredBuffer<float4> _ClearZonesPositions; // xyz = position, w = radius
+            StructuredBuffer<float3> _ClearZonesAnimations; // x = target radius, y = anim speed, z = start time
 
             float henyey_greenstein(float angle, float scattering)
             {
@@ -63,23 +64,36 @@ Shader "Effect/Fog"
             
             float get_density(float3 worldPos)
             {
-                float3 fogMovement = _Direction * _Time.y * _Speed; 
+                float delta = _Time.y;
+                float startTime = delta;
+
+                float3 fogMovement = _Direction * delta * _Speed; 
                 float3 fogPosAnim = worldPos * 0.01 * _NoiseTiling + fogMovement;
 
                 float4 noise = _FogNoise.SampleLevel(sampler_TrilinearRepeat, fogPosAnim, 0);
-
                 float density = dot(noise, noise);
                 density = saturate(density - _DensityThreshold) * _DensityMultiplier;
 
                  // Clear fog zones
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
-                    float3 clearPos = _ClearZones[i].xyz;  
-                    float clearRadius = _ClearZones[i].w;  
-                    float dist = distance(worldPos, clearPos); 
+                    // Zone position shortcuts
+                    float3 clearPos = _ClearZonesPositions[i].xyz;  
+                    float startRadius = _ClearZonesPositions[i].w;
 
-                   
-                    float attenuation = smoothstep(0, clearRadius * _FogClearAttenuation, dist);
+                    // Zone animation shortcuts
+                    float targetRadius = _ClearZonesAnimations[i].x;
+                    float animSpeed = _ClearZonesAnimations[i].y;
+                    float startTime = _ClearZonesAnimations[i].z;
+
+                    // Calculate current cleared zone radius (animation)
+                    float elapsedTime = delta - startTime;                   
+                    float fogDir = sign(targetRadius - startRadius);
+                    float currentRadius = startRadius + animSpeed * elapsedTime * fogDir;
+                    currentRadius = clamp(currentRadius, min(startRadius, targetRadius), max(startRadius,targetRadius));
+
+                    float dist = distance(worldPos, clearPos); 
+                    float attenuation = smoothstep(0, currentRadius * _FogClearAttenuation, dist);
 
                     density *= attenuation;
                 }

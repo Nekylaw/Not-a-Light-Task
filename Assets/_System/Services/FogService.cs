@@ -50,11 +50,10 @@ namespace Game.Services.Fog
 
         private LightSourcesService _lightService;
 
-        private ClearZoneData[] _clearZonesDatas;
+        //private ClearZoneData[] _clearZonesDatas;
 
         private int _maxDissipationZones = 0;
 
-        private bool _initialized = false;
         private bool _disposed = false;
 
         #endregion
@@ -64,16 +63,19 @@ namespace Game.Services.Fog
 
         private void Register()
         {
-            Debug.Log("In registier  Initialization : " + nameof(FogService));
-
             if (_lightService == null)
             {
                 Debug.Log($"{nameof(LightSourcesService)} Service not found ");
                 return;
             }
 
+            Debug.Log("Fog Register Light");
+
             _lightService.OnSwitchOnLight += HandleLightOn;
             _lightService.OnSwitchOffLight += HandleLightOff;
+
+
+            OnFogDissipationStart += (l, r) => Debug.Log("Test dissip");
         }
 
         private void Unregister()
@@ -87,17 +89,15 @@ namespace Game.Services.Fog
 
         private void HandleLightOn(LightSourceComponent light)
         {
-            Debug.Log("FOg Handle Light before lenght");
-
             if (_lightService.LightSources.Length <= 0)
                 return;
 
-            Debug.Log("FOg Handle Light");
+            //if (_clearZonesDatas == null || _clearZonesDatas.Length <= 0)
+            //    _clearZonesDatas = new ClearZoneData[MaxDissipationZones];
 
-            int index = Array.IndexOf(_lightService.LightSources, light);
-            _clearZonesDatas[index] = new ClearZoneData(light.LightPoint, 0);
-
-            OnFogDissipationStart?.Invoke(light, _clearZonesDatas[index].Radius);
+            //int index = Array.IndexOf(_lightService.LightSources, light);
+            //_clearZonesDatas[index] = new ClearZoneData(light.LightPoint, 10);
+            //OnFogDissipationStart?.Invoke(light, _clearZonesDatas[index].Radius);
         }
 
         private void HandleLightOnUpdate(LightSourceComponent light)
@@ -115,10 +115,8 @@ namespace Game.Services.Fog
 
         #region Public API
 
-        public ClearZoneData[] ClearZonesDatas => _clearZonesDatas ?? new ClearZoneData[0];
-
-        public int MaxDissipationZones => _maxDissipationZones;
-
+        public int MaxDissipationZones => LightSourcesService.Instance.TotalLightSources;
+        //public ClearZoneData[] ClearZonesDatas => _clearZonesDatas;
         public override IEnumerator Init()
         {
             Debug.Log("GameManager Initialization : " + nameof(FogService));
@@ -128,18 +126,13 @@ namespace Game.Services.Fog
             if (_lightService == null)
                 yield break;
 
-            _maxDissipationZones = _lightService.LightSourceCount;
-            _clearZonesDatas = new ClearZoneData[_maxDissipationZones];
-
             Register();
-            IsServiceInitialized = true;
 
-            yield break;
+            IsServiceInitialized = true;
         }
 
         public override void Tick(float delta)
         {
-            //@todo 
         }
 
         public void Dispose()
@@ -148,7 +141,7 @@ namespace Game.Services.Fog
                 return;
 
             Unregister();
-            _clearZonesDatas = null;
+            //_clearZonesDatas = null;
             _disposed = true;
         }
 

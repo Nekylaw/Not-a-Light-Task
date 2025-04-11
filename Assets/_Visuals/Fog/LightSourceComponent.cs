@@ -16,6 +16,8 @@ namespace Game.Services.LightSources
 
         // public orb required to ligth on setting
         public float AttractRange = 0f;
+        public float BrightnessRange = 0f;
+
 
         #endregion
 
@@ -26,6 +28,7 @@ namespace Game.Services.LightSources
         {
             Debug.Log("@todo light settings asset");
             AttractRange = 2;
+            BrightnessRange = 20;
         }
 
         private void Update()
@@ -49,7 +52,7 @@ namespace Game.Services.LightSources
             if (_lightService == null)
                 return false;
 
-            //Debug.Log("Register Light Compoennt");
+            Debug.Log("Light component registered to Light Service ");
 
             return _lightService.RegisterLightSource(this);
         }
@@ -79,7 +82,7 @@ namespace Game.Services.LightSources
             _isLightOn = CanLightOn();
 
             if (_isLightOn)
-                Debug.Log("LIGHT ON");
+                Debug.Log("Light Component ON");
 
             return _isLightOn;
         }

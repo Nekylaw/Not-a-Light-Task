@@ -1,28 +1,56 @@
 using System;
-using System.Collections;
 
 using UnityEngine;
 
 using Game.Services.LightSources;
-using Game.Services.Fog;
 
 public class FogRenderer : MonoBehaviour, IDisposable
 {
+
+    #region Buffer-structs
+
+    private struct ClearZonePositionBufferData
+    {
+        public Vector3 Position;
+        public float StartRadius;
+
+        public ClearZonePositionBufferData(Vector3 position, float startRadius)
+        {
+            Position = position;
+            StartRadius = startRadius;
+        }
+    }
+
+    private struct ClearZoneAnimationBufferData
+    {
+        public float EndRadius;
+        public float Speed;
+        public float StartTime;
+
+        public ClearZoneAnimationBufferData(float endRadius, float speed, float startTime)
+        {
+            EndRadius = endRadius;
+            Speed = speed;
+            StartTime = startTime;
+        }
+    }
+
+    #endregion  
+
 
     #region Singleton
 
     public static FogRenderer Instance { get; private set; }
 
-    public void Start()
+    public void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
-
-
     }
 
     #endregion
@@ -30,55 +58,79 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     #region Fields
 
+    private const string SVClearZonesCount = "_ClearZoneCount";
+    private const string SVClearZonesPositions = "_ClearZonesPositions";
+    private const string SVClearZonesAnimations = "_ClearZonesAnimations";
+
     [SerializeField]
     private Material _fogMaterial = null;
 
-    private FogService _fogService = null;
+    /// <summary>
+    /// Light service reference. Handles delegates to update fog buffers.
+    /// </summary>
+    private LightSourcesService _lightService = null;
 
-    private ComputeBuffer _clearZonesBuffer = null;
+    /// <summary>
+    /// Datas for each light sources to read to define clear zone postions.
+    /// </summary>
+    private ClearZonePositionBufferData[] _clearZonesPositionBufferDatas;
 
-    private ClearZoneData[] _clearZonesDatas;
+    /// <summary>
+    /// Datas for each light sources to read to define how clear zone are animated.
+    /// </summary>
+    private ClearZoneAnimationBufferData[] _clearZonesAnimBufferDatas;
+
+    /// <summary>
+    /// Positions datas buffer. xyz = position, w = start radius.
+    /// </summary>
+    private ComputeBuffer _clearZonesPositionBuffer = null;
+
+    /// <summary>
+    /// Animations datas Buffer for. x = target, y = anim speed, z = start time
+    /// </summary>
+    private ComputeBuffer _clearZonesAnimBuffer = null;
 
     private bool _disposed = false;
-
-    private bool _initialized = false;
 
     #endregion
 
 
     #region Lifecycle
 
-    private void Init()
-    {
-        if (_fogService == null || _fogService.MaxDissipationZones <= 0)
-            return;
-
-        _clearZonesDatas = new ClearZoneData[_fogService.MaxDissipationZones];
-        _clearZonesBuffer = new ComputeBuffer(_fogService.MaxDissipationZones, sizeof(float) * 4);
-
-        Debug.Log("Light sources count: " + _fogService.MaxDissipationZones);
-        Debug.Log($"{nameof(FogRenderer)} Buffer created.");
-    }
-
     private void OnEnable()
     {
-        _fogService = FogService.Instance;
+        LightSourcesService.Instance.OnSwitchOnLight += HandleLightOn;
+        LightSourcesService.Instance.OnSwitchOffLight += HandleLightOff;
+
         Init();
-        Debug.Log($"Init {nameof(FogRenderer)}");
-
-        //@todo OnlightChange instead ?
-        _fogService.OnFogDissipationStart += HandleLightOn;
-
-        //@todo add fog delegate to update light if one is set to off
-        _fogService.OnFogDissipationFinish += HandleLightOff;
     }
 
     private void OnDisable()
     {
-        _fogService.OnFogDissipationStart -= HandleLightOn;
-        _fogService.OnFogDissipationFinish -= HandleLightOff;
+        LightSourcesService.Instance.OnSwitchOnLight -= HandleLightOn;
+        LightSourcesService.Instance.OnSwitchOffLight -= HandleLightOff;
 
         ReleaseBuffer();
+    }
+
+    private void Init()
+    {
+        _lightService = LightSourcesService.Instance;
+
+        if (_lightService == null || _lightService.TotalLightSources <= 0)
+            return;
+
+        int count = _lightService.TotalLightSources;
+
+        _clearZonesPositionBufferDatas = new ClearZonePositionBufferData[count];
+        _clearZonesAnimBufferDatas = new ClearZoneAnimationBufferData[count];
+
+        _clearZonesPositionBuffer = new ComputeBuffer(count, sizeof(float) * 4);
+        Debug.Log($"{nameof(FogRenderer)} position Buffer created.");
+        _clearZonesAnimBuffer = new ComputeBuffer(count, sizeof(float) * 3);
+        Debug.Log($"{nameof(FogRenderer)} anim Buffer created.");
+
+        UpdateFogBuffers();
     }
 
     private void OnDestroy()
@@ -100,86 +152,52 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     #region Private API
 
-    private void AnimateFogDissipation(int index, float endRadius)
+    private void HandleLightOn(LightSourceComponent light)
     {
-        StartCoroutine(AnimateFogDissipationCoroutine(index, endRadius));
-    }
-
-    private IEnumerator AnimateFogDissipationCoroutine(int index, float endRadius)
-    {
-        Debug.Log("Start Defog");
-
-        int lightCount = _fogService.MaxDissipationZones;
-        float animDuration = 5f; // @todo light on animation settings
-        float elapsedTime = 0f;
-        float startRadius = _clearZonesDatas[index].Radius;
-
-        while (elapsedTime < animDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float ratio = Mathf.SmoothStep(0f, 1f, elapsedTime / animDuration); // Ease-in/out pour une animation fluide
-
-            float stepRadius = Mathf.Lerp(startRadius, endRadius, ratio);
-
-            // Pass frame if not necessary to set buffer
-            if (Mathf.Abs(stepRadius - _clearZonesDatas[index].Radius) > 0.01f) // @todo settings _stepRadiusThreshold
-            {
-                _clearZonesDatas[index].Radius = stepRadius;
-                //_clearZonesDatas[index].Position = _fogService.LightSources[index].LightPoint;
-
-                _clearZonesBuffer.SetData(_clearZonesDatas);
-                _fogMaterial.SetInt("_ClearZoneCount", lightCount);
-                _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
-            }
-
-            Debug.Log("Defog");
-
-            yield return null;
-        }
-
-        // Ensure apply effects
-        _clearZonesDatas[index].Radius = endRadius;
-        //_clearZonesDatas[index].Position = _fogService.LightSources[index].LightPoint;
-
-        _clearZonesBuffer.SetData(_clearZonesDatas);
-        _fogMaterial.SetInt("_ClearZoneCount", lightCount);
-        _fogMaterial.SetBuffer("_ClearZones", _clearZonesBuffer);
-    }
-
-
-    private void HandleLightOn(LightSourceComponent light, float baseRadius)
-    {
-        int index = Array.IndexOf(_fogService.ClearZonesDatas, light);
-
-        Debug.Log("FOg  render Handle Light");
-
+        int index = Array.IndexOf(_lightService.LightSources, light);
         if (index < 0)
             return;
 
+        float currentRadius = _clearZonesPositionBufferDatas[index].StartRadius;
+        _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(light.LightPoint, currentRadius);
+        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(light.BrightnessRange, 2, Time.time); //@todo setup dissp spread speed
 
-
-        AnimateFogDissipation(index, 50f); // @todo max redius setting
+        UpdateFogBuffers();
     }
 
     private void HandleLightOff(LightSourceComponent light)
     {
-        int index = Array.IndexOf(_fogService.ClearZonesDatas, light);
-        if (index >= 0)
-            AnimateFogDissipation(index, 0f); // min radius setting
+        int index = Array.IndexOf(_lightService.LightSources, light);
+        if (index < 0)
+            return;
+
+        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(0,2,Time.time); //@todo setup dissp spread speed
+
+        UpdateFogBuffers();
+    }
+
+    private void UpdateFogBuffers()
+    {
+        _clearZonesPositionBuffer.SetData(_clearZonesPositionBufferDatas);
+        _clearZonesAnimBuffer.SetData(_clearZonesAnimBufferDatas);
+
+        _fogMaterial.SetInt(SVClearZonesCount, _lightService.TotalLightSources);
+
+        _fogMaterial.SetBuffer(SVClearZonesPositions, _clearZonesPositionBuffer);
+        _fogMaterial.SetBuffer(SVClearZonesAnimations, _clearZonesAnimBuffer);
     }
 
     private bool ReleaseBuffer()
     {
-        if (_clearZonesBuffer != null)
+        if (_clearZonesPositionBuffer != null)
         {
-            _clearZonesBuffer.Release();
-            _clearZonesBuffer = null;
+            _clearZonesPositionBuffer.Release();
+            _clearZonesPositionBuffer = null;
             return true;
         }
 
         return false;
     }
-
 
     #endregion
 
