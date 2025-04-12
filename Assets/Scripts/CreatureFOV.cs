@@ -1,12 +1,14 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
-public class CreatureBehaviour : MonoBehaviour
+public class CreatureFOV : MonoBehaviour
 {
     
 #region FOV-Vars
@@ -17,7 +19,7 @@ public class CreatureBehaviour : MonoBehaviour
     public int scanFrequency = 30;
     public LayerMask lightLayer;
     public LayerMask obstacleLayer;
-    public List<GameObject> Objects = new List<GameObject>();
+    public static List<GameObject> objectsInSight = new List<GameObject>();
     
     Collider[] colliders = new Collider[50];
     Mesh mesh;
@@ -29,15 +31,18 @@ public class CreatureBehaviour : MonoBehaviour
     #endregion
 
     private GameObject lightEdibleObject;
+    private Transform lightSource;
+    
 
-    public void Enter()
-    {
-       
-        
-    }
+    // private Vector3 destPoint;
+    // //creature has a destination?
+    // private bool walkpointSet;
+    // //how far is going to walk the creature?
+    // [SerializeField] private float walkRange;
+    
 
     void Start()
-    {
+    {   
         scanInterval = 1.0f / scanFrequency;
     }
 
@@ -49,8 +54,50 @@ public class CreatureBehaviour : MonoBehaviour
             scanTimer += scanInterval;
             Scan();
         }
-        
+       
     }
+   
+
+    
+    #region Navigation 
+    
+
+    // private void Wander()
+    // {
+    //     if (walkpointSet == false)
+    //     {
+    //         SearchForDest();
+    //     }
+    //
+    //     if (walkpointSet)
+    //     { 
+    //         creature.SetDestination(destPoint); 
+    //     }
+    //
+    //     if (Vector3.Distance(transform.position, destPoint) < 10)
+    //     {
+    //         walkpointSet = false;
+    //     }
+    // }
+    //
+    //
+    // private void SearchForDest()
+    // { 
+    //     float z = Random.Range(-walkRange, walkRange);
+    //     float x = Random.Range(-walkRange, walkRange);
+    //     
+    //     destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+    //     if (Physics.Raycast(destPoint, Vector3.down, groundLayer))
+    //     {
+    //         walkpointSet = true;
+    //     }
+    // }
+    //
+    //
+    
+
+    #endregion
+    
     
     
 #region FOV-Gizmos
@@ -169,7 +216,7 @@ public class CreatureBehaviour : MonoBehaviour
              }
              //draw gizmo for objects that are in sight of the creature
              Gizmos.color =  Color.green;
-             foreach (var obj in Objects)
+             foreach (var obj in objectsInSight)
              {
                  Gizmos.DrawSphere(obj.transform.position,1.2f);
              }
@@ -181,13 +228,13 @@ public class CreatureBehaviour : MonoBehaviour
 private void Scan()
     {
         count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, lightLayer, QueryTriggerInteraction.Collide);
-        Objects.Clear();
+        objectsInSight.Clear();
         for (int i = 0; i < count; i++)
         {
             GameObject obj = colliders[i].gameObject;
             if (IsInSight(obj))
             {
-                Objects.Add(obj);
+                objectsInSight.Add(obj);
             }
         }
         
