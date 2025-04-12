@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+
     #region Fields
 
     private GameInputs _gameInputs = null;
@@ -71,8 +72,6 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
-            return;
         float delta = Time.fixedDeltaTime;
         UpdateMovement(delta);
     }
