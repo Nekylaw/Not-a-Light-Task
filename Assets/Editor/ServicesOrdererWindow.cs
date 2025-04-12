@@ -10,7 +10,7 @@ public class ServicesOrdererWindow : EditorWindow
     private const string WindowName = "Services Orderer";
 
     /// <summary>
-    /// Serialized representation of <see cref="GameManager"/>
+    /// Serialized representation of <see cref="ServicesInitializer"/>
     /// </summary>
     private SerializedObject _serializedGameManager;
 
@@ -33,10 +33,10 @@ public class ServicesOrdererWindow : EditorWindow
 
     private void OnEnable()
     {
-        GameManager gameManager = FindFirstObjectByType<GameManager>();
+        ServicesInitializer gameManager = FindFirstObjectByType<ServicesInitializer>();
         if (gameManager == null)
         {
-            Debug.LogError($"{nameof(GameManager)} component not found in scene!", this);
+            Debug.LogError($"{nameof(ServicesInitializer)} component not found in scene!", this);
             return;
         }
 
@@ -113,7 +113,7 @@ public class ServicesOrdererWindow : EditorWindow
     {
         if (_serializedGameManager == null)
         {
-            EditorGUILayout.LabelField($"{nameof(GameManager)} component not found in scene!");
+            EditorGUILayout.LabelField($"{nameof(ServicesInitializer)} component not found in scene!");
             return;
         }
 

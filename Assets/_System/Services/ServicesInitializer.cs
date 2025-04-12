@@ -11,12 +11,12 @@ using Game.Services.LightSources;
 using Game.Services.Fog;
 
 [DefaultExecutionOrder(-1001)]
-public class GameManager : MonoBehaviour
+public class ServicesInitializer : MonoBehaviour
 {
 
     #region Singleton
 
-    public static GameManager Instance { get; private set; }
+    public static ServicesInitializer Instance { get; private set; }
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
-        Debug.Log($"Init {nameof(GameManager)}");
+        Debug.Log($"Init {nameof(ServicesInitializer)}");
 
         //DontDestroyOnLoad(this);
     }
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         foreach (EService service in Enum.GetValues(typeof(EService)))
         {
             if (!_serviceValues.ContainsKey(service))
-                Debug.LogWarning($"Warning! {service} key is not available from service values binding in {nameof(GameManager)}.", this);
+                Debug.LogWarning($"Warning! {service} key is not available from service values binding in {nameof(ServicesInitializer)}.", this);
         }
     }
 
