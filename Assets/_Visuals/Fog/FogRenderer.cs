@@ -160,7 +160,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
         float currentRadius = _clearZonesPositionBufferDatas[index].StartRadius;
         _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(light.LightPoint, currentRadius);
-        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(light.BrightnessRange, 2, Time.time); //@todo setup dissp spread speed
+        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(light.BrightnessRange, 5, Time.time); //@todo setup dissp spread speed
 
         UpdateFogBuffers();
     }
@@ -171,7 +171,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
         if (index < 0)
             return;
 
-        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(0,2,Time.time); //@todo setup dissp spread speed
+        _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(0, 5, Time.time); //@todo setup dissp spread speed
 
         UpdateFogBuffers();
     }
