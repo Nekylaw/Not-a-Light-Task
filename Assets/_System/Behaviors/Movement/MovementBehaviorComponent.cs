@@ -57,7 +57,6 @@ public class MovementBehaviorComponent : MonoBehaviour
             Mathf.Max(_rigidbody.linearVelocity.y, -_settings.FallingSpeed),
             _rigidbody.linearVelocity.z * _settings.AirControl
             );
-
     }
 
 }
