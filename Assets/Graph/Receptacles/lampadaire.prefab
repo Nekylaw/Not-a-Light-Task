@@ -92,14 +92,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5126514809046951687}
+      addedObject: {fileID: 1861790363462298776}
   m_SourcePrefab: {fileID: 9199261849990390558, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
 --- !u!1 &5944605289302866001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
   m_PrefabInstance: {fileID: 4308342266082034230}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5126514809046951687
+--- !u!114 &1861790363462298776
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,7 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lightPoint: {fileID: 4078876894147703079}
-  AttractRange: 3
+  AttractRange: 2
+  BrightnessRange: 5
 --- !u!4 &7570629517440212709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
