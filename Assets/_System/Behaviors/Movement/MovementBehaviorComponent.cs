@@ -1,3 +1,4 @@
+using Services.Behaviors;
 using UnityEngine;
 
 public class MovementBehaviorComponent : MonoBehaviour
@@ -37,6 +38,7 @@ public class MovementBehaviorComponent : MonoBehaviour
 
         _rigidbody.linearVelocity = new Vector3(direction.x * speed, _rigidbody.linearVelocity.y, direction.z * speed);
 
+        BehaviorsService.Move(direction, speed);
         return true;
     }
 
