@@ -74,7 +74,7 @@ namespace Game.Services.LightSources
 
         public Vector3 LightPoint => _lightPoint.position;
 
-        public bool SwitchOn()
+        internal bool SwitchOn()
         {
             if (_isLightOn)
                 return false;
@@ -87,7 +87,7 @@ namespace Game.Services.LightSources
             return _isLightOn;
         }
 
-        public bool SwitchOff()
+        internal bool SwitchOff()
         {
             if (!_isLightOn)
                 return false;

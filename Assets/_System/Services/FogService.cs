@@ -52,7 +52,7 @@ namespace Game.Services.Fog
 
         //private ClearZoneData[] _clearZonesDatas;
 
-        private int _maxDissipationZones = 0;
+        //private int _maxDissipationZones = 0;
 
         private bool _disposed = false;
 
