@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab68ff249754ee4f8c90afa8c90525c, type: 3}
-  m_Name: ShootSettings
+  m_Script: {fileID: 11500000, guid: e5a087ed10624d142a41f85235b01743, type: 3}
+  m_Name: OrbContainerSettings
   m_EditorClassIdentifier: 
-  FireForce: 50
-  Rate: 1
-  ReloadDuration: 3
+  OrbPrefab: {fileID: -7065618330261555498, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
+  MaxAmmo: 10
+  BaseAmmo: 3

@@ -113,7 +113,7 @@ namespace Game.Services.LightSources
 
             foreach (Collider collider in colliders)
             {
-                if (!collider.TryGetComponent(out BulletComponent bullet))
+                if (!collider.TryGetComponent(out OrbComponent bullet))
                     continue;
 
                 //Debug.Log("Hittttttt");

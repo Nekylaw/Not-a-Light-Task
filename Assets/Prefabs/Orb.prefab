@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3381400785716714442}
   - component: {fileID: 4668917267022869953}
   - component: {fileID: -7065618330261555498}
+  - component: {fileID: 4798598855757457158}
   - component: {fileID: 3629682858100719059}
   - component: {fileID: 8400027622491698462}
   m_Layer: 0
@@ -110,8 +111,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.6269175
-  m_Center: {x: 0, y: -0.12691748, z: 0}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4668917267022869953
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -151,7 +152,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e2462a018eb1049af3e59896f2dd64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletSettings: {fileID: 11400000, guid: 51070dcf6430e9641a5ce4a9a6455ea6, type: 2}
+  _orbSettings: {fileID: 11400000, guid: 51070dcf6430e9641a5ce4a9a6455ea6, type: 2}
+--- !u!114 &4798598855757457158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079178589685399282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62bac6ffe52c0a4299baf64f2df32c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightAmmoRetrived: 1
 --- !u!108 &3629682858100719059
 Light:
   m_ObjectHideFlags: 0

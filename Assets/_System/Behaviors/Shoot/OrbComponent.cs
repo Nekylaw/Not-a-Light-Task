@@ -1,12 +1,11 @@
 using Game.Services.LightSources;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class BulletComponent : MonoBehaviour
+public class OrbComponent : MonoBehaviour
 {
     [SerializeField]
-    private BulletSettings _bulletSettings = null;
+    private OrbSettings _orbSettings = null;
 
     private Coroutine _attractOrbCoroutine = null;
 
@@ -14,7 +13,8 @@ public class BulletComponent : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, _bulletSettings.Lifetime);
+        if (_orbSettings.HasLifetime)
+            Destroy(gameObject, _orbSettings.Lifetime);
     }
 
     public void AttractTo(Vector3 lightPoint, LightSourceComponent lightSource)

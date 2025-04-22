@@ -8,11 +8,11 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     private PickableComponent pickableInRange = null;
 
-    private BulletContainerComponent _container = null;
+    private OrbContainerComponent _container = null;
     private void Awake()
     {
-        if (!TryGetComponent<BulletContainerComponent>(out _container))
-            Debug.LogWarning($"{nameof(BulletContainerComponent)} component not found.");
+        if (!TryGetComponent<OrbContainerComponent>(out _container))
+            Debug.LogWarning($"{nameof(OrbContainerComponent)} component not found.");
     }
 
 
@@ -50,10 +50,9 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     public bool Pickup()
     {
-        Debug.Log("Pickup");
         if (pickableInRange == null)
             return false;
-
+        Debug.Log("Pickup");
 
         return pickableInRange.Pickup(_container);
     }

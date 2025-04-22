@@ -1,5 +1,6 @@
 using Game.Services;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 namespace Services.Behaviors
@@ -12,9 +13,13 @@ namespace Services.Behaviors
 
         public delegate void OnWalkDelegate(Vector3 direction, float speed);
         public delegate void OnWalkStopDelegate();
+
         public delegate void OnShootDelegate();
+
         public delegate void OnAimDelegate();
+
         public delegate void OnPacifyDelegate();
+
         public delegate void OnPickupDelegate(PickableComponent pickable);
 
         #endregion
@@ -45,6 +50,7 @@ namespace Services.Behaviors
         public static void Shoot() => OnShoot?.Invoke();
 
         public static void Pacify() => OnPacify?.Invoke();
+
         public static void Pickup(PickableComponent pickable) => OnPickup?.Invoke(pickable);
 
     }

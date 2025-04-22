@@ -8,12 +8,17 @@ public class ShootBehaviorComponent : MonoBehaviour
     [SerializeField]
     private ShootSettings _settings = null;
 
+    private OrbContainerComponent _container = null;
+
     private float _timer = 0;
 
     private void Awake()
     {
         if (_settings == null)
             Debug.LogError($"{nameof(ShootSettings)} component not found", this);
+
+        if (!TryGetComponent<OrbContainerComponent>(out _container))
+            Debug.LogError($"{nameof(OrbContainerComponent)} component not found", this);
     }
 
     private void Start()
@@ -31,20 +36,23 @@ public class ShootBehaviorComponent : MonoBehaviour
 
     public bool Shoot(Ray aimRay)
     {
+        if (_container == null)
+            return false;
+
         if (_timer > 0)
             return false;
 
+        if (_container.Ammo <= 0)
+            return false;
+
         _timer = _settings.Rate;
+        _container.UseBullet();
+
+        OrbComponent bullet = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
 
         Debug.DrawRay(_firePoint.position, aimRay.direction * 50, Color.yellow, 1f);
-
-        //if (Physics.Raycast(aimRay, out RaycastHit hit))
-        //    Debug.Log("Shoot on " + hit.collider.name);
-
-        GameObject bullet = Instantiate(_settings.Bullets[0].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
-
-        //@todo make the bullet shoot itself
-        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
+        Debug.Log("SHOOT");
 
         return true;
     }
