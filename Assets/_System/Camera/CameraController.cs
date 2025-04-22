@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    private CameraSettings _settings = null;
+    [SerializeField] private CameraSettings _settings = null;
 
-    private Transform _player;
+    [SerializeField] private Transform _player; 
     private float xRotation = 0f;
 
     void Start()
     {
-        _player = GetComponentInParent<PlayerController>()?.transform;
         if (_player == null)
-            Debug.LogError($"{nameof(PlayerController)} component not found", this);
+            Debug.LogError($"{nameof(Transform)} player trarget not found", this);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -27,7 +25,7 @@ public class CameraController : MonoBehaviour
         float yawSensitivity = inputMode == PlayerController.InputMode.KeyBoard ?
             _settings.MouseYawSensitivity : _settings.ControllerYawSensitivity;
 
-        float pitch = look.y * pitchSensitivity * inverse* delta;
+        float pitch = look.y * pitchSensitivity * inverse * delta;
         float yaw = look.x * yawSensitivity * delta;
 
         xRotation -= pitch;
