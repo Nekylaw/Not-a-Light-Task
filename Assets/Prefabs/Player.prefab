@@ -184,6 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bcc53d43c94a940a294b4cf38bd8b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AccelerationFactor: 5
+  DecelerationFactor: 8
   _settings: {fileID: 11400000, guid: 33758bcc929df0b4ea7e09e3df749008, type: 2}
 --- !u!114 &4607010822336115232
 MonoBehaviour:
@@ -211,6 +213,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 362248874625965386}
+  _gun: {fileID: 6404417375850132463}
+  _aimGunRotation: {x: 90, y: 0, z: 0}
+  _aimGunPosition: {x: 0, y: -0.25, z: 0.65}
   _settings: {fileID: 11400000, guid: 25297c5ccb8f83e4b8c2429cb6f42b6b, type: 2}
 --- !u!114 &8829939862390432116
 MonoBehaviour:
@@ -240,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82dccef0e77cb7a4bb10d98829865c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settings: {fileID: 0}
+  _settings: {fileID: 11400000, guid: 1e3c4fe383b04fc469dd532d825bc144, type: 2}
 --- !u!1 &1729965402990336780
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,11 +399,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformTarget: 2
   positionAmplitude: {x: 0.2, y: 0.2, z: 0.2}
-  rotationAmplitude: {x: 0.2, y: 0.2, z: 0.2}
-  frequency: 1
-  x: 1
-  y: 1
-  z: 1
+  rotationAmplitude: {x: 1, y: 1, z: 1}
+  frequency: 0.5
+  XAxis: 1
+  YAxis: 1
+  ZAxis: 1
 --- !u!1 &3652364851480902377
 GameObject:
   m_ObjectHideFlags: 0

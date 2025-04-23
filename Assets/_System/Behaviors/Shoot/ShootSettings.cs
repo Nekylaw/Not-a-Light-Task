@@ -9,4 +9,6 @@ public class ShootSettings : ScriptableObject
     public float Rate = 0f;
 
     public float ReloadDuration = 0f;
+
+    public float AimSpeed = 1f;
 }

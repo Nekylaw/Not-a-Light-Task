@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class ShootBehaviorComponent : MonoBehaviour
@@ -6,11 +8,32 @@ public class ShootBehaviorComponent : MonoBehaviour
     private Transform _firePoint = null;
 
     [SerializeField]
+    private Transform _gun = null;
+
+    [SerializeField]
+    private Vector3 _aimGunRotation = Vector3.zero;
+
+    [SerializeField]
+    private Vector3 _aimGunPosition = Vector3.zero;
+
+    [SerializeField]
     private ShootSettings _settings = null;
 
     private OrbContainerComponent _container = null;
 
     private float _timer = 0;
+
+    private Quaternion _aimGunRotationQuaternion = Quaternion.identity;
+    private Quaternion _gunStartRotation = Quaternion.identity;
+    private Vector3 _gunStartPosition = Vector3.zero;
+    private bool _isAiming;
+
+
+    public bool IsAiming
+    {
+        get => _isAiming;
+        set { _isAiming = value; }
+    }
 
     private void Awake()
     {
@@ -24,6 +47,12 @@ public class ShootBehaviorComponent : MonoBehaviour
     private void Start()
     {
         _timer = _settings.Rate;
+
+        _gunStartRotation = _gun.localRotation;
+        _gunStartPosition = _gun.localPosition;
+
+        //Cast to Quaternion
+        _aimGunRotationQuaternion = Quaternion.Euler(_aimGunRotation);
     }
 
     private void Update()
@@ -32,10 +61,27 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         if (_timer <= 0)
             _timer = 0;
+
+        if (_isAiming)
+            HandleAim();
+        else
+            ReleaseAim();
     }
 
-    public bool Shoot(Ray aimRay)
+    private void ReleaseAim()
     {
+        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _gunStartRotation, Time.deltaTime * _settings.AimSpeed);
+        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _gunStartPosition, Time.deltaTime * _settings.AimSpeed);
+    }
+
+
+    public bool Shoot(Ray aimRay, bool isAiming)
+    {
+        _isAiming = isAiming;
+
+        if (!isAiming)
+            return false;
+
         if (_container == null)
             return false;
 
@@ -56,4 +102,11 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         return true;
     }
+
+    private void HandleAim()
+    {
+        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _aimGunRotationQuaternion, Time.deltaTime * _settings.AimSpeed);
+        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _aimGunPosition, Time.deltaTime * _settings.AimSpeed);
+    }
+
 }
