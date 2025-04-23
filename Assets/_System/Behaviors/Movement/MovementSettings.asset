@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: MovementSettings
   m_EditorClassIdentifier: 
   Speed: 20
+  SpeedRatioOnAim: 0.6
   FallingSpeed: 50
   GravityMultiplier: 2.5
-  SpeedRatioOnAim: 0.6
-  AirControl: 0.8
   UseProgressiveMove: 1
+  AccelerationFactor: 5
+  DecelerationFactor: 8
+  AirControl: 0.8

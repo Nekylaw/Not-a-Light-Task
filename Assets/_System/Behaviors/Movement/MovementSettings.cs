@@ -4,8 +4,15 @@ using UnityEngine;
 public class MovementSettings : ScriptableObject
 {
 
+    [Header("Speed")]
+
     [Min(1)]
     public float Speed = 1f;
+
+    [Range(0f, 1f)]
+    public float SpeedRatioOnAim = 1f;
+
+    [Header("Fall")]
 
     [Min(0.1f)]
     public float FallingSpeed = 10f;
@@ -13,11 +20,14 @@ public class MovementSettings : ScriptableObject
     [Min(0.1f)]
     public float GravityMultiplier = 1f;
 
-    [Range(0f, 1f)]
-    public float SpeedRatioOnAim = 1f;
+    public bool UseProgressiveMove = false;
+
+    [Header("Control")]
+
+    public float AccelerationFactor = 1;
+
+    public float DecelerationFactor = 1;
 
     [Range(0, 1)]
     public float AirControl = 1f;
-
-    public bool UseProgressiveMove = false;
 }
