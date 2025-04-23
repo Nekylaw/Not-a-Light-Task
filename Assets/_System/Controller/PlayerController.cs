@@ -170,27 +170,29 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             _isAiming = true;
+            _shoot.IsAiming = true;
             //Debug.Log("Aim");
         }
         else if (context.canceled)
         {
             _isAiming = false;
+            _shoot.IsAiming = false;
             //Debug.Log("Release Aim");
         }
     }
 
     private void HandleShootInput(InputAction.CallbackContext context)
     {
-        if (!_isAiming)
-            return;
+        //if (!_isAiming)
+        //    return;
 
         Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
-        _shoot.Shoot(_aimTargetRay);
+        _shoot.Shoot(_aimTargetRay, _isAiming);
     }
 
-    private void HandlePickupInput (InputAction.CallbackContext context)
+    private void HandlePickupInput(InputAction.CallbackContext context)
     {
         _pickup.Pickup();
     }
