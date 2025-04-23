@@ -3,23 +3,21 @@ using UnityEngine;
 
 public class PickableComponent : MonoBehaviour
 {
-    //@todo pickable settings
-    public int lightAmmoRetrived = 0;
+    [SerializeField]
+    private PickableSettings _settings = null;
 
 
-    public int LightAmmoRetrived => lightAmmoRetrived;
+    public int LightAmmoRetrived => _settings.LightAmmoRetrived;
 
     public bool Pickup(OrbContainerComponent container)
     {
         if (container == null)
             return false;
 
-        container.CollectBullet(lightAmmoRetrived);
+        container.CollectBullet(_settings.LightAmmoRetrived);
         Destroy(gameObject); //@todo pooling
 
         BehaviorsService.Pickup(this);
-        Debug.Log("Pickup success");
-
         return true;
     }
 

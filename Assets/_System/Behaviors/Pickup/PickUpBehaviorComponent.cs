@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class PickUpBehaviorComponent : MonoBehaviour
 {
-
-    public LayerMask PickableLayer = ~0;
-    public float PickupRange = 5;
+    [SerializeField]
+    private PickupSettings _settings;
 
     private PickableComponent pickableInRange = null;
 
     private OrbContainerComponent _container = null;
+
     private void Awake()
     {
+        if (_settings == null)
+            Debug.LogWarning($"{nameof(PickupSettings)} asset not found.");
+
         if (!TryGetComponent<OrbContainerComponent>(out _container))
             Debug.LogWarning($"{nameof(OrbContainerComponent)} component not found.");
     }
@@ -24,7 +27,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     private PickableComponent GetPickableInRange()
     {
-        var colliders = Physics.OverlapSphere(transform.position, PickupRange, PickableLayer);
+        var colliders = Physics.OverlapSphere(transform.position, _settings.PickupRange, _settings.PickableLayer);
 
         if (colliders.Length <= 0)
             return null; ;
