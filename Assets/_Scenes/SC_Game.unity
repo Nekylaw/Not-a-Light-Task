@@ -31,7 +31,7 @@ RenderSettings:
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
-  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_SpotCookie: {fileID: 2800000, guid: 822f7464dd153484689e5b9e600e7f41, type: 3}
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 6d16db55df07d514b80ec258e8ce6593, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 957db74eb0ecf7b4b981b4222a9d6946, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1511,7 +1511,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 2.2e-44, y: 2.295887e-39, z: 1.1940767e-38, w: 2.2e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -2091,30 +2091,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: frequency
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: rotationAmplitude.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: rotationAmplitude.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6919708332133647224, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: rotationAmplitude.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8129215436254250207, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2155,10 +2131,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9017194417468627701, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: _settings
-      value: 
-      objectReference: {fileID: 11400000, guid: 1e3c4fe383b04fc469dd532d825bc144, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
