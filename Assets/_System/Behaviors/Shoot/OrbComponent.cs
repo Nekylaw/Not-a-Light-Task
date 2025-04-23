@@ -27,17 +27,42 @@ public class OrbComponent : MonoBehaviour
 
     private IEnumerator AttractOrbCoroutine(Vector3 lightPoint, LightSourceComponent lightSource)
     {
-        GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = true;
 
-        while (Vector3.Distance(transform.position, lightPoint) > 1)
+        float timer = 0f;
+        float duration = 3;
+        float spiralSpeed = 1500 ; 
+        float radius =  lightSource.AttractRange;
+     
+
+        Vector3 startPosition = transform.position;
+
+        while (timer < duration)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lightPoint, 10 * Time.deltaTime); //@todo orbital effect here
-            //Debug.Log("Attract");
+            timer += Time.deltaTime;
+            float t = timer / duration;
+
+            float currentRadius = Mathf.Lerp(radius, 0f, t);
+
+            float angle = spiralSpeed * t * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * currentRadius;
+
+            Vector3 directionToCenter = (lightPoint - startPosition).normalized;
+            Quaternion rotationToTarget = Quaternion.LookRotation(directionToCenter);
+            Vector3 orbitalOffset = rotationToTarget * offset;
+
+            transform.position = Vector3.Lerp(startPosition, lightPoint, t) + orbitalOffset;
 
             yield return null;
         }
 
+        transform.position = lightPoint;
+
         LightSourcesService.Instance.SwitchOn(lightSource);
+        //lightSource.SwitchOn();
         _attractOrbCoroutine = null;
     }
+
 }

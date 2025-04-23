@@ -214,8 +214,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 362248874625965386}
   _gun: {fileID: 6404417375850132463}
-  _aimGunRotation: {x: 90, y: 0, z: 0}
-  _aimGunPosition: {x: 0, y: -0.25, z: 0.65}
   _settings: {fileID: 11400000, guid: 25297c5ccb8f83e4b8c2429cb6f42b6b, type: 2}
 --- !u!114 &8829939862390432116
 MonoBehaviour:
@@ -229,10 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030165eff053e2049b8353eca586713a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PickableLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  PickupRange: 5
+  _settings: {fileID: 11400000, guid: 2b0b15b50c6b5b541b2b7c7ff4cd59a9, type: 2}
 --- !u!114 &9017194417468627701
 MonoBehaviour:
   m_ObjectHideFlags: 0

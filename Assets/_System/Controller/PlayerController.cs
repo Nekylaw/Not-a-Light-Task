@@ -171,13 +171,11 @@ public class PlayerController : MonoBehaviour
         {
             _isAiming = true;
             _shoot.IsAiming = true;
-            //Debug.Log("Aim");
         }
         else if (context.canceled)
         {
             _isAiming = false;
             _shoot.IsAiming = false;
-            //Debug.Log("Release Aim");
         }
     }
 

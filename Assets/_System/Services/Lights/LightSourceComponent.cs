@@ -33,7 +33,7 @@ namespace Game.Services.LightSources
 
         private void Update()
         {
-            DetectBullet();
+            DetectOrb();
         }
 
         private void OnEnable()
@@ -101,7 +101,7 @@ namespace Game.Services.LightSources
 
         #region Private API
 
-        private bool DetectBullet()
+        private bool DetectOrb()
         {
             if (_isLightOn)
                 return false;

@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class ShootBehaviorComponent : MonoBehaviour
@@ -11,23 +9,16 @@ public class ShootBehaviorComponent : MonoBehaviour
     private Transform _gun = null;
 
     [SerializeField]
-    private Vector3 _aimGunRotation = Vector3.zero;
-
-    [SerializeField]
-    private Vector3 _aimGunPosition = Vector3.zero;
-
-    [SerializeField]
     private ShootSettings _settings = null;
 
     private OrbContainerComponent _container = null;
 
-    private float _timer = 0;
-
     private Quaternion _aimGunRotationQuaternion = Quaternion.identity;
     private Quaternion _gunStartRotation = Quaternion.identity;
     private Vector3 _gunStartPosition = Vector3.zero;
-    private bool _isAiming;
 
+    private float _timer = 0;
+    private bool _isAiming;
 
     public bool IsAiming
     {
@@ -52,28 +43,23 @@ public class ShootBehaviorComponent : MonoBehaviour
         _gunStartPosition = _gun.localPosition;
 
         //Cast to Quaternion
-        _aimGunRotationQuaternion = Quaternion.Euler(_aimGunRotation);
+        _aimGunRotationQuaternion = Quaternion.Euler(_settings.AimGunRotation);
     }
 
     private void Update()
     {
-        _timer -= Time.deltaTime;
+        float delta = Time.deltaTime;
+
+        _timer -= delta;
 
         if (_timer <= 0)
             _timer = 0;
 
         if (_isAiming)
-            HandleAim();
+            HandleAim(delta);
         else
-            ReleaseAim();
+            ReleaseAim(delta);
     }
-
-    private void ReleaseAim()
-    {
-        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _gunStartRotation, Time.deltaTime * _settings.AimSpeed);
-        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _gunStartPosition, Time.deltaTime * _settings.AimSpeed);
-    }
-
 
     public bool Shoot(Ray aimRay, bool isAiming)
     {
@@ -97,16 +83,19 @@ public class ShootBehaviorComponent : MonoBehaviour
         OrbComponent bullet = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
 
-        Debug.DrawRay(_firePoint.position, aimRay.direction * 50, Color.yellow, 1f);
-        Debug.Log("SHOOT");
-
         return true;
     }
 
-    private void HandleAim()
+    private void HandleAim(float delta)
     {
-        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _aimGunRotationQuaternion, Time.deltaTime * _settings.AimSpeed);
-        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _aimGunPosition, Time.deltaTime * _settings.AimSpeed);
+        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _aimGunRotationQuaternion, delta * _settings.AimSpeed);
+        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _settings.AimGunPosition, delta * _settings.AimSpeed);
+    }
+
+    private void ReleaseAim(float delta)
+    {
+        _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _gunStartRotation, delta * _settings.AimSpeed);
+        _gun.localPosition = Vector3.Lerp(_gun.localPosition, _gunStartPosition, delta * _settings.AimSpeed);
     }
 
 }

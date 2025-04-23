@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 3629682858100719059}
   - component: {fileID: 8400027622491698462}
   m_Layer: 0
-  m_Name: Orb
+  m_Name: PF_Orb
   m_TagString: Orb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c62bac6ffe52c0a4299baf64f2df32c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightAmmoRetrived: 1
+  _settings: {fileID: 11400000, guid: 7e10d5b1a77590240bfa63e0ab6c7fc9, type: 2}
 --- !u!108 &3629682858100719059
 Light:
   m_ObjectHideFlags: 0
