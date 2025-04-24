@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ce6bdb42407c74280ac6961284ba29, type: 3}
-  m_Name: CameraSettings
+  m_Script: {fileID: 11500000, guid: acdd03790aeaf15419c00f6acda88f18, type: 3}
+  m_Name: LightSourceSettings_StreetLight
   m_EditorClassIdentifier: 
-  ControllerYawSensitivity: 200
-  ControllerPitchSensitivity: 100
-  MouseYawSensitivity: 10
-  MousePitchSensitivity: 10
-  RotationLimits: {x: -80, y: 60}
-  InverseYaxe: 0
+  AttractRange: 2
+  BrightnessRange: 10
+  OrbLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  RequiredOrbs: 3

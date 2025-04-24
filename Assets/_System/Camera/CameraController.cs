@@ -3,9 +3,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
-    [SerializeField] private CameraSettings _settings = null;
+    [SerializeField]
+    private CameraSettings _settings = null;
 
-    [SerializeField] private Transform _player; 
+    [SerializeField] 
+    private Transform _player; 
+
     private float xRotation = 0f;
 
     void Start()

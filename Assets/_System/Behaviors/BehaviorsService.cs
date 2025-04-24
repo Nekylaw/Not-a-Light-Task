@@ -12,6 +12,7 @@ namespace Services.Behaviors
         #region Delegates
 
         public delegate void OnWalkDelegate(Vector3 direction, float speed);
+
         public delegate void OnWalkStopDelegate();
 
         public delegate void OnShootDelegate();
@@ -28,10 +29,15 @@ namespace Services.Behaviors
         #region Fields
 
         public static event OnWalkDelegate OnWalk = null;
+
         public static event OnWalkStopDelegate OnWalkStop = null;
+
         public static event OnShootDelegate OnShoot = null;
+
         public static event OnAimDelegate OnAim = null;
+
         public static event OnPacifyDelegate OnPacify = null;
+
         public static event OnPickupDelegate OnPickup = null;
 
         #endregion
