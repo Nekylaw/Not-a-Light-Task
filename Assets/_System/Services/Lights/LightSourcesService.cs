@@ -67,9 +67,6 @@ namespace Game.Services.LightSources
                 return false;
 
             _lightSourceList.Add(source);
-            //Debug.Log($"Init {nameof(LightSourceComponent)} register ");
-
-            //Debug.Log("Ligth service light count: ");
             return true;
         }
 
@@ -112,10 +109,8 @@ namespace Game.Services.LightSources
 
         public bool SwitchOn(LightSourceComponent light)
         {
-            Debug.Log(message: "LightService Light On");
             if (!light.SwitchOn())
                 return false;
-
 
             OnSwitchOnLight?.Invoke(light);
             return true;

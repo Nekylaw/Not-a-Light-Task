@@ -34,7 +34,7 @@ public class OrbComponent : MonoBehaviour
         float timer = 0f;
         float duration = 3;
         float spiralSpeed = 1500 ; 
-        float radius =  lightSource.AttractRange;
+        float radius =  lightSource.Settings.AttractRange;
      
 
         Vector3 startPosition = transform.position;
@@ -61,8 +61,8 @@ public class OrbComponent : MonoBehaviour
         transform.position = lightPoint;
 
         LightSourcesService.Instance.SwitchOn(lightSource);
-        //lightSource.SwitchOn();
         _attractOrbCoroutine = null;
+        Destroy(this.gameObject);   
     }
 
 }
