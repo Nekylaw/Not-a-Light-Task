@@ -19,6 +19,8 @@ namespace Game.Services.LightSources
         private int _orbSlot = 0;
         private bool _isLightOn = false;
 
+        private bool _isRegistered = false;
+
         #endregion
 
 
@@ -89,7 +91,7 @@ namespace Game.Services.LightSources
 
             SetOrbSlots(1);
 
-            if (!CanLightOn()) 
+            if (!CanLightOn())
                 return false;
 
             _isLightOn = true;
@@ -112,8 +114,6 @@ namespace Game.Services.LightSources
 
         private bool DetectOrb()
         {
-            Debug.LogWarning("@todo use light sources settings", this);
-
             if (_isLightOn)
                 return false;
 

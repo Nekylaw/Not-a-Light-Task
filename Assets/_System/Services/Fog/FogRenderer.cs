@@ -158,6 +158,9 @@ public class FogRenderer : MonoBehaviour, IDisposable
         if (index < 0)
             return;
 
+
+        Debug.Log("Index " + index);
+        Debug.Log("Buffer size  " + _clearZonesPositionBufferDatas.Length);
         float currentRadius = _clearZonesPositionBufferDatas[index].StartRadius;
         _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(light.LightPoint, currentRadius);
         _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(light.Settings.BrightnessRange, 5, Time.time); //@todo setup dissp spread speed
