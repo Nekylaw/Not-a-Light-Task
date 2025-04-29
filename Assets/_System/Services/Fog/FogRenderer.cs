@@ -102,7 +102,7 @@ public class FogRenderer : MonoBehaviour, IDisposable
         LightSourcesService.Instance.OnSwitchOnLight += HandleLightOn;
         LightSourcesService.Instance.OnSwitchOffLight += HandleLightOff;
 
-        Init();
+        //Init();
     }
 
     private void OnDisable()
@@ -111,6 +111,11 @@ public class FogRenderer : MonoBehaviour, IDisposable
         LightSourcesService.Instance.OnSwitchOffLight -= HandleLightOff;
 
         ReleaseBuffer();
+    }
+
+    private void Start()
+    {
+        Init();
     }
 
     private void Init()
@@ -151,13 +156,12 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
 
     #region Private API
-
+     
     private void HandleLightOn(LightSourceComponent light)
     {
         int index = Array.IndexOf(_lightService.LightSources, light);
         if (index < 0)
             return;
-
 
         Debug.Log("Index " + index);
         Debug.Log("Buffer size  " + _clearZonesPositionBufferDatas.Length);
@@ -192,15 +196,25 @@ public class FogRenderer : MonoBehaviour, IDisposable
 
     private bool ReleaseBuffer()
     {
+        bool released = false;
+
         if (_clearZonesPositionBuffer != null)
         {
             _clearZonesPositionBuffer.Release();
             _clearZonesPositionBuffer = null;
-            return true;
+            released = true;
         }
 
-        return false;
+        if (_clearZonesAnimBuffer != null)
+        {
+            _clearZonesAnimBuffer.Release();
+            _clearZonesAnimBuffer = null;
+            released = true;
+        }
+
+        return released;
     }
+
 
     #endregion
 

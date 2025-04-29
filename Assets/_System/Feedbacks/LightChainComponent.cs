@@ -12,14 +12,10 @@ namespace Game.Services.LightSources
         private void OnEnable()
         {
             LightSourcesService.Instance.OnSwitchOnLight += HandleLightSwitchedOn;
-            //foreach (var light in _linkedLights)
-            //{
-            //}
         }
 
         private void OnDisable()
         {
-            //foreach (var light in _linkedLights)
             LightSourcesService.Instance.OnSwitchOnLight -= HandleLightSwitchedOn;
         }
 

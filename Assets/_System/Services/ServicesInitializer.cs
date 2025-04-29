@@ -150,20 +150,6 @@ public class ServicesInitializer : MonoBehaviour
         OnServiceInitialized?.Invoke(service);
     }
 
-    //private void InitializeService(Service service)
-    //{
-    //    if (service != null && service.IsServiceInitialized)
-    //        Debug.Log("Service already init: " + service);
-
-    //    if (service == null || service.IsServiceInitialized)
-    //        return;
-
-    //    service.Init();
-    //    service.IsServiceInitialized = true;
-
-    //    OnServiceInitialized?.Invoke(service);
-    //}
-
     /// <summary>
     /// Forces forgotten services to be initialized.
     /// </summary>
