@@ -39,7 +39,7 @@ public class MovementBehaviorComponent : MonoBehaviour
 
         float speed = isAiming ? _settings.Speed * _settings.SpeedRatioOnAim : _settings.Speed;
 
-        float slopeInfluence = 1 + dot;
+        float slopeInfluence =  dot == 1f ? 1:  1 + dot * 2;
 
         Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
