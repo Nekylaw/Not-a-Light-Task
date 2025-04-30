@@ -35,6 +35,8 @@ namespace Game.Services.LightSources
 
         public delegate void SwitchOffLightDelegate(LightSourceComponent light);
 
+        public delegate void TriggerLightDelegate(LightSourceComponent light);
+
         #endregion
 
 
@@ -42,6 +44,7 @@ namespace Game.Services.LightSources
 
         public event SwitchOnLightDelegate OnSwitchOnLight = null;
         public event SwitchOffLightDelegate OnSwitchOffLight = null;
+        public event TriggerLightDelegate OnTriggerLight = null;
 
         private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
 
@@ -109,6 +112,11 @@ namespace Game.Services.LightSources
 
         public bool SwitchOn(LightSourceComponent light)
         {
+            if (light.IsLightOn)
+                return false;
+
+            OnTriggerLight?.Invoke(light);
+
             if (!light.SwitchOn())
                 return false;
 

@@ -28,16 +28,16 @@ public class OrbComponent : MonoBehaviour
     private IEnumerator AttractOrbCoroutine(Vector3 lightPoint, LightSourceComponent lightSource)
     {
 
-        Debug.Log("Use orb attract settings on light sources");
+        Debug.Log("@todo Use orb attract settings on light sources");
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
 
         float timer = 0f;
-        float duration = 3;
+        float duration = 1;
         float spiralSpeed = 1500 ; 
         float radius =  lightSource.Settings.AttractRange;
-     
+     //@todo settings
 
         Vector3 startPosition = transform.position;
 
@@ -55,7 +55,7 @@ public class OrbComponent : MonoBehaviour
             Quaternion rotationToTarget = Quaternion.LookRotation(directionToCenter);
             Vector3 orbitalOffset = rotationToTarget * offset;
 
-            transform.position = Vector3.Lerp(startPosition, lightPoint, t) + orbitalOffset;
+            transform.position = Vector3.Slerp(startPosition, lightPoint, t) + orbitalOffset;
 
             yield return null;
         }

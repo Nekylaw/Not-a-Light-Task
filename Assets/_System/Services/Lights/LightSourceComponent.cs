@@ -1,4 +1,3 @@
-using System.Data.Common;
 using UnityEngine;
 
 namespace Game.Services.LightSources
@@ -35,8 +34,6 @@ namespace Game.Services.LightSources
         private void Start()
         {
             _orbSlot = 0;
-            Debug.Log("base Light slots:" + _orbSlot);
-
         }
 
         private void Update()
@@ -60,8 +57,6 @@ namespace Game.Services.LightSources
             if (_lightService == null)
                 return false;
 
-            Debug.Log("Light component registered to Light Service ");
-
             return _lightService.RegisterLightSource(this);
         }
 
@@ -79,6 +74,7 @@ namespace Game.Services.LightSources
         #region Public API
 
         public bool IsLightOn => _isLightOn;
+        public int OrbSlot => _orbSlot;
 
         public Vector3 LightPoint => _lightPoint.position;
 
@@ -86,8 +82,6 @@ namespace Game.Services.LightSources
 
         internal bool SwitchOn()
         {
-            if (_isLightOn)
-                return false;
 
             SetOrbSlots(1);
 

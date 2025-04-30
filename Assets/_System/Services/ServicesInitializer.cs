@@ -8,7 +8,6 @@ using UnityEngine;
 using Game.Scenes;
 using Game.Services;
 using Game.Services.LightSources;
-using Game.Services.Fog;
 
 [DefaultExecutionOrder(-1001)]
 public class ServicesInitializer : MonoBehaviour
@@ -107,7 +106,6 @@ public class ServicesInitializer : MonoBehaviour
     private void BindServices()
     {
         _serviceValues[EService.LightsService] = typeof(LightSourcesService);
-        _serviceValues[EService.FogService] = typeof(FogService);
         _serviceValues[EService.SceneLoadingService] = typeof(SceneLoadingService);
 
         foreach (EService service in Enum.GetValues(typeof(EService)))
