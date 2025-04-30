@@ -1,4 +1,5 @@
 using Services.Behaviors;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovementBehaviorComponent : MonoBehaviour
@@ -32,11 +33,15 @@ public class MovementBehaviorComponent : MonoBehaviour
     public bool Move(Vector3 direction, float delta, bool isAiming)
     {
         direction = _settings.UseProgressiveMove ? Vector3.ClampMagnitude(direction, 1) : direction.normalized;
+        float dot = Vector3.Dot(direction, Vector3.Cross(_detector.GroundNormal, Vector3.up));
+
         AdaptDirectionOnSlopes(ref direction);
 
         float speed = isAiming ? _settings.Speed * _settings.SpeedRatioOnAim : _settings.Speed;
 
-        Vector3 desiredVelocity = direction * speed;
+        float slopeInfluence = 1 + dot;
+
+        Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
         if (direction.magnitude > 0.01f)
         {
