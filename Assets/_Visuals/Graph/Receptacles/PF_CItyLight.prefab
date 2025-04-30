@@ -43,6 +43,14 @@ PrefabInstance:
       propertyPath: m_StaticShadowCaster
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5228272022090634025, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5228272022090634025, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_Name
       value: PF_CItyLight
@@ -53,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 51.18659
       objectReference: {fileID: 0}
     - target: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -61,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -35.63159
       objectReference: {fileID: 0}
     - target: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -101,6 +109,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1861790363462298776}
+    - targetCorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 874264517745118492}
   m_SourcePrefab: {fileID: 9199261849990390558, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
 --- !u!1 &5944605289302866001 stripped
 GameObject:
@@ -121,6 +132,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: ee57a62a5bd712d498e15753b0d4849c, type: 2}
   _lightPoint: {fileID: 4078876894147703079}
+--- !u!114 &874264517745118492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5944605289302866001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73b66cfa89dc036419fb51553503164d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
+  _radius: 3
+  _orbitSpeed: 350
 --- !u!4 &7570629517440212709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
