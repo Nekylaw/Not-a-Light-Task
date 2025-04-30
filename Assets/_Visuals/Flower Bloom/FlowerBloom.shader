@@ -66,8 +66,9 @@ Shader "Unlit/FlowerBloom"
                 float t = saturate(1.0 - dist / _MaxDistance);
 
                 // float scale = lerp(_MinScale, 1.0, t);
-                float scale = lerp(_MinScale, baseScale.x, t);
-                v.positionOS.xyz *= scale;
+                float scale =  saturate(lerp(_MinScale,1/* baseScale.x */, t));
+                v.positionOS.xyz *=  scale;
+                // v.positionOS.xyz *= 2;
 
                 // Snap on ground
                 float baseHeight = unity_ObjectToWorld._m11; 
@@ -84,8 +85,7 @@ Shader "Unlit/FlowerBloom"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                texColor.a = 1;
-                return texColor * _Color;
+                return  texColor *  _Color;
             }
             ENDHLSL
         }
