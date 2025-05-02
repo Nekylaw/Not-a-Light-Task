@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MT_Glow
+  m_Name: MT_PropLight
   m_Shader: {fileID: 4800000, guid: 1fe7a88d4767b59448ff31a356d4cb67, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -98,6 +98,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _BaseIntensity: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -113,8 +114,15 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowIntensity: 150
+    - _GlowAnimationAmplitude: 0.2
+    - _GlowAnimationSpeed: 2
+    - _GlowFlickerAmplitude: 0.2
+    - _GlowFlickerSpeed: 2
+    - _GlowIntensity: 10
     - _GlowRadius: 1
+    - _GlowSoftness: 0.2
+    - _GlowVisibilityThreshold: 20
+    - _MaxScreenDist: 0.5
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -130,10 +138,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseUnlitColor: {r: 0.9528302, g: 0.8442125, b: 0.57978815, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowCenter: {r: 0.5, g: 0.5, b: 1, a: 1}
-    - _GlowColor: {r: 1, g: 0.611645, b: 0, a: 1}
+    - _GlowColor: {r: 0.990566, g: 0.973856, b: 0.4906105, a: 1}
+    - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

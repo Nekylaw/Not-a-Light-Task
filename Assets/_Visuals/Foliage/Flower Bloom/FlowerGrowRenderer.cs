@@ -12,7 +12,6 @@ public class FlowerGrowRenderer : MonoBehaviour
     {
         _player = FindFirstObjectByType<PlayerController>().transform;
 
-
         _renderer = GetComponent<Renderer>();
         _mpb = new MaterialPropertyBlock();
     }
