@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
         if (_player == null)
             Debug.LogError($"{nameof(PlayerController)} component not found", this);
 
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Look(PlayerController.InputMode inputMode, Vector2 look, float delta)
