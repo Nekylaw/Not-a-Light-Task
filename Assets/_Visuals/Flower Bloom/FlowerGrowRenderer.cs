@@ -20,7 +20,7 @@ public class FlowerGrowRenderer : MonoBehaviour
 
     private void Start()
     {
-        _baseScale = transform.localScale;
+        _baseScale = transform.lossyScale;
     }
 
     void Update()

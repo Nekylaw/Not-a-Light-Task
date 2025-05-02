@@ -1,11 +1,16 @@
-Shader "Unlit/FlowerBloom"
+Shader "Custom/FlowerBloom"
 {
-     Properties
+    Properties
     {
         _MainTex("Albedo", 2D) = "white" {}
         _Color("Color", Color) = (1,1,1,1)
         _MinScale("Min Scale", Range(0.1, 1)) = 0.3
         _MaxDistance("Max Distance", Float) = 10.0
+
+        _SwayMax("Sway Max", Float) = 0.05
+        _Speed("Sway Speed", Float) = 1.0
+        _Rigidness("Sway Rigidness", Float) = 5.0
+        _YOffset("Sway Y Offset", Float) = 0.0
     }
 
     SubShader
@@ -46,7 +51,11 @@ Shader "Unlit/FlowerBloom"
             float _MinScale;
             float _MaxDistance;
 
-            // mpb
+            float _SwayMax;
+            float _Speed;
+            float _Rigidness;
+            float _YOffset;
+
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _PlayerPos)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _BaseScale)
@@ -58,23 +67,29 @@ Shader "Unlit/FlowerBloom"
                 Varyings o;
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
 
-                float3 worldPos = TransformObjectToWorld(v.positionOS.xyz);
                 float3 playerPos = UNITY_ACCESS_INSTANCED_PROP(Props, _PlayerPos).xyz;
                 float3 baseScale = UNITY_ACCESS_INSTANCED_PROP(Props, _BaseScale).xyz;
 
+                float3 worldPos = TransformObjectToWorld(v.positionOS.xyz);
                 float dist = distance(worldPos, playerPos);
+
                 float t = saturate(1.0 - dist / _MaxDistance);
+                float scale = saturate(lerp(_MinScale, baseScale.x, t));
 
-                // float scale = lerp(_MinScale, 1.0, t);
-                float scale =  saturate(lerp(_MinScale,1/* baseScale.x */, t));
-                v.positionOS.xyz *=  scale;
-                // v.positionOS.xyz *= 2;
+                // Scale with pivot offset (snap to ground)
+                float pivot = _YOffset;
+                v.positionOS.y = pivot + (v.positionOS.y - pivot) * scale;
+                v.positionOS.xz *= scale;
 
-                // Snap on ground
-                float baseHeight = unity_ObjectToWorld._m11; 
-                float yOffset = (1.0 - scale) * baseHeight;
-                v.positionOS.y -= yOffset;
+                // Sway
+                float3 wpos = TransformObjectToWorld(v.positionOS.xyz);
+                float heightFactor = max(0, v.positionOS.y - _YOffset);
 
+                float swayX = sin(wpos.x / _Rigidness + (_Time.x * _Speed)) * heightFactor * _SwayMax * t;
+                float swayZ = sin(wpos.z / _Rigidness + (_Time.x * _Speed)) * heightFactor * _SwayMax * t;
+
+                v.positionOS.x += swayX;
+                v.positionOS.z += swayZ;
 
                 o.positionHCS = TransformObjectToHClip(v.positionOS.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -85,7 +100,7 @@ Shader "Unlit/FlowerBloom"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                return  texColor *  _Color;
+                return texColor * _Color;
             }
             ENDHLSL
         }
