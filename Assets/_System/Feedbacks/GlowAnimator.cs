@@ -33,7 +33,5 @@ public class GlowAnimator : MonoBehaviour
         mpb.SetFloat("_GlowRadius", animatedRadius);
         mpb.SetFloat("_GlowIntensity", animatedIntensity);
         rend.SetPropertyBlock(mpb);
-
-        //Debug.Log($"Glow Radius: {animatedRadius}, Glow Intensity: {animatedIntensity}");
     }
 }
