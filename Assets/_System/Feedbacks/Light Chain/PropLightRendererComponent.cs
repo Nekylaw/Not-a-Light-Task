@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LightChainChildComponent : MonoBehaviour
+public class PropLightRendererComponent : MonoBehaviour
 {
     [Header("Color")]
     [SerializeField] private Color _baseColor = Color.white;
