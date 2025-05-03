@@ -3,9 +3,12 @@ Shader "Custom/FlowerBloom"
     Properties
     {
         _MainTex("Albedo", 2D) = "white" {}
+        _AlphaTex("Albedo", 2D) = "white" {}
+
         _Color("Color", Color) = (1,1,1,1)
         _MinScale("Min Scale", Range(0.1, 1)) = 0.3
         _MaxDistance("Max Distance", Float) = 10.0
+        _Cutoff("Alpha Cutoff", Range(0,1)) = 0.5
 
         _SwayMax("Sway Max", Float) = 0.05
         _Speed("Sway Speed", Float) = 1.0
@@ -15,12 +18,14 @@ Shader "Custom/FlowerBloom"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+        Tags { "RenderType"="TransparentCutout" "Queue"="Geometry" }
         LOD 100
+        Cull Off
+        ZWrite On
 
         Pass
         {
-            Name "ForwardLit"
+            Name "UnlitScaleSway"
             Tags { "LightMode" = "UniversalForward" }
 
             HLSLPROGRAM
@@ -46,10 +51,13 @@ Shader "Custom/FlowerBloom"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            TEXTURE2D(_AlphaTex);
+            SAMPLER(sampler_AlphaTex);
             float4 _MainTex_ST;
             float4 _Color;
             float _MinScale;
             float _MaxDistance;
+            float _Cutoff;
 
             float _SwayMax;
             float _Speed;
@@ -100,6 +108,11 @@ Shader "Custom/FlowerBloom"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                float4 texAlpha = SAMPLE_TEXTURE2D(_AlphaTex, sampler_AlphaTex, i.uv);
+
+                //Alpha cutout
+                clip(texAlpha.a - _Cutoff);
+
                 return texColor * _Color;
             }
             ENDHLSL

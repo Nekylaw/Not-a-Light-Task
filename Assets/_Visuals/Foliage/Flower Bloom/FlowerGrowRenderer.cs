@@ -3,7 +3,7 @@ using UnityEngine;
 public class FlowerGrowRenderer : MonoBehaviour
 {
     private Transform _player;
-    private Renderer _renderer;
+    private Renderer[] _renderers;
     private MaterialPropertyBlock _mpb;
 
     private Vector3 _baseScale = Vector3.one;
@@ -12,23 +12,31 @@ public class FlowerGrowRenderer : MonoBehaviour
     {
         _player = FindFirstObjectByType<PlayerController>().transform;
 
-        _renderer = GetComponent<Renderer>();
+        _renderers = GetComponentsInChildren<Renderer>();
         _mpb = new MaterialPropertyBlock();
     }
 
 
     private void Start()
     {
-        _baseScale = transform.lossyScale;
+        foreach (var renderer in _renderers)
+        {
+            Vector3 baseScale = renderer.transform.lossyScale;
+            renderer.GetPropertyBlock(_mpb);
+            _mpb.SetVector("_BaseScale", baseScale);
+            renderer.SetPropertyBlock(_mpb);
+        }
     }
 
-    void Update()
+    private void Update()
     {
         if (!_player) return;
 
-        _renderer.GetPropertyBlock(_mpb);
-        _mpb.SetVector("_PlayerPos", _player.position);
-        _mpb.SetVector("_BaseScale", _baseScale);
-        _renderer.SetPropertyBlock(_mpb);
+        foreach (var renderer in _renderers)
+        {
+            renderer.GetPropertyBlock(_mpb);
+            _mpb.SetVector("_PlayerPos", _player.position);
+            renderer.SetPropertyBlock(_mpb);
+        }
     }
 }
