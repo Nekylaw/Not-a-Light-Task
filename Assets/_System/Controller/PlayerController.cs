@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private MovementBehaviorComponent _movement = null;
     private ShootBehaviorComponent _shoot = null;
     private JumpBehaviorComponent _jump = null;
+    
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _previousMovementDirection = Vector3.zero;
@@ -98,12 +99,17 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Aim.performed += HandleAimInput;
         _gameInputs.Player.Aim.canceled += HandleAimInput;
 
+       
         _gameInputs.Player.Shoot.performed += HandleShootInput;
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
 
         _gameInputs.Player.Jump.started += HandleJumpInput;
 
+      
         _gameInputs.Player.PacifyShoot.performed += HandlePacifyShootInput;
+        
+        
+      
     }
 
     private void UnBindInputs()
@@ -119,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Shoot.performed -= HandleShootInput;
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
-
+        
         _gameInputs.Player.Jump.started -= HandleJumpInput;
 
         _gameInputs.Player.PacifyShoot.performed -= HandlePacifyShootInput;
@@ -202,11 +208,7 @@ public class PlayerController : MonoBehaviour
     {
         _jump.Jump();
     }
-
-    private void HandlePacifyInput(InputAction.CallbackContext context)
-    {
-        
-    }
+    
     
     
     #endregion

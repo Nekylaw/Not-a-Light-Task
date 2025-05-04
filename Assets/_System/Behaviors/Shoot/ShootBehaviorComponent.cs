@@ -45,6 +45,7 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         //@todo make the bullet shoot itself
         bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
+        Debug.Log("regular shoot called");
         return true;
     }
 
@@ -58,6 +59,7 @@ public class ShootBehaviorComponent : MonoBehaviour
         GameObject bullet = Instantiate(_settings.Bullets[1].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
 
         bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction*_settings.FireForce, ForceMode.Impulse);
+        Debug.Log("pacify shoot called");
         return true;
     }
 }

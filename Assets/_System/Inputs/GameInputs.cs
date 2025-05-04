@@ -96,7 +96,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""id"": ""bec4c5d3-b0dc-4bb1-a9d7-acda8ca62e83"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -438,6 +438,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
+                    ""action"": ""PacifyShoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""534b90b8-fb7a-46de-bd15-cf79b098d1d1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""PacifyShoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

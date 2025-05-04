@@ -3,6 +3,9 @@ using UnityEngine;
 public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
+
+    public bool shootMode = false;
+    public bool pacifyMode = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,11 +53,21 @@ public class WeaponSwitching : MonoBehaviour
     void SelectWeapon()
     {
         int i = 0;
+        shootMode = false;
+        pacifyMode = false;
         foreach (Transform weapon in transform)
         {
             if (i == selectedWeapon)
             {
                 weapon.gameObject.SetActive(true);
+                if (selectedWeapon == 0)
+                {
+                    shootMode = true;
+                }
+                else
+                {
+                    pacifyMode = true;
+                }
             }
             else
             {
