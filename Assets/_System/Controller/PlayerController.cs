@@ -197,11 +197,18 @@ public class PlayerController : MonoBehaviour
         _shoot.PacifyShoot(_aimTargetRay);
     }
 
+    
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
     }
 
+    private void HandlePacifyInput(InputAction.CallbackContext context)
+    {
+        
+    }
+    
+    
     #endregion
 
 }

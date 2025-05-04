@@ -45,7 +45,6 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         //@todo make the bullet shoot itself
         bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
-
         return true;
     }
 

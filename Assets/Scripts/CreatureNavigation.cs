@@ -26,7 +26,7 @@ public class CreatureNavigation : MonoBehaviour
     // Use this for initialization
     void OnEnable () 
     {
-        creature = GetComponent<NavMeshAgent> ();
+        creature = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
     }
   

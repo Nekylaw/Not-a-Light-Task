@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WeaponSwitching : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
     public int selectedWeapon = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -54,11 +55,16 @@ public class WeaponSwitching : MonoBehaviour
         {
             if (i == selectedWeapon)
             {
-                weapon.gameObject.SetActive(true);
+                weapon.GetComponent<Image>().enabled = false;
+                weapon.GetChild(i).GetComponent<Image>().enabled = true;
+                Debug.Log("selected" + weapon.GetChild(i).gameObject.name);
             }
             else
             {
-                weapon.gameObject.SetActive(false);
+                weapon.GetComponent<Image>().enabled = true;
+                weapon.GetChild(i).GetComponent<Image>().enabled = false;
+                Debug.Log("not selected" + weapon.GetChild(i).gameObject.name );
+                Debug.Log(i);
             }
             i++;
         }
