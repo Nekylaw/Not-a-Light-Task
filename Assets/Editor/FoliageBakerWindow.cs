@@ -1,59 +1,15 @@
-using Codice.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 public class FoliageBakerWindow : EditorWindow
 {
+    private GameObject _foliageSourcePrefab = null;
 
-    #region Sub-Classes 
+    private string _saveFile = "GrassBunch.json";
 
-    /// <summary>
-    /// Represents a group of a foliage matrix datas.
-    /// </summary>
-    [System.Serializable]
-    class FoliageMatrixData
-    {
-        public string SaveName;
-        public List<SerializableMatrix4x4> Matrices;
-    }
-
-    /// <summary>
-    /// Represents a single foliage instance's spatial coordinates as a serialisable matrix.
-    /// </summary>
-    [System.Serializable]
-    struct SerializableMatrix4x4
-    {
-        public float[] values;
-
-        public SerializableMatrix4x4(Matrix4x4 m)
-        {
-            values = new float[16];
-            for (int i = 0; i < 16; i++)
-                values[i] = m[i];
-        }
-
-        public Matrix4x4 ToMatrix()
-        {
-            Matrix4x4 m = new Matrix4x4();
-            for (int i = 0; i < 16; i++)
-                m[i] = values[i];
-            return m;
-        }
-    }
-
-    #endregion
-
-
-    private string _saveFile = "GrassMatrices.json";
-    private string _dataSaveName = "GrassMatrices";
-    private Mesh _mesh = null;
-    private Material _material = null;
-
-    private List<Matrix4x4> _matrices = new();
     private FoliageMatrixData _data = new();
-
     private bool _hasBaked = false;
 
     [MenuItem("Window/Game/Foliage Baker")]
@@ -65,103 +21,134 @@ public class FoliageBakerWindow : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("Data settings", EditorStyles.boldLabel);
+        GUILayout.Label("Foliage Baker", EditorStyles.boldLabel);
 
-        _mesh = (Mesh)EditorGUILayout.ObjectField("Mesh", _mesh, typeof(Mesh), false);
-        _material = (Material)EditorGUILayout.ObjectField("Material", _material, typeof(Material), false);
+        _foliageSourcePrefab = (GameObject)EditorGUILayout.ObjectField("Grass Source Prefab", _foliageSourcePrefab, typeof(GameObject), false);
         _saveFile = EditorGUILayout.TextField("Save Path", _saveFile);
 
-        EditorGUILayout.HelpBox("1 bake = 1 file. If a file name already exists, it will be REPLACED.", MessageType.Warning);
-
-        EditorGUILayout.Space(20);
+        EditorGUILayout.HelpBox("Keep the same Save Path to replace json grass datas.", MessageType.Info);
 
         if (GUILayout.Button("Bake"))
-            BakeMatrices();
+            Bake();
 
-        if(_hasBaked)
-        EditorGUILayout.HelpBox("Bake done.", MessageType.Info);
+        if (_hasBaked)
+            EditorGUILayout.HelpBox("Bake done.", MessageType.Info);
 
-        // Display saved datas.
         string preview = GetDataInfos();
         if (!string.IsNullOrEmpty(preview))
         {
-            EditorGUILayout.Space(20);
-
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox(preview, MessageType.Info);
-
-            EditorGUILayout.Space(20);
+            EditorGUILayout.HelpBox(preview, MessageType.None);
         }
 
         if (GUILayout.Button("Save"))
             SaveToJson(Path.Combine("Resources/", _saveFile));
     }
 
-    private void BakeMatrices()
+    private void Bake()
     {
-
-        if (_mesh == null || string.IsNullOrEmpty(_saveFile))
+        if (_foliageSourcePrefab == null)
         {
-            Debug.LogError("Missing mesh or save path", this);
+            Debug.LogError("No prefab assigned.");
             return;
         }
 
-        _matrices.Clear();
-
-        foreach (MeshFilter mf in FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
+        GameObject prefabSource = PrefabUtility.GetCorrespondingObjectFromSource(_foliageSourcePrefab);
+        if (prefabSource == null)
         {
-            if (mf == null || mf.sharedMesh != _mesh)
+            Debug.LogError("The selected GameObject is not a prefab or prefab instance.");
+            return;
+        }
+
+        Dictionary<Mesh, List<Matrix4x4>> matrixMap = new();
+
+        foreach (GameObject go in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            GameObject goPrefabRoot = PrefabUtility.GetCorrespondingObjectFromSource(go);
+
+            if (goPrefabRoot == null)
                 continue;
 
-            MeshRenderer mr = mf.GetComponent<MeshRenderer>();
-            if (mr == null || _material != null && mr.sharedMaterial != _material) // ensure that the mesh has the choosen material if it exists
+            if (goPrefabRoot != _foliageSourcePrefab)
                 continue;
 
-            _matrices.Add(mf.transform.localToWorldMatrix);
+            Debug.Log($"[FOUND MATCH] {go.name} is instance of {_foliageSourcePrefab.name}");
 
-            List<SerializableMatrix4x4> serializedMatrices = new();
-            foreach (var m in _matrices)
+            foreach (MeshFilter mf in go.GetComponentsInChildren<MeshFilter>())
             {
-                SerializableMatrix4x4 serilizedMatrix = new SerializableMatrix4x4(m);
-                serializedMatrices.Add(serilizedMatrix);
-            }
+                if (mf.sharedMesh == null)
+                    continue;
 
-            _data.Matrices = serializedMatrices;
-            _data.SaveName = Path.GetFileNameWithoutExtension(_saveFile);
+                Debug.Log($"   └ MeshFilter: {mf.name} | Mesh: {mf.sharedMesh.name}");
+
+                Mesh mesh = mf.sharedMesh;
+                if (!matrixMap.ContainsKey(mesh))
+                    matrixMap[mesh] = new List<Matrix4x4>();
+
+                matrixMap[mesh].Add(mf.transform.localToWorldMatrix);
+            }
+        }
+
+        _data = new FoliageMatrixData
+        {
+            SaveName = Path.GetFileNameWithoutExtension(_saveFile),
+            MeshDatas = new List<MeshData>()
+        };
+
+        foreach (var kvp in matrixMap)
+        {
+            var entry = new MeshData
+            {
+                MeshName = kvp.Key.name,
+                Matrices = kvp.Value.ConvertAll(m => new SerializableMatrix4x4(m))
+            };
+
+            _data.MeshDatas.Add(entry);
         }
 
         _hasBaked = true;
+
+        int totalInstances = 0;
+        foreach (var meshData in _data.MeshDatas)
+            totalInstances += meshData.Matrices.Count;
+
+        Debug.Log($"Total instances to be saved: {totalInstances}");
     }
 
     private void SaveToJson(string savePath)
     {
         if (!_hasBaked)
         {
-            Debug.LogWarning("You have to bake matrices before save.");
+            Debug.LogWarning("Bake before saving.");
             return;
         }
 
         string json = JsonUtility.ToJson(_data, true);
         string path = Path.Combine(Application.dataPath, savePath);
+
         File.WriteAllText(path, json);
-        Debug.Log("Saved foliage matrix data at " + Path.Combine(Application.dataPath, savePath));
 
+        Debug.Log("Saved foliage matrix data at: " + path);
         AssetDatabase.Refresh();
-
         _hasBaked = false;
     }
 
-
     private string GetDataInfos()
     {
-        string assetPath = Path.Combine("Assets/", "Resources/", _saveFile);
+        string assetPath = Path.Combine("Assets", "Resources", _saveFile);
         if (!File.Exists(assetPath))
-            return "No datas exists in this file.";
+            return "No data found";
 
         string json = File.ReadAllText(assetPath);
         FoliageMatrixData data = JsonUtility.FromJson<FoliageMatrixData>(json);
 
-        return $"Nom: {data.SaveName} | Matrices: {data.Matrices.Count}";
-    }
+        if (data == null || data.MeshDatas == null)
+            return "File invalid or empty.";
 
+        string summary = $"Name: {data.SaveName} | Mesh Count: {data.MeshDatas.Count}";
+        foreach (var mesh in data.MeshDatas)
+            summary += $"\n- {mesh.MeshName}: {mesh.Matrices.Count} matrices";
+
+        return summary;
+    }
 }
