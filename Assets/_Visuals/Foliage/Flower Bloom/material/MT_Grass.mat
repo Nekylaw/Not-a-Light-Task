@@ -99,9 +99,10 @@ Material:
     - _Glossiness: 0.4
     - _GlossyReflections: 1
     - _METALNESS: 0
-    - _MaxDistance: 15
+    - _MatrixOffset: 35840
+    - _MaxDistance: 40
     - _Metallic: 0
-    - _MinScale: 0.7
+    - _MinScale: 0.2
     - _Mode: 3
     - _OPACITY: 1
     - _OcclusionStrength: 1
@@ -119,7 +120,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 1
-    - _SwayMax: 0.5
+    - _SwayMax: 0.2
     - _UVSec: 0
     - _WorkflowMode: 1
     - _YOffset: 0
@@ -130,6 +131,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _PlayerPos: {r: 32.659504, g: 1, b: 8.527261, a: 0}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

@@ -21,7 +21,7 @@ Shader "Custom/FoliageBloom"
 
     SubShader
     {
-        Tags { "RenderType"="TransparentCutout" "Queue"="Geometry" }
+        Tags { "RenderType" = "TransparentCutout" "Queue" = "Geometry" }
         LOD 100
         Cull Off
         ZWrite On
@@ -49,6 +49,7 @@ Shader "Custom/FoliageBloom"
             {
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float dist : TEXCOORD1;
             };
 
             TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
@@ -72,8 +73,10 @@ Shader "Custom/FoliageBloom"
                 float4x4 modelMatrix = _Matrices[idx];
                 float3 baseScale = _BaseScale[idx].xyz;
 
-                float3 worldPos = mul(modelMatrix, float4(v.positionOS, 1.0)).xyz; // sort in rows and columns for matrices
+                float3 worldPos = mul(modelMatrix, float4(v.positionOS, 1.0)).xyz;
                 float dist = distance(worldPos, _PlayerPos);
+                o.dist = dist;
+
                 float t = saturate(1.0 - dist / _MaxDistance);
                 float scale = lerp(_MinScale, baseScale.x, t);
 
@@ -85,6 +88,7 @@ Shader "Custom/FoliageBloom"
                 float heightFactor = max(0, scaled.y - _YOffset);
                 float swayX = sin(worldPos.x / _Rigidness + (_Time.x * _Speed)) * heightFactor * _SwayMax * t;
                 float swayZ = sin(worldPos.z / _Rigidness + (_Time.x * _Speed)) * heightFactor * _SwayMax * t;
+
                 scaled.x += swayX;
                 scaled.z += swayZ;
 
@@ -96,9 +100,12 @@ Shader "Custom/FoliageBloom"
 
             half4 frag(Varyings i) : SV_Target
             {
+                clip(_MaxDistance - i.dist); 
+
                 float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 float4 alpha = SAMPLE_TEXTURE2D(_AlphaTex, sampler_AlphaTex, i.uv);
-                clip(alpha.a - _Cutoff);
+                clip(alpha.a - _Cutoff); 
+
                 return col * _Color;
             }
             ENDHLSL
