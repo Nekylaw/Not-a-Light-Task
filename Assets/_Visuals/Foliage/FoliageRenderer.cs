@@ -129,7 +129,7 @@ public class FoliageRenderer : MonoBehaviour
 
         _material.SetVector("_PlayerPos", _player.position);
 
-        float maxDistSqr = _cullDistance * _cullDistance;
+        //float maxDistSqr = _cullDistance * _cullDistance;
 
         for (int i = 0; i < _meshes.Count; i++)
         {

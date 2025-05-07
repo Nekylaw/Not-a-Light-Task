@@ -39,7 +39,6 @@ public class LightSourceLeftOrbFeedbackComponent : MonoBehaviour
     {
         _remainingOrbs = _lightSource.Settings.RequiredOrbs;
 
-        //Spawn
         for (int i = 0; i < _remainingOrbs; i++)
         {
             var orb = GameObject.Instantiate<GameObject>(_orbParticuleFeedbackPrefab);
