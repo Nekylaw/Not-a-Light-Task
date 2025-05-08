@@ -21,6 +21,9 @@ public class CreatureNavigation : MonoBehaviour
     [SerializeField] LayerMask lightLayer;
 
     private List<GameObject> objs = CreatureFOV.objectsInSight;
+    private List<GameObject> orbsEaten = new List<GameObject>();
+
+    private CreatureState _state ;
     
 
     // Use this for initialization
@@ -42,10 +45,12 @@ public class CreatureNavigation : MonoBehaviour
             timer = 0;  
             transform.LookAt(newPos);
         }
-        if (objs.Count >= 1)
+        if (objs.Count >= 1 && GetComponent<CreatureState>().isEvil)
         {
+            Debug.Log("Light detected : creature walks toward it");
             GoToLight();
         }
+       
     }
 
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask) {
@@ -81,6 +86,7 @@ public class CreatureNavigation : MonoBehaviour
         if (other.gameObject.CompareTag("Orb") && objs.Contains(other.gameObject))
         {
             other.gameObject.SetActive(false);
+            orbsEaten.Add(other.gameObject);
             Debug.Log("Creature eat light");
         }
     }

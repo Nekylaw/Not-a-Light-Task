@@ -9,6 +9,7 @@ public class CreatureState : MonoBehaviour
         if (other.gameObject.tag == "Pacify")
         {
             isEvil = false;
+            Debug.Log("creature pacified");
         }
     }
 }
