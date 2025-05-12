@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.AI;
@@ -20,6 +19,8 @@ public class CreatureNavigation : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask lightLayer;
 
+    private bool isEvil = CreatureState.isEvil;
+
     private List<GameObject> objs = CreatureFOV.objectsInSight;
     
 
@@ -33,8 +34,10 @@ public class CreatureNavigation : MonoBehaviour
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;
-  
-        if (timer >= wanderTimer && objs.Count == 0) 
+
+        isEvil = CreatureState.isEvil;
+
+        if (timer >= wanderTimer && (objs.Count == 0 || !isEvil)) 
         {
             Debug.Log("No light source detected : wander behaviour");
             Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
@@ -42,7 +45,7 @@ public class CreatureNavigation : MonoBehaviour
             timer = 0;  
             transform.LookAt(newPos);
         }
-        if (objs.Count >= 1)
+        if (objs.Count >= 1 && isEvil) // cherche les lumiere si pas encore pacifié
         {
             GoToLight();
         }

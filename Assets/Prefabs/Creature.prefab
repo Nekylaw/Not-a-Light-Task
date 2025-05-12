@@ -1272,6 +1272,7 @@ GameObject:
   - component: {fileID: 5877954039892119898}
   - component: {fileID: 9145327532134017321}
   - component: {fileID: 5982978102368230571}
+  - component: {fileID: 7145250303864641674}
   m_Layer: 0
   m_Name: body
   m_TagString: Creature
@@ -1452,6 +1453,21 @@ MonoBehaviour:
   lightLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &7145250303864641674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4578512629234555910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f785e7d17bca3b40baa848c870a2161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 4578512629234555910}
+  isEvil: 1
+  FriendlyMaterial: {fileID: -6478536213147159724, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
 --- !u!1 &8076505656521103436
 GameObject:
   m_ObjectHideFlags: 0

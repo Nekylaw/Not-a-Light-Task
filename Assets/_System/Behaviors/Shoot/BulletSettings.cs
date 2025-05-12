@@ -9,6 +9,4 @@ public  class BulletSettings : ScriptableObject
 
     public enum BulletType { Light, Pacify}
     public BulletType bulletType;
-
-    public string bulletTag;
 }

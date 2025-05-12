@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -8215424986948662863}
   m_Layer: 0
   m_Name: PF_Bullet_Pacify
-  m_TagString: Untagged
+  m_TagString: Pacify
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 7388990629038578070}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.778286, y: 4.776737, z: -5.3146896}
-  m_LocalScale: {x: -0.18, y: -0.18, z: -0.18}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7603e43ec43ac3a4d838482a897a3e32, type: 2}
+  - {fileID: 2100000, guid: a847751a4c348c34a82003264244ff7b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
