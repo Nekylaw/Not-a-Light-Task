@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.AI;
@@ -19,25 +20,24 @@ public class CreatureNavigation : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask lightLayer;
 
-    private bool isEvil = CreatureState.isEvil;
-
     private List<GameObject> objs = CreatureFOV.objectsInSight;
+    private List<GameObject> orbsEaten = new List<GameObject>();
+
+    private CreatureState _state ;
     
 
     // Use this for initialization
     void OnEnable () 
     {
-        creature = GetComponent<NavMeshAgent> ();
+        creature = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
     }
   
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;
-
-        isEvil = CreatureState.isEvil;
-
-        if (timer >= wanderTimer && (objs.Count == 0 || !isEvil)) 
+  
+        if (timer >= wanderTimer && objs.Count == 0) 
         {
             Debug.Log("No light source detected : wander behaviour");
             Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
@@ -45,10 +45,12 @@ public class CreatureNavigation : MonoBehaviour
             timer = 0;  
             transform.LookAt(newPos);
         }
-        if (objs.Count >= 1 && isEvil) // cherche les lumiere si pas encore pacifié
+        if (objs.Count >= 1 && GetComponent<CreatureState>().isEvil)
         {
+            Debug.Log("Light detected : creature walks toward it");
             GoToLight();
         }
+       
     }
 
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask) {
@@ -84,6 +86,7 @@ public class CreatureNavigation : MonoBehaviour
         if (other.gameObject.CompareTag("Orb") && objs.Contains(other.gameObject))
         {
             other.gameObject.SetActive(false);
+            orbsEaten.Add(other.gameObject);
             Debug.Log("Creature eat light");
         }
     }

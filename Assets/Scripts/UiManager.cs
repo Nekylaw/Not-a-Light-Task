@@ -22,6 +22,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject StartGamePanel;
     [SerializeField] private GameObject EndGamePanel;
     [SerializeField] private GameObject OptionsPanel;
+    [SerializeField] private GameObject InGamePanel;
     #endregion
     
     #region PRIVATE ATTRIBUTES
@@ -35,6 +36,7 @@ public class UiManager : MonoBehaviour
     public void UIStartGame()
     {
         StartGamePanel.SetActive(false);
+        InGamePanel.SetActive(true);
     }
 
     public void UIPauseGame(GameObject panelToSave)

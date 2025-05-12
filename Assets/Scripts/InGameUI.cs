@@ -1,11 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WeaponSwitching : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
     public int selectedWeapon = 0;
-
-    public bool shootMode = false;
-    public bool pacifyMode = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,25 +51,20 @@ public class WeaponSwitching : MonoBehaviour
     void SelectWeapon()
     {
         int i = 0;
-        shootMode = false;
-        pacifyMode = false;
         foreach (Transform weapon in transform)
         {
             if (i == selectedWeapon)
             {
-                weapon.gameObject.SetActive(true);
-                if (selectedWeapon == 0)
-                {
-                    shootMode = true;
-                }
-                else
-                {
-                    pacifyMode = true;
-                }
+                weapon.GetComponent<Image>().enabled = false;
+                weapon.GetChild(i).GetComponent<Image>().enabled = true;
+                Debug.Log("selected" + weapon.GetChild(i).gameObject.name);
             }
             else
             {
-                weapon.gameObject.SetActive(false);
+                weapon.GetComponent<Image>().enabled = true;
+                weapon.GetChild(i).GetComponent<Image>().enabled = false;
+                Debug.Log("not selected" + weapon.GetChild(i).gameObject.name );
+                Debug.Log(i);
             }
             i++;
         }
