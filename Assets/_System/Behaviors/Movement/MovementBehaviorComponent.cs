@@ -33,13 +33,13 @@ public class MovementBehaviorComponent : MonoBehaviour
     public bool Move(Vector3 direction, float delta, bool isAiming)
     {
         direction = _settings.UseProgressiveMove ? Vector3.ClampMagnitude(direction, 1) : direction.normalized;
-        float dot = Vector3.Dot(direction, Vector3.Cross(_detector.GroundNormal, Vector3.up));
+        float dot = Vector3.Dot(direction, Vector3.Cross(Vector3.down, _detector.GroundNormal));
 
         AdaptDirectionOnSlopes(ref direction);
 
         float speed = isAiming ? _settings.Speed * _settings.SpeedRatioOnAim : _settings.Speed;
 
-        float slopeInfluence =  dot == 1f ? 1:  1 + dot * 2;
+        float slopeInfluence = Mathf.Lerp(1 - _settings.SlopeFactor, 1 + _settings.SlopeFactor, (dot + 1f) * 0.5f);
 
         Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
@@ -54,7 +54,9 @@ public class MovementBehaviorComponent : MonoBehaviour
             _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
         }
 
-        BehaviorsService.Move(direction, speed);
+        if (direction.magnitude > 0.01f)
+            BehaviorsService.Move(direction, speed);
+
         return true;
     }
 
@@ -65,7 +67,6 @@ public class MovementBehaviorComponent : MonoBehaviour
             return;
 
         direction = Vector3.ProjectOnPlane(direction, _detector.GroundNormal);
-        return;
     }
 
     private void HandleFalling()

@@ -24,10 +24,16 @@ public class MovementSettings : ScriptableObject
 
     [Header("Control")]
 
+    [Min(0f)]
     public float AccelerationFactor = 1;
 
+    [Min(0f)]
     public float DecelerationFactor = 1;
+
+    [Range(0f, 1f)]
+    public float SlopeFactor = 1;
 
     [Range(0, 1)]
     public float AirControl = 1f;
+
 }

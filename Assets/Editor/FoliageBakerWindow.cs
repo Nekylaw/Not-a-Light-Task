@@ -79,7 +79,7 @@ public class FoliageBakerWindow : EditorWindow
                 if (mf.sharedMesh == null)
                     continue;
 
-                Debug.Log($"   └ MeshFilter: {mf.name} | Mesh: {mf.sharedMesh.name}");
+                Debug.Log($"   MeshFilter: {mf.name} | Mesh: {mf.sharedMesh.name}");
 
                 Mesh mesh = mf.sharedMesh;
                 if (!matrixMap.ContainsKey(mesh))
