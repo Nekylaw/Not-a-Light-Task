@@ -5,12 +5,15 @@ Shader "Custom/LightOrb"
         _Color("Emission Color", Color) = (5, 2, 1, 1)
         _MainTex("Texture", 2D) = "white" {}
         _Intensity("Emission Intensity", Float) = 5.0
+        _Cutoff("Alpha Cutoff", Range(0,1)) = 0.5
     }
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Transparent" }
+        Tags { "RenderType"="TransparentCutout" "Queue"="AlphaTest" }
         LOD 100
+        ZWrite On
+        Blend Off
 
         Pass
         {
@@ -43,6 +46,7 @@ Shader "Custom/LightOrb"
             float4 _MainTex_ST;
             float4 _Color;
             float _Intensity;
+            float _Cutoff;
 
             Varyings vert(Attributes v)
             {
@@ -58,7 +62,10 @@ Shader "Custom/LightOrb"
             half4 frag(Varyings i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
+
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                clip(texColor.a - _Cutoff);
+
                 float3 emissive = texColor.rgb * _Color.rgb * _Intensity;
                 return float4(emissive, 1.0); 
             }

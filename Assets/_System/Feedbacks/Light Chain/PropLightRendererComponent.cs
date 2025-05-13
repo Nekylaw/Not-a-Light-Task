@@ -1,3 +1,4 @@
+using Game.Services.LightSources;
 using UnityEngine;
 
 public class PropLightRendererComponent : MonoBehaviour
@@ -19,17 +20,20 @@ public class PropLightRendererComponent : MonoBehaviour
     [SerializeField] private float _visibilityDistance = 20.0f;
     [SerializeField] private float _maxScreenDist = 0.5f;
 
-    [Header("Player Ref")]
-    [SerializeField] private Transform _player;
+    private Transform _player;
 
     private Renderer _renderer;
     private MaterialPropertyBlock _mpb;
+
+    private LightSourceComponent _lightSource = null;
 
     private void Awake()
     {
         _player = FindFirstObjectByType<PlayerController>().transform;
         _renderer = GetComponent<Renderer>();
         _mpb = new MaterialPropertyBlock();
+
+        _lightSource = GetComponentInParent<LightSourceComponent>();
     }
 
     private void Update()
@@ -48,6 +52,16 @@ public class PropLightRendererComponent : MonoBehaviour
             return;
 
         _renderer.GetPropertyBlock(_mpb);
+
+        if (_lightSource == null || !_lightSource.IsLightOn)
+        {
+            _mpb.SetFloat("_BaseIntensity", 0);
+            _mpb.SetFloat("_GlowIntensity", 0);
+
+            _renderer.SetPropertyBlock(_mpb);
+            return;
+        }
+
         _mpb.SetColor("_BaseColor", _baseColor);
         _mpb.SetColor("_GlowColor", _glowColor);
         _mpb.SetFloat("_BaseIntensity", _baseIntensity);

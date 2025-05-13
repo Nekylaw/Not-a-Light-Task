@@ -11,6 +11,9 @@ public class ShootBehaviorComponent : MonoBehaviour
     [SerializeField]
     private ShootSettings _settings = null;
 
+    [SerializeField]
+    private RectTransform _crossHairRect = null;
+
     private OrbContainerComponent _container = null;
 
     private Quaternion _aimGunRotationQuaternion = Quaternion.identity;
@@ -90,12 +93,24 @@ public class ShootBehaviorComponent : MonoBehaviour
     {
         _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _aimGunRotationQuaternion, delta * _settings.AimSpeed);
         _gun.localPosition = Vector3.Lerp(_gun.localPosition, _settings.AimGunPosition, delta * _settings.AimSpeed);
+
+        if (_crossHairRect != null)
+        {
+            _crossHairRect.rotation = Quaternion.Slerp(_crossHairRect.rotation, Quaternion.Euler(0, 0, 90), delta * _settings.AimSpeed);
+            _crossHairRect.localScale = Vector3.Lerp(_crossHairRect.localScale, new Vector3(0.6f, 0.6f, 0.6f), delta * _settings.AimSpeed);
+        }
     }
 
     private void ReleaseAim(float delta)
     {
         _gun.localRotation = Quaternion.Slerp(_gun.localRotation, _gunStartRotation, delta * _settings.AimSpeed);
         _gun.localPosition = Vector3.Lerp(_gun.localPosition, _gunStartPosition, delta * _settings.AimSpeed);
+
+        if (_crossHairRect != null)
+        {
+            _crossHairRect.rotation = Quaternion.Slerp(_crossHairRect.rotation, Quaternion.Euler(0, 0, 0), delta * _settings.AimSpeed);
+            _crossHairRect.localScale = Vector3.Lerp(_crossHairRect.localScale, new Vector3(0.8f, 0.8f, 0.8f), delta * _settings.AimSpeed);
+        }
     }
 
 }

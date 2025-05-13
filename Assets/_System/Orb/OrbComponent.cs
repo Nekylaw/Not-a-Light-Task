@@ -34,10 +34,10 @@ public class OrbComponent : MonoBehaviour
         rb.isKinematic = true;
 
         float timer = 0f;
-        float duration = 1;
-        float spiralSpeed = 1500 ; 
-        float radius =  lightSource.Settings.AttractRange;
-     //@todo settings
+        float duration = lightSource.Settings.Duration;
+        float spiralSpeed = lightSource.Settings.SpiralSpeed;
+        float radius = lightSource.Settings.AttractRange;
+        //@todo settings
 
         Vector3 startPosition = transform.position;
 
@@ -64,7 +64,7 @@ public class OrbComponent : MonoBehaviour
 
         LightSourcesService.Instance.SwitchOn(lightSource);
         _attractOrbCoroutine = null;
-        Destroy(this.gameObject);   
+        Destroy(this.gameObject);
     }
 
 }
