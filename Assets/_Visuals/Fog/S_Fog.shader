@@ -77,16 +77,14 @@ Shader "Effect/Fog"
                  // Clear fog zones
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
-                    // Zone position shortcuts
                     float3 clearPos = _ClearZonesPositions[i].xyz;  
                     float startRadius = _ClearZonesPositions[i].w;
 
-                    // Zone animation shortcuts
                     float targetRadius = _ClearZonesAnimations[i].x;
                     float animSpeed = _ClearZonesAnimations[i].y;
                     float startTime = _ClearZonesAnimations[i].z;
 
-                    // Calculate current cleared zone radius (animation)
+                    // Cleared zones
                     float elapsedTime = delta - startTime;                   
                     float fogDir = sign(targetRadius - startRadius);
                     float currentRadius = startRadius + animSpeed * elapsedTime * fogDir;

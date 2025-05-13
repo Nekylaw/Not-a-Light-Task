@@ -35,6 +35,8 @@ namespace Game.Services.LightSources
 
         public delegate void SwitchOffLightDelegate(LightSourceComponent light);
 
+        public delegate void TriggerLightDelegate(LightSourceComponent light);
+
         #endregion
 
 
@@ -42,6 +44,7 @@ namespace Game.Services.LightSources
 
         public event SwitchOnLightDelegate OnSwitchOnLight = null;
         public event SwitchOffLightDelegate OnSwitchOffLight = null;
+        public event TriggerLightDelegate OnTriggerLight = null;
 
         private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
 
@@ -67,9 +70,6 @@ namespace Game.Services.LightSources
                 return false;
 
             _lightSourceList.Add(source);
-            //Debug.Log($"Init {nameof(LightSourceComponent)} register ");
-
-            //Debug.Log("Ligth service light count: ");
             return true;
         }
 
@@ -112,10 +112,13 @@ namespace Game.Services.LightSources
 
         public bool SwitchOn(LightSourceComponent light)
         {
-            Debug.Log(message: "LightService Light On");
-            if (!light.SwitchOn())
+            if (light.IsLightOn)
                 return false;
 
+            OnTriggerLight?.Invoke(light);
+
+            if (!light.SwitchOn())
+                return false;
 
             OnSwitchOnLight?.Invoke(light);
             return true;
