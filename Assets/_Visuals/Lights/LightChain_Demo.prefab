@@ -187,6 +187,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseColor: {r: 1, g: 0.9386792, b: 0.9386792, a: 1}
+  _glowColor: {r: 0.9433962, g: 0.93029016, b: 0.6630473, a: 1}
+  _baseIntensity: 3.66
+  _glowIntensity: 7.04
+  _glowAnimSpeed: 2
+  _glowAnimAmplitude: 0.2
+  _glowRadius: 0.2
+  _visibilityDistance: 20
+  _maxScreenDist: 0.5
+  _player: {fileID: 0}
 --- !u!1 &6112774793723310175
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 6112774793723310175}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.88, y: 0, z: 3.27}
+  m_LocalPosition: {x: -23.02, y: 0, z: 6.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -323,6 +333,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseColor: {r: 0.5933466, g: 0.1462264, b: 1, a: 1}
+  _glowColor: {r: 0.9528302, g: 0, b: 0.5300569, a: 1}
+  _baseIntensity: 1
+  _glowIntensity: 2
+  _glowAnimSpeed: 2
+  _glowAnimAmplitude: 0.2
+  _glowRadius: 0.2
+  _visibilityDistance: 20
+  _maxScreenDist: 0.5
+  _player: {fileID: 0}
 --- !u!1 &9125049390061005120
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,3 +479,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseColor: {r: 1, g: 1, b: 1, a: 1}
+  _glowColor: {r: 1, g: 0.9529141, b: 0.25, a: 1}
+  _baseIntensity: 1
+  _glowIntensity: 2
+  _glowAnimSpeed: 2
+  _glowAnimAmplitude: 0.2
+  _glowRadius: 0.2
+  _visibilityDistance: 20
+  _maxScreenDist: 0.5
+  _player: {fileID: 0}
