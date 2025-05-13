@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        UiManager.Instance.UIStartGame();
+        UiManager.Instance.HideUI();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         gameState = GameState.Playing;

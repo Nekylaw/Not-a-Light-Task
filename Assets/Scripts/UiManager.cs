@@ -22,6 +22,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject StartGamePanel;
     [SerializeField] private GameObject EndGamePanel;
     [SerializeField] private GameObject OptionsPanel;
+
+    [SerializeField] private GameObject ImmersiveCanvas;
+    [SerializeField] private GameObject Player;
     #endregion
     
     #region PRIVATE ATTRIBUTES
@@ -30,8 +33,17 @@ public class UiManager : MonoBehaviour
     
     #endregion
     
-    #region  PUBLIC METHODS 
-    
+    #region  PUBLIC METHODS
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ShowUI();
+            UIPlacement();
+        }
+    }
+
     public void UIStartGame()
     {
         StartGamePanel.SetActive(false);
@@ -55,6 +67,22 @@ public class UiManager : MonoBehaviour
     {
         OptionsPanel.SetActive(false);
         _panelClosed.SetActive(true);
+    }
+
+    public void UIPlacement()
+    {
+        ImmersiveCanvas.transform.position = Player.transform.position;
+        ImmersiveCanvas.transform.rotation = Player.transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
+    }
+
+    public void HideUI()
+    {
+        ImmersiveCanvas.SetActive(false);
+    }
+
+    public void ShowUI()
+    {
+        ImmersiveCanvas.SetActive(true);
     }
 
     #endregion
