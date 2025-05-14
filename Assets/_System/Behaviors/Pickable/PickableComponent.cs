@@ -1,4 +1,5 @@
 using Services.Behaviors;
+using System;
 using UnityEngine;
 
 public class PickableComponent : MonoBehaviour
@@ -23,4 +24,8 @@ public class PickableComponent : MonoBehaviour
 
     public bool Release() { return false; }
 
+    internal void DisplayFeedback()
+    {
+        throw new NotImplementedException();
+    }
 }

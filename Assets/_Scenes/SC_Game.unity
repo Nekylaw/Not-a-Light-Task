@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 41679401}
   m_Layer: 0
-  m_Name: --- Renderers ---
+  m_Name: --- Controllers ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,13 +225,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4785253184020958004, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: m_Antialiasing
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4785253184020958004, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
-      propertyPath: m_AntialiasingQuality
-      value: 0
+    - target: {fileID: 2712831334275548044, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7758627316031742524, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: _crossHairRect
@@ -276,6 +272,38 @@ PrefabInstance:
     - target: {fileID: 8129215436254250207, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596457686302102091, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6440,7 +6468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1701255766
 Transform:
   m_ObjectHideFlags: 0
@@ -6468,10 +6496,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca46b5deb1423d844b6fc17101d0d797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jsonFileName: GrassBunch
+  _jsonFileName: Big
   _material: {fileID: 2100000, guid: 81f9e861c9790dd4bbc834333b78a034, type: 2}
   _renderDistance: 100
   _cullDistance: 150
+  _windCompute: {fileID: 7200000, guid: 70222a9049bb3f640aaf769f07ce3224, type: 3}
+  _windMapSize: 128
+  _windScale: 100
+  _windFrequency: 100
+  _windAmplitude: 2.5
 --- !u!4 &1705114775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05c487dc5adba4029a9d05a7401501f1, type: 3}
