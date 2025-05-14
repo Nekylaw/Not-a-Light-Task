@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class CameraBreathComponent : MonoBehaviour
 {
-    public enum TransformTarget { Position, Rotation, Both }
+    public enum ETransformTarget { Position, Rotation, Both }
 
     [Header("Settings")]
-    public TransformTarget transformTarget = TransformTarget.Both;
+    public ETransformTarget TransformTarget = ETransformTarget.Both;
 
     [Header("Amplitude (offsets)")]
-    public Vector3 positionAmplitude = new Vector3(0.01f, 0.01f, 0.01f);
-    public Vector3 rotationAmplitude = new Vector3(0.1f, 0.1f, 0.1f);
+    public Vector3 PositionAmplitude = new Vector3(0.01f, 0.01f, 0.01f);
+    public Vector3 RotationAmplitude = new Vector3(0.1f, 0.1f, 0.1f);
 
     [Header("Frequency (speed of noise)")]
     public float frequency = 1f;
@@ -19,17 +19,17 @@ public class CameraBreathComponent : MonoBehaviour
     public bool YAxis = true;
     public bool ZAxis = true;
 
-    private Vector3 basePos;
-    private Vector3 baseRot;
+    private Vector3 _basePos;
+    private Vector3 _baseRot;
 
-    private Vector3 noiseSeed;
+    private Vector3 _noiseSeed;
 
     private void Start()
     {
-        basePos = transform.localPosition;
-        baseRot = transform.localEulerAngles;
+        _basePos = transform.localPosition;
+        _baseRot = transform.localEulerAngles;
 
-        noiseSeed = new Vector3(
+        _noiseSeed = new Vector3(
             Random.Range(0f, 100f),
             Random.Range(0f, 100f),
             Random.Range(0f, 100f)
@@ -41,41 +41,41 @@ public class CameraBreathComponent : MonoBehaviour
         float time = Time.time * frequency;
 
         Vector3 perlinNoise = new Vector3(
-            Mathf.PerlinNoise(noiseSeed.x, time),
-            Mathf.PerlinNoise(noiseSeed.y, time),
-            Mathf.PerlinNoise(noiseSeed.z, time)
+            Mathf.PerlinNoise(_noiseSeed.x, time),
+            Mathf.PerlinNoise(_noiseSeed.y, time),
+            Mathf.PerlinNoise(_noiseSeed.z, time)
         );
 
         // Remap from [0,1] to [-1,1]
         perlinNoise = perlinNoise * 2f - Vector3.one;
 
         Vector3 posOffset = new Vector3(
-            XAxis ? perlinNoise.x * positionAmplitude.x : 0f,
-            YAxis ? perlinNoise.y * positionAmplitude.y : 0f,
-            ZAxis ? perlinNoise.z * positionAmplitude.z : 0f
+            XAxis ? perlinNoise.x * PositionAmplitude.x : 0f,
+            YAxis ? perlinNoise.y * PositionAmplitude.y : 0f,
+            ZAxis ? perlinNoise.z * PositionAmplitude.z : 0f
         );
 
         Vector3 rotOffset = new Vector3(
-            XAxis ? perlinNoise.x * rotationAmplitude.x : 0f,
-            YAxis ? perlinNoise.y * rotationAmplitude.y : 0f,
-            ZAxis ? perlinNoise.z * rotationAmplitude.z : 0f
+            XAxis ? perlinNoise.x * RotationAmplitude.x : 0f,
+            YAxis ? perlinNoise.y * RotationAmplitude.y : 0f,
+            ZAxis ? perlinNoise.z * RotationAmplitude.z : 0f
         );
 
         if (Application.isPlaying)
         {
-            switch (transformTarget)
+            switch (TransformTarget)
             {
-                case TransformTarget.Position:
-                    transform.localPosition = basePos + posOffset;
+                case ETransformTarget.Position:
+                    transform.localPosition = _basePos + posOffset;
                     break;
 
-                case TransformTarget.Rotation:
-                    transform.localEulerAngles = baseRot + rotOffset;
+                case ETransformTarget.Rotation:
+                    transform.localEulerAngles = _baseRot + rotOffset;
                     break;
 
-                case TransformTarget.Both:
-                    transform.localPosition = basePos + posOffset;
-                    transform.localEulerAngles = baseRot + rotOffset;
+                case ETransformTarget.Both:
+                    transform.localPosition = _basePos + posOffset;
+                    transform.localEulerAngles = _baseRot + rotOffset;
                     break;
             }
         }

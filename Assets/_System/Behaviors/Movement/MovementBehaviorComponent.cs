@@ -9,6 +9,9 @@ public class MovementBehaviorComponent : MonoBehaviour
 
     private Rigidbody _rigidbody = null;
     private DetectionBehaviorComponent _detector = null;
+    private bool _isMoving = false;
+
+    public bool IsMoving => _isMoving;
 
     private void Awake()
     {
@@ -43,6 +46,7 @@ public class MovementBehaviorComponent : MonoBehaviour
 
         Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
+        _isMoving = desiredVelocity.magnitude > 0.1f;
         if (direction.magnitude > 0.01f)
         {
             Vector3 accel = (desiredVelocity - _rigidbody.linearVelocity);
@@ -54,8 +58,7 @@ public class MovementBehaviorComponent : MonoBehaviour
             _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
         }
 
-        if (direction.magnitude > 0.01f)
-            BehaviorsService.Move(direction, speed);
+        BehaviorsService.Move(direction, desiredVelocity.magnitude);
 
         return true;
     }
