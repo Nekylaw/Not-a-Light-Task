@@ -1,4 +1,4 @@
-Shader "Effect/Fog"
+Shader "Custom/Fog"
 {
     Properties
     {

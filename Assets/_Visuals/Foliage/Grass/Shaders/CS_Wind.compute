@@ -1,0 +1,33 @@
+﻿#pragma kernel WindNoise
+#include "CS_Simplex.compute"
+
+RWTexture2D<float4> _WindMap;
+
+float _Frequency;
+float _Amplitude;
+float _Time;
+float _Scale; // taille du monde (diviseur pour UV)
+
+[numthreads(8, 8, 1)]
+void WindNoise(uint3 id : SV_DispatchThreadID)
+{
+    uint2 texSize;
+    _WindMap.GetDimensions(texSize.x, texSize.y);
+
+    if (id.x >= texSize.x || id.y >= texSize.y) return;
+
+    float2 uv = (float2)id.xy / texSize.xy;
+
+    // Position monde simulée (si tu veux que ça soit world-aligned)
+    float2 pos = uv * _Scale;
+
+    // Génération du bruit pour angle
+    float n = snoise(float3(pos * _Frequency, _Time * 0.05f)); // Bruit temporel
+    float angle = n * 6.2831f; // [0, 2π]
+    
+    float2 dir = float2(cos(angle), sin(angle));
+    
+    float strength = (snoise(float3(pos * _Frequency * 0.5f, _Time * 0.1f)) + 1.0f) * 0.5f * _Amplitude;
+
+    _WindMap[id.xy] = float4(dir * strength, strength, 0.0f);
+}

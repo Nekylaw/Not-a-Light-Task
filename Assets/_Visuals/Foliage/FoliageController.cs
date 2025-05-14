@@ -1,24 +1,45 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class FoliageController : MonoBehaviour
 {
-    [SerializeField] private string _jsonFileName = "GrassBunch";
-    [SerializeField] private Material _material;
-    [SerializeField] private float _renderDistance = 100f;
-    [SerializeField] private float _cullDistance = 150f;
+    private Transform _player;
+
+    [Header("Grass")]
+
+    [SerializeField]
+    private string _jsonFileName = "GrassBunch";
+    [SerializeField]
+    private Material _material;
+    [SerializeField]
+    private float _renderDistance = 100f;
+    [SerializeField]
+    private float _cullDistance = 150f;
 
     private List<Mesh> _meshes = new();
     private List<int> _meshStartIndices = new();
     private List<Vector3> _meshCenters = new();
     private List<ComputeBuffer> _argsBuffers = new();
-
     private ComputeBuffer _matrixBuffer;
     private ComputeBuffer _baseScaleBuffer;
 
-    private Transform _player;
+    [Header("Wind")]
+
+    [SerializeField]
+    private ComputeShader _windCompute;
+    [SerializeField]
+    private int _windMapSize = 128;
+    [SerializeField]
+    private float _windScale = 100f;
+    [SerializeField]
+    private float _windFrequency = 1;
+    [SerializeField]
+    private float _windAmplitude = 1;
+
+    private RenderTexture _windMap;
 
     struct DrawData
     {
@@ -35,18 +56,64 @@ public class FoliageController : MonoBehaviour
             return;
         }
 
+        var drawData = LoadFoliageData();
+        if (drawData == null || drawData.Count == 0)
+            return;
+
+        InitializeBuffers(drawData);
+        CreateArgsBuffers(drawData);
+        CreateWindRenderTexture();
+    }
+
+    private void Update()
+    {
+        if (_player == null || _matrixBuffer == null)
+            return;
+
+        _material.SetVector("_PlayerPos", _player.position);
+
+        ComputeWind();
+
+        for (int i = 0; i < _meshes.Count; i++)
+        {
+            Vector3 center = _meshCenters[i];
+            float distSqr = (_player.position - center).sqrMagnitude;
+
+            if (distSqr > _cullDistance * _cullDistance)
+                continue;
+
+            DrawGrass(i, center);
+        }
+    }
+
+    private void OnDisable()
+    {
+        _matrixBuffer?.Release();
+        _baseScaleBuffer?.Release();
+
+        foreach (var buffer in _argsBuffers)
+            buffer?.Release();
+
+        _argsBuffers.Clear();
+    }
+
+    /// <summary>
+    /// Loads JSON foliage data and builds DrawData list
+    /// </summary>
+    private List<DrawData> LoadFoliageData()
+    {
         TextAsset jsonAsset = Resources.Load<TextAsset>(_jsonFileName);
         if (jsonAsset == null)
         {
             Debug.LogError("JSON not found: " + _jsonFileName);
-            return;
+            return null;
         }
 
         var data = JsonUtility.FromJson<FoliageMatrixData>(jsonAsset.text);
         if (data?.MeshDatas == null)
         {
             Debug.LogError("Invalid foliage data.");
-            return;
+            return null;
         }
 
         List<DrawData> drawData = new();
@@ -54,7 +121,6 @@ public class FoliageController : MonoBehaviour
         foreach (var entry in data.MeshDatas)
         {
             Mesh mesh = FindMeshByName(entry.MeshName);
-
             if (mesh == null)
             {
                 Debug.LogWarning("Mesh not found: " + entry.MeshName);
@@ -79,19 +145,21 @@ public class FoliageController : MonoBehaviour
                 });
 
                 entryMatrices.Add(matrix);
-                avgCenter += (Vector3)matrix.GetColumn(3);
+                avgCenter += new Vector3(matrix.m03, matrix.m13, matrix.m23);
             }
 
             avgCenter /= Mathf.Max(1, entryMatrices.Count);
             _meshCenters.Add(avgCenter);
         }
 
-        if (drawData.Count == 0)
-        {
-            Debug.LogWarning("No instances to render.");
-            return;
-        }
+        return drawData;
+    }
 
+    /// <summary>
+    /// Initializes the GPU buffers with matrix and scale data
+    /// </summary>
+    private void InitializeBuffers(List<DrawData> drawData)
+    {
         _matrixBuffer = new ComputeBuffer(drawData.Count, sizeof(float) * 16);
         _baseScaleBuffer = new ComputeBuffer(drawData.Count, sizeof(float) * 4);
 
@@ -101,7 +169,13 @@ public class FoliageController : MonoBehaviour
         _material.SetBuffer("_Matrices", _matrixBuffer);
         _material.SetBuffer("_BaseScale", _baseScaleBuffer);
         _material.enableInstancing = true;
+    }
 
+    /// <summary>
+    /// Creates indirect draw argument buffers for each mesh group
+    /// </summary>
+    private void CreateArgsBuffers(List<DrawData> drawData)
+    {
         for (int i = 0; i < _meshes.Count; i++)
         {
             Mesh mesh = _meshes[i];
@@ -123,58 +197,72 @@ public class FoliageController : MonoBehaviour
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// Draw mesh with a single draw call for a single mesh group
+    /// </summary>
+    private void DrawGrass(int index, Vector3 center)
     {
-        if (_player == null || _matrixBuffer == null) return;
+        _material.SetInt("_MatrixOffset", _meshStartIndices[index]);
 
-        _material.SetVector("_PlayerPos", _player.position);
+        Graphics.DrawMeshInstancedIndirect(
+            _meshes[index],
+            0,
+            _material,
+            new Bounds(center, Vector3.one * (_renderDistance * 2f)),
+            _argsBuffers[index],
+            0,
+            null,
+            ShadowCastingMode.On,
+            true,
+            0,
+            null,
+            LightProbeUsage.Off,
+            null
+        );
+    }
 
-        //float maxDistSqr = _cullDistance * _cullDistance;
-
-        for (int i = 0; i < _meshes.Count; i++)
+    /// <summary>
+    /// Creates the wind render texture
+    /// </summary>
+    private void CreateWindRenderTexture()
+    {
+        _windMap = new RenderTexture(_windMapSize, _windMapSize, 0, RenderTextureFormat.ARGBFloat)
         {
-            Vector3 center = _meshCenters[i];
-            float distSqr = (_player.position - center).sqrMagnitude;
-
-            //if (distSqr > maxDistSqr)
-            //    continue; // Cull distant groups
-
-            Mesh mesh = _meshes[i];
-            ComputeBuffer argsBuffer = _argsBuffers[i];
-            int offset = _meshStartIndices[i];
-
-            _material.SetInt("_MatrixOffset", offset);
-
-            Graphics.DrawMeshInstancedIndirect(
-                mesh,
-                0,
-                _material,
-                new Bounds(center, Vector3.one * (_renderDistance * 2f)), // tighter bound
-                argsBuffer,
-                0,
-                null,
-                ShadowCastingMode.On,
-                true,
-                0,
-                null,
-                LightProbeUsage.Off,
-                null
-            );
-        }
+            enableRandomWrite = true,
+            wrapMode = TextureWrapMode.Repeat
+        };
+        _windMap.Create();
     }
 
-    private void OnDisable()
+    /// <summary>
+    /// Dispatches the wind compute shader to update the global wind map
+    /// </summary>
+    private void ComputeWind()
     {
-        _matrixBuffer?.Release();
-        _baseScaleBuffer?.Release();
+        if (_windMap == null || !_windMap.IsCreated())
+            CreateWindRenderTexture();
 
-        foreach (var buffer in _argsBuffers)
-            buffer?.Release();
+        int kernel = _windCompute.FindKernel("WindNoise");
 
-        _argsBuffers.Clear();
+        _windCompute.SetTexture(kernel, "_WindMap", _windMap);
+        _windCompute.SetFloat("_Frequency", _windFrequency);
+        _windCompute.SetFloat("_Amplitude", _windAmplitude);
+        _windCompute.SetFloat("_Time", Time.time);
+        _windCompute.SetFloat("_Scale", _windScale);
+
+        int threadGroups = Mathf.Max(1, Mathf.CeilToInt(_windMapSize / 8.0f));
+        _windCompute.Dispatch(kernel, threadGroups, threadGroups, 1);
+
+        // Set the global texture for shaders using windmap
+        Shader.SetGlobalTexture("_WindMap", _windMap);
     }
 
-    Mesh FindMeshByName(string name)
+    /// <summary>
+    /// Finds a mesh by name in memory or asset database (Editor-only fallback)
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    private Mesh FindMeshByName(string name)
     {
         Mesh[] allMeshes = Resources.FindObjectsOfTypeAll<Mesh>();
         foreach (var m in allMeshes)
