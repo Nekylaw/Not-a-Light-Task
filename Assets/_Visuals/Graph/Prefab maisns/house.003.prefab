@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2857513008210254581}
+  - component: {fileID: 5845929280074881786}
   m_Layer: 0
   m_Name: house.003
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 5958971883856486923}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5845929280074881786
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568907898493940826}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 32.108963, y: 22.166924, z: 32.189133}
+  m_Center: {x: 0, y: 10.984348, z: 0.040088654}
 --- !u!1001 &6140724226991261152
 PrefabInstance:
   m_ObjectHideFlags: 0
