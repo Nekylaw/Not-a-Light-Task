@@ -32,12 +32,30 @@ public class PropLightRendererComponent : MonoBehaviour
 
     private void Awake()
     {
-        _player = FindFirstObjectByType<PlayerController>().transform;
-        _renderer = GetComponent<Renderer>();
+        Debug.Log("Awake PropLightRendererComponent");
+
+        var playerController = FindFirstObjectByType<PlayerController>();
+        if (playerController == null)
+        {
+            Debug.LogError("PlayerController not found");
+            return;
+        }
+
+
+        _player = playerController.transform;
+
+        _renderer = GetComponentInChildren<Renderer>();
+        if (_renderer == null)
+        {
+            Debug.LogError("Renderer not found");
+            return;
+        }
+
         _mpb = new MaterialPropertyBlock();
 
         _lightSource = GetComponentInParent<LightSourceComponent>();
     }
+
 
     private void Update()
     {
@@ -56,14 +74,14 @@ public class PropLightRendererComponent : MonoBehaviour
 
         _renderer.GetPropertyBlock(_mpb);
 
-        if (_lightSource == null || !_lightSource.IsLightOn)
-        {
-            _mpb.SetFloat("_BaseIntensity", 0);
-            _mpb.SetFloat("_GlowIntensity", 0);
+        //if ( _lightSource == null || !_lightSource.IsLightOn)
+        //{
+        //    _mpb.SetFloat("_BaseIntensity", 0);
+        //    _mpb.SetFloat("_GlowIntensity", 0);
 
-            _renderer.SetPropertyBlock(_mpb);
-            return;
-        }
+        //    _renderer.SetPropertyBlock(_mpb);
+        //    return;
+        //}
 
         _mpb.SetColor("_BaseColor", _baseColor);
         _mpb.SetColor("_GlowColor", _glowColor);

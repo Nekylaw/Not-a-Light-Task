@@ -172,17 +172,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5079178589685399282}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseColor: {r: 1, g: 1, b: 1, a: 1}
-  _glowColor: {r: 1, g: 1, b: 1, a: 1}
-  _baseIntensity: 1
-  _glowIntensity: 2
-  _glowAnimSpeed: 2
-  _glowAnimAmplitude: 0.2
-  _glowRadius: 0.2
-  _visibilityDistance: 20
-  _maxScreenDist: 0.5
+  _baseColor: {r: 1, g: 0.49438488, b: 0, a: 1}
+  _glowColor: {r: 1, g: 0, b: 0, a: 1}
+  _baseIntensity: 15
+  _glowIntensity: 10
+  _glowAnimSpeed: 1
+  _glowAnimAmplitude: 10
+  _glowRadius: 10
+  _visibilityDistance: 100
+  _maxScreenDist: 1
+  isAnOrb: 1
