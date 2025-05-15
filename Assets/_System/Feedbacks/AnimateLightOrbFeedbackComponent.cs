@@ -1,8 +1,9 @@
 using UnityEngine;
 using Game.Services.LightSources;
 using System.Collections.Generic;
+using System.Collections;
 
-public class LightSourceLeftOrbFeedbackComponent : MonoBehaviour
+public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 {
 
     [SerializeField]
@@ -15,24 +16,20 @@ public class LightSourceLeftOrbFeedbackComponent : MonoBehaviour
     public float _orbitSpeed = 5f;
 
     private List<GameObject> _orbParticuleList = new();
-
+    private void Awake()
+    {
+        if (!TryGetComponent<LightSourceComponent>(out _lightSource))
+            return;
+    }
 
     private void OnEnable()
     {
         LightSourcesService.Instance.OnTriggerLight += HandleTriggerLight;
     }
 
-
-
     private void OnDisable()
     {
         LightSourcesService.Instance.OnTriggerLight -= HandleTriggerLight;
-    }
-
-    private void Awake()
-    {
-        if (!TryGetComponent<LightSourceComponent>(out _lightSource))
-            return;
     }
 
     void Start()
@@ -63,6 +60,9 @@ public class LightSourceLeftOrbFeedbackComponent : MonoBehaviour
 
     private void Animate()
     {
+        if (_lightSource == null || _orbParticuleList == null)
+            return;
+
         foreach (GameObject orb in _orbParticuleList)
         {
             if (orb == null)
@@ -78,10 +78,29 @@ public class LightSourceLeftOrbFeedbackComponent : MonoBehaviour
             return;
 
         int lastIndex = _orbParticuleList.Count - 1;
-
         GameObject orb = _orbParticuleList[lastIndex];
-        _orbParticuleList.RemoveAt(lastIndex);
-        Destroy(orb);
+        _orbParticuleList.RemoveAt(lastIndex); 
+
+        if (orb != null)
+        {
+            var fadeOut = orb.GetComponent<OrbFadeOutFeedbackComponent>();
+            if (fadeOut)
+            {
+                fadeOut.FadeOut();
+                StartCoroutine(DestroyOrbAfterFade(orb, fadeOut.FadeDuration));
+            }
+            else
+            {
+                Destroy(orb);
+            }
+        }
+    }
+
+    private IEnumerator DestroyOrbAfterFade(GameObject orb, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (orb != null)
+            Destroy(orb);
     }
 
 }
