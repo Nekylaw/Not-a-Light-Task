@@ -13,7 +13,8 @@ public class DetectionBehaviorComponent : MonoBehaviour
     private float _halfHeight = 0f;
     private bool _isGrounded = false;
     private bool _isTouchingWall = false;
-    
+    private Vector3 _groundNormal = Vector3.zero;
+
     #endregion
 
     #region Lifecycle
@@ -36,11 +37,12 @@ public class DetectionBehaviorComponent : MonoBehaviour
     }
 
     #endregion
-    
+
     #region Public API
 
     public bool IsGrounded => _isGrounded;
     public bool IsTouchingWall => _isTouchingWall;
+    public Vector3 GroundNormal => _groundNormal;
 
     #endregion
 
@@ -48,9 +50,21 @@ public class DetectionBehaviorComponent : MonoBehaviour
 
     private bool CheckGround()
     {
-        Vector3 feetPosition = _rigidbody.position - transform.up * _halfHeight;
-        return Physics.CheckSphere(feetPosition, _settings.DetectionRange, _settings.JumpableLayers);
+        Vector3 origin = _rigidbody.position;
+        Vector3 direction = -transform.up;
+        float distance = _halfHeight + _settings.DetectionRange;
+
+        RaycastHit hit;
+        if (Physics.SphereCast(origin, _settings.DetectionRange, direction, out hit, distance, _settings.JumpableLayers))
+        {
+            _groundNormal = hit.normal;
+            return true;
+        }
+
+        _groundNormal = Vector3.up;
+        return false;
     }
+
 
     private bool CheckWall()
     {

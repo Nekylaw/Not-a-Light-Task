@@ -10,30 +10,35 @@ namespace Game.Services.LightSources
         private LightSourcesService _lightService = null;
 
         [SerializeField]
+        private LightSourceSettings _settings = null;
+
+        [SerializeField]
         private Transform _lightPoint = null;
 
+        private int _orbSlot = 0;
         private bool _isLightOn = false;
 
-        // public orb required to ligth on setting
-        public float AttractRange = 0f;
-        public float BrightnessRange = 0f;
-
+        private bool _isRegistered = false;
 
         #endregion
 
 
         #region Lifecycle
 
+        private void Awake()
+        {
+            if (_settings == null)
+                Debug.LogError($"{nameof(LightSourceSettings)} component not found.");
+        }
+
         private void Start()
         {
-            Debug.Log("@todo light settings asset");
-            AttractRange = 2;
-            BrightnessRange = 20;
+            _orbSlot = 0;
         }
 
         private void Update()
         {
-            DetectBullet();
+            DetectOrb();
         }
 
         private void OnEnable()
@@ -52,8 +57,6 @@ namespace Game.Services.LightSources
             if (_lightService == null)
                 return false;
 
-            Debug.Log("Light component registered to Light Service ");
-
             return _lightService.RegisterLightSource(this);
         }
 
@@ -71,20 +74,22 @@ namespace Game.Services.LightSources
         #region Public API
 
         public bool IsLightOn => _isLightOn;
+        public int OrbSlot => _orbSlot;
 
         public Vector3 LightPoint => _lightPoint.position;
 
+        public LightSourceSettings Settings => _settings;
+
         internal bool SwitchOn()
         {
-            if (_isLightOn)
+
+            SetOrbSlots(1);
+
+            if (!CanLightOn())
                 return false;
 
-            _isLightOn = CanLightOn();
-
-            if (_isLightOn)
-                Debug.Log("Light Component ON");
-
-            return _isLightOn;
+            _isLightOn = true;
+            return true;
         }
 
         internal bool SwitchOff()
@@ -101,31 +106,39 @@ namespace Game.Services.LightSources
 
         #region Private API
 
-        private bool DetectBullet()
+        private bool DetectOrb()
         {
             if (_isLightOn)
                 return false;
 
-            Collider[] colliders = Physics.OverlapSphere(_lightPoint.position, AttractRange); //@todo bullet layer
+            Collider[] colliders = Physics.OverlapSphere(_lightPoint.position, _settings.AttractRange, _settings.OrbLayer);
 
             if (colliders.Length <= 0)
                 return false;
 
             foreach (Collider collider in colliders)
             {
-                if (!collider.TryGetComponent(out BulletComponent bullet))
+                if (!collider.TryGetComponent(out OrbComponent orb))
                     continue;
 
-                //Debug.Log("Hittttttt");
-                bullet.AttractTo(_lightPoint.position, this);
+                orb.AttractTo(_lightPoint.position, this);
             }
             return true;
         }
 
         private bool CanLightOn()
         {
-            //@todo check for light on
-            return true;
+            if (_isLightOn)
+                return false;
+
+            return _orbSlot >= _settings.RequiredOrbs;
+        }
+
+        public void SetOrbSlots(int amount)
+        {
+            _orbSlot += amount;
+            Debug.Log("Light slots:" + _orbSlot);
+            Debug.Log("Light slots req :" + _settings.RequiredOrbs);
         }
 
         #endregion
@@ -136,7 +149,7 @@ namespace Game.Services.LightSources
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_lightPoint.position, AttractRange);
+            Gizmos.DrawWireSphere(_lightPoint.position, _settings.AttractRange);
         }
 
         #endregion

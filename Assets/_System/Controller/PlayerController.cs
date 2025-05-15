@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private MovementBehaviorComponent _movement = null;
     private ShootBehaviorComponent _shoot = null;
     private JumpBehaviorComponent _jump = null;
+    private PickUpBehaviorComponent _pickup = null;
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _previousMovementDirection = Vector3.zero;
@@ -48,6 +49,9 @@ public class PlayerController : MonoBehaviour
 
         if (!TryGetComponent<JumpBehaviorComponent>(out _jump))
             Debug.LogError($"{nameof(JumpBehaviorComponent)} component not found", this);
+
+        if (!TryGetComponent<PickUpBehaviorComponent>(out _pickup))
+            Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
 
         _camera = GetComponentInChildren<CameraController>();
         if (_camera == null)
@@ -101,6 +105,8 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Shoot.performed += HandleShootInput;
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
 
+        _gameInputs.Player.Pickup.performed += HandlePickupInput;
+
         _gameInputs.Player.Jump.started += HandleJumpInput;
     }
 
@@ -117,6 +123,8 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Shoot.performed -= HandleShootInput;
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
+
+        _gameInputs.Player.Pickup.performed -= HandlePickupInput;
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
     }
@@ -162,24 +170,29 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             _isAiming = true;
-            //Debug.Log("Aim");
+            _shoot.IsAiming = true;
         }
         else if (context.canceled)
         {
             _isAiming = false;
-            //Debug.Log("Release Aim");
+            _shoot.IsAiming = false;
         }
     }
 
     private void HandleShootInput(InputAction.CallbackContext context)
     {
-        if (!_isAiming)
-            return;
+        //if (!_isAiming)
+        //    return;
 
         Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
-        _shoot.Shoot(_aimTargetRay);
+        _shoot.Shoot(_aimTargetRay, _isAiming);
+    }
+
+    private void HandlePickupInput(InputAction.CallbackContext context)
+    {
+        _pickup.Pickup();
     }
 
     private void HandleJumpInput(InputAction.CallbackContext context)
