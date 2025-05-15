@@ -8,17 +8,17 @@ public class PropLightRendererComponent : MonoBehaviour
     [SerializeField] private Color _glowColor = Color.white;
 
     [Header("Intensity")]
-    [SerializeField] private float _baseIntensity = 1.0f;
-    [SerializeField] private float _glowIntensity = 2.0f;
+    [SerializeField] private float _baseIntensity = 15f;
+    [SerializeField] private float _glowIntensity = 20f;
 
     [Header("Animation")]
-    [SerializeField] private float _glowAnimSpeed = 2.0f;
-    [SerializeField] private float _glowAnimAmplitude = 0.2f;
+    [SerializeField] private float _glowAnimSpeed = 1f;
+    [SerializeField] private float _glowAnimAmplitude = 10f;
 
     [Header("Glow")]
-    [SerializeField] private float _glowRadius = 0.2f;
-    [SerializeField] private float _visibilityDistance = 20.0f;
-    [SerializeField] private float _maxScreenDist = 0.5f;
+    [SerializeField] private float _glowRadius = 10f;
+    [SerializeField] private float _visibilityDistance = 100f;
+    [SerializeField] private float _maxScreenDist = 1f;
 
     private Transform _player;
 
