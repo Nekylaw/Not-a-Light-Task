@@ -1,6 +1,9 @@
 using Game.Services.LightSources;
 using UnityEngine;
 
+/// <summary>
+/// Defines a component that manages the rendering of a prop light individually using a shared material.
+/// </summary>
 public class PropLightRendererComponent : MonoBehaviour
 {
     [Header("Color")]

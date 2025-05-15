@@ -114,7 +114,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DensityMultiplier: 10
-    - _DensityThreshold: 0.6
+    - _DensityThreshold: 0.88
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _Direction: 1
@@ -122,12 +122,12 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FogAlpha: 0.737
-    - _FogClearAttenuation: 10
+    - _FogClearAttenuation: 9.5
     - _FogDensity: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _LightScattering: 1
+    - _LightScattering: 0.999
     - _MaxDistance: 70
     - _Metallic: 0
     - _NoiseOffset: 0.5
@@ -140,7 +140,7 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 0.04
+    - _Speed: 0.02
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _StepSize: 0.5
@@ -149,13 +149,13 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.11826706, g: 0.078631185, b: 0.1792453, a: 1}
+    - _Color: {r: 0.11580668, g: 0.08891064, b: 0.16981131, a: 1}
     - _Direction: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FogCenter: {r: 0, g: 0, b: 0, a: 0}
     - _FogColor: {r: 0.7, g: 0.7, b: 0.8, a: 1}
     - _FogSize: {r: 10, g: 10, b: 10, a: 0}
-    - _LightContribution: {r: 0.06792497, g: 0.066749714, b: 0.11320752, a: 1}
+    - _LightContribution: {r: 0.0013349934, g: 0.0018524153, b: 0.01886791, a: 1}
     - _NoiseDirection: {r: 1, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

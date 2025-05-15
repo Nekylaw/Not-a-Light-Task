@@ -98,7 +98,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BaseIntensity: 20
+    - _BaseIntensity: 15
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -114,12 +114,12 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowAnimationAmplitude: 5
-    - _GlowAnimationSpeed: 1.5
+    - _GlowAnimationAmplitude: 10
+    - _GlowAnimationSpeed: 1
     - _GlowFlickerAmplitude: 0.2
     - _GlowFlickerSpeed: 2
-    - _GlowIntensity: 50
-    - _GlowRadius: 1
+    - _GlowIntensity: 20
+    - _GlowRadius: 10
     - _GlowSoftness: 0.2
     - _GlowVisibilityThreshold: 100
     - _MaxScreenDist: 1
@@ -137,12 +137,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.93522966, b: 0.5235849, a: 1}
     - _BaseUnlitColor: {r: 0.9528302, g: 0.8442125, b: 0.57978815, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowCenter: {r: 0.5, g: 0.5, b: 1, a: 1}
-    - _GlowColor: {r: 0.990566, g: 0.973856, b: 0.4906105, a: 1}
+    - _GlowColor: {r: 0.40603596, g: 0.23113209, b: 1, a: 1}
     - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

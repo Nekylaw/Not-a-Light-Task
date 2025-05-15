@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Defines a component that fades out the glow of an orb feedback.
+/// </summary>
 [RequireComponent(typeof(Renderer))]
 public class OrbFadeOutFeedbackComponent : MonoBehaviour
 {
