@@ -27,8 +27,6 @@ public class OrbComponent : MonoBehaviour
 
     private IEnumerator AttractOrbCoroutine(Vector3 lightPoint, LightSourceComponent lightSource)
     {
-
-        Debug.Log("@todo Use orb attract settings on light sources");
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;

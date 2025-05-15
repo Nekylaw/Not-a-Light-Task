@@ -15,6 +15,9 @@ namespace Game.Services.LightSources
         [SerializeField]
         private Transform _lightPoint = null;
 
+        [SerializeField]
+        private bool _isAllowedToLight = false;
+
         private int _orbSlot = 0;
         private bool _isLightOn = false;
 
@@ -82,7 +85,6 @@ namespace Game.Services.LightSources
 
         internal bool SwitchOn()
         {
-
             SetOrbSlots(1);
 
             if (!CanLightOn())
@@ -126,9 +128,14 @@ namespace Game.Services.LightSources
             return true;
         }
 
+        public void AllowLight(bool allow)
+        {
+            _isAllowedToLight = allow;
+        }
+
         private bool CanLightOn()
         {
-            if (_isLightOn)
+            if (_isLightOn || !_isAllowedToLight)
                 return false;
 
             return _orbSlot >= _settings.RequiredOrbs;
@@ -148,8 +155,11 @@ namespace Game.Services.LightSources
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
+            Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(_lightPoint.position, _settings.AttractRange);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_lightPoint.position, _settings.BrightnessRange);
         }
 
         #endregion
