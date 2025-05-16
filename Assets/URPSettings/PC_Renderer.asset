@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  m_Active: 0
-  injectionPoint: 550
+  m_Active: 1
+  injectionPoint: 450
   fetchColorBuffer: 1
   requirements: 1
   passMaterial: {fileID: 2100000, guid: 0d448aa8971b45b48a3a3648d4ea9111, type: 2}
@@ -32,7 +32,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
   m_Name: Outlines
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   injectionPoint: 450
   fetchColorBuffer: 1
   requirements: 6
@@ -65,9 +65,9 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 7200000, guid: b9a23f869c4fd45f19c5ada54dd82176, type: 3}
   m_RendererFeatures:
-  - {fileID: -6862385937406136391}
   - {fileID: -3170019903677639466}
-  m_RendererFeatureMap: b96f453159e8c3a0d654606eb1d301d4
+  - {fileID: -6862385937406136391}
+  m_RendererFeatureMap: d654606eb1d301d4b96f453159e8c3a0
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
