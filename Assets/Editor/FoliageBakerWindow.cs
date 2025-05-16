@@ -34,12 +34,12 @@ public class FoliageBakerWindow : EditorWindow
         if (_hasBaked)
             EditorGUILayout.HelpBox("Bake done.", MessageType.Info);
 
-        string preview = GetDataInfos();
-        if (!string.IsNullOrEmpty(preview))
-        {
-            EditorGUILayout.Space();
-            EditorGUILayout.HelpBox(preview, MessageType.None);
-        }
+        //string preview = GetDataInfos();
+        //if (!string.IsNullOrEmpty(preview))
+        //{
+        //    EditorGUILayout.Space();
+        //    EditorGUILayout.HelpBox(preview, MessageType.None);
+        //}
 
         if (GUILayout.Button("Save"))
             SaveToJson(Path.Combine("Resources/", _saveFile));

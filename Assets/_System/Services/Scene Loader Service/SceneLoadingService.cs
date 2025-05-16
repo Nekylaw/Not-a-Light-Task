@@ -47,7 +47,7 @@ namespace Game.Scenes
         public event EndLoadingDelegate OnEndNavigation;
 
         /// <summary>
-        /// The component used to play scene operations' coroutines.
+        /// The component used to play scene operations coroutines.
         /// </summary>
         private SceneLoaderComponent _sceneLoaderComponent = null;
 
@@ -67,7 +67,7 @@ namespace Game.Scenes
                 return;
 
             Debug.Log("_sceneLoaderComponent in Service found? " + (SceneLoader != null));
-            Debug.Log("Xcene to load " + scene);
+            Debug.Log("Scene to load " + scene);
             SceneLoader.LoadScene(scene);
             OnBeginNavigation?.Invoke(scene, SceneManager.GetActiveScene().name == scene ? null : new string[] { SceneManager.GetActiveScene().name });
 

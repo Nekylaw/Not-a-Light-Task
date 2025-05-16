@@ -11,6 +11,8 @@ public class LightSourceSettings : ScriptableObject
 
     public LayerMask OrbLayer = ~0;
 
+    public float DissipationSpeed = 0f; 
+
     [Header("Orb Attraction")]
     
     public float AttractRange = 0f;

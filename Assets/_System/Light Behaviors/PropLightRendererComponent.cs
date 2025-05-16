@@ -32,8 +32,6 @@ public class PropLightRendererComponent : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake PropLightRendererComponent");
-
         var playerController = FindFirstObjectByType<PlayerController>();
         if (playerController == null)
         {
