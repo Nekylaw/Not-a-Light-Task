@@ -35,14 +35,6 @@ public class UiManager : MonoBehaviour
     
     #region  PUBLIC METHODS
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ShowUI();
-            UIPlacement();
-        }
-    }
 
     public void UIStartGame()
     {
@@ -71,7 +63,7 @@ public class UiManager : MonoBehaviour
 
     public void UIPlacement()
     {
-        ImmersiveCanvas.transform.position = Player.transform.position;
+        ImmersiveCanvas.transform.position = new Vector3(Player.transform.position.x + 2, Player.transform.position.y, Player.transform.position.z + 3);
         ImmersiveCanvas.transform.rotation = Player.transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
     }
 
