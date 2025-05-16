@@ -74,11 +74,16 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Disable();
     }
 
-    void FixedUpdate()
+    void FixedUpdate()  
     {
-        float delta = Time.fixedDeltaTime;
-        UpdateMovement(delta);
-    }
+
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing)
+        {
+            float delta = Time.fixedDeltaTime;
+            UpdateMovement(delta);
+            
+        }
+}
 
     private void LateUpdate()
     {

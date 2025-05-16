@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,11 +17,33 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
         gameState = GameState.StartMenu;
         
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        UiManager.Instance.ShowUI();
+        UiManager.Instance.UIPlacement();
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Playing)
+        {
+            UiManager.Instance.ShowUI();
+            UiManager.Instance.UIPlacement();
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            gameState = GameState.Paused;
+        }
+        
+        Debug.Log(Cursor.lockState.HumanName());
+        Debug.Log(Cursor.visible);
+    }
+
     #region PUBLIC PROPERTIES
 
     public GameState gameState;
@@ -34,7 +57,7 @@ public class GameManager : MonoBehaviour
     #endregion
     
     #region PUBLIC METHODS
-
+    
     public void StartGame()
     {
         UiManager.Instance.HideUI();
