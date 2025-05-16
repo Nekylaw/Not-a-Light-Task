@@ -1,7 +1,10 @@
+using _System.Game_Manager;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Services.LightSources
 {
+    [System.Serializable]
     public class LightSourceComponent : MonoBehaviour
     {
 
@@ -22,6 +25,8 @@ namespace Game.Services.LightSources
         private bool _isLightOn = false;
 
         private bool _isRegistered = false;
+
+        [SerializeField] public int LightGroupId;
 
         #endregion
 
@@ -86,11 +91,13 @@ namespace Game.Services.LightSources
         internal bool SwitchOn()
         {
             SetOrbSlots(1);
-
+            
             if (!CanLightOn())
                 return false;
 
             _isLightOn = true;
+            
+            EndLevelManager.instance.CheckLightSources(this);
             return true;
         }
 
