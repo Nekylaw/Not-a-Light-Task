@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
     private InputMode _inputMode = InputMode.Controller;
 
+    [SerializeField] GameObject _weaponSwitching;
+
     #endregion
 
 
@@ -189,7 +191,11 @@ public class PlayerController : MonoBehaviour
         Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
-        _shoot.Shoot(_aimTargetRay);
+        if (_weaponSwitching.GetComponent<WeaponSwitching>().shootMode)
+        {
+             _shoot.Shoot(_aimTargetRay);
+        }
+       
     }
 
     private void HandlePacifyShootInput(InputAction.CallbackContext context)
@@ -200,7 +206,11 @@ public class PlayerController : MonoBehaviour
         Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
 
-        _shoot.PacifyShoot(_aimTargetRay);
+        if (_weaponSwitching.GetComponent<WeaponSwitching>().pacifyMode)
+        { 
+            _shoot.PacifyShoot(_aimTargetRay);
+        }
+       
     }
 
     

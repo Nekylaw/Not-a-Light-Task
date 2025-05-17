@@ -4,8 +4,8 @@ public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
 
-    public bool shootMode = false;
-    public bool pacifyMode = false;
+    public  bool shootMode = false;
+    public  bool pacifyMode = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
