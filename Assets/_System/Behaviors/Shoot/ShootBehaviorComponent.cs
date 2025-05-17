@@ -9,6 +9,7 @@ public class ShootBehaviorComponent : MonoBehaviour
     private ShootSettings _settings = null;
 
     private float _timer = 0;
+    WeaponSwitching weaponSwitching = new WeaponSwitching();
 
     private void Awake()
     {
@@ -40,12 +41,13 @@ public class ShootBehaviorComponent : MonoBehaviour
 
         //if (Physics.Raycast(aimRay, out RaycastHit hit))
         //    Debug.Log("Shoot on " + hit.collider.name);
-
-        GameObject bullet = Instantiate(_settings.Bullets[0].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
-
+        if (weaponSwitching.shootMode)
+        {
+            GameObject bullet = Instantiate(_settings.Bullets[0].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
+            bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
+            Debug.Log("regular shoot called");
+        }
         //@todo make the bullet shoot itself
-        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
-        Debug.Log("regular shoot called");
         return true;
     }
 
@@ -55,11 +57,12 @@ public class ShootBehaviorComponent : MonoBehaviour
             return false;
 
         _timer = _settings.Rate;
-
-        GameObject bullet = Instantiate(_settings.Bullets[1].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
-
-        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction*_settings.FireForce, ForceMode.Impulse);
-        Debug.Log("pacify shoot called");
+        if (weaponSwitching.pacifyMode)
+        {
+            GameObject bullet = Instantiate(_settings.Bullets[1].Bullet, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
+            bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction*_settings.FireForce, ForceMode.Impulse);
+            Debug.Log("pacify shoot called");
+        }
         return true;
     }
 }
