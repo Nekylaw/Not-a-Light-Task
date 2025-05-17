@@ -15,16 +15,16 @@ public class NEW_IAController : MonoBehaviour
    float distance;
    float nearestDistance = 100;
 
-   public bool isEvil = true;
+   private CreatureState creatureState = new CreatureState();
    void Update()
    {
-      if (nearestObject != null && isEvil == true)
+      if (nearestObject != null && creatureState.isEvil == true)
       {
          MoveTo(nearestObject.transform.position);
       }
       else
       {
-         if (isEvil == true)
+         if (creatureState.isEvil == true)
          {
             ScanWorldOrbs();
          }
@@ -34,7 +34,7 @@ public class NEW_IAController : MonoBehaviour
 
    private void OnCollisionEnter(Collision other)
    {
-      if (other.gameObject.CompareTag("Orb") && isEvil == true)
+      if (other.gameObject.CompareTag("Orb") && creatureState.isEvil)
       {
          other.gameObject.SetActive(false);
          nearestObject = null;
@@ -44,7 +44,7 @@ public class NEW_IAController : MonoBehaviour
 
       if (other.gameObject.CompareTag("Pacify"))
       {
-         isEvil = false;
+         creatureState.isEvil = false;
          foreach (var orb in orbsEaten)
          {
             orb.SetActive(true);

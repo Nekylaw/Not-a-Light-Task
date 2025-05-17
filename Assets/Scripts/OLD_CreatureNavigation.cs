@@ -45,7 +45,7 @@ public class CreatureNavigation : MonoBehaviour
             timer = 0;  
             transform.LookAt(newPos);
         }
-        if (objs.Count >= 1 && GetComponent<CreatureState>().isEvil)
+        if (objs.Count >= 1)
         {
             Debug.Log("Light detected : creature walks toward it");
             GoToLight();
