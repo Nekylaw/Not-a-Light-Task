@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
         {
             gameState = GameState.Paused;
             UiManager.Instance.ShowUI();
+            UiManager.Instance.UIStartGame();
             UiManager.Instance.UIPlacement();
         }
         else if ( gameState == GameState.Paused)

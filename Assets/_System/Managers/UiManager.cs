@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +20,14 @@ public class UiManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!CheckMenuVisibility())
+        {
+            UIPlacement();
+        }
+    }
+
     #region Serialize attributes
     [SerializeField] private GameObject StartGamePanel;
     [SerializeField] private GameObject EndGamePanel;
@@ -25,6 +35,8 @@ public class UiManager : MonoBehaviour
 
     [SerializeField] private GameObject ImmersiveCanvas;
     [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject MenuPoper;
+    [SerializeField] private Camera MainCamera;
     #endregion
     
     #region PRIVATE ATTRIBUTES
@@ -35,10 +47,11 @@ public class UiManager : MonoBehaviour
     
     #region  PUBLIC METHODS
 
-
     public void UIStartGame()
     {
-        StartGamePanel.SetActive(false);
+        StartGamePanel.SetActive(true);
+        OptionsPanel.SetActive(false);
+        EndGamePanel.SetActive(false);
     }
 
     public void UIPauseGame(GameObject panelToSave)
@@ -63,8 +76,11 @@ public class UiManager : MonoBehaviour
 
     public void UIPlacement()
     {
-        ImmersiveCanvas.transform.position = new Vector3(Player.transform.position.x + 2, Player.transform.position.y, Player.transform.position.z + 3);
-        ImmersiveCanvas.transform.rotation = Player.transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
+        ImmersiveCanvas.transform.DOMove(MenuPoper.transform.position, 0.5f);
+        ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.5f);
+        
+        //ImmersiveCanvas.transform.position = MenuPoper.transform.position;
+        //ImmersiveCanvas.transform.rotation = Player.transform.rotation;
     }
 
     public void HideUI()
@@ -75,6 +91,12 @@ public class UiManager : MonoBehaviour
     public void ShowUI()
     {
         ImmersiveCanvas.SetActive(true);
+    }
+
+    public bool CheckMenuVisibility()
+    {
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(MainCamera);
+        return planes.All(plane => plane.GetDistanceToPoint(ImmersiveCanvas.transform.position) >= 0);
     }
 
     #endregion
