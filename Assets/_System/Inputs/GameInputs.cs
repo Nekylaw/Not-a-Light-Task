@@ -98,6 +98,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""066191db-1199-4243-804a-cde51562844a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -439,6 +448,28 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6a01a50-59cd-4e99-a64c-c394d4ee2156"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85499562-44ac-40e7-82e7-4281ff47d0e6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +936,28 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1f70e018-4b96-4962-a252-335f74f864f9"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cfd1608-5a69-4f1e-9c3b-1a84df28456a"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""38c99815-14ea-4617-8627-164d27641299"",
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
@@ -1034,6 +1087,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1121,6 +1175,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Pickup;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @GameInputs m_Wrapper;
@@ -1133,6 +1188,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1166,6 +1222,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Pickup.started += instance.OnPickup;
             @Pickup.performed += instance.OnPickup;
             @Pickup.canceled += instance.OnPickup;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1194,6 +1253,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Pickup.started -= instance.OnPickup;
             @Pickup.performed -= instance.OnPickup;
             @Pickup.canceled -= instance.OnPickup;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1384,6 +1446,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPickup(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

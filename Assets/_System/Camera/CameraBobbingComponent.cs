@@ -39,8 +39,8 @@ public class CameraBobbingComponent : MonoBehaviour
     {
         if (_movementBehavior == null || _detector == null)
             return;
-
-
+        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+            return;
         if (_movementBehavior.IsMoving && _detector.IsGrounded)
         {
             Debug.Log("Bobbing");

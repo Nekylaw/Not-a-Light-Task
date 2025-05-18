@@ -35,6 +35,7 @@ public class MovementBehaviorComponent : MonoBehaviour
 
     public bool Move(Vector3 direction, float delta, bool isAiming)
     {
+        
         direction = _settings.UseProgressiveMove ? Vector3.ClampMagnitude(direction, 1) : direction.normalized;
         float dot = Vector3.Dot(direction, Vector3.Cross(Vector3.down, _detector.GroundNormal));
 
@@ -47,15 +48,16 @@ public class MovementBehaviorComponent : MonoBehaviour
         Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
         _isMoving = desiredVelocity.magnitude > 0.1f;
-        if (direction.magnitude > 0.01f)
+        if (direction.magnitude > 0.01f && GameManager.Instance.gameState == GameManager.GameState.Playing)
         {
             Vector3 accel = (desiredVelocity - _rigidbody.linearVelocity);
             _rigidbody.AddForce(accel * _settings.AccelerationFactor, ForceMode.Acceleration);
         }
         else
         {
-            Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
-            _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
+            _rigidbody.linearVelocity = Vector3.zero;
+            //Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
+            //_rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
         }
 
         BehaviorsService.Move(direction, desiredVelocity.magnitude);

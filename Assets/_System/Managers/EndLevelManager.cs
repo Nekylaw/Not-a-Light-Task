@@ -29,11 +29,11 @@ namespace _System.Game_Manager
         #region Lists
 
         
-        private List<LightSourceComponent> LightSourcesToCompleteFirstCheckPoint = new();
-        private List<LightSourceComponent> LightSourcesToCompleteSecondCheckPoint = new();
-        private List<LightSourceComponent> LightSourcesToCompleteThirdCheckPoint = new();
-        private List<LightSourceComponent> LightSourcesToCompleteFourthCheckPoint = new();
-        private List<LightSourceComponent> LightSourcesToCompleteFifthCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteFirstCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteSecondCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteThirdCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteFourthCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteFifthCheckPoint = new();
 
         public List<int> CheckPointsCompleted = new();
         
@@ -96,19 +96,15 @@ namespace _System.Game_Manager
 
         private void ListsLoader()
         {
-            var _lightSources = GameObject.FindGameObjectsWithTag("LightSource");
-
-            foreach (var VARIABLE in _lightSources)
+            foreach (var VARIABLE in LightSourcesService.Instance.LightSources)
             {
-                var comp = VARIABLE.GetComponent<LightSourceComponent>();
-
-                if (comp.LightGroupId == 0)
+                if (VARIABLE.LightGroupId == 0)
                 {
-                    Debug.Log("light source sans ID : " + VARIABLE.name);
+                    Debug.Log("light source sans ID : " + VARIABLE.gameObject.name);
                     return;
                 }
                 
-                SortLightSources(comp.LightGroupId, comp);
+                SortLightSources(VARIABLE.LightGroupId, VARIABLE);
             }
         }
 

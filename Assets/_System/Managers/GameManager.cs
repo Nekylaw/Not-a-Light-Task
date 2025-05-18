@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.StartMenu;
         
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
         UiManager.Instance.ShowUI();
         UiManager.Instance.UIPlacement();
@@ -35,13 +35,21 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Playing)
+        
+    }
+
+    private void OnPause()
+    {
+        if (gameState == GameState.Playing)
         {
+            gameState = GameState.Paused;
             UiManager.Instance.ShowUI();
             UiManager.Instance.UIPlacement();
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            gameState = GameState.Paused;
+        }
+        else if ( gameState == GameState.Paused)
+        {
+            UiManager.Instance.HideUI();
+            gameState = GameState.Playing;
         }
     }
 
@@ -63,7 +71,6 @@ public class GameManager : MonoBehaviour
     {
         UiManager.Instance.HideUI();
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         gameState = GameState.Playing;
     }
 
@@ -72,7 +79,6 @@ public class GameManager : MonoBehaviour
         UiManager.Instance.UIPauseGame(panel);
         Cursor.visible = true;
         
-        Cursor.lockState = CursorLockMode.Confined;
         gameState = GameState.Paused;
     }
 
@@ -90,7 +96,6 @@ public class GameManager : MonoBehaviour
     {
         UiManager.Instance.UIEndGame();
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
         gameState = GameState.GameOver;
     }
 

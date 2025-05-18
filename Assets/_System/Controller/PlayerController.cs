@@ -76,14 +76,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()  
     {
-
-        if (GameManager.Instance.gameState == GameManager.GameState.Playing)
-        {
-            float delta = Time.fixedDeltaTime;
-            UpdateMovement(delta);
-            
-        }
-}
+        float delta = Time.fixedDeltaTime;
+        UpdateMovement(delta);
+    }
 
     private void LateUpdate()
     {
@@ -186,8 +181,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShootInput(InputAction.CallbackContext context)
     {
-        //if (!_isAiming)
-        //    return;
 
         Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         _aimTargetRay = Camera.main.ScreenPointToRay(crossHair);

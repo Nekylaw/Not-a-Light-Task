@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2058959589590791125}
   - component: {fileID: 5335932366480722830}
   - component: {fileID: 7685435915129065061}
-  - component: {fileID: 537660358334797750}
+  - component: {fileID: 6183409374173809110}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -64,7 +64,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
---- !u!114 &537660358334797750
+  spawnRate: 0
+--- !u!114 &6183409374173809110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,6 +74,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3499093723084321153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffddf7898ddb04229ac5cb7fd87f6ad5, type: 3}
+  m_Script: {fileID: 11500000, guid: 137b1a7c3590d4c6fa2c3ba7d75c483d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CheckPointsCompleted: 

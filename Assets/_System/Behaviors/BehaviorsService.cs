@@ -45,6 +45,12 @@ namespace Services.Behaviors
 
         public static void Move(Vector3 dir, float speed)
         {
+            if (GameManager.Instance.gameState == GameManager.GameState.Paused)
+            {
+                OnWalkStop?.Invoke();
+                return;
+            }
+            
             OnWalk?.Invoke(dir, speed);
 
             if (speed <= 0)
