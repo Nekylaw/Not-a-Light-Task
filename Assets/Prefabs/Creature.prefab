@@ -1178,7 +1178,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1001311493483489802}
-  - component: {fileID: 4130618911024639314}
   m_Layer: 0
   m_Name: FOV
   m_TagString: Untagged
@@ -1201,29 +1200,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7063829920853243660}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4130618911024639314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2802507077645869705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a056ecd19411df34aafc0c4d9e21a2ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angle: 30
-  height: 4.39
-  distance: 29.8
-  meshColor: {r: 1, g: 0.68050647, b: 0, a: 0.1764706}
-  scanFrequency: 30
-  lightLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &2806569039775031564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1247,7 @@ GameObject:
   - component: {fileID: 2383854696470284488}
   - component: {fileID: 5877954039892119898}
   - component: {fileID: 9145327532134017321}
-  - component: {fileID: 5982978102368230571}
+  - component: {fileID: 1638856332756463637}
   m_Layer: 0
   m_Name: body
   m_TagString: Creature
@@ -1432,7 +1408,7 @@ NavMeshAgent:
   m_BaseOffset: 0.49999997
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5982978102368230571
+--- !u!114 &1638856332756463637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1441,17 +1417,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4578512629234555910}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d03d66f3b78444e8829c0c0df1905586, type: 3}
+  m_Script: {fileID: 11500000, guid: 62a5817e674ffa14dbf3f17a30a301fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 50
-  wanderTimer: 12.05
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  lightLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  allOrbs: []
+  nearestObject: {fileID: 0}
+  orbsEaten: []
+  circRadius: 10
+  circDistance: 10
+  wanderRandomizer: 1
 --- !u!1 &8076505656521103436
 GameObject:
   m_ObjectHideFlags: 0
