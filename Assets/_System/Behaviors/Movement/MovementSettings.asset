@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def55a675003ef14595c7188f5115ed4, type: 3}
   m_Name: MovementSettings
   m_EditorClassIdentifier: 
-  Speed: 20
-  FallingSpeed: 50
-  GravityMultiplier: 2.5
+  Speed: 12
   SpeedRatioOnAim: 0.6
-  AirControl: 0.8
+  FallingSpeed: 20
+  GravityMultiplier: 10
   UseProgressiveMove: 1
+  AccelerationFactor: 6
+  DecelerationFactor: 12
+  SlopeFactor: 0
+  AirControl: 1

@@ -29,6 +29,9 @@ public class JumpBehaviorComponent : MonoBehaviour
     {
         if (!_detector.IsGrounded)
             return false;
+        
+        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+            return false;
 
         _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
         _rigidbody.AddForce(Vector3.up * _settings.JumpForce, ForceMode.Impulse);
