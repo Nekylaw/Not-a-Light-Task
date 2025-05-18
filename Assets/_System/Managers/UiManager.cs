@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using DG.Tweening;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -76,7 +77,8 @@ public class UiManager : MonoBehaviour
 
     public void UIPlacement()
     {
-        ImmersiveCanvas.transform.DOMove(MenuPoper.transform.position, 0.5f);
+        var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
+        ImmersiveCanvas.transform.DOMove(pos, 0.5f);
         ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.5f);
         
         //ImmersiveCanvas.transform.position = MenuPoper.transform.position;
@@ -93,11 +95,12 @@ public class UiManager : MonoBehaviour
         ImmersiveCanvas.SetActive(true);
     }
 
-    public bool CheckMenuVisibility()
+    #endregion
+    
+    private bool CheckMenuVisibility()
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(MainCamera);
         return planes.All(plane => plane.GetDistanceToPoint(ImmersiveCanvas.transform.position) >= 0);
     }
 
-    #endregion
 }
