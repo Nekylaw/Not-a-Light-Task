@@ -14,11 +14,12 @@ public class NEW_IAController : MonoBehaviour
    public List<GameObject> orbsEaten;
    float distance;
    float nearestDistance = 100;
+   public bool canWander = false;
 
    private CreatureState creatureState = new CreatureState();
    void Update()
    {
-      if (nearestObject != null && creatureState.isEvil == true)
+      if (nearestObject != null && creatureState.isEvil == true && canWander)
       {
          MoveTo(nearestObject.transform.position);
       }
@@ -28,7 +29,12 @@ public class NEW_IAController : MonoBehaviour
          {
             ScanWorldOrbs();
          }
-         WanderAround();
+         
+         if (canWander)
+         {
+            WanderBehaviour();
+         }
+         
       }
    }
 
@@ -42,17 +48,17 @@ public class NEW_IAController : MonoBehaviour
          orbsEaten.Add(other.gameObject);
       }
 
-      if (other.gameObject.CompareTag("Pacify"))
-      {
-         creatureState.isEvil = false;
-         foreach (var orb in orbsEaten)
-         {
-            orb.SetActive(true);
-            orb.transform.position = this.transform.position;
-            Debug.Log("creature pacified : orb given back !"); 
-         }
-         orbsEaten.Clear();
-      }
+      // if (other.gameObject.CompareTag("Pacify"))
+      // {
+      //    creatureState.isEvil = false;
+      //    foreach (var orb in orbsEaten)
+      //    {
+      //       orb.SetActive(true);
+      //       orb.transform.position = this.transform.position;
+      //       Debug.Log("creature pacified : orb given back !"); 
+      //    }
+      //    orbsEaten.Clear();
+      // }
    }
    
    
@@ -82,24 +88,29 @@ public class NEW_IAController : MonoBehaviour
    
    [SerializeField] float circRadius = 10f;
    [SerializeField] float circDistance = 10f;	
-   [FormerlySerializedAs("wanderJitter")] [SerializeField] float wanderRandomizer = 1f;
+   [SerializeField] float wanderRandomizer = 1f;
 
    Vector3 aiWanderGoal = Vector3.zero;
 
-   void WanderAround() {
+   public void WanderBehaviour() {
+      if (canWander)
+      {
+         aiWanderGoal += new Vector3( Random.Range(-1.0f, 1.0f) * wanderRandomizer, 0f, Random.Range(-1.0f, 1.0f) * wanderRandomizer );
+         aiWanderGoal.Normalize(); 
+         aiWanderGoal *= circRadius;
+         var locTarget = aiWanderGoal + new Vector3(0, 0, circDistance);
+         var worldCoord = gameObject.transform.InverseTransformVector(locTarget);
+         
+         MoveTo(worldCoord);
+      }
+      
 
-      aiWanderGoal += new Vector3( Random.Range(-1.0f, 1.0f) * wanderRandomizer, 0f,
-         Random.Range(-1.0f, 1.0f) * wanderRandomizer );
-
-      aiWanderGoal.Normalize();
-      aiWanderGoal *= circRadius;
-
-      var locTarget = aiWanderGoal + new Vector3(0, 0, circDistance);
-      var worldCoord = gameObject.transform.InverseTransformVector(locTarget);
-
-      MoveTo(worldCoord);
+      
    }
 
+
+   
+   
    void MoveTo( Vector3 location ) 
    {
       NavMeshAgent agent = GetComponent<NavMeshAgent>();

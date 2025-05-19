@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPacifyUI: {fileID: 0}
+  creaturesCanBePacified: []
 --- !u!1 &1611587026064609485
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,8 +360,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.311615, y: 2.0580838, z: 5.5047264}
-  m_Center: {x: 2.108549, y: 0.5290419, z: 0.4856143}
+  m_Size: {x: 4.0034075, y: 2.0580838, z: 9.3956375}
+  m_Center: {x: 0.9544455, y: 0.5290419, z: 2.431069}
 --- !u!114 &3440110716258170931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPacifyUI: {fileID: 0}
+  creaturesCanBePacified: []
 --- !u!1 &1729965402990336780
 GameObject:
   m_ObjectHideFlags: 0
