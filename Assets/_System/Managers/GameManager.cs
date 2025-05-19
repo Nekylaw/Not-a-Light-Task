@@ -3,6 +3,8 @@ using _System.Game_Manager;
 using Game.Services.LightSources;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -20,7 +22,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    
+    [Header("Event System Selecion Firts")]
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject backButton;
+    
     private void Start()
     {
         gameState = GameState.StartMenu;
@@ -29,14 +35,11 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         UiManager.Instance.ShowUI();
         UiManager.Instance.UIPlacement();
+        EventSystem.current.SetSelectedGameObject(playButton);
 
         spawnTimer = spawnRate;
     }
 
-    private void Update()
-    {
-        
-    }
 
     private void OnPause()
     {
@@ -46,11 +49,38 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.ShowUI();
             UiManager.Instance.UIStartGame();
             UiManager.Instance.UIPlacement();
+            EventSystem.current.SetSelectedGameObject(playButton);
         }
         else if ( gameState == GameState.Paused)
         {
             UiManager.Instance.HideUI();
             gameState = GameState.Playing;
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+    }
+
+    private void OnPress()
+    {
+        if (gameState != GameState.Playing)
+        {
+            Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+            var aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
+
+            if (Physics.Raycast(aimTargetRay, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("UI"))
+                {
+                    return;
+                }
+               
+                GameObject hitObject = hit.collider.gameObject;
+                
+                var button = hitObject.GetComponent<UnityEngine.UI.Button>();
+                if (button != null)
+                {
+                    button.onClick.Invoke();
+                }
+            }
         }
     }
 
@@ -73,12 +103,15 @@ public class GameManager : MonoBehaviour
         UiManager.Instance.HideUI();
         Cursor.visible = false;
         gameState = GameState.Playing;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void PauseGame(GameObject panel)
     {
         UiManager.Instance.UIPauseGame(panel);
         Cursor.visible = true;
+        
+        EventSystem.current.SetSelectedGameObject(playButton);
         
         gameState = GameState.Paused;
     }
@@ -103,6 +136,7 @@ public class GameManager : MonoBehaviour
     public void Back()
     {
         UiManager.Instance.UIBack();
+        EventSystem.current.SetSelectedGameObject(backButton);
     }
     
     #endregion

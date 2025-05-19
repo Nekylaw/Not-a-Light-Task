@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
 using DG.Tweening;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
     public static UiManager Instance;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -21,11 +21,32 @@ public class UiManager : MonoBehaviour
         }
     }
 
+    public MenuFeedback scriptFb;
+
     private void Update()
     {
         if (!CheckMenuVisibility())
         {
             UIPlacement();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+        {
+            var crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+            var aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
+
+            if (!Physics.Raycast(aimTargetRay, out RaycastHit hit)) return;
+            var hitObject = hit.collider.gameObject;
+            var hitFeedback = hitObject.GetComponent<MenuFeedback>();
+
+            if (hitFeedback == null) return;
+            if (scriptFb == hitFeedback) return;
+                
+            scriptFb = hitFeedback;
+            EventSystem.current.SetSelectedGameObject(scriptFb.gameObject);
         }
     }
 
@@ -78,8 +99,9 @@ public class UiManager : MonoBehaviour
     public void UIPlacement()
     {
         var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
-        ImmersiveCanvas.transform.DOMove(pos, 0.5f);
-        ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.5f);
+        ImmersiveCanvas.transform.DOMove(pos, 0.1f);
+        ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
+        
         
         //ImmersiveCanvas.transform.position = MenuPoper.transform.position;
         //ImmersiveCanvas.transform.rotation = Player.transform.rotation;

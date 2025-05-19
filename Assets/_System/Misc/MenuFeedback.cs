@@ -4,16 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MenuFeedback : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MenuFeedback : MonoBehaviour, ISelectHandler, IDeselectHandler//, IPointerEnterHandler, IPointerExitHandler
 {
-   private float baseSize;
+   [SerializeField] private GameObject player;
 
    private void Start()
    {
-      baseSize = GetComponent<TextMeshProUGUI>().fontSize;
    }
 
-   public void OnPointerEnter(PointerEventData eventData)
+  /* public void OnPointerEnter(PointerEventData eventData)
    {
       Debug.Log("OnPointerEnter");
       //this.GetComponent<TextMeshProUGUI>().transform.DOScale(1.3f, 0.2f);
@@ -24,5 +23,26 @@ public class MenuFeedback : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
    public void OnPointerExit(PointerEventData eventData)
    {
       gameObject.transform.DOScale(1f, 0.2f);
+   }*/
+
+   public void ActivateManually()
+   {
+      gameObject.transform.DOScale(1.3f, 0.2f);
    }
+
+   public void DeactivateManually()
+   {
+      gameObject.transform.DOScale(1f, 0.2f);
+   }
+
+   public void OnSelect(BaseEventData eventData)
+   {
+      ActivateManually();
+   }
+
+   public void OnDeselect(BaseEventData eventData)
+   {
+      DeactivateManually();
+   }
+   
 }
