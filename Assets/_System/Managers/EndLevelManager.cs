@@ -8,7 +8,7 @@ namespace _System.Game_Manager
     public class EndLevelManager : MonoBehaviour
     {
         public static EndLevelManager instance;
-
+        
         private void Awake()
         {
             if (instance == null)
@@ -38,7 +38,16 @@ namespace _System.Game_Manager
         public List<int> CheckPointsCompleted = new();
         
         #endregion
+        
+        #region Serialize Fields
 
+        [SerializeField] private GameObject firstObjectEnlighten;
+        [SerializeField] private GameObject firstCpToOpen;
+        [SerializeField] private GameObject secondObjectEnlighten;
+        [SerializeField] private GameObject secondCpToOpen;
+        //...
+        
+        #endregion
         #region PUBLIC METHODS
 
         public void CheckLightSources(LightSourceComponent lightSource)
@@ -150,6 +159,10 @@ namespace _System.Game_Manager
 
         private void FirstCheckPoint()
         {
+            var newMat = new Material(Shader.Find("Unlit/Color"));
+            newMat.SetColor("_Color", Color.green);
+            firstObjectEnlighten.GetComponent<MeshRenderer>().material = newMat;
+            Destroy(firstCpToOpen);
             Debug.Log("First Check Point : Activation");
         }
 
