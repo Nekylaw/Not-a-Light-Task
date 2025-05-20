@@ -202,16 +202,24 @@ public class PlayerController : MonoBehaviour
         _jump.Jump();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Fresque")
-        {           
-            UnBindInputs();
-            _cameraLookInput = Vector2.zero;
-            //mainCamera.transform.LookAt(other.transform);
-            StartCoroutine(WaitForRebind(5f));
-            StartCoroutine(SmoothLookAt(other.transform, 3f));
-            
+        {
+            Vector3 directionToTarget = other.transform.position - mainCamera.transform.position;
+
+            float dotProduct = Vector3.Dot(directionToTarget.normalized, mainCamera.transform.forward);
+
+            if (dotProduct > 0.8f)
+            {
+                UnBindInputs();
+                _cameraLookInput = Vector2.zero;
+                //mainCamera.transform.LookAt(other.transform);
+                StartCoroutine(WaitForRebind(5f));
+                StartCoroutine(SmoothLookAt(other.transform, 3f));
+                other.GetComponent<BoxCollider>().enabled = false;
+
+            }
         }
     }
 
