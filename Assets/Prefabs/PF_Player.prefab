@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 7758627316031742524}
   - component: {fileID: 8829939862390432116}
   - component: {fileID: 9017194417468627701}
+  - component: {fileID: 4979216176580659352}
   m_Layer: 0
   m_Name: PF_Player
   m_TagString: Untagged
@@ -92,6 +93,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7976656590302171324}
   - {fileID: 9058671808933611489}
   - {fileID: 8359679448574798944}
   - {fileID: 3570058969703492763}
@@ -293,6 +295,88 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 1e3c4fe383b04fc469dd532d825bc144, type: 2}
+--- !u!114 &4979216176580659352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328098191968452264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74f529b087a0844aad1bfdf39d09794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPacifyUI: {fileID: 0}
+  creaturesCanBePacified: []
+--- !u!1 &1611587026064609485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7976656590302171324}
+  - component: {fileID: 739803594279786348}
+  - component: {fileID: 3440110716258170931}
+  m_Layer: 0
+  m_Name: PacifyRange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7976656590302171324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611587026064609485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8129215436254250207}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &739803594279786348
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611587026064609485}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.0034075, y: 2.0580838, z: 9.3956375}
+  m_Center: {x: 0.9544455, y: 0.5290419, z: 2.431069}
+--- !u!114 &3440110716258170931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611587026064609485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74f529b087a0844aad1bfdf39d09794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPacifyUI: {fileID: 0}
+  creaturesCanBePacified: []
 --- !u!1 &1729965402990336780
 GameObject:
   m_ObjectHideFlags: 0
