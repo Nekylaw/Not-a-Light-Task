@@ -1,5 +1,8 @@
+using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,8 +34,9 @@ public class PlayerController : MonoBehaviour
     private bool _isAiming = false;
     private Ray _aimTargetRay;
 
-
     private InputMode _inputMode = InputMode.Controller;
+
+    [SerializeField] GameObject mainCamera;
 
     #endregion
 
@@ -196,6 +200,40 @@ public class PlayerController : MonoBehaviour
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Fresque")
+        {           
+            UnBindInputs();
+            _cameraLookInput = Vector2.zero;
+            //mainCamera.transform.LookAt(other.transform);
+            StartCoroutine(WaitForRebind(5f));
+            StartCoroutine(SmoothLookAt(other.transform, 3f));
+            
+        }
+    }
+
+    private IEnumerator WaitForRebind(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        BindInputs();
+    }
+
+    private IEnumerator SmoothLookAt(Transform target, float duration)
+    {
+        Quaternion startRotation = mainCamera.transform.rotation;
+
+        Quaternion targetRotation = Quaternion.LookRotation(target.position - mainCamera.transform.position);
+
+        float timeElapsed = 0f;
+        while (timeElapsed < duration)
+        {
+            mainCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
     }
 
     #endregion
