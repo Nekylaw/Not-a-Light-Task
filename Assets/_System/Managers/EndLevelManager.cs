@@ -8,7 +8,8 @@ namespace _System.Game_Manager
     public class EndLevelManager : MonoBehaviour
     {
         public static EndLevelManager instance;
-        
+        private static readonly int Color1 = Shader.PropertyToID("_Color");
+
         private void Awake()
         {
             if (instance == null)
@@ -160,7 +161,7 @@ namespace _System.Game_Manager
         private void FirstCheckPoint()
         {
             var newMat = new Material(Shader.Find("Unlit/Color"));
-            newMat.SetColor("_Color", Color.green);
+            newMat.SetColor(Color1, Color.green);
             firstObjectEnlighten.GetComponent<MeshRenderer>().material = newMat;
             Destroy(firstCpToOpen);
             Debug.Log("First Check Point : Activation");
