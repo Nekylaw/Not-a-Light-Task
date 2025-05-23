@@ -28,6 +28,8 @@ namespace Game.Services.LightSources
 
         [SerializeField] public int LightGroupId;
 
+        [SerializeField] private GameObject ownParticlesVFX;
+
         #endregion
 
 
@@ -98,6 +100,7 @@ namespace Game.Services.LightSources
             _isLightOn = true;
             
             EndLevelManager.instance.CheckLightSources(this);
+            ownParticlesVFX.SetActive(true);
             return true;
         }
 
@@ -107,6 +110,7 @@ namespace Game.Services.LightSources
                 return false;
 
             _isLightOn = false;
+            ownParticlesVFX.SetActive(false);
             return true;
         }
 

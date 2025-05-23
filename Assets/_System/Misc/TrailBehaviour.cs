@@ -11,7 +11,7 @@ public class TrailBehaviour : MonoBehaviour
     [Range(0.01f, 0.5f)]
     public float minVertexDistance = 0.1f; // Distance minimale entre les vertices du trail
     public bool adjustHeightToGround = true; // Maintenir à une hauteur constante du sol
-    [Range(0.5f, 3f)]
+    [Range(0.5f, 5f)]
     public float heightAboveGround = 1f; // Hauteur au-dessus du sol (en mètres)
     public LayerMask groundLayer; // Layer du sol pour le raycast
     
@@ -147,20 +147,27 @@ public class TrailBehaviour : MonoBehaviour
         Vector3 lateralOffset = tiltDirection * sinOffset;
 
         float verticalOffset = Mathf.Sin(time * floatFrequency * Mathf.PI * 2f) * floatAmplitude;
-        Vector3 finalTarget = basePos + lateralOffset + new Vector3(0, verticalOffset, 0);
         
-        // Ajuster la hauteur pour rester à une distance fixe du sol
+        // Séparer le mouvement horizontal et vertical
+        Vector3 horizontalTarget = basePos + lateralOffset;
+        Vector3 finalTarget = horizontalTarget + new Vector3(0, verticalOffset, 0);
+        
+        // Appliquer le SmoothDamp d'abord
+        Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, finalTarget, ref velocity, smoothTime);
+        
+        // Ajuster la hauteur pour rester à une distance fixe du sol APRÈS le smoothing
         if (adjustHeightToGround)
         {
             RaycastHit hit;
-            if (Physics.Raycast(new Vector3(finalTarget.x, finalTarget.y + 100f, finalTarget.z), Vector3.down, out hit, 200f, groundLayer))
+            if (Physics.Raycast(new Vector3(smoothedPosition.x, smoothedPosition.y + 100f, smoothedPosition.z), Vector3.down, out hit, 200f, groundLayer))
             {
-                // Ajuster la position Y pour être à heightAboveGround mètres au-dessus du sol
-                finalTarget.y = hit.point.y + heightAboveGround;
+                // Forcer la position Y pour être exactement à heightAboveGround mètres au-dessus du sol
+                // On garde seulement le flottement vertical comme offset
+                smoothedPosition.y = hit.point.y + heightAboveGround + verticalOffset;
             }
         }
 
-        transform.position = Vector3.SmoothDamp(transform.position, finalTarget, ref velocity, smoothTime);
+        transform.position = smoothedPosition;
 
         if (direction != Vector3.zero)
         {
