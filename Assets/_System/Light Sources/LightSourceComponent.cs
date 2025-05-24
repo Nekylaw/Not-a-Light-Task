@@ -1,6 +1,7 @@
 using _System.Game_Manager;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Game.Services.LightSources
 {
@@ -18,8 +19,8 @@ namespace Game.Services.LightSources
         [SerializeField]
         private Transform _lightPoint = null;
 
-        [SerializeField]
-        private bool _isAllowedToLight = false;
+        //[SerializeField]
+        //private bool _isAllowedToLight = false;
 
         private int _orbSlot = 0;
         private bool _isLightOn = false;
@@ -28,7 +29,7 @@ namespace Game.Services.LightSources
 
         [SerializeField] public int LightGroupId;
 
-        [SerializeField] private GameObject ownParticlesVFX;
+        private VisualEffect ownParticlesVFX;
 
         #endregion
 
@@ -39,11 +40,14 @@ namespace Game.Services.LightSources
         {
             if (_settings == null)
                 Debug.LogError($"{nameof(LightSourceSettings)} component not found.");
+
+            ownParticlesVFX = GetComponentInChildren<VisualEffect>();
         }
 
         private void Start()
         {
             _orbSlot = 0;
+            ownParticlesVFX.enabled = false;
         }
 
         private void Update()
@@ -93,14 +97,15 @@ namespace Game.Services.LightSources
         internal bool SwitchOn()
         {
             SetOrbSlots(1);
-            
+
             if (!CanLightOn())
                 return false;
 
             _isLightOn = true;
-            
+
             EndLevelManager.instance.CheckLightSources(this);
-            ownParticlesVFX.SetActive(true);
+
+            ownParticlesVFX.enabled = true;
             return true;
         }
 
@@ -110,7 +115,8 @@ namespace Game.Services.LightSources
                 return false;
 
             _isLightOn = false;
-            ownParticlesVFX.SetActive(false);
+
+            ownParticlesVFX.enabled = false;
             return true;
         }
 
@@ -139,14 +145,14 @@ namespace Game.Services.LightSources
             return true;
         }
 
-        public void AllowLight(bool allow)
-        {
-            _isAllowedToLight = allow;
-        }
+        //public void AllowLight(bool allow)
+        //{
+        //    _isAllowedToLight = allow;
+        //}
 
         private bool CanLightOn()
         {
-            if (_isLightOn || !_isAllowedToLight)
+            if (_isLightOn /*|| !_isAllowedToLight*/)
                 return false;
 
             return _orbSlot >= _settings.RequiredOrbs;

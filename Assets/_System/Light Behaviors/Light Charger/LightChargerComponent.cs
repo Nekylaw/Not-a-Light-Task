@@ -19,7 +19,7 @@ namespace Game.Services.LightSources
 
             foreach (var light in _lights)
             {
-                light.AllowLight(false);
+                //light.AllowLight(false);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Game.Services.LightSources
 
             foreach (var light in _lights)
             {
-                light.AllowLight(true);
+                //light.AllowLight(true);
 
                 if (!light.IsLightOn)
                     LightSourcesService.Instance.SwitchOn(light);
