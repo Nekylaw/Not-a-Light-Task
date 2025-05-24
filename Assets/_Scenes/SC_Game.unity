@@ -985,14 +985,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1664400291}
     m_Modifications:
+    - target: {fileID: 642827755117744404, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 642827755117744404, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 642827755117744404, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.18
+      objectReference: {fileID: 0}
     - target: {fileID: 1328098191968452264, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
       propertyPath: m_Name
       value: PF_Player
       objectReference: {fileID: 0}
     - target: {fileID: 4135490328307615682, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4135490328307615682, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
+    - target: {fileID: 6845042488516423700, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8129215436254250207, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2367,7 +2387,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: LightGroupId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: ownParticlesVFX
@@ -4470,7 +4490,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: LightGroupId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: ownParticlesVFX
@@ -5820,7 +5840,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: LightGroupId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: ownParticlesVFX
@@ -7257,7 +7277,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: LightGroupId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: ownParticlesVFX
@@ -14804,7 +14824,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: LightGroupId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861790363462298776, guid: d112284f3d1e6844faff40c91e0036cb, type: 3}
       propertyPath: ownParticlesVFX
