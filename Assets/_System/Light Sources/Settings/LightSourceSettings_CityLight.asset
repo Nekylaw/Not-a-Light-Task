@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acdd03790aeaf15419c00f6acda88f18, type: 3}
   m_Name: LightSourceSettings_CityLight
   m_EditorClassIdentifier: 
-  BrightnessRange: 20
+  BrightnessRange: 40
   RequiredOrbs: 3
   OrbLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  DissipationSpeed: 10
   AttractRange: 2
   Duration: 1
   SpiralSpeed: 1000

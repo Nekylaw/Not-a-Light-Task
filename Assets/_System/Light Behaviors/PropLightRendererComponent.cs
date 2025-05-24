@@ -7,6 +7,9 @@ using UnityEngine;
 public class PropLightRendererComponent : MonoBehaviour
 {
     [Header("Color")]
+
+    [SerializeField] private bool _visibleIfLightOff = true;
+
     [SerializeField] private Color _baseColor = Color.white;
     [SerializeField] private Color _glowColor = Color.white;
 
@@ -54,7 +57,6 @@ public class PropLightRendererComponent : MonoBehaviour
         _lightSource = GetComponentInParent<LightSourceComponent>();
     }
 
-
     private void Update()
     {
         UpdateGlow();
@@ -72,14 +74,17 @@ public class PropLightRendererComponent : MonoBehaviour
 
         _renderer.GetPropertyBlock(_mpb);
 
-        //if ( _lightSource == null || !_lightSource.IsLightOn)
-        //{
-        //    _mpb.SetFloat("_BaseIntensity", 0);
-        //    _mpb.SetFloat("_GlowIntensity", 0);
+        if (_lightSource == null || !_lightSource.IsLightOn)
+        {
+            if (!_visibleIfLightOff)
+            {
+                _mpb.SetFloat("_BaseIntensity", 0);
+                _mpb.SetFloat("_GlowIntensity", 0);
+            }
+            _renderer.SetPropertyBlock(_mpb);
 
-        //    _renderer.SetPropertyBlock(_mpb);
-        //    return;
-        //}
+            return;
+        }
 
         _mpb.SetColor("_BaseColor", _baseColor);
         _mpb.SetColor("_GlowColor", _glowColor);

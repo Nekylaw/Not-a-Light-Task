@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        gameState = GameState.StartMenu;
+        //gameState = GameState.Playing;
         
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
