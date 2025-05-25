@@ -35,21 +35,29 @@ public class PacifyBehaviourComponent : MonoBehaviour
     public void OnPacifyHold()
     {
         var targetCreature = creaturesCanBePacified[0];
+        var IAController = targetCreature.GetComponent<NEW_IAController>();
         float duration = 5;
         float minY = 5;
         float maxY;
-        if (_isInPacifyMode)
+        if (_isInPacifyMode && !targetCreature.GetComponent<NEW_IAController>().isPacified )
         {
             Debug.Log("IN PACIFY MOD");
             targetCreature.transform.DOLocalMoveY(minY,duration);
+            IAController.isBeingPacified = true;
+            StartCoroutine(IAController.OnEndPacify(targetCreature));
+            IAController.StartPacifyEffects();
+            canPacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
             
+
+
         }
-        canPacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
+
+       
     }
     private void OnTriggerStay(Collider other)
     {
       
-        if (other.CompareTag("Creature") && !creaturesCanBePacified.Contains(other.gameObject))
+        if (other.CompareTag("Creature") && !creaturesCanBePacified.Contains(other.gameObject) && !other.gameObject.GetComponent<NEW_IAController>().isPacified)
         {
             _canStartPacify = true;
             creaturesCanBePacified.Add(other.gameObject);
