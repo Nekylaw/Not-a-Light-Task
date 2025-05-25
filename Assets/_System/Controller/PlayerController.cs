@@ -217,7 +217,7 @@ public class PlayerController : MonoBehaviour
            _pacify.OnPacifyHold(); 
            
         }
-        else if (context.canceled && !_pacify._isInPacifyMode)
+        else if (context.canceled)
         {
             _pacify.ClosePacifyUI();
             Debug.Log("canceled");

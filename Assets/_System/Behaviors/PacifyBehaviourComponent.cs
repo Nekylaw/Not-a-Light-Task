@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine.ProBuilder.MeshOperations;
-
+using DG.Tweening;
 public class PacifyBehaviourComponent : MonoBehaviour
 {
     [SerializeField] private GameObject canPacifyUI;
@@ -20,8 +20,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F))
             {   canPacifyUI.GetComponent<TextMeshProUGUI>().text = "Hold V to pacify";
                 _isInPacifyMode = true;
-                targetCreature.transform.LookAt(this.transform);
                 targetCreature.gameObject.GetComponent<NEW_IAController>().canWander = false;
+                targetCreature.transform.LookAt(this.transform);
+                
             }
         }
     }
@@ -33,9 +34,15 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     public void OnPacifyHold()
     {
+        var targetCreature = creaturesCanBePacified[0];
+        float duration = 5;
+        float minY = 5;
+        float maxY;
         if (_isInPacifyMode)
         {
             Debug.Log("IN PACIFY MOD");
+            targetCreature.transform.DOLocalMoveY(minY,duration);
+            
         }
         canPacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
     }
