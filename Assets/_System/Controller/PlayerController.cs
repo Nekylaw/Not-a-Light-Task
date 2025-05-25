@@ -219,7 +219,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (context.canceled)
         {
-            _pacify.ClosePacifyUI();
+            _pacify.HidePacifyUI();
             Debug.Log("canceled");
         }
         

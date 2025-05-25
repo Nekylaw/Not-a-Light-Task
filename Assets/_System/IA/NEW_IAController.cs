@@ -141,8 +141,12 @@ public class NEW_IAController : MonoBehaviour
    {
       yield return new WaitForSeconds(5);  
       pacifyEffects.SetActive(false);
+      
       target.GetComponent<NEW_IAController>().isPacified = true;
       target.GetComponent<NEW_IAController>().isBeingPacified = false;
+      
+      PacifyBehaviourComponent pacify = new PacifyBehaviourComponent();
+      pacify.ZoomOut();
    }
    
 }
