@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6282308550914895191}
   - component: {fileID: 6213282021292257154}
+  - component: {fileID: 8590409083464986644}
   m_Layer: 0
   m_Name: house
   m_TagString: Untagged
@@ -54,6 +55,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 22.89192, y: 19.784088, z: 22.168266}
   m_Center: {x: 0.04953289, y: 10.162045, z: 0.08065033}
+--- !u!114 &8590409083464986644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360762434209903377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dafd8cba21abc84aa6968ad07f760e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialLight: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
 --- !u!1001 &205905543992514353
 PrefabInstance:
   m_ObjectHideFlags: 0

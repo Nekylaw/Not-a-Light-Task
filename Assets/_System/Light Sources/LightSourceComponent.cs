@@ -106,6 +106,7 @@ namespace Game.Services.LightSources
             EndLevelManager.instance.CheckLightSources(this);
 
             ownParticlesVFX.enabled = true;
+            DetectBuildingsToLights();
             return true;
         }
 
@@ -163,6 +164,19 @@ namespace Game.Services.LightSources
             _orbSlot += amount;
             Debug.Log("Light slots:" + _orbSlot);
             Debug.Log("Light slots req :" + _settings.RequiredOrbs);
+        }
+
+        private void DetectBuildingsToLights()
+        {
+            var buildings = Physics.OverlapSphere(transform.position, 40f);
+            foreach (var building in buildings)
+            {
+                var script = building.gameObject.GetComponent<BuildingLightsComponent>();
+                if ( script != null)
+                {
+                    script.LightBuilding();
+                }
+            }
         }
 
         #endregion
