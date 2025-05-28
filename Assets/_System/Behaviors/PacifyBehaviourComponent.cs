@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -13,11 +14,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
     public List<GameObject> creaturesCanBePacified = new List<GameObject>();
     public bool _canStartPacify;
     public bool _isInPacifyMode;
-
     
     #region PACIFY INTERACTIONS
-    
-    
     
     public void OnPacifyStarted()
     {
@@ -41,19 +39,20 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         var targetCreature = creaturesCanBePacified[0];
         var IAController = targetCreature.GetComponent<NEW_IAController>();
-        float duration = 5;
-        float valueUpY = 5;
+        
         if (_isInPacifyMode && !targetCreature.GetComponent<NEW_IAController>().isPacified )
         {
-            targetCreature.transform.DOLocalMoveY(valueUpY,duration);
+            Sequence sequence = DOTween.Sequence().SetEase(Ease.Linear);
+            sequence.Append(targetCreature.transform.DOLocalMoveY(4,5).SetEase(Ease.OutQuad));
+            sequence.Append(targetCreature.transform.DOLocalMoveY(0,3).SetEase(Ease.OutSine));
+            
             IAController.isBeingPacified = true;
             
             StartCoroutine(IAController.OnEndPacify(targetCreature));
             IAController.StartPacifyEffects();
+            
             pacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
         }
-
-        
     }
 
     
@@ -62,12 +61,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
         pacifyUI.SetActive(true);
     }
     
-    
     public void HidePacifyUI()
     {
         pacifyUI.SetActive(false);
     }
-    
     
     private void OnTriggerStay(Collider other)
     {

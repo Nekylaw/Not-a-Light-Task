@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,7 +27,9 @@ public class NEW_IAController : MonoBehaviour
    
    
    void Update()
-   {
+   {  
+      
+      
       // if (nearestObject != null && creatureState.isEvil == true && canWander)
       // {
       //    MoveTo(nearestObject.transform.position);
@@ -139,11 +142,17 @@ public class NEW_IAController : MonoBehaviour
    
    public IEnumerator OnEndPacify(GameObject target)
    {
-      yield return new WaitForSeconds(5);  
+      yield return new WaitForSeconds(8);  
       pacifyEffects.SetActive(false);
+      
+      float duration = 5;
+      float valueUpY = -5;
       
       target.GetComponent<NEW_IAController>().isPacified = true;
       target.GetComponent<NEW_IAController>().isBeingPacified = false;
+
+      
+      
       
       PacifyBehaviourComponent pacify = new PacifyBehaviourComponent();
       pacify.ZoomOut();
