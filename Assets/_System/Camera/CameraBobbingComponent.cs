@@ -30,9 +30,6 @@ public class CameraBobbingComponent : MonoBehaviour
 
         _detector = GetComponentInParent<DetectionBehaviorComponent>();
         _movementBehavior = GetComponentInParent<MovementBehaviorComponent>();
-
-        if (!_movementBehavior || !_detector)
-            Debug.LogWarning("Component missing", this);
     }
 
     void LateUpdate()
@@ -43,12 +40,9 @@ public class CameraBobbingComponent : MonoBehaviour
             return;
         if (_movementBehavior.IsMoving && _detector.IsGrounded)
         {
-            Debug.Log("Bobbing");
-            Debug.Log("is moving" + _movementBehavior.IsMoving);
-
             _bobbingTimer += Time.deltaTime * Frequency;
 
-            float verticalOffset = YAxis ? Mathf.Sin(_bobbingTimer) * Amplitude *  YBobbingFactor : 0f;
+            float verticalOffset = YAxis ? Mathf.Sin(_bobbingTimer) * Amplitude * YBobbingFactor : 0f;
             float horizontalOffset = XAxis ? Mathf.Cos(_bobbingTimer * 0.5f) * Amplitude * XBobbingFactor : 0f;
 
             Vector3 offset = new Vector3(horizontalOffset, verticalOffset, 0f);

@@ -162,8 +162,6 @@ namespace Game.Services.LightSources
         public void SetOrbSlots(int amount)
         {
             _orbSlot += amount;
-            Debug.Log("Light slots:" + _orbSlot);
-            Debug.Log("Light slots req :" + _settings.RequiredOrbs);
         }
 
         private void DetectBuildingsToLights()
