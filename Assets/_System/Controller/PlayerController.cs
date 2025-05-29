@@ -93,6 +93,15 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
         UpdateCameraLook(_inputMode, delta);
+        if (_pacify._isInPacifyMode == true)
+        {
+            _gameInputs.Player.Look.performed -= HandleLookInput;
+            _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
+        }
+        else
+        {
+            _gameInputs.Player.Look.performed += HandleLookInput;
+        }
     }
 
     #endregion
@@ -214,22 +223,16 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && _pacify._isInPacifyMode)
         {   
-           _pacify.OnPacifyHold(); 
+           _pacify.OnPacifyHold();
            
         }
         else if (context.canceled)
         {
             _pacify.HidePacifyUI();
-            Debug.Log("canceled");
         }
         
     }
     
-    private void UpdatePacifyState()
-    {
-        
-    }
-
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
@@ -255,10 +258,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        
-        
-        
-        
     }
 
     private IEnumerator WaitForRebind(float delay)
@@ -267,7 +266,7 @@ public class PlayerController : MonoBehaviour
         BindInputs();
     }
 
-    private IEnumerator SmoothLookAt(Transform target, float duration)
+    public IEnumerator SmoothLookAt(Transform target, float duration)
     {
         Quaternion startRotation = mainCamera.transform.rotation;
 

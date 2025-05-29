@@ -20,20 +20,18 @@ public class PacifyBehaviourComponent : MonoBehaviour
     
     #region PACIFY INTERACTIONS
 
-    void LateUpdate()
+    void Update()
     { 
         var targetCreature = creaturesCanBePacified[0];
-        var targetController = targetCreature.GetComponent<NEW_IAController>();
         if (_canStartPacify)
         {
-            
             targetCreature.transform.LookAt(this.gameObject.transform);
 
-            targetController.GetComponent<NavMeshAgent>().speed = 0;
+            targetCreature.GetComponent<NavMeshAgent>().speed = 0;
         }
         else
         {
-            targetController.GetComponent<NavMeshAgent>().speed = 4 ;
+            targetCreature.GetComponent<NavMeshAgent>().speed = 4 ;
         }
     }
     public void OnPacifyStarted()

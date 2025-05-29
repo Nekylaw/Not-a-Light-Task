@@ -43,9 +43,6 @@ public class NEW_IAController : MonoBehaviour
       {
          ScanWorldOrbs();
       }
-         
-      
-         
       
    }
 
@@ -57,20 +54,8 @@ public class NEW_IAController : MonoBehaviour
          nearestObject = null;
          orbsEaten.Add(other.gameObject);
       }
-
-      // if (other.gameObject.CompareTag("Pacify"))
-      // {
-      //    creatureState.isEvil = false;
-      //    foreach (var orb in orbsEaten)
-      //    {
-      //       orb.SetActive(true);
-      //       orb.transform.position = this.transform.position;
-      //       Debug.Log("creature pacified : orb given back !"); 
-      //    }
-      //    orbsEaten.Clear();
-      // }
+      
    }
-   
    
 
    #region ScanOrbs
@@ -114,16 +99,12 @@ public class NEW_IAController : MonoBehaviour
       
       MoveTo(worldCoord);
       
-      
-      
-      
    }
    
    void MoveTo( Vector3 location ) 
    {
       if (isBeingPacified == false)
       {
-         Debug.Log("function called là");
           NavMeshAgent agent = GetComponent<NavMeshAgent>();
           agent.SetDestination( location );
       }
