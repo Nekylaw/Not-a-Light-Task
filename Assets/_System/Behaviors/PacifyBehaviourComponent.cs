@@ -72,23 +72,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
         }
         
     }
-
-    void CreatureFocus()
-    {
-        var targetCreature = creaturesCanBePacified[0];
-        var targetController = targetCreature.GetComponent<NEW_IAController>();
-        if (_canStartPacify)
-        {
-            
-            targetCreature.transform.LookAt(this.gameObject.transform);
-
-            targetController.GetComponent<NavMeshAgent>().speed = 0;
-        }
-        else
-        {
-            targetController.GetComponent<NavMeshAgent>().speed = 4 ;
-        }
-    }
+    
     
     void ShowPacifyUI()
     {
@@ -120,7 +104,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         creaturesCanBePacified[0].gameObject.GetComponent<NEW_IAController>().canWander = true;
-        IsNotInPacifyMode();
+        IsNotInPacifyMode(creaturesCanBePacified[0].GetComponent<NEW_IAController>());
         if (creaturesCanBePacified.Contains(other.gameObject))
         {   
             creaturesCanBePacified.Remove(other.gameObject);
@@ -133,10 +117,12 @@ public class PacifyBehaviourComponent : MonoBehaviour
     #endregion
 
 
-    private void IsNotInPacifyMode()
+    private void IsNotInPacifyMode(NEW_IAController targetController)
     {
         _canStartPacify = false;
         _isInPacifyMode = false;   
+        targetController.isBeingPacified = false;
+        
     }
 
 
