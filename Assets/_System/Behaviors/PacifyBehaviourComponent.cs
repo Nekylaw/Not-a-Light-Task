@@ -23,7 +23,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     void Update()
     { 
         var targetCreature = creaturesCanBePacified[0];
-        if (_canStartPacify)
+        if (_canStartPacify || targetCreature.GetComponent<NEW_IAController>().isBeingPacified)
         {
             targetCreature.transform.LookAt(this.gameObject.transform);
 
