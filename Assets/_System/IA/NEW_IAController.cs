@@ -29,24 +29,23 @@ public class NEW_IAController : MonoBehaviour
    void Update()
    {  
       
-      
-      // if (nearestObject != null && creatureState.isEvil == true && canWander)
-      // {
-      //    MoveTo(nearestObject.transform.position);
-      // }
-      // else
-      // {
-      //    if (creatureState.isEvil == true && canWander)
-      //    {
-      //       ScanWorldOrbs();
-      //    }
-      //    
-      //    if (canWander)
-      //    {
-      //       WanderBehaviour();
-      //    }
-      //    
-      // }
+      if (nearestObject != null && creatureState.isEvil == true && canWander)
+      {
+         MoveTo(nearestObject.transform.position);
+      }
+      else
+      {
+         if (creatureState.isEvil == true && canWander)
+         {
+            ScanWorldOrbs();
+         }
+         
+         if (canWander)
+         {
+            WanderBehaviour();
+         }
+         
+      }
    }
 
    private void OnCollisionEnter(Collision other)
@@ -150,9 +149,7 @@ public class NEW_IAController : MonoBehaviour
       
       target.GetComponent<NEW_IAController>().isPacified = true;
       target.GetComponent<NEW_IAController>().isBeingPacified = false;
-
-      
-      
+      canWander = true;
       
       PacifyBehaviourComponent pacify = new PacifyBehaviourComponent();
       pacify.ZoomOut();

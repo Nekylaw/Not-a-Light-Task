@@ -47,6 +47,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
             sequence.Append(targetCreature.transform.DOLocalMoveY(0,3).SetEase(Ease.OutSine));
             
             IAController.isBeingPacified = true;
+            IAController.canWander = false;
             
             StartCoroutine(IAController.OnEndPacify(targetCreature));
             IAController.StartPacifyEffects();
