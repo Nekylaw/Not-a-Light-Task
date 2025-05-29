@@ -72,8 +72,8 @@ public class ShootBehaviorComponent : MonoBehaviour
         
         _isAiming = isAiming;
 
-        if (!isAiming)
-            return false;
+        //if (!isAiming)
+        //    return false;
 
         if (_container == null)
             return false;

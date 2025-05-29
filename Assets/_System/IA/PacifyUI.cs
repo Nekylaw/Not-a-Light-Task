@@ -17,7 +17,7 @@ public class PacifyUI : MonoBehaviour
 
     public void OnPacifyStarted()
     {
-        if (_canStartPacify = true)
+        if (_canStartPacify == true)
         {
             var targetCreature = creaturesCanBePacified[0];
              if (Input.GetKeyDown(KeyCode.P))
