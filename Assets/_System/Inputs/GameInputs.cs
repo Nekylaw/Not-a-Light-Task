@@ -116,6 +116,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pacify"",
+                    ""type"": ""Button"",
+                    ""id"": ""7554cf16-552f-4381-9641-9c32949f164b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -512,6 +521,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Press"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2000e40-f66b-4ed3-bc52-d06fce1cfcb1"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Pacify"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1098,6 +1118,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Press = m_Player.FindAction("Press", throwIfNotFound: true);
+        m_Player_Pacify = m_Player.FindAction("Pacify", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1187,6 +1208,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pickup;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Press;
+    private readonly InputAction m_Player_Pacify;
     public struct PlayerActions
     {
         private @GameInputs m_Wrapper;
@@ -1201,6 +1223,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Press => m_Wrapper.m_Player_Press;
+        public InputAction @Pacify => m_Wrapper.m_Player_Pacify;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1240,6 +1263,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Press.started += instance.OnPress;
             @Press.performed += instance.OnPress;
             @Press.canceled += instance.OnPress;
+            @Pacify.started += instance.OnPacify;
+            @Pacify.performed += instance.OnPacify;
+            @Pacify.canceled += instance.OnPacify;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1274,6 +1300,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Press.started -= instance.OnPress;
             @Press.performed -= instance.OnPress;
             @Press.canceled -= instance.OnPress;
+            @Pacify.started -= instance.OnPacify;
+            @Pacify.performed -= instance.OnPacify;
+            @Pacify.canceled -= instance.OnPacify;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1466,6 +1495,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         void OnPickup(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnPress(InputAction.CallbackContext context);
+        void OnPacify(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

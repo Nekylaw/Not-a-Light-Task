@@ -1,31 +1,41 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
-
-
 public class NEW_IAController : MonoBehaviour
-{
+
+
+{  [SerializeField] public GameObject pacifyEffects;
+   
    public GameObject[] allOrbs;
    public GameObject nearestObject; 
    public List<GameObject> orbsEaten;
+   
    float distance;
    float nearestDistance = 100;
+   
    public bool canWander = false;
-
+   public bool isBeingPacified = false;
+   public bool isPacified = false;
+   
    private CreatureState creatureState = new CreatureState();
+   
+   
    void Update()
-   {
+   {  
+      
       if (nearestObject != null && creatureState.isEvil == true && canWander)
       {
          MoveTo(nearestObject.transform.position);
       }
       else
       {
-         if (creatureState.isEvil == true)
+         if (creatureState.isEvil == true && canWander)
          {
             ScanWorldOrbs();
          }
@@ -103,12 +113,14 @@ public class NEW_IAController : MonoBehaviour
          
          MoveTo(worldCoord);
       }
+      else
+      {
+         
+      }
       
-
       
    }
-
-
+   
    
    
    void MoveTo( Vector3 location ) 
@@ -117,4 +129,30 @@ public class NEW_IAController : MonoBehaviour
       agent.SetDestination( location );
    }
    #endregion
+
+
+   public void StartPacifyEffects()
+   {
+      if (isBeingPacified)
+      {
+         pacifyEffects.SetActive(true);
+      }
+   }
+   
+   public IEnumerator OnEndPacify(GameObject target)
+   {
+      yield return new WaitForSeconds(8);  
+      pacifyEffects.SetActive(false);
+      
+      float duration = 5;
+      float valueUpY = -5;
+      
+      target.GetComponent<NEW_IAController>().isPacified = true;
+      target.GetComponent<NEW_IAController>().isBeingPacified = false;
+      canWander = true;
+      
+      PacifyBehaviourComponent pacify = new PacifyBehaviourComponent();
+      pacify.ZoomOut();
+   }
+   
 }
