@@ -6257,9 +6257,9 @@ NavMeshAgent:
   m_GameObject: {fileID: 4578512629234555910}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.9
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Radius: 2.5
+  m_Speed: 3
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -6289,8 +6289,8 @@ MonoBehaviour:
   canWander: 1
   isBeingPacified: 0
   isPacified: 0
-  circRadius: 10
-  circDistance: 10
+  circRadius: 15
+  circDistance: 12
   wanderRandomizer: 1
 --- !u!1 &7470726154329031927
 GameObject:
