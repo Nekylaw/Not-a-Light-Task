@@ -1,17 +1,17 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
-using NUnit.Framework;
 using TMPro;
-using UnityEngine.ProBuilder.MeshOperations;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class PacifyBehaviourComponent : MonoBehaviour
 {
+
+    public delegate void PacifyDelegate(GameObject creature);
+    public event PacifyDelegate OnPacify;
+
     [FormerlySerializedAs("canPacifyUI")] [SerializeField] private GameObject pacifyUI;
 
     public List<GameObject> creaturesCanBePacified = new List<GameObject>();
@@ -34,6 +34,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
             targetCreature.GetComponent<NavMeshAgent>().speed = 4 ;
         }
     }
+
     public void OnPacifyStarted()
     {
         if (_canStartPacify == true)
@@ -69,6 +70,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
             targetController.StartPacifyEffects();
             
             pacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
+
+            OnPacify?.Invoke(targetCreature);
         }
         
     }

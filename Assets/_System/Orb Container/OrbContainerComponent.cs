@@ -1,8 +1,5 @@
 using System;
-using Microsoft.Unity.VisualStudio.Editor;
-using TMPro;
 using UnityEngine;
-using Image = UnityEngine.UI.Image;
 
 public class OrbContainerComponent : MonoBehaviour
 {
@@ -13,9 +10,7 @@ public class OrbContainerComponent : MonoBehaviour
     [SerializeField] private Sprite orbSprite;
     
     private int _ammo = 0;
-    
-    
-    
+        
     
     void Start()
     {

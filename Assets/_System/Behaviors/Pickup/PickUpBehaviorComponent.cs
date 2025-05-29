@@ -5,6 +5,10 @@ using UnityEngine;
 /// </summary>
 public class PickUpBehaviorComponent : MonoBehaviour
 {
+
+    public delegate void PickupDelegate(PickableComponent pickableComponent);
+    public event PickupDelegate OnPickup = null;
+
     [SerializeField]
     private PickupSettings _settings;
 
@@ -80,7 +84,14 @@ public class PickUpBehaviorComponent : MonoBehaviour
             return false;
 
         Debug.Log("Pickup");
-        return _pickableInRange.Pickup(_container);
+
+        if (_pickableInRange.Pickup(_container))
+        {
+            OnPickup?.Invoke(_pickableInRange);
+            return true;
+        }
+
+        return false;
     }
 
     private void OnDrawGizmosSelected()

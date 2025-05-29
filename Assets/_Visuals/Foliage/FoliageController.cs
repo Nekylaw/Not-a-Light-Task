@@ -207,7 +207,7 @@ public class FoliageController : MonoBehaviour
             null
         );
 
-        Debug.Log($"Draw call sent for {_meshes[index].name} with {_argsBuffers[index].count} instances");
+        //Debug.Log($"Draw call sent for {_meshes[index].name} with {_argsBuffers[index].count} instances");
 
     }
 
