@@ -26,7 +26,14 @@ public class GameManager : MonoBehaviour
     [Header("Event System Selecion Firts")]
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject backButton;
+ 
     
+    public delegate void PauseDelegate();
+    public event PauseDelegate OnPause;
+    public delegate void PlayDelegate();
+    public event PlayDelegate OnPlay;
+
+
     private void Start()
     {
         //gameState = GameState.Playing;
@@ -38,10 +45,12 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(playButton);
 
         spawnTimer = spawnRate;
+
+        OnPlay?.Invoke();
     }
 
 
-    private void OnPause()
+    private void Pause()
     {
         if (gameState == GameState.Playing)
         {
@@ -50,12 +59,16 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.UIStartGame();
             UiManager.Instance.UIPlacement();
             EventSystem.current.SetSelectedGameObject(playButton);
+
+            OnPause?.Invoke();  
         }
         else if ( gameState == GameState.Paused)
         {
             UiManager.Instance.HideUI();
             gameState = GameState.Playing;
             EventSystem.current.SetSelectedGameObject(null);
+
+            OnPlay?.Invoke();
         }
     }
 

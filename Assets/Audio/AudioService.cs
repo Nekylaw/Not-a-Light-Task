@@ -39,6 +39,9 @@ public class AudioService : MonoBehaviour
     // Lights
     private LightSourcesService _lightService = null;
 
+    // Manager
+    private GameManager _gameManager = null;
+
     #endregion
 
 
@@ -50,6 +53,7 @@ public class AudioService : MonoBehaviour
         _pacify = FindFirstObjectByType<PacifyBehaviourComponent>(FindObjectsInactive.Exclude);
 
         _lightService = LightSourcesService.Instance;
+        _gameManager = GameManager.Instance;
     }
 
     private void Start()
