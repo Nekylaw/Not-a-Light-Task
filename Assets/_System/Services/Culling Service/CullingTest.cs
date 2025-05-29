@@ -31,7 +31,7 @@ public class CullerTest : MonoBehaviour, ICullable
     public void OnBecomeVisible()
     {
         _isVisible = true;
-        Debug.Log($"[CullerTest] {gameObject.name} became visible");
+        //Debug.Log($"[CullerTest] {gameObject.name} became visible");
         GetComponent<Renderer>().enabled = true;
 
     }
@@ -39,7 +39,7 @@ public class CullerTest : MonoBehaviour, ICullable
     public void OnBecomeInvisible()
     {
         _isVisible = false;
-        Debug.Log($"[CullerTest] {gameObject.name} became invisible");
+        //Debug.Log($"[CullerTest] {gameObject.name} became invisible");
         GetComponent<Renderer>().enabled = false;
 
     }
@@ -49,6 +49,6 @@ public class CullerTest : MonoBehaviour, ICullable
 
     private void Update()
     {
-        Debug.Log($"[CullerTest] {gameObject.name} visibility: {_isVisible}");
+        //Debug.Log($"[CullerTest] {gameObject.name} visibility: {_isVisible}");
     }
 }

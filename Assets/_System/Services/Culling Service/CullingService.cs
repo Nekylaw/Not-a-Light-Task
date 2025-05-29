@@ -43,10 +43,8 @@ namespace Game.Services.CullingService
         {
             _camera = Camera.main;
             if (_camera == null)
-            {
-                Debug.LogWarning("No Main Camera found on Init. Will retry in Start().");
                 return;
-            }
+
 
             _group = new CullingGroup();
             _group.targetCamera = _camera;
@@ -61,7 +59,6 @@ namespace Game.Services.CullingService
 
         private void Start()
         {
-            // Fallback in case MainCamera wasn't available in Awake
             if (!_initialized)
                 Initialize();
         }
@@ -138,10 +135,7 @@ namespace Game.Services.CullingService
             }
 
             if (_group == null)
-            {
-                Debug.LogError("[CullingService] CullingGroup is null.");
                 return;
-            }
 
             _group.SetBoundingSpheres(_spheres);
             _group.SetBoundingSphereCount(_spheres.Length);
