@@ -145,6 +145,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
         targetController.isBeingPacified = true;
         targetController.canWander = false;
         targetController.isPacified = true;
+        _canStartPacify = false;
     }
     
     #region  ZOOM EFFECT
