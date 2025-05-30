@@ -7,7 +7,6 @@ public class OrbContainerComponent : MonoBehaviour
     [SerializeField] private OrbContainerSettings _settings = null;
     [SerializeField] private GameObject orbSunUI;
     private int orbIndexUI = 0;
-    [SerializeField] private Sprite orbSprite;
     
     private int _ammo = 0;
         
