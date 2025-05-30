@@ -21,19 +21,25 @@ public class PacifyBehaviourComponent : MonoBehaviour
     #region PACIFY INTERACTIONS
 
     void Update()
-    { 
-        var targetCreature = creaturesCanBePacified[0];
-        if (_canStartPacify)
+    {
+        if (creaturesCanBePacified.Count != 0)
         {
-            targetCreature.transform.LookAt(this.gameObject.transform);
-
-            targetCreature.GetComponent<NavMeshAgent>().speed = 0;
+            var targetCreature = creaturesCanBePacified[0];
+            if (_canStartPacify || targetCreature.GetComponent<NEW_IAController>().isBeingPacified)
+            {
+                targetCreature.transform.LookAt(this.gameObject.transform);
+            
+                targetCreature.GetComponent<NavMeshAgent>().speed = 0;
+            }
+            else
+            {
+                targetCreature.GetComponent<NavMeshAgent>().speed = 4 ;
+            }
+            
         }
-        else
-        {
-            targetCreature.GetComponent<NavMeshAgent>().speed = 4 ;
-        }
+        
     }
+    
     public void OnPacifyStarted()
     {
         if (_canStartPacify == true)
@@ -119,13 +125,17 @@ public class PacifyBehaviourComponent : MonoBehaviour
     
     private void OnTriggerExit(Collider other)
     {
-        creaturesCanBePacified[0].gameObject.GetComponent<NEW_IAController>().canWander = true;
-        IsNotInPacifyMode();
-        if (creaturesCanBePacified.Contains(other.gameObject))
-        {   
-            creaturesCanBePacified.Remove(other.gameObject);
-            HidePacifyUI(); 
+        if (creaturesCanBePacified.Count != 0)
+        {
+            creaturesCanBePacified[0].gameObject.GetComponent<NEW_IAController>().canWander = true;
+            IsNotInPacifyMode(creaturesCanBePacified[0].GetComponent<NEW_IAController>());
+            if (creaturesCanBePacified.Contains(other.gameObject))
+            {   
+                creaturesCanBePacified.Remove(other.gameObject);
+                HidePacifyUI(); 
+            }
         }
+        
 
     }
 

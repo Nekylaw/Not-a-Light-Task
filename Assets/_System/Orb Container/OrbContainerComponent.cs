@@ -4,9 +4,10 @@ using UnityEngine;
 public class OrbContainerComponent : MonoBehaviour
 {
 
-    [SerializeField]
-    private OrbContainerSettings _settings = null;
-
+    [SerializeField] private OrbContainerSettings _settings = null;
+    [SerializeField] private GameObject orbSunUI;
+    private int orbIndexUI = 0;
+    
     private int _ammo = 0;
 
     void Start()
@@ -17,7 +18,9 @@ public class OrbContainerComponent : MonoBehaviour
     public int Ammo => _ammo;
     public OrbComponent Orb => _settings.OrbPrefab;
 
-    void Update() { }
+    void Update()
+    {
+    }
 
     public bool CollectBullet(int amount)
     {
@@ -37,6 +40,11 @@ public class OrbContainerComponent : MonoBehaviour
 
         _ammo -= amount;
         _ammo = Mathf.Max(0, _ammo);
+        Debug.Log("ammo left: " + _ammo);
+        
+        orbIndexUI = _ammo;
+       Debug.Log("premier obj off: "+orbSunUI.transform.GetChild(orbIndexUI).gameObject.name); 
+        orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(false);
 
         return true;
     }
