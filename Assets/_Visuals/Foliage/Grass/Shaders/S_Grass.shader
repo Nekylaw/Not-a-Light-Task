@@ -7,7 +7,7 @@ Shader "Custom/GrassWind"
         _Color("Color", Color) = (1,1,1,1)
 
         _MinScale("Min Scale", Range(0.1, 1)) = 0.3
-        _MaxDistance("Max Distance", Float) = 10.0
+        _MaxDistance("Max Growing Distance ", Float) = 10.0
         _Cutoff("Alpha Cutoff", Range(0,1)) = 0.5
 
         _YOffset("Sway Y Offset", Float) = 0.0
@@ -93,7 +93,7 @@ Shader "Custom/GrassWind"
                 float dist = distance(worldPos, _PlayerPos);
                 o.dist = dist;
 
-                float t = saturate(1.0 - dist / _MaxDistance);
+                float t = saturate(dist / _MaxDistance); 
                 float scale = lerp(_MinScale, baseScale.x, t);
 
                 // Scale
@@ -103,7 +103,7 @@ Shader "Custom/GrassWind"
 
                 // Wind sampling
                 float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime * 0.05, _FlowTime * 0.05);
-                float2 flowTex = _FlowMap.SampleLevel(sampler_FlowMap, flowUV, 0).xy;               
+                float2 flowTex = _FlowMap.SampleLevel(sampler_FlowMap, flowUV, 0).xy;  // to sample while beeing in vertex            
                 float2 flowDir = normalize(flowTex * 2.0 - 1.0); // [-1,1]
 
                 float upperVertex = max(0, scaled.y - _YOffset);
@@ -120,7 +120,7 @@ Shader "Custom/GrassWind"
 
             half4 frag(Varyings i) : SV_Target
             {
-                clip(_MaxDistance - i.dist); // distance culling 
+               //clip(_MaxDistance - i.dist); // distance culling 
 
                 float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 float4 alpha = SAMPLE_TEXTURE2D(_AlphaTex, sampler_AlphaTex, i.uv);
