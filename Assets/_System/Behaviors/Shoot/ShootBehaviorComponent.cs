@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class ShootBehaviorComponent : MonoBehaviour
 {
+
+    public delegate void ShootDelegate(Ray aimRay, bool isAiming);
+    public event ShootDelegate OnShoot;
+
+    public delegate void AimDelegate();
+    public event AimDelegate OnAim;
+
     [SerializeField]
     private Transform _firePoint = null;
 
@@ -90,6 +97,8 @@ public class ShootBehaviorComponent : MonoBehaviour
         OrbComponent bullet = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
 
+        OnShoot?.Invoke(aimRay, isAiming);
+
         return true;
     }
 
@@ -103,6 +112,8 @@ public class ShootBehaviorComponent : MonoBehaviour
             _crossHairRect.rotation = Quaternion.Slerp(_crossHairRect.rotation, Quaternion.Euler(0, 0, 90), delta * _settings.AimSpeed);
             _crossHairRect.localScale = Vector3.Lerp(_crossHairRect.localScale, new Vector3(0.6f, 0.6f, 0.6f), delta * _settings.AimSpeed);
         }
+
+        OnAim?.Invoke();
     }
 
     private void ReleaseAim(float delta)

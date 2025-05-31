@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pacify",
+                    "type": "Button",
+                    "id": "7554cf16-552f-4381-9641-9c32949f164b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -490,6 +499,17 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2000e40-f66b-4ed3-bc52-d06fce1cfcb1",
+                    "path": "<Keyboard>/v",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Pacify",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

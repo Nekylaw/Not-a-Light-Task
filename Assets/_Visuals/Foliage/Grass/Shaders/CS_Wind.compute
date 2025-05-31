@@ -6,7 +6,7 @@ RWTexture2D<float4> _WindMap;
 float _Frequency;
 float _Amplitude;
 float _Time;
-float _Scale; // taille du monde (diviseur pour UV)
+float _Scale;
 
 [numthreads(8, 8, 1)]
 void WindNoise(uint3 id : SV_DispatchThreadID)
@@ -18,10 +18,8 @@ void WindNoise(uint3 id : SV_DispatchThreadID)
 
     float2 uv = (float2)id.xy / texSize.xy;
 
-    // Position monde simulée (si tu veux que ça soit world-aligned)
     float2 pos = uv * _Scale;
 
-    // Génération du bruit pour angle
     float n = snoise(float3(pos * _Frequency, _Time * 0.05f)); // Bruit temporel
     float angle = n * 6.2831f; // [0, 2π]
     

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Security.Cryptography;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private ShootBehaviorComponent _shoot = null;
     private JumpBehaviorComponent _jump = null;
     private PickUpBehaviorComponent _pickup = null;
+    private PacifyBehaviourComponent _pacify = null;
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _previousMovementDirection = Vector3.zero;
@@ -56,13 +58,16 @@ public class PlayerController : MonoBehaviour
 
         if (!TryGetComponent<PickUpBehaviorComponent>(out _pickup))
             Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
+        
+        if (!TryGetComponent<PacifyBehaviourComponent>(out _pacify))
+            Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
 
         _camera = GetComponentInChildren<CameraController>();
         if (_camera == null)
             Debug.LogError($"{nameof(CameraController)} component not found", this);
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         if (_gameInputs == null)
         {
@@ -72,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Enable();
     }
-    private void OnDisable()
+    public void OnDisable()
     {
         UnBindInputs();
         _gameInputs.Disable();
@@ -88,6 +93,15 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
         UpdateCameraLook(_inputMode, delta);
+        if (_pacify._isInPacifyMode == true)
+        {
+            _gameInputs.Player.Look.performed -= HandleLookInput;
+            _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
+        }
+        else
+        {
+            _gameInputs.Player.Look.performed += HandleLookInput;
+        }
     }
 
     #endregion
@@ -111,6 +125,9 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Pickup.performed += HandlePickupInput;
 
+        _gameInputs.Player.Pacify.performed += HandlePacifyInput;
+        _gameInputs.Player.Pacify.canceled += HandlePacifyInput;
+
         _gameInputs.Player.Jump.started += HandleJumpInput;
     }
 
@@ -129,6 +146,10 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
 
         _gameInputs.Player.Pickup.performed -= HandlePickupInput;
+        
+        _gameInputs.Player.Pacify.performed -= HandlePacifyInput;
+        _gameInputs.Player.Pacify.canceled -= HandlePacifyInput;
+
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
     }
@@ -197,6 +218,21 @@ public class PlayerController : MonoBehaviour
         _pickup.Pickup();
     }
 
+    
+    private void HandlePacifyInput(InputAction.CallbackContext context)
+    {
+        if (context.performed && _pacify._isInPacifyMode)
+        {   
+           _pacify.OnPacifyHold();
+           
+        }
+        else if (context.canceled)
+        {
+            _pacify.HidePacifyUI();
+        }
+        
+    }
+    
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
@@ -221,6 +257,7 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+        
     }
 
     private IEnumerator WaitForRebind(float delay)
@@ -229,7 +266,7 @@ public class PlayerController : MonoBehaviour
         BindInputs();
     }
 
-    private IEnumerator SmoothLookAt(Transform target, float duration)
+    public IEnumerator SmoothLookAt(Transform target, float duration)
     {
         Quaternion startRotation = mainCamera.transform.rotation;
 

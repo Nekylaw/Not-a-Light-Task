@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MovementBehaviorComponent : MonoBehaviour
 {
+
+    public delegate void WalkDelegate(Vector3 direction, float speed);  
+    public event WalkDelegate OnWalk;
+
     [SerializeField]
     private MovementSettings _settings = null;
 
@@ -60,6 +64,7 @@ public class MovementBehaviorComponent : MonoBehaviour
             //_rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
         }
 
+        OnWalk?.Invoke(direction, desiredVelocity.magnitude);
         BehaviorsService.Move(direction, desiredVelocity.magnitude);
 
         return true;

@@ -26,20 +26,6 @@ public class FoliageController : MonoBehaviour
     private ComputeBuffer _matrixBuffer;
     private ComputeBuffer _baseScaleBuffer;
 
-    [Header("Wind")]
-
-    [SerializeField]
-    private ComputeShader _windCompute;
-    [SerializeField]
-    private int _windMapSize = 128;
-    [SerializeField]
-    private float _windScale = 100f;
-    [SerializeField]
-    private float _windFrequency = 1;
-    [SerializeField]
-    private float _windAmplitude = 1;
-
-    private RenderTexture _windMap;
 
     struct DrawData
     {
@@ -56,13 +42,15 @@ public class FoliageController : MonoBehaviour
             return;
         }
 
-        var drawData = LoadFoliageData();
-        if (drawData == null || drawData.Count == 0)
+        var drawDatas = LoadFoliageData();
+
+        Debug.Log($"Loaded {drawDatas?.Count ?? 0} draw entries");
+
+        if (drawDatas == null || drawDatas.Count == 0)
             return;
 
-        InitializeBuffers(drawData);
-        CreateArgsBuffers(drawData);
-        CreateWindRenderTexture();
+        InitializeBuffers(drawDatas);
+        CreateArgsBuffers(drawDatas);
     }
 
     private void Update()
@@ -71,8 +59,7 @@ public class FoliageController : MonoBehaviour
             return;
 
         _material.SetVector("_PlayerPos", _player.position);
-
-        ComputeWind();
+        _material.SetFloat("_FlowTime", Time.time);
 
         for (int i = 0; i < _meshes.Count; i++)
         {
@@ -219,42 +206,9 @@ public class FoliageController : MonoBehaviour
             LightProbeUsage.Off,
             null
         );
-    }
 
-    /// <summary>
-    /// Creates the wind render texture
-    /// </summary>
-    private void CreateWindRenderTexture()
-    {
-        _windMap = new RenderTexture(_windMapSize, _windMapSize, 0, RenderTextureFormat.ARGBFloat)
-        {
-            enableRandomWrite = true,
-            wrapMode = TextureWrapMode.Repeat
-        };
-        _windMap.Create();
-    }
+        //Debug.Log($"Draw call sent for {_meshes[index].name} with {_argsBuffers[index].count} instances");
 
-    /// <summary>
-    /// Dispatches the wind compute shader to update the global wind map
-    /// </summary>
-    private void ComputeWind()
-    {
-        if (_windMap == null || !_windMap.IsCreated())
-            CreateWindRenderTexture();
-
-        int kernel = _windCompute.FindKernel("WindNoise");
-
-        _windCompute.SetTexture(kernel, "_WindMap", _windMap);
-        _windCompute.SetFloat("_Frequency", _windFrequency);
-        _windCompute.SetFloat("_Amplitude", _windAmplitude);
-        _windCompute.SetFloat("_Time", Time.time);
-        _windCompute.SetFloat("_Scale", _windScale);
-
-        int threadGroups = Mathf.Max(1, Mathf.CeilToInt(_windMapSize / 8.0f));
-        _windCompute.Dispatch(kernel, threadGroups, threadGroups, 1);
-
-        // Set the global texture for shaders using windmap
-        Shader.SetGlobalTexture("_WindMap", _windMap);
     }
 
     /// <summary>
@@ -284,3 +238,4 @@ public class FoliageController : MonoBehaviour
         return null;
     }
 }
+
