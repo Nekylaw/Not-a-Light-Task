@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public class FoliageMatrixData
+public class ChunkData
 {
-    public string SaveName;
+    public string ChunkName;
     public List<MeshData> MeshDatas;
 }

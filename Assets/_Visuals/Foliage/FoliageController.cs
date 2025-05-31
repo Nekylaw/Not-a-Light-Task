@@ -96,7 +96,7 @@ public class FoliageController : MonoBehaviour
             return null;
         }
 
-        var data = JsonUtility.FromJson<FoliageMatrixData>(jsonAsset.text);
+        var data = JsonUtility.FromJson<ChunkData>(jsonAsset.text);
         if (data?.MeshDatas == null)
         {
             Debug.LogError("Invalid foliage data.");

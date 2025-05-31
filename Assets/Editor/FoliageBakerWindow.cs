@@ -1,16 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using Game.Services.LightSources;
+using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Mesh;
 
 public class FoliageBakerWindow : EditorWindow
 {
-    private GameObject _foliageSourcePrefab = null;
 
-    private string _saveFile = "GrassBunch.json";
+    /// <summary>
+    /// Size of the chunk in world units
+    /// </summary>
+    private Vector2Int _chunckSize = new Vector2Int(100, 100);
 
-    private FoliageMatrixData _data = new();
-    private bool _hasBaked = false;
+    /// <summary>
+    /// Folder where the baked foliage chunks will be saved
+    /// </summary>
+    private string _outputFolder = "Resources/FoliageChunks/";
+
+    [Tooltip("List of GameObjects that are considered foliage sources.")]
+    [SerializeField]
+    private List<GameObject> _foliageSources = null;
+
+    /// <summary>
+    /// Serialized object for the window
+    /// </summary>
+    private SerializedObject _serializedObject = null;
+
+    /// <summary>
+    /// Serialized property for the foliage sources list
+    /// </summary>
+    private SerializedProperty _foliageSourcesProperty = null;
+
+    /// <summary>
+    /// Chunks data with key as "chunkX_chunkY" and value as ChunkData.
+    /// </summary>
+    Dictionary<string, ChunkData> _chunks;
+
 
     [MenuItem("Window/Game/Foliage Baker")]
     public static void ShowWindow()
@@ -19,136 +46,106 @@ public class FoliageBakerWindow : EditorWindow
         window.Show();
     }
 
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(this); // Window as serialized object
+        _foliageSourcesProperty = _serializedObject.FindProperty($"{nameof(_foliageSources)}");
+
+        _chunks = new Dictionary<string, ChunkData>();
+    }
+
     private void OnGUI()
     {
-        GUILayout.Label("Foliage Baker", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+        _outputFolder = EditorGUILayout.TextField("Output Folder", _outputFolder);
+        EditorGUILayout.Space();
+        _chunckSize = EditorGUILayout.Vector2IntField("Chunk Size", _chunckSize);
+        _serializedObject.Update();
 
-        _foliageSourcePrefab = (GameObject)EditorGUILayout.ObjectField("Grass Source Prefab", _foliageSourcePrefab, typeof(GameObject), false);
-        _saveFile = EditorGUILayout.TextField("Save Path", _saveFile);
+        EditorGUILayout.Space();
 
-        EditorGUILayout.HelpBox("Keep the same Save Path to replace json grass datas.", MessageType.Info);
+        EditorGUILayout.PropertyField(_foliageSourcesProperty, true);
+        _serializedObject.ApplyModifiedProperties();
 
-        if (GUILayout.Button("Bake"))
+        if (GUILayout.Button("Bake Scene Foliage"))
             Bake();
-
-        if (_hasBaked)
-            EditorGUILayout.HelpBox("Bake done.", MessageType.Info);
-
-        //string preview = GetDataInfos();
-        //if (!string.IsNullOrEmpty(preview))
-        //{
-        //    EditorGUILayout.Space();
-        //    EditorGUILayout.HelpBox(preview, MessageType.None);
-        //}
-
-        if (GUILayout.Button("Save"))
-            SaveToJson(Path.Combine("Resources/", _saveFile));
     }
 
     private void Bake()
     {
-        if (_foliageSourcePrefab == null)
-        {
-            Debug.LogError("No prefab assigned.");
+        if (_foliageSources.Count <= 0)
             return;
-        }
 
-        GameObject prefabSource = PrefabUtility.GetCorrespondingObjectFromSource(_foliageSourcePrefab);
-        if (prefabSource == null)
+        _chunks.Clear();
+
+        foreach (var obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
-            Debug.LogError("The selected GameObject is not a prefab or prefab instance.");
-            return;
-        }
+            GameObject source = PrefabUtility.GetCorrespondingObjectFromSource(obj);
 
-        Dictionary<Mesh, List<Matrix4x4>> matrixMap = new();
-
-        foreach (GameObject go in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
-        {
-            GameObject goPrefabRoot = PrefabUtility.GetCorrespondingObjectFromSource(go);
-
-            if (goPrefabRoot == null)
+            if (source == null || !_foliageSources.Contains(source))
                 continue;
 
-            if (goPrefabRoot != _foliageSourcePrefab)
-                continue;
-
-            Debug.Log($"[FOUND MATCH] {go.name} is instance of {_foliageSourcePrefab.name}");
-
-            foreach (MeshFilter mf in go.GetComponentsInChildren<MeshFilter>())
+            foreach (var mf in obj.GetComponentsInChildren<MeshFilter>())
             {
-                if (mf.sharedMesh == null)
+                var mesh = mf.sharedMesh;
+                if (mesh == null)
                     continue;
 
-                Debug.Log($"   MeshFilter: {mf.name} | Mesh: {mf.sharedMesh.name}");
+                Vector3 meshPos = mf.transform.position;
+                int chunkX = Mathf.FloorToInt(meshPos.x / _chunckSize.x);
+                int chunkY = Mathf.FloorToInt(meshPos.y / _chunckSize.y);
+                string chunkKey = $"{chunkX}_{chunkY}";
 
-                Mesh mesh = mf.sharedMesh;
-                if (!matrixMap.ContainsKey(mesh))
-                    matrixMap[mesh] = new List<Matrix4x4>();
+                // Create or get existing chunk data
+                if (!_chunks.ContainsKey(chunkKey))
+                {
+                    _chunks[chunkKey] = new ChunkData
+                    {
+                        ChunkName = chunkKey,
+                        MeshDatas = new List<MeshData>()
+                    };
+                }
 
-                matrixMap[mesh].Add(mf.transform.localToWorldMatrix);
+                List<MeshData> meshDatasList = _chunks[chunkKey].MeshDatas;
+                MeshData meshData = _chunks[chunkKey].MeshDatas.Find(md => md.MeshName == mesh.name);
+                if (meshData == null)
+                {
+                    meshData = new MeshData { MeshName = mesh.name, Matrices = new List<SerializableMatrix4x4>() };
+                    meshDatasList.Add(meshData);
+                }
+
+                meshData.Matrices.Add(new SerializableMatrix4x4(mf.transform.localToWorldMatrix));
             }
         }
 
-        _data = new FoliageMatrixData
-        {
-            SaveName = Path.GetFileNameWithoutExtension(_saveFile),
-            MeshDatas = new List<MeshData>()
-        };
-
-        foreach (var kvp in matrixMap)
-        {
-            var entry = new MeshData
-            {
-                MeshName = kvp.Key.name,
-                Matrices = kvp.Value.ConvertAll(m => new SerializableMatrix4x4(m))
-            };
-
-            _data.MeshDatas.Add(entry);
-        }
-
-        _hasBaked = true;
-
-        int totalInstances = 0;
-        foreach (var meshData in _data.MeshDatas)
-            totalInstances += meshData.Matrices.Count;
-
-        Debug.Log($"Total instances to be saved: {totalInstances}");
+        SaveToJson();
     }
 
-    private void SaveToJson(string savePath)
+
+    private void SaveToJson()
     {
-        if (!_hasBaked)
+        string path = Path.Combine(Application.dataPath, _outputFolder); // Assets + /Resources/FoliageChunks/
+        Directory.CreateDirectory(path); // Ensure the directory exists
+
+        ClearBakeFiles(path);
+
+        foreach (var chunk in _chunks)
         {
-            Debug.LogWarning("Bake before saving.");
-            return;
+            string json = JsonUtility.ToJson(chunk.Value, true);
+            string filePath = Path.Combine(path, $"{chunk.Key}.json");
+            File.WriteAllText(filePath, json);
         }
 
-        string json = JsonUtility.ToJson(_data, true);
-        string path = Path.Combine(Application.dataPath, savePath);
-
-        File.WriteAllText(path, json);
-
-        Debug.Log("Saved foliage matrix data at: " + path);
+        Debug.Log($"Baked {_chunks.Count} chunks to {path}");
         AssetDatabase.Refresh();
-        _hasBaked = false;
     }
 
-    private string GetDataInfos()
+    private void ClearBakeFiles(string path)
     {
-        string assetPath = Path.Combine("Assets", "Resources", _saveFile);
-        if (!File.Exists(assetPath))
-            return "No data found";
-
-        string json = File.ReadAllText(assetPath);
-        FoliageMatrixData data = JsonUtility.FromJson<FoliageMatrixData>(json);
-
-        if (data == null || data.MeshDatas == null)
-            return "File invalid or empty.";
-
-        string summary = $"Name: {data.SaveName} | Mesh Count: {data.MeshDatas.Count}";
-        foreach (var mesh in data.MeshDatas)
-            summary += $"\n- {mesh.MeshName}: {mesh.Matrices.Count} matrices";
-
-        return summary;
+        var files = Directory.GetFiles(path);
+        for (int i = 0; i < files.Length; i++)
+        {
+            File.Delete(files[i]);
+        }
     }
 }
