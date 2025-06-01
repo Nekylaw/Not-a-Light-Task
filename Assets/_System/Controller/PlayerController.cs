@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private JumpBehaviorComponent _jump = null;
     private PickUpBehaviorComponent _pickup = null;
     private PacifyBehaviourComponent _pacify = null;
+    private PetBehaviorComponent _pet = null;
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _previousMovementDirection = Vector3.zero;
@@ -60,9 +61,12 @@ public class PlayerController : MonoBehaviour
             Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
         
         if (!TryGetComponent<PacifyBehaviourComponent>(out _pacify))
-            Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
+            Debug.LogError($"{nameof(PacifyBehaviourComponent)} component not found", this);
 
-        _camera = GetComponentInChildren<CameraController>();
+        if (!TryGetComponent<PetBehaviorComponent>(out _pet))
+            Debug.LogError($"{nameof(PetBehaviorComponent)} component not found", this);
+
+            _camera = GetComponentInChildren<CameraController>();
         if (_camera == null)
             Debug.LogError($"{nameof(CameraController)} component not found", this);
     }
@@ -129,6 +133,8 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Pacify.canceled += HandlePacifyInput;
 
         _gameInputs.Player.Jump.started += HandleJumpInput;
+
+        _gameInputs.Player.Pet.performed += HandlePetInput;
     }
 
     private void UnBindInputs()
@@ -150,8 +156,9 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Pacify.performed -= HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled -= HandlePacifyInput;
 
-
         _gameInputs.Player.Jump.started -= HandleJumpInput;
+
+        _gameInputs.Player.Pet.performed -= HandlePetInput;
     }
 
     private void UpdateMovement(float delta)
@@ -231,6 +238,14 @@ public class PlayerController : MonoBehaviour
             _pacify.HidePacifyUI();
         }
         
+    }
+
+    private void HandlePetInput(InputAction.CallbackContext context)
+    {
+        if (context.performed && _pet._canPet)
+        {
+            _pet.PetTheCreature();
+        }
     }
     
     private void HandleJumpInput(InputAction.CallbackContext context)
