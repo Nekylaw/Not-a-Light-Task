@@ -14,8 +14,10 @@ public class NEW_IAController : MonoBehaviour
     [SerializeField] public GameObject pacifyEffects;
 
     public GameObject[] allOrbs;
-    public GameObject nearestObject;
+    public GameObject[] allLightSources; 
+    public GameObject nearestLightObject;
     public List<GameObject> orbsEaten;
+    [SerializeField] private GameObject _orbGameObject;
 
     float distance;
     float nearestDistance = 100;
@@ -36,11 +38,12 @@ public class NEW_IAController : MonoBehaviour
             WanderBehaviour();
         }
 
-        if (nearestObject != null && isPacified == false && canWander)
+        if (nearestLightObject != null && isPacified == false && canWander)
         {
-            MoveTo(nearestObject.transform.position);
+            MoveTo(nearestLightObject.transform.position);
         }
 
+        
         if (!isPacified == true && canWander)
         {
             ScanWorldOrbs();
@@ -50,29 +53,49 @@ public class NEW_IAController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Orb") && !isPacified)
+        if (other.gameObject.CompareTag("LightSource") && !isPacified)
         {
             other.gameObject.SetActive(false);
-            nearestObject = null;
+            nearestLightObject = null;
             orbsEaten.Add(other.gameObject);
         }
-
+        
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("LightSource") && !isPacified && other.gameObject.GetComponentInParent<AnimateLightOrbFeedbackComponent>().isLightOn == true)
+        {
+            other.gameObject.SetActive(false);
+            orbsEaten.Add(_orbGameObject.gameObject);
+            other.gameObject.GetComponent<AnimateLightOrbFeedbackComponent>().isLightOn = false;
+        }
+    }
 
     #region ScanOrbs
 
     void ScanWorldOrbs()
     {
         allOrbs = GameObject.FindGameObjectsWithTag("Orb");
+        allLightSources = GameObject.FindGameObjectsWithTag("LightSource");
         for (int i = 0; i < allOrbs.Length; i++)
         {
             distance = Vector3.Distance(this.transform.position, allOrbs[i].transform.position);
             if (distance < nearestDistance)
             {
-                nearestObject = allOrbs[i];
+                nearestLightObject = allOrbs[i];
                 nearestDistance = distance;
-                Debug.Log("new nearest orb: " + nearestObject.name);
+                Debug.Log("new nearest orb: " + nearestLightObject.name);
+            }
+        }
+        for (int i = 0; i < allLightSources.Length; i++)
+        {
+            distance = Vector3.Distance(this.transform.position, allLightSources[i].transform.position);
+            if (distance < nearestDistance && allLightSources[i].GetComponentInParent<AnimateLightOrbFeedbackComponent>().isLightOn == true)
+            {
+                Debug.Log("nearest object is a receptacle light");
+                nearestLightObject = allLightSources[i];
+                nearestDistance = distance;
             }
         }
     }
@@ -125,7 +148,7 @@ public class NEW_IAController : MonoBehaviour
 
     public IEnumerator OnEndPacify()
     {
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(5);
         pacifyEffects.SetActive(false);
 
         float duration = 5;

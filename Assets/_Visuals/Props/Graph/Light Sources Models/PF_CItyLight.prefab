@@ -126,9 +126,10 @@ GameObject:
   - component: {fileID: 6878066562197229913}
   - component: {fileID: 6855271910264626308}
   - component: {fileID: 8807265026980769896}
-  m_Layer: 0
+  - component: {fileID: 7898324167312766584}
+  m_Layer: 6
   m_Name: Light
-  m_TagString: Untagged
+  m_TagString: LightSource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -223,6 +224,27 @@ MonoBehaviour:
   _glowRadius: 0.4
   _visibilityDistance: 100
   _maxScreenDist: 0.9
+--- !u!65 &7898324167312766584
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801858164894328019}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 25.517464, y: 20.596926, z: 17.44003}
+  m_Center: {x: -0.009406697, y: -20.88534, z: 0.62761235}
 --- !u!1 &6001561978324193640
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +299,10 @@ PrefabInstance:
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_Name
       value: PF_CItyLight
+      objectReference: {fileID: 0}
+    - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -341,6 +367,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 874264517745118492}
+    - targetCorrespondingSourceObject: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8517983909757272283}
   m_SourcePrefab: {fileID: 9199261849990390558, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
 --- !u!1 &5944605289302866001 stripped
 GameObject:
@@ -377,6 +406,30 @@ MonoBehaviour:
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
   _radius: 3
   _orbitSpeed: 200
+  isLightOn: 0
+--- !u!136 &8517983909757272283
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5944605289302866001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.7330704
+  m_Height: 11.200933
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.9211226, z: -0.0016555786}
 --- !u!4 &7570629517440212709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5970094261386042579, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
