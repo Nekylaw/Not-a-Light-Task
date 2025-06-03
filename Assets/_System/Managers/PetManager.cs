@@ -25,14 +25,18 @@ public class PetManager : MonoBehaviour
     {
         //Debug.Log(PacifiedCreatures.Count);
         debugList.text = "pacified : \n";
-        foreach (GameObject p in PacifiedCreatures)
+        if (PacifiedCreatures.Count != 0)
         {
-            debugList.text += p.name;
-            if (p.GetComponent<NEW_IAController>().CanBePet)
+            foreach (GameObject p in PacifiedCreatures)
             {
-                debugList.text += "OUI \n";
+                debugList.text += p.name;
+                if (p.GetComponent<NEW_IAController>().CanBePet)
+                {
+                    debugList.text += "OUI \n";
+                }
             }
         }
+        
     }
     public void AddCreature(GameObject creature)
     {

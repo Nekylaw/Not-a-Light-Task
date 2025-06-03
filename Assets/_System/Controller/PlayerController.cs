@@ -97,17 +97,20 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
         UpdateCameraLook(_inputMode, delta);
-        
-        if (_pacify.creaturesCanBePacified[0].GetComponent<NEW_IAController>().isBeingPacified == true)
+
+        if (_pacify.creaturesCanBePacified.Count != 0)
         {
-            _gameInputs.Player.Look.performed -= HandleLookInput;
-            _gameInputs.Player.Move.performed -= HandleMoveInput;
-            _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
-        }
-        else
-        {
-            _gameInputs.Player.Look.performed += HandleLookInput;
-            _gameInputs.Player.Move.performed += HandleMoveInput;
+            if (_pacify.creaturesCanBePacified[0].GetComponent<NEW_IAController>().isBeingPacified == true)
+            {
+                _gameInputs.Player.Look.performed -= HandleLookInput;
+                _gameInputs.Player.Move.performed -= HandleMoveInput;
+                _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
+            }
+            else
+            {
+                _gameInputs.Player.Look.performed += HandleLookInput;
+                _gameInputs.Player.Move.performed += HandleMoveInput;
+            }
         }
     }
 
