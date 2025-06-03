@@ -97,14 +97,17 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
         UpdateCameraLook(_inputMode, delta);
-        if (_pacify._isInPacifyMode == true)
+        
+        if (_pacify.creaturesCanBePacified[0].GetComponent<NEW_IAController>().isBeingPacified == true)
         {
             _gameInputs.Player.Look.performed -= HandleLookInput;
+            _gameInputs.Player.Move.performed -= HandleMoveInput;
             _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
         }
         else
         {
             _gameInputs.Player.Look.performed += HandleLookInput;
+            _gameInputs.Player.Move.performed += HandleMoveInput;
         }
     }
 
@@ -231,7 +234,6 @@ public class PlayerController : MonoBehaviour
         if (context.performed && _pacify._isInPacifyMode)
         {   
            _pacify.OnPacifyHold();
-           
         }
         else if (context.canceled)
         {
