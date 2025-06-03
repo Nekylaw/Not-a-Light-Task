@@ -15,6 +15,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
     public float _radius = 1f;
     public float _orbitSpeed = 5f;
 
+    public bool isLightOn;
+
     private List<GameObject> _orbParticuleList = new();
     private void Awake()
     {
