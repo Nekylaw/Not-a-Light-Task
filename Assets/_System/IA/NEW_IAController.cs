@@ -25,10 +25,10 @@ public class NEW_IAController : MonoBehaviour
     public bool canWander = false;
     public bool isBeingPacified = false;
     public bool isPacified = false;
-    public bool CanBePet = false;
+    public bool canBePet = false;
 
     private CreatureState creatureState = new CreatureState();
-
+    [SerializeField] private float scaleFactor = 1.5f;
 
     void LateUpdate()
     {
@@ -171,12 +171,40 @@ public class NEW_IAController : MonoBehaviour
 
     public IEnumerator OnPet()
     {
-        if (CanBePet)
+        if (canBePet)
         {
+            canWander = false;
+            canBePet = false;
+            StartCoroutine(Scale(transform, canBePet));
             yield return new WaitForSeconds(3);
-            
             canWander = true;
         }
+    }
+
+    public IEnumerator Scale(Transform creatureBody, bool isPettable)
+    {
+        Vector3 startScale = creatureBody.localScale;
+        Vector3 targetScale = new Vector3();
+        float duration = 3f;
+        float elapsed = 0f;
+
+        if (isPettable)
+        {
+            targetScale = startScale * scaleFactor;
+        }
+        else
+        {
+            targetScale = startScale / scaleFactor;
+        }
+        //Debug.Log("targetScale = " + targetScale);
+
+        while (Vector3.Distance(creatureBody.localScale, targetScale) > 0.1f)
+        {
+            elapsed += Time.deltaTime;
+            creatureBody.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
+            yield return null;
+        }
+        creatureBody.localScale = targetScale;
     }
 
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using TMPro;
@@ -9,7 +10,7 @@ public class PetManager : MonoBehaviour
     public static PetManager Instance { get; private set; }
     [SerializeField] public TextMeshProUGUI debugList;
 
-    private List<GameObject> PacifiedCreatures = new List<GameObject>();
+    private List<GameObject> pacifiedCreatures = new List<GameObject>();
 
     private void Awake()
     {
@@ -23,30 +24,30 @@ public class PetManager : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(PacifiedCreatures.Count);
-        debugList.text = "pacified : \n";
-        if (PacifiedCreatures.Count != 0)
+        //Debug.Log(pacifiedCreatures.Count);
+        /*debugList.text = "pacified : \n";
+        if (pacifiedCreatures.Count != 0)
         {
-            foreach (GameObject p in PacifiedCreatures)
+            foreach (GameObject p in pacifiedCreatures)
             {
                 debugList.text += p.name;
-                if (p.GetComponent<NEW_IAController>().CanBePet)
+                if (p.GetComponent<NEW_IAController>().canBePet)
                 {
                     debugList.text += "OUI \n";
                 }
             }
-        }
-        
+        }*/
+
     }
     public void AddCreature(GameObject creature)
     {
-        PacifiedCreatures.Add(creature);
+        pacifiedCreatures.Add(creature);
         ChoosePet(true);
     }
 
     public void ChoosePet(bool IsAdding)
     {
-        int NbCreatures = PacifiedCreatures.Count;
+        int NbCreatures = pacifiedCreatures.Count;
 
         if (IsAdding)
         {
@@ -54,15 +55,11 @@ public class PetManager : MonoBehaviour
                 return;
             else
             {
-                if (!PacifiedCreatures[0].GetComponent<NEW_IAController>().CanBePet)
+                if (!pacifiedCreatures[0].GetComponent<NEW_IAController>().canBePet)
                 {
-                    PacifiedCreatures[NbCreatures - 1].GetComponent<NEW_IAController>().CanBePet = true;
-                    
-                    GameObject temp = PacifiedCreatures[NbCreatures -1].gameObject;
-                    PacifiedCreatures.RemoveAt(NbCreatures - 1);
-                    PacifiedCreatures.Insert(0, temp);
+                    SetChoice(NbCreatures - 1);
                 }
-                
+
             }
         }
         else
@@ -72,12 +69,17 @@ public class PetManager : MonoBehaviour
             else
             {
                 int choice = Random.Range(1, NbCreatures);
-                PacifiedCreatures[choice].GetComponent<NEW_IAController>().CanBePet = true;
-                GameObject temp = PacifiedCreatures[choice];
-                PacifiedCreatures.RemoveAt(choice);
-                PacifiedCreatures.Insert(0, temp);
-                Debug.Log(choice);
+                SetChoice(choice);
             }
         }
+    }
+
+    private void SetChoice(int chosenCreature)
+    {
+        pacifiedCreatures[chosenCreature].GetComponent<NEW_IAController>().canBePet = true;
+        GameObject temp = pacifiedCreatures[chosenCreature].gameObject;
+        pacifiedCreatures.RemoveAt(chosenCreature);
+        pacifiedCreatures.Insert(0, temp);
+        StartCoroutine(pacifiedCreatures[0].GetComponent<NEW_IAController>().Scale(pacifiedCreatures[0].transform, true));
     }
 }
