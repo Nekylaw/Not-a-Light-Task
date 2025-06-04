@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710677
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000030908623
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000003090862
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -48,9 +48,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}
       propertyPath: m_Name
-      value: grass_big
+      value: grass_bigT
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5716681864270162303, guid: 2d729314d6a8bdf46b82dde3af1b2a28, type: 3}

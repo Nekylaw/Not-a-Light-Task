@@ -25,8 +25,6 @@ namespace Game.Services.LightSources
         private int _orbSlot = 0;
         private bool _isLightOn = false;
 
-        private bool _isRegistered = false;
-
         [SerializeField] public int LightGroupId;
 
         private VisualEffect ownParticlesVFX;

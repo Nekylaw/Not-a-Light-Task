@@ -1,241 +1,133 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
+using System.Collections.Generic;
+using System.IO;
+using Game.Services.LightSources;
+using System.Linq;
 
 public class FoliageController : MonoBehaviour
 {
+    [Header("Setup")]
+    [SerializeField] private Material _material;
+    [SerializeField] private int _chunkLoadRadius = 1;
+    [SerializeField] private string _chunkFolder = "FoliageChunks";
+    [SerializeField] private float _renderDistance = 100f;
+    [SerializeField] private float _cullDistance = 150f;
+
+
+    private LightSourcesService _lightService = null;
     private Transform _player;
 
-    [Header("Grass")]
+    private Dictionary<string, FoliageChunkInstance> _loadedChunks = new();
+    private Vector2Int _currentPlayerChunk;
 
-    [SerializeField]
-    private string _jsonFileName = "GrassBunch";
-    [SerializeField]
-    private Material _material;
-    [SerializeField]
-    private float _renderDistance = 100f;
-    [SerializeField]
-    private float _cullDistance = 150f;
-
-    private List<Mesh> _meshes = new();
-    private List<int> _meshStartIndices = new();
-    private List<Vector3> _meshCenters = new();
-    private List<ComputeBuffer> _argsBuffers = new();
-    private ComputeBuffer _matrixBuffer;
-    private ComputeBuffer _baseScaleBuffer;
-
-
-    struct DrawData
-    {
-        public Matrix4x4 matrix;
-        public Vector4 baseScale;
-    }
+    private int _maxClearZonesCount = 0;
+    private Vector4[] _clearZoneArray = { };
 
     private void Start()
     {
         _player = FindFirstObjectByType<PlayerController>()?.transform;
-        if (_player == null)
+        if (!_player)
         {
-            Debug.LogError("Player not found in scene.");
+            Debug.LogError("No PlayerController found.");
+            enabled = false;
             return;
         }
 
-        var drawDatas = LoadFoliageData();
+        _lightService = LightSourcesService.Instance;
 
-        Debug.Log($"Loaded {drawDatas?.Count ?? 0} draw entries");
-
-        if (drawDatas == null || drawDatas.Count == 0)
+        if (_lightService == null || _lightService.TotalLightSources <= 0)
             return;
 
-        InitializeBuffers(drawDatas);
-        CreateArgsBuffers(drawDatas);
+        _maxClearZonesCount = _lightService.TotalLightSources;
+        _clearZoneArray = new Vector4[_maxClearZonesCount];
+
+        UpdatePlayerChunk(forceUpdate: true);
     }
 
     private void Update()
     {
-        if (_player == null || _matrixBuffer == null)
-            return;
+        if (!_player) return;
 
-        _material.SetVector("_PlayerPos", _player.position);
-        _material.SetFloat("_FlowTime", Time.time);
-
-        for (int i = 0; i < _meshes.Count; i++)
-        {
-            Vector3 center = _meshCenters[i];
-            float distSqr = (_player.position - center).sqrMagnitude;
-
-            if (distSqr > _cullDistance * _cullDistance)
-                continue;
-
-            DrawGrass(i, center);
-        }
+        UpdateClearZones();
+        UpdatePlayerChunk();
+        DrawVisibleChunks();
     }
 
-    private void OnDisable()
+    private void UpdatePlayerChunk(bool forceUpdate = false)
     {
-        _matrixBuffer?.Release();
-        _baseScaleBuffer?.Release();
-
-        foreach (var buffer in _argsBuffers)
-            buffer?.Release();
-
-        _argsBuffers.Clear();
-    }
-
-    /// <summary>
-    /// Loads JSON foliage data and builds DrawData list
-    /// </summary>
-    private List<DrawData> LoadFoliageData()
-    {
-        TextAsset jsonAsset = Resources.Load<TextAsset>(_jsonFileName);
-        if (jsonAsset == null)
-        {
-            Debug.LogError("JSON not found: " + _jsonFileName);
-            return null;
-        }
-
-        var data = JsonUtility.FromJson<ChunkData>(jsonAsset.text);
-        if (data?.MeshDatas == null)
-        {
-            Debug.LogError("Invalid foliage data.");
-            return null;
-        }
-
-        List<DrawData> drawData = new();
-
-        foreach (var entry in data.MeshDatas)
-        {
-            Mesh mesh = FindMeshByName(entry.MeshName);
-            if (mesh == null)
-            {
-                Debug.LogWarning("Mesh not found: " + entry.MeshName);
-                continue;
-            }
-
-            _meshes.Add(mesh);
-            _meshStartIndices.Add(drawData.Count);
-
-            Vector3 avgCenter = Vector3.zero;
-            List<Matrix4x4> entryMatrices = new();
-
-            foreach (var mat in entry.Matrices)
-            {
-                Matrix4x4 matrix = mat.ToMatrix();
-                Vector3 lossyScale = matrix.lossyScale;
-
-                drawData.Add(new DrawData
-                {
-                    matrix = matrix,
-                    baseScale = new Vector4(lossyScale.x, lossyScale.y, lossyScale.z, 1f)
-                });
-
-                entryMatrices.Add(matrix);
-                avgCenter += new Vector3(matrix.m03, matrix.m13, matrix.m23);
-            }
-
-            avgCenter /= Mathf.Max(1, entryMatrices.Count);
-            _meshCenters.Add(avgCenter);
-        }
-
-        return drawData;
-    }
-
-    /// <summary>
-    /// Initializes the GPU buffers with matrix and scale data
-    /// </summary>
-    private void InitializeBuffers(List<DrawData> drawData)
-    {
-        _matrixBuffer = new ComputeBuffer(drawData.Count, sizeof(float) * 16);
-        _baseScaleBuffer = new ComputeBuffer(drawData.Count, sizeof(float) * 4);
-
-        _matrixBuffer.SetData(drawData.Select(d => d.matrix).ToArray());
-        _baseScaleBuffer.SetData(drawData.Select(d => d.baseScale).ToArray());
-
-        _material.SetBuffer("_Matrices", _matrixBuffer);
-        _material.SetBuffer("_BaseScale", _baseScaleBuffer);
-        _material.enableInstancing = true;
-    }
-
-    /// <summary>
-    /// Creates indirect draw argument buffers for each mesh group
-    /// </summary>
-    private void CreateArgsBuffers(List<DrawData> drawData)
-    {
-        for (int i = 0; i < _meshes.Count; i++)
-        {
-            Mesh mesh = _meshes[i];
-            int start = _meshStartIndices[i];
-            int count = (i + 1 < _meshStartIndices.Count) ? _meshStartIndices[i + 1] - start : drawData.Count - start;
-
-            uint[] args = new uint[5]
-            {
-                mesh.GetIndexCount(0),
-                (uint)count,
-                mesh.GetIndexStart(0),
-                mesh.GetBaseVertex(0),
-                0
-            };
-
-            ComputeBuffer argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-            argsBuffer.SetData(args);
-            _argsBuffers.Add(argsBuffer);
-        }
-    }
-
-    /// <summary>
-    /// Draw mesh with a single draw call for a single mesh group
-    /// </summary>
-    private void DrawGrass(int index, Vector3 center)
-    {
-        _material.SetInt("_MatrixOffset", _meshStartIndices[index]);
-
-        Graphics.DrawMeshInstancedIndirect(
-            _meshes[index],
-            0,
-            _material,
-            new Bounds(center, Vector3.one * (_renderDistance * 2f)),
-            _argsBuffers[index],
-            0,
-            null,
-            ShadowCastingMode.Off,
-            false,
-            0,
-            null,
-            LightProbeUsage.Off,
-            null
+        Vector2Int current = new Vector2Int(
+            Mathf.FloorToInt(_player.position.x / 100),
+            Mathf.FloorToInt(_player.position.z / 100)
         );
 
-        //Debug.Log($"Draw call sent for {_meshes[index].name} with {_argsBuffers[index].count} instances");
-
+        if (current != _currentPlayerChunk || forceUpdate)
+        {
+            _currentPlayerChunk = current;
+            LoadChunksAround(current);
+        }
     }
 
-    /// <summary>
-    /// Finds a mesh by name in memory or asset database (Editor-only fallback)
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    private Mesh FindMeshByName(string name)
+    private void LoadChunksAround(Vector2Int center)
     {
-        Mesh[] allMeshes = Resources.FindObjectsOfTypeAll<Mesh>();
-        foreach (var m in allMeshes)
+        var toKeep = new HashSet<string>();
+
+        for (int dx = -_chunkLoadRadius; dx <= _chunkLoadRadius; dx++)
         {
-            if (m.name == name)
-                return m;
+            for (int dz = -_chunkLoadRadius; dz <= _chunkLoadRadius; dz++)
+            {
+                Vector2Int chunkPos = new Vector2Int(center.x + dx, center.y + dz);
+                string chunkKey = $"{chunkPos.x}_{chunkPos.y}";
+                toKeep.Add(chunkKey);
+
+                if (!_loadedChunks.ContainsKey(chunkKey))
+                    TryLoadChunk(chunkKey);
+            }
         }
 
-#if UNITY_EDITOR
-        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:Mesh " + name);
-        foreach (var guid in guids)
+        // Unload far chunks
+        foreach (var key in new List<string>(_loadedChunks.Keys))
         {
-            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-            Mesh mesh = UnityEditor.AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if (mesh != null && mesh.name == name)
-                return mesh;
+            if (!toKeep.Contains(key))
+            {
+                _loadedChunks[key].Dispose();
+                _loadedChunks.Remove(key);
+            }
         }
-#endif
-        return null;
+    }
+
+    private void TryLoadChunk(string chunkKey)
+    {
+        string path = Path.Combine(_chunkFolder, chunkKey);
+        TextAsset json = Resources.Load<TextAsset>(path);
+        if (!json) return;
+
+        ChunkData data = JsonUtility.FromJson<ChunkData>(json.text);
+        if (data == null || data.MeshDatas == null) return;
+
+        var chunkInstance = new FoliageChunkInstance(data, _material);
+        _loadedChunks.Add(chunkKey, chunkInstance);
+    }
+
+    private void DrawVisibleChunks()
+    {
+        foreach (var chunk in _loadedChunks.Values)
+        {
+            chunk.Draw(_player.position, _renderDistance, _cullDistance);
+        }
+    }
+
+    private void UpdateClearZones()
+    {
+        LightSourceComponent[] lightSources = _lightService.LightSources;
+
+        for (int i = 0; i < _maxClearZonesCount; i++)
+        {
+            Vector3 pos = lightSources[i].transform.position;
+            _clearZoneArray[i] = new Vector4(pos.x, pos.y, pos.z, lightSources[i].Settings.BrightnessRange);
+        }
+
+        _material.SetInt("_ClearZoneCount", lightSources.Where(s => s.IsLightOn == true).Count());
+        _material.SetVectorArray("_ClearZones", _clearZoneArray);
     }
 }
-

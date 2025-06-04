@@ -12,8 +12,6 @@ public class CullerTest : MonoBehaviour, ICullable
     [SerializeField]
     private float _cullRadius = 0f;
 
-    private bool _isVisible;
-
     public float CullRange => _cullRange;
     public ICullable.CullMode Mode => _mode;
     public int CullableIndex { get; set; }
@@ -30,7 +28,6 @@ public class CullerTest : MonoBehaviour, ICullable
 
     public void OnBecomeVisible()
     {
-        _isVisible = true;
         //Debug.Log($"[CullerTest] {gameObject.name} became visible");
         GetComponent<Renderer>().enabled = true;
 
@@ -38,7 +35,6 @@ public class CullerTest : MonoBehaviour, ICullable
 
     public void OnBecomeInvisible()
     {
-        _isVisible = false;
         //Debug.Log($"[CullerTest] {gameObject.name} became invisible");
         GetComponent<Renderer>().enabled = false;
 

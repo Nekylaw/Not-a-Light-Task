@@ -89,34 +89,34 @@ public class AudioService : MonoBehaviour
 
     private void HandleAim()
     {
-        Debug.LogWarning("Aim");
+        //Debug.LogWarning("Aim");
 
     }
 
     private void HandlePacify(GameObject creature)
     {
-        Debug.LogWarning("Pacify: " + creature.name);
+        //Debug.LogWarning("Pacify: " + creature.name);
     }
 
     private void HandlePickup(PickableComponent pickable)
     {
-        Debug.Log("Pickup");
+        //Debug.Log("Pickup");
     }
 
     private void HandleShoot(Ray aimRay, bool isAiming)
     {
-        Debug.LogWarning("HandleShoot");
+        //Debug.LogWarning("HandleShoot");
     }
 
     private void HandleWalk(Vector3 direction, float speed)
     {
-        Debug.LogWarning("Walk");
+        //Debug.LogWarning("Walk");
 
     }
 
     private void HandleSwitchOffLight(LightSourceComponent light)
     {
-        Debug.Log("Switchoff");
+        //Debug.Log("Switchoff");
     }
 
 
