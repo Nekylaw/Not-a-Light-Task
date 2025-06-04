@@ -99,6 +99,8 @@ public class FoliageChunkInstance
                 LightProbeUsage.Off
             );
         }
+
+        Debug.Log($"Drawn {_meshes.Count} meshes with {_argsBuffers.Count} args buffers.");
     }
 
     public void Dispose()

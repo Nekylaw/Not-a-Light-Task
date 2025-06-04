@@ -14,6 +14,10 @@ public class FoliageController : MonoBehaviour
     [SerializeField] private float _renderDistance = 100f;
     [SerializeField] private float _cullDistance = 150f;
 
+    [Tooltip("Make sure the chunk size is the same with the foliage baker")]
+    [SerializeField]
+    private Vector2 _chunkSize = new Vector2(100f, 100f);
+
 
     private LightSourcesService _lightService = null;
     private Transform _player;
@@ -54,11 +58,16 @@ public class FoliageController : MonoBehaviour
         DrawVisibleChunks();
     }
 
+    /// <summary>
+    /// Updates the player's current chunk based on their position.
+    /// </summary>
+    /// <param name="forceUpdate"></param>
     private void UpdatePlayerChunk(bool forceUpdate = false)
     {
+        // Calculate the current chunk based on player's position.
         Vector2Int current = new Vector2Int(
-            Mathf.FloorToInt(_player.position.x / 100),
-            Mathf.FloorToInt(_player.position.z / 100)
+            Mathf.FloorToInt(_player.position.x / _chunkSize.x),
+            Mathf.FloorToInt(_player.position.z / _chunkSize.y)
         );
 
         if (current != _currentPlayerChunk || forceUpdate)
@@ -70,7 +79,7 @@ public class FoliageController : MonoBehaviour
 
     private void LoadChunksAround(Vector2Int center)
     {
-        var toKeep = new HashSet<string>();
+        var chunkToDraw = new HashSet<string>();
 
         for (int dx = -_chunkLoadRadius; dx <= _chunkLoadRadius; dx++)
         {
@@ -78,20 +87,22 @@ public class FoliageController : MonoBehaviour
             {
                 Vector2Int chunkPos = new Vector2Int(center.x + dx, center.y + dz);
                 string chunkKey = $"{chunkPos.x}_{chunkPos.y}";
-                toKeep.Add(chunkKey);
+                chunkToDraw.Add(chunkKey);
 
                 if (!_loadedChunks.ContainsKey(chunkKey))
                     TryLoadChunk(chunkKey);
             }
         }
 
+        var loadedChunks = new List<string>(_loadedChunks.Keys);
+
         // Unload far chunks
-        foreach (var key in new List<string>(_loadedChunks.Keys))
+        foreach (var chunkId in loadedChunks)
         {
-            if (!toKeep.Contains(key))
+            if (!chunkToDraw.Contains(chunkId))
             {
-                _loadedChunks[key].Dispose();
-                _loadedChunks.Remove(key);
+                _loadedChunks[chunkId].Dispose();
+                _loadedChunks.Remove(chunkId);
             }
         }
     }
@@ -112,9 +123,7 @@ public class FoliageController : MonoBehaviour
     private void DrawVisibleChunks()
     {
         foreach (var chunk in _loadedChunks.Values)
-        {
             chunk.Draw(_player.position, _renderDistance, _cullDistance);
-        }
     }
 
     private void UpdateClearZones()
