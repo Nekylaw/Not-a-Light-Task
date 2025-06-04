@@ -4,36 +4,27 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class FoliageChunkDebugger : MonoBehaviour
 {
-
-    public float fieldSize = 1500f;
     public Vector2Int chunkSize = new Vector2Int(100, 100);
-    public Color color = new Color(0, 1, 0, 0.4f);
-
-
+    public Color gridColor = new Color(0f, 1f, 0f, 0.2f);
+    public int gridRadius = 5; // how many chunks in each direction
 
     private void OnDrawGizmos()
     {
-        Vector2Int gridSize = new Vector2Int((int)fieldSize / chunkSize.x, (int)fieldSize / chunkSize.y);
-        Gizmos.color = color;
+        Gizmos.color = gridColor;
 
-        Vector3 gridOffset = new Vector3(
-                -gridSize.x * chunkSize.x / 2f + chunkSize.x / 2f,
-                0,
-                -gridSize.y * chunkSize.y / 2f + chunkSize.y / 2f
-            );
+        Vector3 center = transform.position;
+        Vector3 origin = new Vector3(
+            Mathf.Floor(center.x / chunkSize.x) * chunkSize.x,
+            0,
+            Mathf.Floor(center.z / chunkSize.y) * chunkSize.y
+        );
 
-        for (int x = 0; x < gridSize.x; x++)
+        for (int x = -gridRadius; x <= gridRadius; x++)
         {
-            for (int y = 0; y < gridSize.y; y++)
+            for (int z = -gridRadius; z <= gridRadius; z++)
             {
-                Vector3 center = new Vector3(
-                    x * chunkSize.x,
-                    0,
-                    y * chunkSize.y
-                ) + gridOffset;
-
-                Vector3 size = new Vector3(chunkSize.x, 0.1f, chunkSize.y);
-                Gizmos.DrawWireCube(center, size);
+                Vector3 chunkPos = origin + new Vector3(x * chunkSize.x, 0, z * chunkSize.y);
+                Gizmos.DrawWireCube(chunkPos + new Vector3(chunkSize.x, 0, chunkSize.y) * 0.5f, new Vector3(chunkSize.x, 0, chunkSize.y));
             }
         }
     }

@@ -19,19 +19,10 @@ public class FoliageBakerWindow : EditorWindow
     /// </summary>
     private string _outputFolder = "Resources/FoliageChunks/";
 
-    [Tooltip("List of GameObjects that are considered foliage sources.")]
-    [SerializeField]
-    private List<GameObject> _foliageSources = null;
-
     /// <summary>
     /// Serialized object for the window
     /// </summary>
     private SerializedObject _serializedObject = null;
-
-    /// <summary>
-    /// Serialized property for the foliage sources list
-    /// </summary>
-    private SerializedProperty _foliageSourcesProperty = null;
 
     /// <summary>
     /// Chunks data with key as "chunkX_chunkY" and value as ChunkData.
@@ -49,8 +40,6 @@ public class FoliageBakerWindow : EditorWindow
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(this); // Window as serialized object
-        _foliageSourcesProperty = _serializedObject.FindProperty($"{nameof(_foliageSources)}");
-
         _chunks = new Dictionary<string, ChunkData>();
     }
 
@@ -58,68 +47,101 @@ public class FoliageBakerWindow : EditorWindow
     {
         EditorGUILayout.Space();
         _outputFolder = EditorGUILayout.TextField("Output Folder", _outputFolder);
+
         EditorGUILayout.Space();
         _chunckSize = EditorGUILayout.Vector2IntField("Chunk Size", _chunckSize);
+
         _serializedObject.Update();
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.PropertyField(_foliageSourcesProperty, true);
         _serializedObject.ApplyModifiedProperties();
 
-        if (GUILayout.Button("Bake Scene Foliage"))
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Bake"))
             Bake();
     }
 
     private void Bake()
     {
-        if (_foliageSources.Count <= 0)
-            return;
-
         _chunks.Clear();
 
-        foreach (var obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        FoliageVolume[] volumes = GameObject.FindObjectsByType<FoliageVolume>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        foreach (var volume in volumes)
         {
-            GameObject source = PrefabUtility.GetCorrespondingObjectFromSource(obj);
+            Vector3 size = volume.VolumeSize;
+            Vector3 origin = volume.transform.position;
+            LayerMask groundMask = volume.GroundMask;
 
-            if (source == null || !_foliageSources.Contains(source))
-                continue;
-
-            foreach (var mf in obj.GetComponentsInChildren<MeshFilter>())
+            foreach (var model in volume.FoliageModels)
             {
-                var mesh = mf.sharedMesh;
-                if (mesh == null)
+                Mesh mesh = null;
+                if (model.prefabSource != null)
+                {
+                    var mf = model.prefabSource.GetComponent<MeshFilter>();
+                    if (mf != null)
+                        mesh = mf.sharedMesh;
+                }
+
+                if (mesh == null || model.density <= 0)
                     continue;
 
-                Vector3 meshPos = mf.transform.position;
-                int chunkX = Mathf.FloorToInt(meshPos.x / _chunckSize.x);
-                int chunkY = Mathf.FloorToInt(meshPos.y / _chunckSize.y);
-                string chunkKey = $"{chunkX}_{chunkY}";
+                int instanceCount = Mathf.FloorToInt(size.x * size.z * model.density);
+                Random.InitState(volume.GetInstanceID() ^ mesh.name.GetHashCode());
 
-                // Create or get existing chunk data
-                if (!_chunks.ContainsKey(chunkKey))
+                for (int i = 0; i < instanceCount; i++)
                 {
-                    _chunks[chunkKey] = new ChunkData
+                    Vector3 localPos = new Vector3(
+                        Random.Range(0f, size.x),
+                        0f,
+                        Random.Range(0f, size.z)
+                    );
+
+                    Vector3 worldXZPos = origin + localPos;
+
+                    Ray ray = new Ray(worldXZPos + Vector3.up * 100f, Vector3.down);
+
+                    if (!Physics.Raycast(ray, out RaycastHit hit, 200f, groundMask))
+                        continue;
+
+                    Vector3 finalPos = hit.point;
+
+                    Quaternion rotation = Quaternion.Euler(0, Random.Range(model.rotationYRange.x, model.rotationYRange.y), 0);
+                    float scale = Random.Range(model.scaleRange.x, model.scaleRange.y);
+                    Matrix4x4 matrix = Matrix4x4.TRS(finalPos, rotation, Vector3.one * scale);
+
+                    int chunkX = Mathf.FloorToInt(finalPos.x / _chunckSize.x);
+                    int chunkY = Mathf.FloorToInt(finalPos.z / _chunckSize.y);
+                    string chunkKey = $"{chunkX}_{chunkY}";
+
+                    if (!_chunks.ContainsKey(chunkKey))
                     {
-                        ChunkName = chunkKey,
-                        MeshDatas = new List<MeshData>()
-                    };
-                }
+                        _chunks[chunkKey] = new ChunkData
+                        {
+                            ChunkName = chunkKey,
+                            MeshDatas = new List<MeshData>()
+                        };
+                    }
 
-                List<MeshData> meshDatasList = _chunks[chunkKey].MeshDatas;
-                MeshData meshData = _chunks[chunkKey].MeshDatas.Find(md => md.MeshName == mesh.name);
-                if (meshData == null)
-                {
-                    meshData = new MeshData { MeshName = mesh.name, Matrices = new List<SerializableMatrix4x4>() };
-                    meshDatasList.Add(meshData);
-                }
+                    List<MeshData> meshDatasList = _chunks[chunkKey].MeshDatas;
 
-                meshData.Matrices.Add(new SerializableMatrix4x4(mf.transform.localToWorldMatrix));
+                    MeshData meshData = meshDatasList.Find(md => md.MeshName == mesh.name);
+                    if (meshData == null)
+                    {
+                        meshData = new MeshData
+                        {
+                            MeshName = mesh.name,
+                            Matrices = new List<SerializableMatrix4x4>()
+                        };
+                        meshDatasList.Add(meshData);
+                    }
+
+                    meshData.Matrices.Add(new SerializableMatrix4x4(matrix));
+                }
             }
         }
 
         SaveToJson();
     }
+
 
 
     private void SaveToJson()
