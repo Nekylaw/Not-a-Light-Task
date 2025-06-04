@@ -100,8 +100,8 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FlowMap_Scale: 2
-    - _FlowStrength: 1
-    - _FlowTime: 149.95876
+    - _FlowStrength: 0
+    - _FlowTime: 323.85
     - _GlossMapScale: 1
     - _Glossiness: 0.4
     - _GlossyReflections: 1
@@ -113,6 +113,7 @@ Material:
     - _Mode: 3
     - _OPACITY: 1
     - _OcclusionStrength: 1
+    - _OldGrassHeight: 1.19
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -135,7 +136,9 @@ Material:
     m_Colors:
     - _BASE_COLOR: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.04594877, g: 0.3207547, b: 0.010590963, a: 1}
+    - _ColorBottom: {r: 0.09999997, g: 0.39999998, b: 0.09999997, a: 1}
+    - _ColorTop: {r: 0.5660378, g: 0.5660378, b: 0.14684944, a: 1}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PlayerPos: {r: 39.33227, g: 1, b: -14.569455, a: 0}
