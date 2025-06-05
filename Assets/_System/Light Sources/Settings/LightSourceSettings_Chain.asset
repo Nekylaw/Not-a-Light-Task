@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acdd03790aeaf15419c00f6acda88f18, type: 3}
   m_Name: LightSourceSettings_Chain
   m_EditorClassIdentifier: 
-  BrightnessRange: 10
+  BrightnessRange: 20
   RequiredOrbs: 1
   OrbLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  DissipationSpeed: 1
-  AttractRange: 1
-  Duration: 2
-  SpiralSpeed: 1000
+  DissipationSpeed: 2
+  AttractRange: 1.5
+  Duration: 1
+  SpiralSpeed: 2000
