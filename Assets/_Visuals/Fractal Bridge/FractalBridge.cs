@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class FractalBridge : MonoBehaviour
 {
-    public bool _isTriggered = false;
-
-    public List<Transform> Bricks = new List<Transform>();
-    private List<Vector3> _basePositions = new List<Vector3>();
-    private List<Vector3> _baseRotations = new List<Vector3>();
-
     public enum ETransformTarget { Position, Rotation, Both }
 
-    [Header("Settings")]
+    [Header("Bridge Setup")]
+    public List<Transform> Bricks = new List<Transform>();
+
+    [Header("Transform Target Options")]
     public ETransformTarget TransformTarget = ETransformTarget.Both;
 
     [Header("Amplitude (offsets)")]
     public Vector3 PositionAmplitude = new Vector3(0.01f, 0.01f, 0.01f);
     public Vector3 RotationAmplitude = new Vector3(0.1f, 0.1f, 0.1f);
 
-    [Header("Frequency (speed of noise)")]
+    [Header("Frequency (noise speed)")]
     public float Frequency = 1f;
 
     [Header("Axes enabled")]
@@ -30,18 +27,29 @@ public class FractalBridge : MonoBehaviour
     [Header("Join Animation Settings")]
     public float JoinDuration = 1.5f;
 
-    private Coroutine _moveCoroutine;
+    private List<Vector3> _basePositions = new List<Vector3>();
+    private List<Vector3> _baseRotations = new List<Vector3>();
+
+    private Coroutine _currentCoroutine;
+    private bool _isTriggered = false;
 
     public bool IsTriggered
     {
         get => _isTriggered;
         set
         {
+            if (_isTriggered == value)
+                return;
+
             _isTriggered = value;
 
-            if (_isTriggered)
-                _moveCoroutine = StartCoroutine(JoinBricks());
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
 
+            if (_isTriggered)
+                _currentCoroutine = StartCoroutine(JoinBricks());
+            else
+                _currentCoroutine = StartCoroutine(FragmentBricks());
         }
     }
 
@@ -59,33 +67,32 @@ public class FractalBridge : MonoBehaviour
 
     void Update()
     {
-        if (_moveCoroutine != null)
+        if (_currentCoroutine != null || _isTriggered)
             return;
 
-        float t = Time.time * Frequency;
+        float time = Time.time * Frequency;
+
         for (int i = 0; i < Bricks.Count; i++)
         {
-            var brick = Bricks[i];
+            Transform brick = Bricks[i];
 
-            Vector3 noiseSeed = new Vector3(t + i, t + i * 1.3f, t + i * 1.7f);
-            Vector3 perlin = new Vector3(
-                Mathf.PerlinNoise(noiseSeed.x, 0f),
-                Mathf.PerlinNoise(noiseSeed.y, 0f),
-                Mathf.PerlinNoise(noiseSeed.z, 0f)
-            );
-
-            perlin = perlin * 2f - Vector3.one;
+            Vector3 seed = new Vector3(time + i, time + i * 1.3f, time + i * 1.7f);
+            Vector3 noise = new Vector3(
+                Mathf.PerlinNoise(seed.x, 0f),
+                Mathf.PerlinNoise(seed.y, 0f),
+                Mathf.PerlinNoise(seed.z, 0f)
+            ) * 2f - Vector3.one;
 
             Vector3 posOffset = new Vector3(
-                XAxis ? perlin.x * PositionAmplitude.x : 0f,
-                YAxis ? perlin.y * PositionAmplitude.y : 0f,
-                ZAxis ? perlin.z * PositionAmplitude.z : 0f
+                XAxis ? noise.x * PositionAmplitude.x : 0f,
+                YAxis ? noise.y * PositionAmplitude.y : 0f,
+                ZAxis ? noise.z * PositionAmplitude.z : 0f
             );
 
             Vector3 rotOffset = new Vector3(
-                XAxis ? perlin.x * RotationAmplitude.x : 0f,
-                YAxis ? perlin.y * RotationAmplitude.y : 0f,
-                ZAxis ? perlin.z * RotationAmplitude.z : 0f
+                XAxis ? noise.x * RotationAmplitude.x : 0f,
+                YAxis ? noise.y * RotationAmplitude.y : 0f,
+                ZAxis ? noise.z * RotationAmplitude.z : 0f
             );
 
             switch (TransformTarget)
@@ -110,25 +117,26 @@ public class FractalBridge : MonoBehaviour
     {
         float elapsed = 0f;
 
-        List<Vector3> startPos = new List<Vector3>();
-        List<Vector3> startRot = new List<Vector3>();
+        List<Vector3> startPositions = new List<Vector3>();
+        List<Vector3> startRotations = new List<Vector3>();
 
-        foreach (var brick in Bricks)
+        for (int i = 0; i < Bricks.Count; i++)
         {
-            startPos.Add(brick.localPosition);
-            startRot.Add(brick.localEulerAngles);
+            startPositions.Add(Bricks[i].localPosition);
+            startRotations.Add(Bricks[i].localEulerAngles);
         }
 
         while (elapsed < JoinDuration)
         {
             float t = elapsed / JoinDuration;
+
             for (int i = 0; i < Bricks.Count; i++)
             {
                 if (TransformTarget != ETransformTarget.Rotation)
-                    Bricks[i].localPosition = Vector3.Lerp(startPos[i], _basePositions[i], t);
+                    Bricks[i].localPosition = Vector3.Lerp(startPositions[i], _basePositions[i], t);
 
                 if (TransformTarget != ETransformTarget.Position)
-                    Bricks[i].localEulerAngles = Vector3.Lerp(startRot[i], _baseRotations[i], t);
+                    Bricks[i].localEulerAngles = Vector3.Lerp(startRotations[i], _baseRotations[i], t);
             }
 
             elapsed += Time.deltaTime;
@@ -141,6 +149,24 @@ public class FractalBridge : MonoBehaviour
             Bricks[i].localEulerAngles = _baseRotations[i];
         }
 
-        _moveCoroutine = null;
+        _currentCoroutine = null;
+    }
+
+    private IEnumerator FragmentBricks()
+    {
+        yield return null;
+
+        _currentCoroutine = null;
+    }
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerController>())
+        {
+            Debug.Log("Bridge triggered by player.");
+            IsTriggered = true;
+        }
     }
 }
