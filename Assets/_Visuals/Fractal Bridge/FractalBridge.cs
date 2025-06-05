@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -98,7 +99,13 @@ public class FractalBridge : MonoBehaviour
             switch (TransformTarget)
             {
                 case ETransformTarget.Position:
-                    brick.localPosition = _basePositions[i] + posOffset;
+
+                    brick.localPosition = new Vector3
+                        (
+                        _basePositions[i].x + posOffset.x,
+                        Mathf.Max (0, _basePositions[i].y + posOffset.y), // @todo use surface normal for min
+                        _basePositions[i].z + posOffset.z
+                        );
                     break;
 
                 case ETransformTarget.Rotation:
@@ -106,7 +113,13 @@ public class FractalBridge : MonoBehaviour
                     break;
 
                 case ETransformTarget.Both:
-                    brick.localPosition = _basePositions[i] + posOffset;
+                    brick.localPosition = new Vector3
+                        (
+                        _basePositions[i].x + posOffset.x,
+                        Mathf.Max(0, _basePositions[i].y + posOffset.y), // @todo use surface normal for min
+                        _basePositions[i].z + posOffset.z
+                        );
+
                     brick.localEulerAngles = _baseRotations[i] + rotOffset;
                     break;
             }

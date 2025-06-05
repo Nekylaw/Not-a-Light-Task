@@ -12,7 +12,6 @@ Shader "Custom/GrassWind"
         _FlowMap_Scale("Flow Map Scale", Float) = 10.0  
         _FlowTime("Flow Time", Float) = 0.0
         _MatrixOffset("Matrix Offset", Int) = 0
-        _ClearZoneCount("Clear Zone Count", Int) = 0
     }
 
     SubShader
@@ -114,6 +113,8 @@ Shader "Custom/GrassWind"
             half4 frag(Varyings i) : SV_Target
             {
                 return lerp(_ColorBottom, _ColorTop, i.heightRatio);
+
+                // return float4(0,0,1,1);
             }
             ENDHLSL
         }

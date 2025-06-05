@@ -13,6 +13,8 @@ public class LightSourceSettings : ScriptableObject
 
     public float DissipationSpeed = 0f; 
 
+    public Color DebugColor = Color.white;  
+
     [Header("Orb Attraction")]
     
     public float AttractRange = 0f;
