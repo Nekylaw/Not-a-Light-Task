@@ -88,7 +88,7 @@ namespace Game.Services.LightSources
         public bool IsLightOn => _isLightOn;
         public int OrbSlot => _orbSlot;
 
-        public Vector3 LightPoint => _lightPoint.position;
+        public Transform LightPoint => _lightPoint;
 
         public LightSourceSettings Settings => _settings;
 
@@ -168,7 +168,7 @@ namespace Game.Services.LightSources
             foreach (var building in buildings)
             {
                 var script = building.gameObject.GetComponent<BuildingLightsComponent>();
-                if ( script != null)
+                if (script != null)
                 {
                     script.LightBuilding();
                 }
@@ -185,7 +185,7 @@ namespace Game.Services.LightSources
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(_lightPoint.position, _settings.AttractRange);
 
-            Gizmos.color = Color.yellow;
+            Gizmos.color = Settings.DebugColor;
             Gizmos.DrawWireSphere(_lightPoint.position, _settings.BrightnessRange);
         }
 

@@ -166,7 +166,7 @@ public class FogController : MonoBehaviour, IDisposable
         //Debug.Log("Index " + index);
         //Debug.Log("Buffer size  " + _clearZonesPositionBufferDatas.Length);
         float currentRadius = _clearZonesPositionBufferDatas[index].StartRadius;
-        _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(light.LightPoint, currentRadius);
+        _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(light.LightPoint.position, currentRadius);
         _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(light.Settings.BrightnessRange, Mathf.Max(1, light.Settings.DissipationSpeed), Time.time);
 
         UpdateFogBuffers();

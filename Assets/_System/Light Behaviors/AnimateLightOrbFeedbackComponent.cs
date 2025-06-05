@@ -44,7 +44,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
             float angle = i * (360 / _remainingOrbs);
 
             orb.transform.localPosition =
-              _lightSource.LightPoint + new Vector3(
+              _lightSource.LightPoint.position + new Vector3(
                 Mathf.Cos(angle * Mathf.Deg2Rad) * _radius,
                 Mathf.Exp(Mathf.Sin(angle * Mathf.Deg2Rad)) * _radius,
                 Mathf.Sin(angle * Mathf.Deg2Rad) * _radius
@@ -70,7 +70,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
             if (orb == null)
                 continue;
 
-            orb.transform.RotateAround(_lightSource.LightPoint, Vector3.up, _orbitSpeed * Time.deltaTime);
+            orb.transform.RotateAround(_lightSource.LightPoint.position, _lightSource.LightPoint.forward, _orbitSpeed * Time.deltaTime);
         }
     }
 
@@ -81,7 +81,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 
         int lastIndex = _orbParticuleList.Count - 1;
         GameObject orb = _orbParticuleList[lastIndex];
-        _orbParticuleList.RemoveAt(lastIndex); 
+        _orbParticuleList.RemoveAt(lastIndex);
 
         if (orb != null)
         {
