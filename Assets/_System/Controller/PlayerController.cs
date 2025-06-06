@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _cameraLookInput = Vector2.zero;
     private bool _isAiming = false;
     private Ray _aimTargetRay;
-
+    private bool _isTryingToPickup = false;
     private InputMode _inputMode = InputMode.Controller;
 
     [SerializeField] GameObject mainCamera;
@@ -59,14 +59,14 @@ public class PlayerController : MonoBehaviour
 
         if (!TryGetComponent<PickUpBehaviorComponent>(out _pickup))
             Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
-        
+
         if (!TryGetComponent<PacifyBehaviourComponent>(out _pacify))
             Debug.LogError($"{nameof(PacifyBehaviourComponent)} component not found", this);
 
         if (!TryGetComponent<PetBehaviorComponent>(out _pet))
             Debug.LogError($"{nameof(PetBehaviorComponent)} component not found", this);
 
-            _camera = GetComponentInChildren<CameraController>();
+        _camera = GetComponentInChildren<CameraController>();
         if (_camera == null)
             Debug.LogError($"{nameof(CameraController)} component not found", this);
     }
@@ -87,12 +87,18 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Disable();
     }
 
-    void FixedUpdate()  
+    void FixedUpdate()
     {
         float delta = Time.fixedDeltaTime;
         UpdateMovement(delta);
-    }
 
+
+        if (_isTryingToPickup)
+        {
+            Debug.Log("TryAutoPickupNearbyOrbs");
+            _pickup.AttractOrbs();
+        }
+    }
     private void LateUpdate()
     {
         float delta = Time.deltaTime;
@@ -133,7 +139,9 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Shoot.performed += HandleShootInput;
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
 
-        _gameInputs.Player.Pickup.performed += HandlePickupInput;
+        //_gameInputs.Player.Pickup.performed += HandlePickupInput;
+        _gameInputs.Player.Pickup.started += ctx => _isTryingToPickup = true;
+        _gameInputs.Player.Pickup.canceled += ctx => _isTryingToPickup = false;
 
         _gameInputs.Player.Pacify.performed += HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled += HandlePacifyInput;
@@ -157,8 +165,12 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Shoot.performed -= HandleShootInput;
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
 
-        _gameInputs.Player.Pickup.performed -= HandlePickupInput;
-        
+        //_gameInputs.Player.Pickup.performed -= HandlePickupInput;
+        _gameInputs.Player.Pickup.started -= ctx => _isTryingToPickup = true;
+        _gameInputs.Player.Pickup.canceled -= ctx => _isTryingToPickup = false;
+
+
+
         _gameInputs.Player.Pacify.performed -= HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled -= HandlePacifyInput;
 
@@ -228,21 +240,21 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePickupInput(InputAction.CallbackContext context)
     {
-        _pickup.Pickup();
+        _pickup.AttractOrbs();
     }
 
-    
+
     private void HandlePacifyInput(InputAction.CallbackContext context)
     {
         if (context.performed && _pacify._isInPacifyMode)
-        {   
-           _pacify.OnPacifyHold();
+        {
+            _pacify.OnPacifyHold();
         }
         else if (context.canceled)
         {
             _pacify.HidePacifyUI();
         }
-        
+
     }
 
     private void HandlePetInput(InputAction.CallbackContext context)
@@ -252,7 +264,7 @@ public class PlayerController : MonoBehaviour
             _pet.PetTheCreature();
         }
     }
-    
+
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
@@ -277,7 +289,7 @@ public class PlayerController : MonoBehaviour
 
             }
         }
-        
+
     }
 
     private IEnumerator WaitForRebind(float delay)
