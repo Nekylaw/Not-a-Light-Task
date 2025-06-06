@@ -28,6 +28,7 @@ namespace Game.Services.LightSources
         [SerializeField] public int LightGroupId;
 
         private VisualEffect ownParticlesVFX;
+        private ParticleSystem _particleSystem = null;
 
         #endregion
 
@@ -40,12 +41,16 @@ namespace Game.Services.LightSources
                 Debug.LogError($"{nameof(LightSourceSettings)} component not found.");
 
             ownParticlesVFX = GetComponentInChildren<VisualEffect>();
+            _particleSystem = GetComponentInChildren<ParticleSystem>();
         }
 
         private void Start()
         {
             _orbSlot = 0;
-            ownParticlesVFX.enabled = false;
+            if (_particleSystem != null)
+                _particleSystem.gameObject.SetActive(false);
+            if (ownParticlesVFX != null) 
+                ownParticlesVFX.enabled = false;
         }
 
         private void Update()
@@ -103,7 +108,10 @@ namespace Game.Services.LightSources
 
             EndLevelManager.instance.CheckLightSources(this);
 
-            ownParticlesVFX.enabled = true;
+            if (ownParticlesVFX != null)
+                ownParticlesVFX.enabled = true;
+            if (_particleSystem != null)
+                _particleSystem.gameObject.SetActive(true);
             DetectBuildingsToLights();
             return true;
         }
@@ -115,7 +123,10 @@ namespace Game.Services.LightSources
 
             _isLightOn = false;
 
-            ownParticlesVFX.enabled = false;
+            if (ownParticlesVFX != null)
+                ownParticlesVFX.enabled = false;
+            if (_particleSystem != null)
+                _particleSystem.gameObject.SetActive(false);
             return true;
         }
 
