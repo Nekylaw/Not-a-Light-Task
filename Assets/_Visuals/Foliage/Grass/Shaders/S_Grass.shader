@@ -96,9 +96,9 @@ Shader "Custom/GrassWind"
                 scaled.xz *= scale;
 
                 // Wind
-                float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime * 0.05, _FlowTime * 0.05);
+                float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime  * 0.05 , _FlowTime  * 0.05);
                 // sample the flow map to get the flow direction
-                float flow = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV, 0); 
+                float2 flow = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV, 0).rg;
                 float2 flowDir = normalize(flow * 2.0 - 1.0);
                 float swayAmount = _FlowStrength * max(0, scaled.y - _YOffset);
                 scaled.xz += flowDir * swayAmount;
@@ -113,8 +113,6 @@ Shader "Custom/GrassWind"
             half4 frag(Varyings i) : SV_Target
             {
                 return lerp(_ColorBottom, _ColorTop, i.heightRatio);
-
-                // return float4(0,0,1,1);
             }
             ENDHLSL
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -12,6 +13,9 @@ public class PickUpBehaviorComponent : MonoBehaviour
     [SerializeField]
     private PickupSettings _settings;
 
+    [SerializeField]
+    private Transform _orbAttractionPoint;
+
     private PickableComponent _pickableInRange = null;
     private OrbContainerComponent _container = null;
 
@@ -20,6 +24,8 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     public event PickableInRangeDelegate OnPickableInRange = null;
     public event PickableOutOfRangeDelegate OnPickableOutOfRange = null;
+
+    private float _lastPickupTime = 0f;
 
     private void Awake()
     {
@@ -30,73 +36,31 @@ public class PickUpBehaviorComponent : MonoBehaviour
             Debug.LogWarning($"{nameof(OrbContainerComponent)} component not found.");
     }
 
-    private void Update()
-    {
-        CheckForNearbyPickables();
-    }
-
-    private void CheckForNearbyPickables()
-    {
-        _pickableInRange = FindClosestPickableInRange();
-
-        if (_pickableInRange != null)
-            OnPickableInRange?.Invoke(_pickableInRange);
-        else
-            OnPickableOutOfRange?.Invoke();
-    }
-
-    /// <summary>
-    /// Finds the closest PickableComponent within pickup range.
-    /// </summary>
-    private PickableComponent FindClosestPickableInRange()
+    public void AttractOrbs()
     {
         var colliders = Physics.OverlapSphere(transform.position, _settings.PickupRange, _settings.PickableLayer);
 
-        if (colliders.Length == 0)
-            return null;
-
-        float minDist = float.MaxValue;
-        PickableComponent closest = null;
-
         foreach (var collider in colliders)
         {
-            if (!collider.TryGetComponent(out PickableComponent p))
+            if (!collider.TryGetComponent(out PickableComponent pickable))
                 continue;
 
-            float dist = Vector3.Distance(transform.position, p.transform.position);
-
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = p;
-            }
+            StartCoroutine(AttractAndPickupCoroutine(pickable));
         }
-
-        return closest;
     }
 
-    /// <summary>
-    /// Attempts to pick up the current nearby pickable object.
-    /// </summary>
-    public bool Pickup()
+    private IEnumerator AttractAndPickupCoroutine(PickableComponent pickable)
     {
-        if (_pickableInRange == null)
-            return false;
+        yield return pickable.AnimatePickup(_orbAttractionPoint, _settings.Duration);
 
-        Debug.Log("Pickup");
-
-        if (_pickableInRange.Pickup(_container))
-        {
-            OnPickup?.Invoke(_pickableInRange);
-            return true;
-        }
-
-        return false;
+        if (pickable.Pickup(_container))
+            OnPickup?.Invoke(pickable);
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (_settings == null) return;
+        if (_settings == null) 
+            return;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _settings.PickupRange);

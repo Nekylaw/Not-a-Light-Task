@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Rendering;
 using System.Collections.Generic;
 using System.IO;
 using Game.Services.LightSources;
@@ -7,12 +6,20 @@ using System.Linq;
 
 public class FoliageController : MonoBehaviour
 {
-    [Header("Setup")]
-    [SerializeField] private Material _material;
-    [SerializeField] private int _chunkLoadRadius = 1;
-    [SerializeField] private string _chunkFolder = "FoliageChunks";
-    [SerializeField] private float _renderDistance = 100f;
-    [SerializeField] private float _cullDistance = 150f;
+    [SerializeField]
+    private Material _material;
+
+    [SerializeField]
+    private int _chunkLoadRadius = 1;
+
+    [SerializeField]
+    private string _chunkFolder = "FoliageChunks";
+
+    [SerializeField]
+    private float _renderDistance = 100f;
+
+    [SerializeField]
+    private float _cullDistance = 150f;
 
     [Tooltip("Make sure the chunk size is the same with the foliage baker")]
     [SerializeField]
@@ -46,7 +53,7 @@ public class FoliageController : MonoBehaviour
         _maxClearZonesCount = _lightService.TotalLightSources;
         _clearZoneArray = new Vector4[_maxClearZonesCount];
 
-        UpdatePlayerChunk(forceUpdate: true);
+        UpdatePlayerChunk();
     }
 
     private void Update()
@@ -62,7 +69,7 @@ public class FoliageController : MonoBehaviour
     /// Updates the player's current chunk based on their position.
     /// </summary>
     /// <param name="forceUpdate"></param>
-    private void UpdatePlayerChunk(bool forceUpdate = false)
+    private void UpdatePlayerChunk()
     {
         // Calculate the current chunk based on player's position.
         Vector2Int current = new Vector2Int(
@@ -70,7 +77,7 @@ public class FoliageController : MonoBehaviour
             Mathf.FloorToInt(_player.position.z / _chunkSize.y)
         );
 
-        if (current != _currentPlayerChunk || forceUpdate)
+        if (current != _currentPlayerChunk)
         {
             _currentPlayerChunk = current;
             LoadChunksAround(current);
