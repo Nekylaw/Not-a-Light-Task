@@ -28,9 +28,9 @@ public class FoliageChunkInstance
             _startOffsets.Add(matrices.Count);
 
             Vector3 center = Vector3.zero;
-            foreach (var mat in meshData.Matrices)
+            foreach (var matrice in meshData.Matrices)
             {
-                Matrix4x4 m = mat.ToMatrix();
+                Matrix4x4 m = matrice.ToMatrix();
                 Vector3 scale = m.lossyScale;
                 scales.Add(new Vector4(scale.x, scale.y, scale.z, 1f));
                 matrices.Add(m);
@@ -79,10 +79,11 @@ public class FoliageChunkInstance
     {
         for (int i = 0; i < _meshes.Count; i++)
         {
-            if ((playerPos - _centers[i]).sqrMagnitude > cullDist * cullDist) 
+            if ((playerPos - _centers[i]).sqrMagnitude > cullDist * cullDist)
                 continue;
 
             _material.SetInt("_MatrixOffset", _startOffsets[i]);
+            _material.SetFloat("_FlowTime", Time.time);
 
             Graphics.DrawMeshInstancedIndirect(
                 _meshes[i],
@@ -100,7 +101,7 @@ public class FoliageChunkInstance
             );
         }
 
-        Debug.Log($"Drawn {_meshes.Count} meshes with {_argsBuffers.Count} args buffers.");
+        //Debug.Log($"Drawn {_meshes.Count} meshes with {_argsBuffers.Count} args buffers.");
     }
 
     public void Dispose()
