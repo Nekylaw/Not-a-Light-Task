@@ -14,8 +14,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
     private int _remainingOrbs = 0;
     public float _radius = 1f;
     public float _orbitSpeed = 5f;
-
-    public bool isLightOn;
+    public bool isLightOn = false;
 
     private List<GameObject> _orbParticuleList = new();
     private void Awake()
@@ -82,7 +81,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
         int lastIndex = _orbParticuleList.Count - 1;
         GameObject orb = _orbParticuleList[lastIndex];
         _orbParticuleList.RemoveAt(lastIndex);
-
+        isLightOn = true;
         if (orb != null)
         {
             var fadeOut = orb.GetComponent<OrbFadeOutFeedbackComponent>();
@@ -92,10 +91,12 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
                 StartCoroutine(DestroyOrbAfterFade(orb, fadeOut.FadeDuration));
             }
             else
-            {
+            
+            {   
                 Destroy(orb);
             }
         }
+        
     }
 
     private IEnumerator DestroyOrbAfterFade(GameObject orb, float delay)

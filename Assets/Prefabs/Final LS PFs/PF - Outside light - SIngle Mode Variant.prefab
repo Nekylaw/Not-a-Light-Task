@@ -48,6 +48,7 @@ MonoBehaviour:
   creatureOnReceptacle: {fileID: 0}
   animateLightOrbFeedback: {fileID: 9091501119195918987}
   propLightRendererComponent: {fileID: 3713391181943612861}
+  visualEffect: {fileID: 388093698328013446}
 --- !u!65 &2999248352844756129
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -165,6 +166,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 395f023e2ad4d424e8cb93396da4b5a0, type: 3}
+--- !u!2083052967 &388093698328013446 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 3592464430442197829, guid: 395f023e2ad4d424e8cb93396da4b5a0, type: 3}
+  m_PrefabInstance: {fileID: 3798846158350260675}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8551979699844636622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4762145724530181645, guid: 395f023e2ad4d424e8cb93396da4b5a0, type: 3}
@@ -406,7 +412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 67dbf1e0b6aff4e379a3661b1cca57f2, type: 2}
   _lightPoint: {fileID: 1038322999406941097}
-  creatureOnThisReceptacle: {fileID: 0}
   LightGroupId: 0
 --- !u!114 &9091501119195918987
 MonoBehaviour:
