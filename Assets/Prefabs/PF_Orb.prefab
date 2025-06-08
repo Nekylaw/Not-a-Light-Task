@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: -3681317097075550551}
   m_Layer: 10
   m_Name: PF_Orb
-  m_TagString: Orb
+  m_TagString: LightSource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orbSettings: {fileID: 11400000, guid: 51070dcf6430e9641a5ce4a9a6455ea6, type: 2}
+  isAttachedToReceptacle: 0
 --- !u!114 &4798598855757457158
 MonoBehaviour:
   m_ObjectHideFlags: 0

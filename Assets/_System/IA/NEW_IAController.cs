@@ -6,7 +6,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 using Random = UnityEngine.Random;
+using Sequence = DG.Tweening.Sequence;
+using DG.Tweening;
+using Game.Services.LightSources;
+
 public class NEW_IAController : MonoBehaviour
 
 
@@ -53,55 +58,65 @@ public class NEW_IAController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("LightSource") && !isPacified)
+        if (other.gameObject.layer == 10 && !isPacified)
         {
             other.gameObject.SetActive(false);
             nearestLightObject = null;
             orbsEaten.Add(other.gameObject);
         }
-        
     }
-
-    private void OnTriggerEnter(Collider other)
+    
+    public void EatLightSource()
     {
-        if (other.gameObject.CompareTag("LightSource") && !isPacified && other.gameObject.GetComponentInParent<AnimateLightOrbFeedbackComponent>().isLightOn == true)
-        {
-            other.gameObject.SetActive(false);
-            orbsEaten.Add(_orbGameObject.gameObject);
-            other.gameObject.GetComponent<AnimateLightOrbFeedbackComponent>().isLightOn = false;
-        }
+        Debug.Log("creature eating light");
+        var lightParticules = nearestLightObject.GetComponentInChildren<VisualEffect>().gameObject;
+        lightParticules.transform.DOMove(this.gameObject.transform.position, 5);
+        orbsEaten.Add(_orbGameObject.gameObject);
+        nearestLightObject = null;
     }
 
     #region ScanOrbs
 
     void ScanWorldOrbs()
     {
-        allOrbs = GameObject.FindGameObjectsWithTag("Orb");
-        allLightSources = GameObject.FindGameObjectsWithTag("LightSource");
-        for (int i = 0; i < allOrbs.Length; i++)
-        {
-            distance = Vector3.Distance(this.transform.position, allOrbs[i].transform.position);
-            if (distance < nearestDistance)
-            {
-                nearestLightObject = allOrbs[i];
-                nearestDistance = distance;
-                Debug.Log("new nearest orb: " + nearestLightObject.name);
-            }
-        }
+        allLightSources = GameObject.FindGameObjectsWithTag("LightSource"); 
+        
         for (int i = 0; i < allLightSources.Length; i++)
         {
             distance = Vector3.Distance(this.transform.position, allLightSources[i].transform.position);
-            if (distance < nearestDistance && allLightSources[i].GetComponentInParent<AnimateLightOrbFeedbackComponent>().isLightOn == true)
+            
+            if (distance < nearestDistance)
             {
-                Debug.Log("nearest object is a receptacle light");
-                nearestLightObject = allLightSources[i];
-                nearestDistance = distance;
+                   if (allLightSources[i].GetComponent<AnimateLightOrbFeedbackComponent>() == null)
+                   {
+                       Debug.Log("nearest object is an orb");
+                       nearestLightObject = allLightSources[i];
+                       nearestDistance = distance;
+                   } 
+                   
+                   if (allLightSources[i].GetComponent<AnimateLightOrbFeedbackComponent>() != null 
+                    && allLightSources[i].GetComponent<AnimateLightOrbFeedbackComponent>().isLightOn == true) 
+                   {
+                         Debug.Log("nearest object is a receptacle light");
+                         nearestLightObject = allLightSources[i];
+                         nearestDistance = distance;
+                   }
+                
+                   if (allLightSources[i].GetComponent<AnimateLightOrbFeedbackComponent>() != null && 
+                       (allLightSources[i].GetComponent<AnimateLightOrbFeedbackComponent>().isLightOn == false)) 
+                    {
+                        nearestLightObject = null;
+                    }
+                
             }
+            
+          
         }
+        
+        
     }
 
-
-
+    
     #endregion
 
     #region Wander
@@ -137,7 +152,7 @@ public class NEW_IAController : MonoBehaviour
     }
     #endregion
 
-
+    #region Pacify State Actions
     public void StartPacifyEffects()
     {
         if (isBeingPacified == true)
@@ -169,6 +184,8 @@ public class NEW_IAController : MonoBehaviour
         PetManager.Instance.AddCreature(this.gameObject);
     }
 
+    #endregion
+    
     public IEnumerator OnPet()
     {
         if (canBePet)
