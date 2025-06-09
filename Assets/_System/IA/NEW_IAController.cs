@@ -34,6 +34,7 @@ public class NEW_IAController : MonoBehaviour
 
     private CreatureState creatureState = new CreatureState();
     [SerializeField] private float scaleFactor = 1.5f;
+    [SerializeField] private GameObject newOrb;
 
     void LateUpdate()
     {
@@ -185,7 +186,8 @@ public class NEW_IAController : MonoBehaviour
     }
 
     #endregion
-    
+
+    #region Pet Action
     public IEnumerator OnPet()
     {
         if (canBePet)
@@ -195,6 +197,7 @@ public class NEW_IAController : MonoBehaviour
             StartCoroutine(Scale(transform, canBePet));
             yield return new WaitForSeconds(3);
             canWander = true;
+            Instantiate(newOrb,transform.position+Vector3.up*3, Quaternion.identity);
         }
     }
 
@@ -223,5 +226,6 @@ public class NEW_IAController : MonoBehaviour
         }
         creatureBody.localScale = targetScale;
     }
+    #endregion
 
 }

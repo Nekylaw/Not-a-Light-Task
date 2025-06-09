@@ -6284,11 +6284,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pacifyEffects: {fileID: 7470726154329031927}
   allOrbs: []
-  nearestObject: {fileID: 0}
+  allLightSources: []
+  nearestLightObject: {fileID: 0}
   orbsEaten: []
+  _orbGameObject: {fileID: 5079178589685399282, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
   canWander: 1
   isBeingPacified: 0
   isPacified: 0
+  canBePet: 0
+  scaleFactor: 1.5
   circRadius: 15
   circDistance: 12
   wanderRandomizer: 1
