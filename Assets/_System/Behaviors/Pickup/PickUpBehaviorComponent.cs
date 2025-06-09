@@ -64,7 +64,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
     {
         if (_isHoldingPickup)
         {
-            DetectNewOrbsToAttract();
+            DetectOrbs();
             UpdateOrbAttractions(Time.deltaTime);
         }
     }
@@ -89,10 +89,15 @@ public class PickUpBehaviorComponent : MonoBehaviour
     public void StopAttracting()
     {
         _isHoldingPickup = false;
+        foreach (var attracttion in _activeAttractions)
+        {
+            if (attracttion.Orb.TryGetComponent<Rigidbody>(out var rb))
+                rb.linearVelocity = Vector3.zero;
+        }
         _activeAttractions.Clear(); // stop all mid-animation
     }
 
-    private void DetectNewOrbsToAttract()
+    private void DetectOrbs()
     {
         var colliders = Physics.OverlapSphere(transform.position, _settings.PickupRange, _settings.PickableLayer);
 
