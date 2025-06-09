@@ -7,5 +7,7 @@ public class PickupSettings : ScriptableObject
 
     public float PickupRange = 5;
 
+    public AnimationCurve AttractCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     public float Duration = 0.5f;
 }

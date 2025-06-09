@@ -35,7 +35,6 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     [SerializeField] private PickupSettings _settings;
     [SerializeField] private Transform _orbAttractionPoint;
-    [SerializeField] private AnimationCurve _attractEasing = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     #endregion
 
@@ -129,9 +128,9 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
             attraction.Elapsed += deltaTime;
             float t = Mathf.Clamp01(attraction.Elapsed / attraction.Duration);
-            float progress = _attractEasing.Evaluate(t);
+            float progress = _settings.AttractCurve.Evaluate(t);
 
-            attraction.Orb.transform.position = Vector3.Lerp(attraction.StartPos, _orbAttractionPoint.position, progress);
+            attraction.Orb.transform.position = Vector3.LerpUnclamped(attraction.StartPos, _orbAttractionPoint.position, progress);
 
             if (t >= 0.9f)
             {
