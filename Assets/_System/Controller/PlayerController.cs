@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 _cameraLookInput = Vector2.zero;
     private bool _isAiming = false;
     private Ray _aimTargetRay;
-    private bool _isTryingToPickup = false;
     private InputMode _inputMode = InputMode.Controller;
 
     [SerializeField] GameObject mainCamera;
@@ -93,11 +92,6 @@ public class PlayerController : MonoBehaviour
         UpdateMovement(delta);
 
 
-        if (_isTryingToPickup)
-        {
-            Debug.Log("TryAutoPickupNearbyOrbs");
-            _pickup.AttractOrbs();
-        }
     }
     private void LateUpdate()
     {
@@ -139,9 +133,8 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Shoot.performed += HandleShootInput;
         //_gameInputs.Game.Shoot.canceled += HandleShootInput;
 
-        //_gameInputs.Player.Pickup.performed += HandlePickupInput;
-        _gameInputs.Player.Pickup.started += ctx => _isTryingToPickup = true;
-        _gameInputs.Player.Pickup.canceled += ctx => _isTryingToPickup = false;
+        _gameInputs.Player.Pickup.started += HandlePickupInput;
+        _gameInputs.Player.Pickup.canceled += HandlePickupInput;
 
         _gameInputs.Player.Pacify.performed += HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled += HandlePacifyInput;
@@ -166,8 +159,8 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Game.Shoot.canceled -= HandleShootInput;
 
         //_gameInputs.Player.Pickup.performed -= HandlePickupInput;
-        _gameInputs.Player.Pickup.started -= ctx => _isTryingToPickup = true;
-        _gameInputs.Player.Pickup.canceled -= ctx => _isTryingToPickup = false;
+        _gameInputs.Player.Pickup.started -= HandlePickupInput;
+        _gameInputs.Player.Pickup.canceled -= HandlePickupInput;
 
 
 
@@ -240,7 +233,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePickupInput(InputAction.CallbackContext context)
     {
-        _pickup.AttractOrbs();
+        if (context.started)
+            _pickup.StartAttracting();
+
+        if (context.canceled)
+            _pickup.StopAttracting();
     }
 
 
