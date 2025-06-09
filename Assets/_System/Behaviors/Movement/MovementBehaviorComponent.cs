@@ -59,9 +59,9 @@ public class MovementBehaviorComponent : MonoBehaviour
         }
         else
         {
-            _rigidbody.linearVelocity = Vector3.zero;
-            //Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
-            //_rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
+            //_rigidbody.linearVelocity = Vector3.zero;
+            Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
+            _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
         }
 
         OnWalk?.Invoke(direction, desiredVelocity.magnitude);

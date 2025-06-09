@@ -8,44 +8,60 @@ public class CameraBobbingComponent : MonoBehaviour
 
     [Header("Axis")]
     public bool XAxis = false;
-    [Range(0, 1)]
-    public float XBobbingFactor = 1;
-
+    [Range(0, 1)] public float XBobbingFactor = 1f;
     public bool YAxis = true;
-    [Range(0, 1)]
-    public float YBobbingFactor = 1;
+    [Range(0, 1)] public float YBobbingFactor = 1f;
 
     [Header("Smoothing")]
+    public float StartBobbingSpeed = 3f;
     public float StopBobbingSpeed = 5f;
+
+    [Header("Behavior Options")]
+    public bool DisableBobbingWhileAiming = false;
 
     private Vector3 _initialPosition;
     private float _bobbingTimer = 0f;
+    private float _bobbingWeight = 0f;
 
     private MovementBehaviorComponent _movementBehavior;
     private DetectionBehaviorComponent _detector;
+    private ShootBehaviorComponent _shootBehavior;
 
-    void Start()
+    private void Start()
     {
         _initialPosition = transform.localPosition;
 
-        _detector = GetComponentInParent<DetectionBehaviorComponent>();
         _movementBehavior = GetComponentInParent<MovementBehaviorComponent>();
+        _detector = GetComponentInParent<DetectionBehaviorComponent>();
+        _shootBehavior = GetComponentInParent<ShootBehaviorComponent>();
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
-        if (_movementBehavior == null || _detector == null)
+        if (_movementBehavior == null || _detector == null || _shootBehavior == null)
             return;
+
         if (GameManager.Instance.gameState != GameManager.GameState.Playing)
             return;
-        if (_movementBehavior.IsMoving && _detector.IsGrounded)
+
+        bool isMoving = _movementBehavior.IsMoving;
+        bool isGrounded = _detector.IsGrounded;
+        bool isAiming = _shootBehavior.IsAiming;
+
+        bool shouldBob = isMoving && isGrounded && (!DisableBobbingWhileAiming || !isAiming);
+
+        float targetWeight = shouldBob ? 1f : 0f;
+        float lerpSpeed = shouldBob ? StartBobbingSpeed : StopBobbingSpeed;
+        _bobbingWeight = Mathf.Lerp(_bobbingWeight, targetWeight, Time.deltaTime * lerpSpeed);
+
+        float verticalOffset = YAxis ? Mathf.Sin(_bobbingTimer) * Amplitude * YBobbingFactor : 0f;
+        float horizontalOffset = XAxis ? Mathf.Cos(_bobbingTimer * 0.5f) * Amplitude * XBobbingFactor : 0f;
+
+        if (_bobbingWeight > 0.01f)
         {
             _bobbingTimer += Time.deltaTime * Frequency;
 
-            float verticalOffset = YAxis ? Mathf.Sin(_bobbingTimer) * Amplitude * YBobbingFactor : 0f;
-            float horizontalOffset = XAxis ? Mathf.Cos(_bobbingTimer * 0.5f) * Amplitude * XBobbingFactor : 0f;
-
-            Vector3 offset = new Vector3(horizontalOffset, verticalOffset, 0f);
+            Vector3 offset = new Vector3(horizontalOffset, verticalOffset, 0f) * _bobbingWeight;
             transform.localPosition = _initialPosition + offset;
         }
         else
