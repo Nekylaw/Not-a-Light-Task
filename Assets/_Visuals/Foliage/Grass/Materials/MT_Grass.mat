@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FlowMap:
-        m_Texture: {fileID: 2800000, guid: 28e4acb2e4b69e54e96df29b746d8926, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8d0a2395dfa07c24ea79df7edc128505, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _METALNESS_MAP:
@@ -92,7 +92,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ClearZoneCount: 3
+    - _ClearZoneCount: 9
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -100,9 +100,9 @@ Material:
     - _DstBlend: 10
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlowMap_Scale: 500
-    - _FlowStrength: 2
-    - _FlowTime: 486.45642
+    - _FlowMap_Scale: 100
+    - _FlowStrength: 1
+    - _FlowTime: 13.612372
     - _GlossMapScale: 1
     - _Glossiness: 0.4
     - _GlossyReflections: 1
@@ -114,7 +114,7 @@ Material:
     - _Mode: 3
     - _OPACITY: 1
     - _OcclusionStrength: 1
-    - _OldGrassHeight: 1.3
+    - _OldGrassHeight: 0.4
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0

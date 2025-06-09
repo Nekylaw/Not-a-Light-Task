@@ -178,7 +178,7 @@ public class FractalBridge : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-            Debug.Log("Bridge triggered by player.");
+            Debug.Log("Bridge triggered");
             IsTriggered = true;
         }
     }
