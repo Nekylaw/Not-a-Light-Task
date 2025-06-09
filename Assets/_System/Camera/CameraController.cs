@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour, ICameraModifier
 {
 
     [SerializeField]
     private CameraSettings _settings = null;
 
-    [SerializeField] 
-    private Transform _player; 
+    [SerializeField]
+    private Transform _player;
 
     private float xRotation = 0f;
+
+    /// <inheritdoc cref="ICameraModifier"/>
+    public bool IsCameraLocked { get; set; }
 
     void Start()
     {
@@ -21,6 +24,9 @@ public class CameraController : MonoBehaviour
 
     public void Look(PlayerController.InputMode inputMode, Vector2 look, float delta)
     {
+        if (IsCameraLocked)
+            return;
+
         float inverse = _settings.InverseYaxe ? -1 : 1;
 
         float pitchSensitivity = inputMode == PlayerController.InputMode.KeyBoard ?

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraBobbingComponent : MonoBehaviour
+public class CameraBobbingComponent : MonoBehaviour, ICameraModifier
 {
     [Header("Bobbing Settings")]
     public float Amplitude = 0.05f;
@@ -27,6 +27,10 @@ public class CameraBobbingComponent : MonoBehaviour
     private DetectionBehaviorComponent _detector;
     private ShootBehaviorComponent _shootBehavior;
 
+    /// <inheritdoc cref="ICameraModifier"/>
+    public bool IsCameraLocked { get; set; }
+
+
     private void Start()
     {
         _initialPosition = transform.localPosition;
@@ -38,6 +42,9 @@ public class CameraBobbingComponent : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (IsCameraLocked)
+            return;
+
         if (_movementBehavior == null || _detector == null || _shootBehavior == null)
             return;
 

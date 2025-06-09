@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraBreathComponent : MonoBehaviour
+public class CameraBreathComponent : MonoBehaviour, ICameraModifier
 {
     public enum ETransformTarget { Position, Rotation, Both }
 
@@ -24,6 +24,9 @@ public class CameraBreathComponent : MonoBehaviour
 
     private Vector3 _noiseSeed;
 
+    /// <inheritdoc cref="ICameraModifier"/>
+    public bool IsCameraLocked { get; set; }
+
     private void Start()
     {
         _basePos = transform.localPosition;
@@ -38,6 +41,9 @@ public class CameraBreathComponent : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (IsCameraLocked)
+            return;
+
         float time = Time.time * frequency;
 
         Vector3 perlinNoise = new Vector3(

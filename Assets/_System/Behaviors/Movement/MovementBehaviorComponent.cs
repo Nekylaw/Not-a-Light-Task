@@ -58,11 +58,7 @@ public class MovementBehaviorComponent : MonoBehaviour
             _rigidbody.AddForce(accel * _settings.AccelerationFactor, ForceMode.Acceleration);
         }
         else
-        {
-            //_rigidbody.linearVelocity = Vector3.zero;
-            Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
-            _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
-        }
+            BrakeMovement();
 
         OnWalk?.Invoke(direction, desiredVelocity.magnitude);
         BehaviorsService.Move(direction, desiredVelocity.magnitude);
@@ -70,6 +66,11 @@ public class MovementBehaviorComponent : MonoBehaviour
         return true;
     }
 
+    private void BrakeMovement()
+    {
+        Vector3 brakeForce = -_rigidbody.linearVelocity * _settings.DecelerationFactor;
+        _rigidbody.AddForce(brakeForce, ForceMode.Acceleration);
+    }
 
     private void AdaptDirectionOnSlopes(ref Vector3 direction)
     {
