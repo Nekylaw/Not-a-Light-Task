@@ -4,7 +4,7 @@ Shader "Custom/GrassWind"
     {
         _ColorTop("Top Color", Color) = (1, 1, 0.3, 1)
         _ColorBottom("Bottom Color", Color) = (0.1, 0.4, 0.1, 1)
-        _OldGrassHeight("Old Grass Height", Range(0,5)) = 1
+        _OldGrassHeight("Old Grass Height", Float) = 1
         _MinScale("Min Scale", Range(0.1, 1)) = 0.3
         _YOffset("Sway Y Offset", Float) = 0.0
         _FlowMap("Flow Map", 2D) = "gray" {}
