@@ -181,7 +181,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!136 &162477224736938796
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -287,48 +287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 2b0b15b50c6b5b541b2b7c7ff4cd59a9, type: 2}
   _orbAttractionPoint: {fileID: 362248874625965386}
-  _attractEasing:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.18825182
-      value: -0.0077014505
-      inSlope: 0.4117482
-      outSlope: 0.4117482
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.4706122
-      value: 0.2340271
-      inSlope: 1.5498463
-      outSlope: 1.5498463
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &9017194417468627701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,7 +941,7 @@ MonoBehaviour:
   YAxis: 1
   YBobbingFactor: 0.65
   StartBobbingSpeed: 3
-  StopBobbingSpeed: 3
+  StopBobbingSpeed: 9
   DisableBobbingWhileAiming: 1
 --- !u!1 &7203448186096252842
 GameObject:
