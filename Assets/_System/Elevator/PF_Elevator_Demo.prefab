@@ -579,37 +579,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _topPoint: {fileID: 5607614264388409137}
   _bottomPoint: {fileID: 1756472648581088243}
-  _duration: 6
+  _duration: 5
   _animationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.03227029
+      outSlope: 0.03227029
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.24645197
-      value: 0.003470175
-      inSlope: 0.80212164
-      outSlope: 0.80212164
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.43709803
-      value: 0.69607145
-      inSlope: 1.6591841
-      outSlope: 1.6591841
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.17276259
     - serializedVersion: 3
       time: 1
       value: 1

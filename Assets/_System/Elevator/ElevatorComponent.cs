@@ -72,7 +72,7 @@ public class ElevatorComponent : MonoBehaviour
 
             float t = Mathf.Clamp01(elapsedTime / _duration);
 
-            transform.position = Vector3.Lerp(startPos, targetPos, _animationCurve.Evaluate(t));
+            transform.position = Vector3.LerpUnclamped(startPos, targetPos, _animationCurve.Evaluate(t));
             yield return null;
         }
 
