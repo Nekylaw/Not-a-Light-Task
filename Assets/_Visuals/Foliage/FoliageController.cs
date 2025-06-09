@@ -129,6 +129,9 @@ public class FoliageController : MonoBehaviour
 
     private void DrawVisibleChunks()
     {
+        if (_loadedChunks.Count <= 0)
+            return;
+
         foreach (var chunk in _loadedChunks.Values)
             chunk.Draw(_player.position, _renderDistance, _cullDistance);
     }

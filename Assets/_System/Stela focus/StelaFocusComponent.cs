@@ -3,8 +3,14 @@ using System.Collections;
 
 public class StelaFocusComponent : MonoBehaviour
 {
+    [Header("Stela target")]
     public Transform Stela;
-    public float Duration = 2f;
+
+    [Header("Focus durations")]
+    public float FocusDuration = 2f;
+    public float UnfocusDuration = 2f;
+
+    [Header("Focus settings")]
     public float ZoomFOV = 30f;
     public float FocusTime = 1f;
 
@@ -38,10 +44,10 @@ public class StelaFocusComponent : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(Stela.position - mainCam.transform.position);
         float startFOV = mainCam.fieldOfView;
 
-        while (elapsed < Duration)
+        while (elapsed < FocusDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / Duration;
+            float t = elapsed / FocusDuration;
             mainCam.transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
             mainCam.fieldOfView = Mathf.Lerp(startFOV, ZoomFOV, t);
             yield return null;
@@ -50,10 +56,10 @@ public class StelaFocusComponent : MonoBehaviour
         yield return new WaitForSeconds(FocusTime);
 
         elapsed = 0f;
-        while (elapsed < Duration)
+        while (elapsed < UnfocusDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / Duration;
+            float t = elapsed / UnfocusDuration;
             mainCam.transform.rotation = Quaternion.Slerp(targetRot, originalRotation, t);
             mainCam.fieldOfView = Mathf.Lerp(ZoomFOV, originalFOV, t);
             yield return null;
