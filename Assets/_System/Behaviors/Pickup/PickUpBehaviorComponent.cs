@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,18 +6,22 @@ using UnityEngine;
 /// </summary>
 public class PickUpBehaviorComponent : MonoBehaviour
 {
+    #region Subclasses
+
+    class OrbAttraction
+    {
+        public PickableComponent Orb;
+        public Vector3 StartPos;
+        public float Elapsed;
+        public float Duration;
+    }
+
+    #endregion
+
+    #region Events
 
     public delegate void PickupDelegate(PickableComponent pickableComponent);
     public event PickupDelegate OnPickup = null;
-
-    [SerializeField]
-    private PickupSettings _settings;
-
-    [SerializeField]
-    private Transform _orbAttractionPoint;
-
-    private PickableComponent _pickableInRange = null;
-    private OrbContainerComponent _container = null;
 
     public delegate void PickableInRangeDelegate(PickableComponent pickableComponent);
     public delegate void PickableOutOfRangeDelegate();
@@ -25,7 +29,27 @@ public class PickUpBehaviorComponent : MonoBehaviour
     public event PickableInRangeDelegate OnPickableInRange = null;
     public event PickableOutOfRangeDelegate OnPickableOutOfRange = null;
 
-    private float _lastPickupTime = 0f;
+    #endregion
+
+    #region Serialized Fields
+
+    [SerializeField] private PickupSettings _settings;
+    [SerializeField] private Transform _orbAttractionPoint;
+    [SerializeField] private AnimationCurve _attractEasing = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    #endregion
+
+    #region Private Fields
+
+    private OrbContainerComponent _container;
+    private readonly List<OrbAttraction> _activeAttractions = new();
+
+
+    private bool _isHoldingPickup = false;
+
+    #endregion
+
+    #region Unity Lifecycle
 
     private void Awake()
     {
@@ -36,33 +60,85 @@ public class PickUpBehaviorComponent : MonoBehaviour
             Debug.LogWarning($"{nameof(OrbContainerComponent)} component not found.");
     }
 
-    public void AttractOrbs()
+    private void Update()
+    {
+        if (_isHoldingPickup)
+        {
+            DetectNewOrbsToAttract();
+            UpdateOrbAttractions(Time.deltaTime);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_settings == null) return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _settings.PickupRange);
+    }
+
+    #endregion
+
+    #region Attraction Logic
+
+    public void StartAttracting()
+    {
+        _isHoldingPickup = true;
+    }
+
+    public void StopAttracting()
+    {
+        _isHoldingPickup = false;
+        _activeAttractions.Clear(); // stop all mid-animation
+    }
+
+    private void DetectNewOrbsToAttract()
     {
         var colliders = Physics.OverlapSphere(transform.position, _settings.PickupRange, _settings.PickableLayer);
 
         foreach (var collider in colliders)
         {
-            if (!collider.TryGetComponent(out PickableComponent pickable))
-                continue;
+            if (!collider.TryGetComponent(out PickableComponent pickable)) continue;
+            if (_activeAttractions.Exists(x => x.Orb == pickable)) continue;
 
-            StartCoroutine(AttractAndPickupCoroutine(pickable));
+            _activeAttractions.Add(new OrbAttraction
+            {
+                Orb = pickable,
+                StartPos = pickable.transform.position,
+                Duration = _settings.Duration,
+                Elapsed = 0f
+            });
         }
     }
 
-    private IEnumerator AttractAndPickupCoroutine(PickableComponent pickable)
+    private void UpdateOrbAttractions(float deltaTime)
     {
-        yield return pickable.AnimatePickup(_orbAttractionPoint, _settings.Duration);
+        for (int i = _activeAttractions.Count - 1; i >= 0; i--)
+        {
+            OrbAttraction attraction = _activeAttractions[i];
+            if (attraction.Orb == null)
+            {
+                _activeAttractions.RemoveAt(i);
+                continue;
+            }
 
-        if (pickable.Pickup(_container))
-            OnPickup?.Invoke(pickable);
+            attraction.Elapsed += deltaTime;
+            float t = Mathf.Clamp01(attraction.Elapsed / attraction.Duration);
+            float progress = _attractEasing.Evaluate(t);
+
+            attraction.Orb.transform.position = Vector3.Lerp(attraction.StartPos, _orbAttractionPoint.position, progress);
+
+            if (t >= 0.9f)
+            {
+                if (attraction.Orb.Pickup(_container))
+                {
+                    OnPickup?.Invoke(attraction.Orb);
+                    Destroy(attraction.Orb.gameObject);
+                }
+                _activeAttractions.RemoveAt(i);
+            }
+        }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (_settings == null) 
-            return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _settings.PickupRange);
-    }
+    #endregion
 }
