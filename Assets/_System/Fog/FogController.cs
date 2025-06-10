@@ -176,7 +176,7 @@ public class FogController : MonoBehaviour, IDisposable
         if (index < 0)
             return;
 
-          _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(Vector3.zero, 0);
+        _clearZonesPositionBufferDatas[index] = new ClearZonePositionBufferData(Vector3.zero, 0);
         _clearZonesAnimBufferDatas[index] = new ClearZoneAnimationBufferData(0, light.Settings.DissipationSpeed, Time.time);
 
 

@@ -5,7 +5,7 @@ Shader "Custom/GrassWind"
         _ColorTop("Top Color", Color) = (1, 1, 0.3, 1)
         _ColorBottom("Bottom Color", Color) = (0.1, 0.4, 0.1, 1)
         _OldGrassHeight("Old Grass Height", Float) = 1
-        _MinScale("Min Scale", Range(0.1, 1)) = 0.3
+        _MinScale("Min Scale", Range(0, 1)) = 0.3
         _YOffset("Sway Y Offset", Float) = 0.0
         _FlowMap("Flow Map", 2D) = "gray" {}
         _FlowStrength("Flow Strength", Float) = 1.0
@@ -19,7 +19,7 @@ Shader "Custom/GrassWind"
         Tags { "RenderType"="Opaque" }
         LOD 100
         Cull Off
-        ZWrite On
+        ZWrite On // Hide foliage behind other objects
 
         Pass
         {
@@ -79,6 +79,7 @@ Shader "Custom/GrassWind"
 
                 float3 worldPos = mul(modelMatrix, float4(v.positionOS, 1)).xyz;
 
+                // Calculate distance factor based on clear zones
                 float distFactor = 0;
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
