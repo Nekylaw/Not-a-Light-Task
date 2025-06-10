@@ -23,6 +23,12 @@ public class PickUpBehaviorComponent : MonoBehaviour
     public delegate void PickupDelegate(PickableComponent pickableComponent);
     public event PickupDelegate OnPickup = null;
 
+    public delegate void HoldPickupDelegate();
+    public event HoldPickupDelegate OnHoldPickup = null;
+
+    public delegate void ReleasePickupDelegate();
+    public event ReleasePickupDelegate OnReleasePickup = null;
+
     public delegate void PickableInRangeDelegate(PickableComponent pickableComponent);
     public delegate void PickableOutOfRangeDelegate();
 
@@ -65,6 +71,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
         {
             DetectOrbs();
             UpdateOrbAttractions(Time.deltaTime);
+            OnHoldPickup?.Invoke();
         }
     }
 
@@ -94,6 +101,8 @@ public class PickUpBehaviorComponent : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
         }
         _activeAttractions.Clear(); // stop all mid-animation
+
+        OnReleasePickup?.Invoke();
     }
 
     private void DetectOrbs()
