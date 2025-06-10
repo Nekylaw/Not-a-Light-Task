@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Game.Services.LightSources;
 using System.Linq;
+using System.Collections;
 
 public class FoliageController : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class FoliageController : MonoBehaviour
     private int _maxClearZonesCount = 0;
     private Vector4[] _clearZoneArray = { };
 
+    private Queue<string> _chunkLoadQueue = new();
+    private bool _isLoadingChunks = false;
+
     private void Start()
     {
         _player = FindFirstObjectByType<PlayerController>()?.transform;
@@ -63,6 +67,9 @@ public class FoliageController : MonoBehaviour
         UpdateClearZones();
         UpdatePlayerChunk();
         DrawVisibleChunks();
+
+        if (!_isLoadingChunks && _chunkLoadQueue.Count > 0)
+            StartCoroutine(LoadChunkAsync());
     }
 
     /// <summary>
@@ -71,7 +78,6 @@ public class FoliageController : MonoBehaviour
     /// <param name="forceUpdate"></param>
     private void UpdatePlayerChunk()
     {
-        // Calculate the current chunk based on player's position.
         Vector2Int current = new Vector2Int(
             Mathf.FloorToInt(_player.position.x / _chunkSize.x),
             Mathf.FloorToInt(_player.position.z / _chunkSize.y)
@@ -96,8 +102,10 @@ public class FoliageController : MonoBehaviour
                 string chunkKey = $"{chunkPos.x}_{chunkPos.y}";
                 chunkToDraw.Add(chunkKey);
 
-                if (!_loadedChunks.ContainsKey(chunkKey))
-                    TryLoadChunk(chunkKey);
+                if (!_loadedChunks.ContainsKey(chunkKey) && !_chunkLoadQueue.Contains(chunkKey))
+                {
+                    _chunkLoadQueue.Enqueue(chunkKey);
+                }
             }
         }
 
@@ -127,6 +135,25 @@ public class FoliageController : MonoBehaviour
         _loadedChunks.Add(chunkKey, chunkInstance);
     }
 
+
+    private IEnumerator LoadChunkAsync()
+    {
+        _isLoadingChunks = true;
+
+        while (_chunkLoadQueue.Count > 0)
+        {
+            string chunkKey = _chunkLoadQueue.Dequeue();
+
+            if (!_loadedChunks.ContainsKey(chunkKey))
+            {
+                TryLoadChunk(chunkKey);
+                yield return null;
+            }
+        }
+
+        _isLoadingChunks = false;
+    }
+
     private void DrawVisibleChunks()
     {
         if (_loadedChunks.Count <= 0)
@@ -146,7 +173,13 @@ public class FoliageController : MonoBehaviour
             _clearZoneArray[i] = new Vector4(pos.x, pos.y, pos.z, lightSources[i].Settings.BrightnessRange);
         }
 
-        _material.SetInt("_ClearZoneCount", lightSources.Where(s => s.IsLightOn == true).Count());
+        int count = 0;
+        for (int i = 0; i < lightSources.Length; i++)
+        {
+            if (lightSources[i].IsLightOn) count++;
+        }
+
+        _material.SetInt("_ClearZoneCount", count);
         _material.SetVectorArray("_ClearZones", _clearZoneArray);
     }
 }
