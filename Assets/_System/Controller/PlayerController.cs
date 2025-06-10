@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Security.Cryptography;
+using DG.Tweening;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static DG.Tweening.DOTween;
 
 public class PlayerController : MonoBehaviour
 {
@@ -163,15 +165,14 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Player.Pickup.performed -= HandlePickupInput;
         _gameInputs.Player.Pickup.started -= HandlePickupInput;
         _gameInputs.Player.Pickup.canceled -= HandlePickupInput;
-
-
-
+        
         _gameInputs.Player.Pacify.performed -= HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled -= HandlePacifyInput;
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
 
-        _gameInputs.Player.Pet.performed -= HandlePetInput;
+        _gameInputs.Player.Pet.performed -= HandlePetInput; 
+        
     }
 
     private void UpdateMovement(float delta)
@@ -241,17 +242,31 @@ public class PlayerController : MonoBehaviour
         if (context.canceled)
             _pickup.StopAttracting();
     }
-
-
+    
     private void HandlePacifyInput(InputAction.CallbackContext context)
     {
-        if (context.performed && _pacify._isInPacifyMode)
+                   
+        if (context.performed && _pacify.isInPacifyMode)
         {
             _pacify.OnPacifyHold();
         }
-        else if (context.canceled)
+        else if (context.canceled && _pacify.isInPacifyMode)
         {
+            
+            if (_pacify.TargetCreature().GetComponent<NEW_IAController>().isPacified == true)
+            {
+                _pacify.OnEndPacify(); 
+                Debug.Log("on end pacify");
+            }
+            else
+            { 
+                Debug.Log("cancel pacify");
+               _pacify.CancelPacify();
+                
+            }
+            
             _pacify.HidePacifyUI();
+            
         }
 
     }
@@ -267,6 +282,49 @@ public class PlayerController : MonoBehaviour
     private void HandleJumpInput(InputAction.CallbackContext context)
     {
         _jump.Jump();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Fresque"))
+        {
+            Vector3 directionToTarget = other.transform.position - mainCamera.transform.position;
+
+            float dotProduct = Vector3.Dot(directionToTarget.normalized, mainCamera.transform.forward);
+
+            if (dotProduct > 0.8f)
+            {
+                UnBindInputs();
+                _cameraLookInput = Vector2.zero;
+                //mainCamera.transform.LookAt(other.transform);
+                StartCoroutine(WaitForRebind(5f));
+                StartCoroutine(SmoothLookAt(other.transform, 3f));
+                other.GetComponent<BoxCollider>().enabled = false;
+
+            }
+        }
+
+    }
+
+    private IEnumerator WaitForRebind(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        BindInputs();
+    }
+
+    public IEnumerator SmoothLookAt(Transform target, float duration)
+    {
+        Quaternion startRotation = mainCamera.transform.rotation;
+
+        Quaternion targetRotation = Quaternion.LookRotation(target.position - mainCamera.transform.position);
+
+        float timeElapsed = 0f;
+        while (timeElapsed < duration)
+        {
+            mainCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
     }
 
     #endregion

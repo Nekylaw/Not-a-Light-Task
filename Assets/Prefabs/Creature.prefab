@@ -6247,7 +6247,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!195 &9145327532134017321
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6259,10 +6259,10 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 2.5
   m_Speed: 3
-  m_Acceleration: 10
+  m_Acceleration: 15
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -6293,6 +6293,11 @@ MonoBehaviour:
   isPacified: 0
   canBePet: 0
   scaleFactor: 1.5
+  _orbGameObject: {fileID: 7338055588423367583, guid: 787d78a0ada76cb4b9fae0f34d46fb6c, type: 3}
+  canWander: 1
+  isBeingPacified: 0
+  isPacified: 0
+  CanBePet: 0
   circRadius: 15
   circDistance: 12
   wanderRandomizer: 1

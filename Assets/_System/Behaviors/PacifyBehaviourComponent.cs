@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.AI;
@@ -11,29 +13,36 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     public delegate void PacifyDelegate(GameObject creature);
     public event PacifyDelegate OnPacify;
+    [SerializeField] private GameObject pacifyUI;
 
-    [FormerlySerializedAs("canPacifyUI")] [SerializeField] private GameObject pacifyUI;
-
-    public List<GameObject> creaturesCanBePacified = new List<GameObject>();
-    public bool _canStartPacify;
-    public bool _isInPacifyMode;
+    public  List<GameObject> creaturesCanBePacified = new List<GameObject>();
+    public bool canStartPacify;
+    public bool isInPacifyMode;
+    public bool isPacifyCanceled = false;
+    
+   
     
     #region PACIFY INTERACTIONS
 
+    public GameObject TargetCreature()
+    {
+        return creaturesCanBePacified[0];
+    }
+    
     void Update() 
     {
         if (creaturesCanBePacified.Count != 0)
         {
-            var targetCreature = creaturesCanBePacified[0];
-            if (_canStartPacify || targetCreature.GetComponent<NEW_IAController>().isBeingPacified)
+           
+            if (canStartPacify || TargetCreature().GetComponent<NEW_IAController>().isBeingPacified)
             {
-                targetCreature.transform.LookAt(this.gameObject.transform);
+                TargetCreature().transform.LookAt(this.gameObject.transform);
             
-                targetCreature.GetComponent<NavMeshAgent>().speed = 0;
+                TargetCreature().GetComponent<NavMeshAgent>().speed = 0;
             }
             else
             {
-                targetCreature.GetComponent<NavMeshAgent>().speed = 4 ;
+                TargetCreature().GetComponent<NavMeshAgent>().speed = 4 ;
             }
             
         }
@@ -42,50 +51,96 @@ public class PacifyBehaviourComponent : MonoBehaviour
     
     public void OnPacifyStarted()
     {
-        if (_canStartPacify == true)
+        if (canStartPacify == true)
         {  
-            var targetCreature = creaturesCanBePacified[0];
-            _isInPacifyMode = true;
-            targetCreature.GetComponent<NEW_IAController>().canWander = false;
-            targetCreature.transform.LookAt(this.transform);
+            isInPacifyMode = true;
+            TargetCreature().GetComponent<NEW_IAController>().canWander = false;
+            TargetCreature().transform.LookAt(this.transform);
             pacifyUI.GetComponent<TextMeshProUGUI>().text = "Hold V to pacify";
             
         }
     }
 
     
+    public Sequence sequence;
     public void OnPacifyHold()
     {
-        var targetCreature = creaturesCanBePacified[0];
-        var targetController = targetCreature.GetComponent<NEW_IAController>();
-        
-        if (_isInPacifyMode && !targetCreature.GetComponent<NEW_IAController>().isPacified )
-        {   
+       
+        var targetController = TargetCreature().GetComponent<NEW_IAController>();
+       
+        if (isInPacifyMode && !TargetCreature().GetComponent<NEW_IAController>().isPacified )
+        {
+            
+            sequence?.Kill();
+            sequence = DOTween.Sequence();
             
             IsInPacifyMode(targetController);
-            Debug.Log(targetCreature.name  + " can wander: " + targetController.canWander);
+            Debug.Log(TargetCreature().name  + " can wander: " + targetController.canWander);
             
+           
+            sequence.Append(TargetCreature().transform.DOLocalMoveY(4,3).SetEase(Ease.OutQuad));
+            sequence.Append(TargetCreature().transform.DOLocalMoveY(0,2).SetEase(Ease.OutSine));
+
+            if (TargetCreature().transform.position.y >= 4f)
+            {
+                targetController.isPacified = true;
+            }
             
-            StartCoroutine(targetController.OnEndPacify());
-            Sequence sequence = DOTween.Sequence().SetEase(Ease.Linear);
-            sequence.Append(targetCreature.transform.DOLocalMoveY(4,3).SetEase(Ease.OutQuad));
-            sequence.Append(targetCreature.transform.DOLocalMoveY(0,2).SetEase(Ease.OutSine));
-            
-            
-            targetController.StartPacifyEffects();
+            targetController.StartPacifyEffects(true);
             
             pacifyUI.GetComponent<TextMeshProUGUI>().text = "PACIFYING CREATURE...";
 
-            OnPacify?.Invoke(targetCreature);
+            OnPacify?.Invoke(TargetCreature());
+            
         }
         
     }
-
+    
     public void CancelPacify()
     {
-        IsNotInPacifyMode(creaturesCanBePacified[0].GetComponent<NEW_IAController>());
+        
+        TargetCreature().GetComponent<NEW_IAController>().StartPacifyEffects(false);
+        
+        StartCoroutine(StopAnim());
+               
+        sequence.Append(TargetCreature().transform.DOLocalMoveY(0,1).SetEase(Ease.OutQuad));
+        
+        isPacifyCanceled = true;
+        canStartPacify = true;
+        isInPacifyMode = false;
+        
+        TargetCreature().GetComponent<NEW_IAController>().isBeingPacified = false;
     }
-    
+
+
+    public IEnumerator StopAnim()
+    {
+        yield return new WaitForSeconds(0.1f);
+        sequence.Kill();
+        sequence = null;
+    }
+        
+    public void OnEndPacify()
+    {
+        
+        var targetController = TargetCreature().GetComponent<NEW_IAController>();
+             
+        targetController.canWander = true;
+        targetController.isPacified = true;
+        targetController.isBeingPacified = false;
+                    
+        foreach (var orb in targetController.orbsEaten)
+        { 
+            orb.SetActive(true);
+            orb.transform.position = this.transform.position;
+            Debug.Log("creature pacified : orb given back !");
+        }
+                    
+        targetController.orbsEaten.Clear();
+                        
+        PetManager.Instance.AddCreature(this.gameObject);
+             
+    }
     
     void ShowPacifyUI()
     {
@@ -101,7 +156,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         if (other.CompareTag("Creature") && !creaturesCanBePacified.Contains(other.gameObject) && !other.gameObject.GetComponent<NEW_IAController>().isPacified)
         {
-            _canStartPacify = true;
+            canStartPacify = true;
             creaturesCanBePacified.Add(other.gameObject);
             ShowPacifyUI();
             
@@ -115,14 +170,13 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         if (creaturesCanBePacified.Count != 0)
         {
-            IsNotInPacifyMode(creaturesCanBePacified[0].GetComponent<NEW_IAController>());
+            IsNotInPacifyMode(TargetCreature().GetComponent<NEW_IAController>());
             if (creaturesCanBePacified.Contains(other.gameObject))
             {   
                 creaturesCanBePacified.Remove(other.gameObject);
                 HidePacifyUI(); 
             }
         }
-        
     }
 
     
@@ -131,8 +185,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     private void IsNotInPacifyMode(NEW_IAController targetController)
     {
-        _canStartPacify = false;
-        _isInPacifyMode = false; 
+        canStartPacify = false;
+        isInPacifyMode = false; 
         targetController.isBeingPacified = false;
         targetController.canWander = true;
         targetController.GetComponent<NavMeshAgent>().speed = 4;
@@ -144,8 +198,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         targetController.isBeingPacified = true;
         targetController.canWander = false;
-        targetController.isPacified = true;
-        _canStartPacify = false;
+        canStartPacify = false;
         targetController.GetComponent<NavMeshAgent>().speed = 0;
 
     }

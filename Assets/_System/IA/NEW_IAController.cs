@@ -114,7 +114,6 @@ public class NEW_IAController : MonoBehaviour
           
         }
         
-        
     }
 
     
@@ -154,32 +153,18 @@ public class NEW_IAController : MonoBehaviour
     #endregion
 
     #region Pacify State Actions
-    public void StartPacifyEffects()
+    public void StartPacifyEffects(bool canShowEffects)
     {
-        if (isBeingPacified == true)
-        {
-            pacifyEffects.SetActive(true);
-        }
-    }
-
-    public IEnumerator OnEndPacify()
-    {
-        yield return new WaitForSeconds(5);
-        pacifyEffects.SetActive(false);
+        PacifyBehaviourComponent pacify = GetComponent<PacifyBehaviourComponent>();
         
-        isPacified = true;
-        isBeingPacified = false;
-        canWander = true;
-        
-        foreach (var orb in orbsEaten)
+        pacifyEffects.SetActive(canShowEffects);
+        if (canShowEffects == false)
         {
-            orb.SetActive(true);
-            orb.transform.position = this.transform.position;
-            Debug.Log("creature pacified : orb given back !");
+            isPacified = false;
         }
-        orbsEaten.Clear();
-        PetManager.Instance.AddCreature(this.gameObject);
+        
     }
+    
 
     #endregion
 
