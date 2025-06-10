@@ -34,10 +34,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
         if (creaturesCanBePacified.Count != 0)
         {
            
-            if (canStartPacify || TargetCreature().GetComponent<NEW_IAController>().isBeingPacified)
+            if (canStartPacify || TargetCreature().GetComponent<NEW_IAController>().isBeingPacified || canStartPacify == true)
             {
                 TargetCreature().transform.LookAt(this.gameObject.transform);
-            
                 TargetCreature().GetComponent<NavMeshAgent>().speed = 0;
             }
             else
@@ -51,7 +50,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     
     public void OnPacifyStarted()
     {
-        if (canStartPacify == true)
+        if (canStartPacify == true && TargetCreature().GetComponent<NEW_IAController>().isPacified == false)
         {  
             isInPacifyMode = true;
             TargetCreature().GetComponent<NEW_IAController>().canWander = false;
@@ -63,6 +62,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     
     public Sequence sequence;
+
+    
     public void OnPacifyHold()
     {
        
@@ -79,12 +80,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
             
            
             sequence.Append(TargetCreature().transform.DOLocalMoveY(4,3).SetEase(Ease.OutQuad));
-            sequence.Append(TargetCreature().transform.DOLocalMoveY(0,2).SetEase(Ease.OutSine));
+            sequence.Append(TargetCreature().transform.DOLocalMoveY(0,2).SetEase(Ease.OutSine)).OnComplete(() => TargetCreature().GetComponent<NEW_IAController>().isPacified = true); 
 
-            if (TargetCreature().transform.position.y >= 4f)
-            {
-                targetController.isPacified = true;
-            }
+           
+            
             
             targetController.StartPacifyEffects(true);
             
