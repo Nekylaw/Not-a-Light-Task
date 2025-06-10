@@ -166,14 +166,11 @@ public class NEW_IAController : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         pacifyEffects.SetActive(false);
-
-        float duration = 5;
-        float valueUpY = -5;
-
+        
         isPacified = true;
         isBeingPacified = false;
-
         canWander = true;
+        
         foreach (var orb in orbsEaten)
         {
             orb.SetActive(true);
@@ -181,7 +178,6 @@ public class NEW_IAController : MonoBehaviour
             Debug.Log("creature pacified : orb given back !");
         }
         orbsEaten.Clear();
-        PacifyBehaviourComponent pacify = new PacifyBehaviourComponent();
         PetManager.Instance.AddCreature(this.gameObject);
     }
 
