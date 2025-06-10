@@ -216,6 +216,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1973324438157844137, guid: b06060ea321cae04b814038a8935373d, type: 3}
+      propertyPath: _visibleIfLightOff
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973324438157844137, guid: b06060ea321cae04b814038a8935373d, type: 3}
       propertyPath: _visibilityDistance
       value: 150
       objectReference: {fileID: 0}
@@ -258,6 +262,10 @@ PrefabInstance:
     - target: {fileID: 3226735414387859587, guid: b06060ea321cae04b814038a8935373d, type: 3}
       propertyPath: _glowAnimAmplitude
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226735414387859587, guid: b06060ea321cae04b814038a8935373d, type: 3}
+      propertyPath: _visibleIfLightOff
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3226735414387859587, guid: b06060ea321cae04b814038a8935373d, type: 3}
       propertyPath: _visibilityDistance
@@ -342,6 +350,10 @@ PrefabInstance:
     - target: {fileID: 7805636269074296890, guid: b06060ea321cae04b814038a8935373d, type: 3}
       propertyPath: _glowAnimAmplitude
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805636269074296890, guid: b06060ea321cae04b814038a8935373d, type: 3}
+      propertyPath: _visibleIfLightOff
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7805636269074296890, guid: b06060ea321cae04b814038a8935373d, type: 3}
       propertyPath: _visibilityDistance
@@ -1343,7 +1355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 0.60969925, g: 0, b: 1, a: 1}
   _baseIntensity: 1
@@ -1353,6 +1365,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &348915214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1640,6 +1653,11 @@ Transform:
 --- !u!20 &432611127 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3455668359058490073, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+  m_PrefabInstance: {fileID: 337630987}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &464312772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4085363724858468872, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
   m_PrefabInstance: {fileID: 337630987}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &464369665
@@ -1989,7 +2007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 0.2760744, g: 1, b: 0, a: 1}
   _baseIntensity: 1
@@ -1999,6 +2017,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &589466522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2219,7 +2238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 0, g: 0.10866976, b: 1, a: 1}
   _baseIntensity: 1
@@ -2229,6 +2248,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &595943380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2449,7 +2469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 0, g: 0.75793123, b: 1, a: 1}
   _baseIntensity: 1
@@ -2459,6 +2479,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &605091373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3058,7 +3079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 0, g: 1, b: 0.6482525, a: 1}
   _baseIntensity: 1
@@ -3068,6 +3089,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &722118385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6720,15 +6742,15 @@ PrefabInstance:
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1772883351}
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: MenuPoper
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 464312772}
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: MainCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 432611127}
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: ImmersiveCanvas
       value: 
@@ -7316,6 +7338,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741463868}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1772883351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1328098191968452264, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+  m_PrefabInstance: {fileID: 337630987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1782604892
 GameObject:
   m_ObjectHideFlags: 0
@@ -7555,7 +7582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibleIfLightOff: 1
+  _visibleIfLightOff: 0
   _baseColor: {r: 0.9433962, g: 0.94229823, b: 0.7965468, a: 1}
   _glowColor: {r: 1, g: 0, b: 0.7175808, a: 1}
   _baseIntensity: 1
@@ -7565,6 +7592,7 @@ MonoBehaviour:
   _glowRadius: 1
   _visibilityDistance: 150
   _maxScreenDist: 0.7
+  _fadeSpeed: 3
 --- !u!114 &1787822015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8328,6 +8356,7 @@ MonoBehaviour:
   _glowRadius: 10
   _visibilityDistance: 100
   _maxScreenDist: 1
+  _fadeSpeed: 3
 --- !u!1 &1988074874
 GameObject:
   m_ObjectHideFlags: 0
@@ -8583,16 +8612,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 196537446476951127, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.08
+      objectReference: {fileID: 0}
     - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
@@ -8609,10 +8638,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
@@ -8627,21 +8652,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu Immersive Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3635451289970331119, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780162584274337785, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -30.9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.67559016
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalRotation.x
@@ -8649,7 +8682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7372774
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalRotation.z
@@ -8661,7 +8694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8673,10 +8706,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}

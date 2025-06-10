@@ -7,9 +7,7 @@ using UnityEngine;
 public class PropLightRendererComponent : MonoBehaviour
 {
     [Header("Color")]
-
     [SerializeField] private bool _visibleIfLightOff = true;
-
     [SerializeField] private Color _baseColor = Color.white;
     [SerializeField] private Color _glowColor = Color.white;
 
@@ -26,34 +24,30 @@ public class PropLightRendererComponent : MonoBehaviour
     [SerializeField] private float _visibilityDistance = 100f;
     [SerializeField] private float _maxScreenDist = 1f;
 
-    private Transform _player;
+    [Header("Fade")]
+    [SerializeField] private float _fadeSpeed = 3f;
 
+    private float _currentBaseIntensity = 0f;
+    private float _currentGlowIntensity = 0f;
+
+    private Transform _player;
     private Renderer _renderer;
     private MaterialPropertyBlock _mpb;
-
-    private LightSourceComponent _lightSource = null;
+    private LightSourceComponent _lightSource;
 
     private void Awake()
     {
         var playerController = FindFirstObjectByType<PlayerController>();
         if (playerController == null)
-        {
-            Debug.LogError("PlayerController not found");
             return;
-        }
-
 
         _player = playerController.transform;
-
         _renderer = GetComponentInChildren<Renderer>();
+
         if (_renderer == null)
-        {
-            Debug.LogError("Renderer not found");
             return;
-        }
 
         _mpb = new MaterialPropertyBlock();
-
         _lightSource = GetComponentInParent<LightSourceComponent>();
     }
 
@@ -74,29 +68,25 @@ public class PropLightRendererComponent : MonoBehaviour
 
         _renderer.GetPropertyBlock(_mpb);
 
-        if (_lightSource == null || !_lightSource.IsLightOn)
-        {
-            if (!_visibleIfLightOff)
-            {
-                _mpb.SetFloat("_BaseIntensity", 0);
-                _mpb.SetFloat("_GlowIntensity", 0);
-            }
-            _renderer.SetPropertyBlock(_mpb);
+        bool isOn = _lightSource != null && _lightSource.IsLightOn;
 
-            return;
-        }
+        float targetBase = (isOn || _visibleIfLightOff) ? _baseIntensity : 0f;
+        float targetGlow = (isOn || _visibleIfLightOff) ? _glowIntensity : 0f;
+
+        _currentBaseIntensity = Mathf.Lerp(_currentBaseIntensity, targetBase, Time.deltaTime * _fadeSpeed);
+        _currentGlowIntensity = Mathf.Lerp(_currentGlowIntensity, targetGlow, Time.deltaTime * _fadeSpeed);
 
         _mpb.SetColor("_BaseColor", _baseColor);
         _mpb.SetColor("_GlowColor", _glowColor);
-        _mpb.SetFloat("_BaseIntensity", _baseIntensity);
-        _mpb.SetFloat("_GlowIntensity", _glowIntensity);
+        _mpb.SetFloat("_BaseIntensity", _currentBaseIntensity);
+        _mpb.SetFloat("_GlowIntensity", _currentGlowIntensity);
         _mpb.SetFloat("_GlowAnimationSpeed", _glowAnimSpeed);
         _mpb.SetFloat("_GlowAnimationAmplitude", _glowAnimAmplitude);
         _mpb.SetFloat("_GlowRadius", _glowRadius);
         _mpb.SetFloat("_GlowVisibilityThreshold", _visibilityDistance);
         _mpb.SetFloat("_MaxScreenDist", _maxScreenDist);
         _mpb.SetVector("_PlayerPosition", _player.position);
+
         _renderer.SetPropertyBlock(_mpb);
     }
-
 }
