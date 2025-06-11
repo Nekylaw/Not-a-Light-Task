@@ -42,8 +42,8 @@ public class OrbContainerComponent : MonoBehaviour
 
         _ammo -= amount;
         _ammo = Mathf.Max(0, _ammo);
-        Debug.Log("ammo left: " + _ammo);
-        
+        //Debug.Log("ammo left: " + _ammo);
+
         orbIndexUI = _ammo;
         orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(false);
 

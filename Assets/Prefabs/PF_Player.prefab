@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 2b0b15b50c6b5b541b2b7c7ff4cd59a9, type: 2}
-  _orbAttractionPoint: {fileID: 8129215436254250207}
+  _orbAttractionPoint: {fileID: 362248874625965386}
 --- !u!114 &9017194417468627701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,11 +313,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efb87d025019914ba24383a04c43640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pacifyAnim: {fileID: 0}
   pacifyUI: {fileID: 0}
   creaturesCanBePacified: []
-  _canStartPacify: 0
-  _isInPacifyMode: 0
+  canStartPacify: 0
+  isInPacifyMode: 0
+  isPacifyCanceled: 0
 --- !u!114 &5603228400674657379
 MonoBehaviour:
   m_ObjectHideFlags: 0

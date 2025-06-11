@@ -52,7 +52,7 @@ public class VortexEffectController : MonoBehaviour
         float duration = _vortexOutDuration;
         float elapsed = 0f;
         float initialRadius = _vortexMaterial.GetFloat("_Radius");
-        float initialSpeed = _vortexMaterial.GetFloat("_Speed");
+        float initialSpeed = _vortexMaterial.GetFloat("_TimeSpeed");
 
         if (initialRadius == targetRadius)
         {

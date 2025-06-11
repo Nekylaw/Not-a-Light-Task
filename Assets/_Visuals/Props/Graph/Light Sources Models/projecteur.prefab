@@ -152,7 +152,7 @@ PrefabInstance:
     - target: {fileID: 8462335756876826026, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: -4973734387028869240, guid: c5b1a136c0fcf4be9986f95053299583, type: 3}
+      objectReference: {fileID: 2100000, guid: e5d0e8889dbe8414789c105cf3ef1f9b, type: 2}
     - target: {fileID: 8462335756876826026, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -176,6 +176,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5658005851476552380}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7569809028875767389}
     - targetCorrespondingSourceObject: {fileID: 5914130066151792269, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3486408476439057399}
@@ -233,6 +236,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049f0b5406285eb4785ba38852a40cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &7569809028875767389
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839642504385568262}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.689715, y: 2.345406, z: 2.4843304}
+  m_Center: {x: 0.012446642, y: 1.1898968, z: 0.018044254}
 --- !u!1 &5140266580340309466 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5914130066151792269, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
@@ -260,3 +284,4 @@ MonoBehaviour:
   _glowRadius: 10
   _visibilityDistance: 100
   _maxScreenDist: 1
+  _fadeSpeed: 3

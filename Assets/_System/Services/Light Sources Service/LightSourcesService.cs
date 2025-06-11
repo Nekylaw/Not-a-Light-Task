@@ -106,7 +106,7 @@ namespace Game.Services.LightSources
 
         #region Public API
 
-        public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); //@todo IReadOnlyList<LightSourceComponent> ??
+        public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); 
 
         public int TotalLightSources => _lightSourceList.Count;
 

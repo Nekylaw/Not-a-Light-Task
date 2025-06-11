@@ -742,7 +742,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 22.89192, y: 19.784088, z: 22.168266}
   m_Center: {x: 0.04953289, y: 10.162045, z: 0.08065033}
@@ -753,7 +753,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670159205304266394}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dafd8cba21abc84aa6968ad07f760e1, type: 3}
   m_Name: 
@@ -1657,6 +1657,8 @@ GameObject:
   - component: {fileID: 4860187253180766124}
   - component: {fileID: 4048215487195083855}
   - component: {fileID: 6740878622466408590}
+  - component: {fileID: 5969049190958479318}
+  - component: {fileID: 5127318143016651214}
   m_Layer: 0
   m_Name: house (1)
   m_TagString: Untagged
@@ -1735,6 +1737,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5969049190958479318
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4029602018460044407}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.20972392, y: 0.20972398, z: 0.20972395}
+  m_Center: {x: 0, y: 0, z: 0.09999762}
+--- !u!114 &5127318143016651214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4029602018460044407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dafd8cba21abc84aa6968ad07f760e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialLight: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
 --- !u!1 &4571710718983744512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,7 +1822,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 22.89192, y: 19.784088, z: 22.168266}
   m_Center: {x: 0.04953289, y: 10.162045, z: 0.08065033}
@@ -1797,7 +1833,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4571710718983744512}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dafd8cba21abc84aa6968ad07f760e1, type: 3}
   m_Name: 
@@ -2429,6 +2465,8 @@ GameObject:
   - component: {fileID: 4892100993735455654}
   - component: {fileID: 7163252277153657310}
   - component: {fileID: 4186380053592192092}
+  - component: {fileID: 1463317438047583532}
+  - component: {fileID: 40387334498936823}
   m_Layer: 0
   m_Name: house (1)
   m_TagString: Untagged
@@ -2507,6 +2545,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1463317438047583532
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962803976452527576}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23425867, y: 0.22466977, z: 0.21096557}
+  m_Center: {x: -0.0000000017494327, y: 0.0000000030072282, z: 0.108754344}
+--- !u!114 &40387334498936823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962803976452527576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dafd8cba21abc84aa6968ad07f760e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialLight: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
 --- !u!1 &6092017220916467646
 GameObject:
   m_ObjectHideFlags: 0
