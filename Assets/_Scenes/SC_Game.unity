@@ -329,6 +329,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: PetUI
+      value: 
+      objectReference: {fileID: 56305894}
+    - target: {fileID: 7484162787745347756, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: pacifyUI
+      value: 
+      objectReference: {fileID: 638790179}
     - target: {fileID: 8129215436254250207, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.21
@@ -11519,11 +11527,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 81f9e861c9790dd4bbc834333b78a034, type: 2}
-  _chunkLoadRadius: 1
-  _chunkFolder: FoliageChunks
   _renderDistance: 100
   _cullDistance: 150
+  _lodDistances:
+  - 50
+  - 100
+  - 200
+  - 500
+  _enableLOD: 1
+  _enableFrustumCulling: 1
+  _chunkLoadRadius: 1
+  _chunkFolder: FoliageChunks
+  _maxConcurrentLoads: 2
+  _loadFrameBudgetMs: 5
   _chunkSize: {x: 100, y: 100}
+  _maxChunksDrawnPerFrame: 50
+  _enableOcclusion: 0
 --- !u!43 &1733046182
 Mesh:
   m_ObjectHideFlags: 0
