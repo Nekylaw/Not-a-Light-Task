@@ -29,8 +29,8 @@ public class OrbContainerComponent : MonoBehaviour
         _ammo += amount;
         _ammo = Mathf.Min(_settings.MaxAmmo, _ammo);
         
-        //orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(true);
-        //orbIndexUI++;
+        orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(true);
+        orbIndexUI++;
  
         return true;
     }
@@ -43,9 +43,9 @@ public class OrbContainerComponent : MonoBehaviour
         _ammo -= amount;
         _ammo = Mathf.Max(0, _ammo);
         Debug.Log("ammo left: " + _ammo);
-
+        
         orbIndexUI = _ammo;
-        //orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(false);
+        orbSunUI.transform.GetChild(orbIndexUI).gameObject.SetActive(false);
 
         return true;
     }
