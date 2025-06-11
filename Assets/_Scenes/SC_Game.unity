@@ -377,6 +377,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9017194417468627701, guid: 9fcf653de2e8cdd4b8b5fbc931ae2691, type: 3}
+      propertyPath: orbSunUI
+      value: 
+      objectReference: {fileID: 1867193800}
     - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: PetUI
       value: 
@@ -4469,7 +4473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &638790180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11103,6 +11107,33 @@ MonoBehaviour:
   - 500
   _enableLOD: 1
   _enableFrustumCulling: 1
+  _enableAnimation: 0
+  _animationDuration: 1
+  _animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enableLightBasedAnimation: 1
   _chunkLoadRadius: 1
   _chunkFolder: FoliageChunks
   _maxConcurrentLoads: 2
@@ -11110,6 +11141,8 @@ MonoBehaviour:
   _chunkSize: {x: 100, y: 100}
   _maxChunksDrawnPerFrame: 50
   _enableOcclusion: 0
+  _showDebugInfo: 0
+  _showMemoryUsage: 0
 --- !u!43 &1733046182
 Mesh:
   m_ObjectHideFlags: 0
@@ -11925,6 +11958,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 922084422396558667, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
   m_PrefabInstance: {fileID: 1854970760}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1867193800 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5381768511906324401, guid: 4831e4401e89ed94aa2d8d8efccd0504, type: 3}
+  m_PrefabInstance: {fileID: 2052038592}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1870789254 stripped
 Transform:
@@ -14164,11 +14202,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3891262619963752356, guid: 4831e4401e89ed94aa2d8d8efccd0504, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 197
       objectReference: {fileID: 0}
     - target: {fileID: 3891262619963752356, guid: 4831e4401e89ed94aa2d8d8efccd0504, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -133
+      value: -198
       objectReference: {fileID: 0}
     - target: {fileID: 3891262619963752356, guid: 4831e4401e89ed94aa2d8d8efccd0504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
