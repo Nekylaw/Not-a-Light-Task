@@ -71,10 +71,18 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 618e05d86a85bd34dbdf0c173fa5f80a, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
-      objectReference: {fileID: 2100000, guid: e1d373f28eceff5419209fc2e8f7a952, type: 2}
+      objectReference: {fileID: 2100000, guid: 1576413347ed75643b2dffc328edf4d6, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 618e05d86a85bd34dbdf0c173fa5f80a, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a76edcfd7ca335844b95f3b28011235e, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 618e05d86a85bd34dbdf0c173fa5f80a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4088438917622580491, guid: 38a92519d812e42d4ba7dd94c58623be, type: 3}
     - target: {fileID: 919132149155446097, guid: 618e05d86a85bd34dbdf0c173fa5f80a, type: 3}
       propertyPath: m_Name
-      value: light gun
+      value: PF_Gun
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
