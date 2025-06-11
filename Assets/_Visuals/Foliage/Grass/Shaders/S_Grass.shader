@@ -1,4 +1,4 @@
-Shader "Custom/GrassWind"
+Shader "Custom/GrassWindAnimated"
 {
     Properties
     {
@@ -12,6 +12,7 @@ Shader "Custom/GrassWind"
         _FlowMap_Scale("Flow Map Scale", Float) = 10.0  
         _FlowTime("Flow Time", Float) = 0.0
         _MatrixOffset("Matrix Offset", Int) = 0
+        _AnimationDuration("Animation Duration", Float) = 1.0
     }
 
     SubShader
@@ -19,7 +20,7 @@ Shader "Custom/GrassWind"
         Tags { "RenderType"="Opaque" }
         LOD 100
         Cull Off
-        ZWrite On // Hide foliage behind other objects
+        ZWrite On
 
         Pass
         {
@@ -41,12 +42,14 @@ Shader "Custom/GrassWind"
             float _FlowTime;
             float _FlowStrength;
             float _FlowMap_Scale;
+            float _AnimationDuration;
             int _MatrixOffset;
             int _ClearZoneCount;
 
             StructuredBuffer<float4x4> _Matrices;
             StructuredBuffer<float4> _BaseScales;
             StructuredBuffer<float4> _ClearZones;
+            StructuredBuffer<float> _AnimationStartTimes;
 
             TEXTURE2D(_FlowMap);
             SamplerState sampler_FlowMap
@@ -68,7 +71,20 @@ Shader "Custom/GrassWind"
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float heightRatio : TEXCOORD1;
+                float animationProgress : TEXCOORD2;
             };
+
+            // Smooth step function for easing animation
+            float smoothstep3(float t)
+            {
+                return t * t * (3.0 - 2.0 * t);
+            }
+
+            // Enhanced easing function for more natural animation
+            float easeOutCubic(float t)
+            {
+                return 1.0 - pow(1.0 - t, 3.0);
+            }
 
             Varyings vert(Attributes v)
             {
@@ -80,40 +96,86 @@ Shader "Custom/GrassWind"
                 float3 worldPos = mul(modelMatrix, float4(v.positionOS, 1)).xyz;
 
                 // Calculate distance factor based on clear zones
-                float distFactor = 0;
+                float targetDistFactor = 0;
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
                     float3 zonePos = _ClearZones[i].xyz;
                     float radius = _ClearZones[i].w;
                     float d = distance(worldPos, zonePos);
                     float t = saturate(1.0 - d / radius);
-                    distFactor = max(distFactor, t);
+                    targetDistFactor = max(targetDistFactor, t);
                 }
 
-                float scale = lerp(_MinScale, baseScale.x, distFactor);
+                // Get animation start time for this instance
+                float animStartTime = _AnimationStartTimes[idx];
+                float currentTime = _FlowTime;
+                
+                // Calculate animation progress (0 to 1)
+                float animationProgress = 0;
+                float currentDistFactor = targetDistFactor;
+                
+                if (animStartTime > 0) // Animation has been triggered
+                {
+                    float elapsed = currentTime - animStartTime;
+                    animationProgress = saturate(elapsed / _AnimationDuration);
+                    
+                    // Apply easing function for smooth animation
+                    float easedProgress = easeOutCubic(animationProgress);
+                    
+                    // Interpolate from previous state to target state
+                    // Note: This assumes we're animating from MinScale to target
+                    currentDistFactor = lerp(0, targetDistFactor, easedProgress);
+                }
 
+                // Calculate final scale
+                float scale = lerp(_MinScale, baseScale.x, currentDistFactor);
+
+                // Apply scaling
                 float3 scaled = v.positionOS;
                 scaled.y = _YOffset + (scaled.y - _YOffset) * scale;
                 scaled.xz *= scale;
 
-                // Wind
-                float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime  * 0.05 , _FlowTime  * 0.05);
-                // sample the flow map to get the flow direction
+                // Enhanced wind effect that responds to scale changes
+                float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime * 0.05, _FlowTime * 0.05);
                 float2 flow = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV, 0).rg;
                 float2 flowDir = normalize(flow * 2.0 - 1.0);
-                float swayAmount = _FlowStrength * max(0, scaled.y - _YOffset);
+                
+                // Wind strength varies with scale and animation progress
+                float windMultiplier = 1.0 + (currentDistFactor * 0.5); // More wind when grass is larger
+                float swayAmount = _FlowStrength * windMultiplier * max(0, scaled.y - _YOffset);
+                
+                // Add slight animation wobble during scaling
+                if (animationProgress > 0 && animationProgress < 1)
+                {
+                    float wobble = sin(animationProgress * 3.14159 * 4) * 0.1 * (1 - animationProgress);
+                    swayAmount += wobble;
+                }
+                
                 scaled.xz += flowDir * swayAmount;
 
+                // Final transformation
                 float4 finalWorldPos = mul(modelMatrix, float4(scaled, 1));
                 o.positionHCS = mul(UNITY_MATRIX_VP, finalWorldPos);
                 o.uv = v.uv;
                 o.heightRatio = saturate((v.positionOS.y - _YOffset) / _OldGrassHeight);
+                o.animationProgress = animationProgress;
+                
                 return o;
             }
 
             half4 frag(Varyings i) : SV_Target
             {
-                return lerp(_ColorBottom, _ColorTop, i.heightRatio);
+                half4 baseColor = lerp(_ColorBottom, _ColorTop, i.heightRatio);
+                
+                // Optional: Add subtle animation feedback in the color
+                // Slightly brighten grass during animation
+                if (i.animationProgress > 0 && i.animationProgress < 1)
+                {
+                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 0.1);
+                    baseColor.rgb *= brightness;
+                }
+                
+                return baseColor;
             }
             ENDHLSL
         }

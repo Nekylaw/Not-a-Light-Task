@@ -13,7 +13,7 @@ public class FoliageBakerWindow : EditorWindow
     public class BakeSettings
     {
         [Header("Chunk Configuration")]
-        public Vector2Int chunkSize = new Vector2Int(100, 100);
+        public Vector2Int chunkSize = new Vector2Int(16, 16);
         public string outputFolder = "Resources/FoliageChunks/";
 
         [Header("Performance")]
