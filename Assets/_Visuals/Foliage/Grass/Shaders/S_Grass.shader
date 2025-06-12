@@ -72,6 +72,7 @@ Shader "Custom/GrassWindAnimated"
                 float2 uv : TEXCOORD0;
                 float heightRatio : TEXCOORD1;
                 float animationProgress : TEXCOORD2;
+                float worldPos : TEXCOORD3; 
             };
 
             // Smooth step function for easing animation
@@ -138,7 +139,9 @@ Shader "Custom/GrassWindAnimated"
                 // Enhanced wind effect that responds to scale changes
                 float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime * 0.05, _FlowTime * 0.05);
                 float2 flow = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV, 0).rg;
-                float2 flowDir = normalize(flow * 2.0 - 1.0);
+                float2 flow2 = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV * 7.2, 0).rg;
+                float2 combinedFlow = (flow + flow2 * 0.5) / 1.5;
+                float2 flowDir = normalize(combinedFlow * 2.0 - 1.0);
                 
                 // Wind strength varies with scale and animation progress
                 float windMultiplier = 1.0 + (currentDistFactor * 0.5); // More wind when grass is larger
@@ -159,6 +162,7 @@ Shader "Custom/GrassWindAnimated"
                 o.uv = v.uv;
                 o.heightRatio = saturate((v.positionOS.y - _YOffset) / _OldGrassHeight);
                 o.animationProgress = animationProgress;
+                o.worldPos = finalWorldPos.y; 
                 
                 return o;
             }
@@ -166,6 +170,8 @@ Shader "Custom/GrassWindAnimated"
             half4 frag(Varyings i) : SV_Target
             {
                 half4 baseColor = lerp(_ColorBottom, _ColorTop, i.heightRatio);
+                float randomSeed = frac(sin(dot(i.worldPos, float2(12.9898, 78.233))) * 1.4898);
+                float colorVariation = lerp(0.9, 1.1, randomSeed );
                 
                 // Bright grass during animation
                 if (i.animationProgress > 0 && i.animationProgress < 1)
@@ -174,7 +180,7 @@ Shader "Custom/GrassWindAnimated"
                     baseColor.rgb *= brightness;
                 }
                 
-                return baseColor;
+                return baseColor * colorVariation;
             }
             ENDHLSL
         }

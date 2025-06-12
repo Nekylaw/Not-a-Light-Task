@@ -27,7 +27,6 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -42,11 +41,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0.8
-    - _NoiseScale: 15
+    - _AlphaClip: 0.2
+    - _FresnelPower: 0.5
+    - _NoiseScale: 10
     - _Speed: 2.5
-    - _StretchForce: 10
+    - _StretchForce: 20
     m_Colors:
     - _Color: {r: 0.20327558, g: 0.16805132, b: 0.96288866, a: 0}
+    - _SphereForce: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
