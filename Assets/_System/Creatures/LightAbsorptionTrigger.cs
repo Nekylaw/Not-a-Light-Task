@@ -1,4 +1,5 @@
 using System.Collections;
+using Game.Services.LightSources;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.AI;
@@ -8,7 +9,7 @@ public class CreatureStop : MonoBehaviour
 {
     [SerializeField] public GameObject creatureOnReceptacle;
     [SerializeField] AnimateLightOrbFeedbackComponent animateLightOrbFeedback;
-    [SerializeField] PropLightRendererComponent propLightRendererComponent;
+    [SerializeField] LightSourceComponent lightSourceComponent;
     [SerializeField] private VisualEffect visualEffect;
     
     private void OnTriggerEnter(Collider other)
@@ -30,11 +31,12 @@ public class CreatureStop : MonoBehaviour
     {
          yield return new WaitForSeconds(5);
          animateLightOrbFeedback.isLightOn = false;
-         propLightRendererComponent.gameObject.SetActive(false);
+         lightSourceComponent.SwitchOff();
          creature.GetComponent<NEW_IAController>().nearestLightObject = null;
          creature.gameObject.GetComponentInChildren<NavMeshAgent>().speed = 5;
          visualEffect.gameObject.SetActive(false);
-        
+         creatureOnReceptacle = null;
+
     }
     
     
