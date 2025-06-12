@@ -167,11 +167,10 @@ Shader "Custom/GrassWindAnimated"
             {
                 half4 baseColor = lerp(_ColorBottom, _ColorTop, i.heightRatio);
                 
-                // Optional: Add subtle animation feedback in the color
-                // Slightly brighten grass during animation
+                // Bright grass during animation
                 if (i.animationProgress > 0 && i.animationProgress < 1)
                 {
-                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 0.1);
+                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 10);
                     baseColor.rgb *= brightness;
                 }
                 
