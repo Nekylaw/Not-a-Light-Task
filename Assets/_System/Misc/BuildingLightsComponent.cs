@@ -12,7 +12,7 @@ public class BuildingLightsComponent : MonoBehaviour
         var materials = gameObject.GetComponent<MeshRenderer>().materials;
         for (int i = 0; i < materials.Length; i++)
         {
-            if (materials[i].name.Contains("lamp") || materials[i].name.Contains("Window"))
+            if (materials[i].name.ToLower().Contains("lamp") || materials[i].name.ToLower().Contains("window"))
             {
                 Debug.Log("added" + i);
                 _indexes.Add(i);
