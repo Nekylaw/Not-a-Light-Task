@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acdd03790aeaf15419c00f6acda88f18, type: 3}
-  m_Name: LightSourceSettings_Lamp
+  m_Name: LightSourceSettings_Led_Chain
   m_EditorClassIdentifier: 
-  BrightnessRange: 12.63
+  BrightnessRange: 25
   RequiredOrbs: 1
   OrbLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  DissipationSpeed: 0
+  DissipationSpeed: 8
   DebugColor: {r: 1, g: 1, b: 1, a: 1}
-  AttractRange: 1.5
-  Duration: 1
-  SpiralSpeed: 2000
+  AttractRange: 3
+  Duration: 0.3
+  SpiralSpeed: 200
