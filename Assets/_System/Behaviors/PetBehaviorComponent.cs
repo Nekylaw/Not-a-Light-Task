@@ -18,13 +18,6 @@ public class PetBehaviorComponent : MonoBehaviour
         _canPet = false;
         PetUI.SetActive(false);
         StartCoroutine(petCreature.GetComponent<NEW_IAController>().OnPet());
-
-        PetManager.Instance.ChoosePet(false);
-
-        //faire apparaitre une orbe
-        //jouer l'anim
-        //petit effet de particules (style capture pokemon ?)
-        //changer la couleur de la boule de la créature ? 
     }
 
     private void OnTriggerStay(Collider other)

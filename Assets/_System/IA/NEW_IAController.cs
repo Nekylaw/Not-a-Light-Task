@@ -175,21 +175,21 @@ public class NEW_IAController : MonoBehaviour
         {
             canWander = false;
             canBePet = false;
-            StartCoroutine(Scale(transform, canBePet));
+            StartCoroutine(Scale());
             yield return new WaitForSeconds(3);
             canWander = true;
             Instantiate(newOrb,transform.position+Vector3.up*3, Quaternion.identity);
         }
     }
 
-    public IEnumerator Scale(Transform creatureBody, bool isPettable)
+    public IEnumerator Scale()
     {
-        Vector3 startScale = creatureBody.localScale;
+        Vector3 startScale = this.transform.localScale;
         Vector3 targetScale = new Vector3();
         float duration = 3f;
         float elapsed = 0f;
 
-        if (isPettable)
+        if (canBePet)
         {
             targetScale = startScale * scaleFactor;
         }
@@ -199,13 +199,13 @@ public class NEW_IAController : MonoBehaviour
         }
         //Debug.Log("targetScale = " + targetScale);
 
-        while (Vector3.Distance(creatureBody.localScale, targetScale) > 0.1f)
+        while (Vector3.Distance(this.transform.localScale, targetScale) > 0.1f)
         {
             elapsed += Time.deltaTime;
-            creatureBody.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
+            this.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
             yield return null;
         }
-        creatureBody.localScale = targetScale;
+        this.transform.localScale = targetScale;
     }
     #endregion
 

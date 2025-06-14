@@ -137,7 +137,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
                     
         targetController.orbsEaten.Clear();
                         
-        PetManager.Instance.AddCreature(this.gameObject);
+        PetManager.Instance.AddCreature(targetController.gameObject);
              
     }
     

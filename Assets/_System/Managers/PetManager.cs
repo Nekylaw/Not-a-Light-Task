@@ -8,10 +8,20 @@ using UnityEngine;
 public class PetManager : MonoBehaviour
 {
     public static PetManager Instance { get; private set; }
-    [SerializeField] public TextMeshProUGUI debugList;
+
+    [SerializeField] private float petRange = 50f;
+    private GameObject player;
 
     private List<GameObject> pacifiedCreatures = new List<GameObject>();
 
+    private void Start()
+    {
+        player = GameObject.Find("PF_Player");
+        InvokeRepeating("ChoosePet", 10f, 10f);
+    }
+    /*
+    #region Debug list UI
+    [SerializeField] public TextMeshProUGUI debugList;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,7 +35,7 @@ public class PetManager : MonoBehaviour
     private void Update()
     {
         //Debug.Log(pacifiedCreatures.Count);
-        /*debugList.text = "pacified : \n";
+        debugList.text = "pacified : \n";
         if (pacifiedCreatures.Count != 0)
         {
             foreach (GameObject p in pacifiedCreatures)
@@ -36,50 +46,69 @@ public class PetManager : MonoBehaviour
                     debugList.text += "OUI \n";
                 }
             }
-        }*/
+        }
 
     }
+    #endregion
+    */
+
     public void AddCreature(GameObject creature)
     {
         pacifiedCreatures.Add(creature);
-        ChoosePet(true);
+        if (pacifiedCreatures.Count == 1)
+        {
+            pacifiedCreatures[0].GetComponent<NEW_IAController>().canBePet = true;
+            StartCoroutine(pacifiedCreatures[0].GetComponent<NEW_IAController>().Scale());
+        }
     }
 
-    public void ChoosePet(bool IsAdding)
+
+    public void ChoosePet()
     {
-        int NbCreatures = pacifiedCreatures.Count;
+        int nbPacified = pacifiedCreatures.Count;
 
-        if (IsAdding)
-        {
-            if (NbCreatures > 2)
-                return;
-            else
-            {
-                if (!pacifiedCreatures[0].GetComponent<NEW_IAController>().canBePet)
-                {
-                    SetChoice(NbCreatures - 1);
-                }
+        if (nbPacified == 0) return;
 
-            }
-        }
         else
         {
-            if (NbCreatures == 1)
-                return;
+            NEW_IAController topCreature = pacifiedCreatures[0].GetComponent<NEW_IAController>();
+
+            Vector2 posPlayerXZ = new Vector2(player.transform.position.x, player.transform.position.z);
+            Vector2 posTargetXZ = new Vector2(pacifiedCreatures[0].transform.position.x, pacifiedCreatures[0].transform.position.z);
+            float creatureDistanceXZ = Vector2.Distance(posPlayerXZ, posTargetXZ);
+
+            if (topCreature.canBePet && creatureDistanceXZ < petRange) return;
             else
             {
-                int choice = Random.Range(1, NbCreatures);
-                SetChoice(choice);
+                if (topCreature.canBePet)
+                {
+                    topCreature.canBePet = false;
+                    StartCoroutine(topCreature.Scale());
+                }
+
+                List<int> petCandidatesID = new List<int>();
+
+                for (int i = 1; i < pacifiedCreatures.Count; i++)
+                {
+                    Vector2 posCreatureXZ = new Vector2(pacifiedCreatures[i].transform.position.x, pacifiedCreatures[i].transform.position.z);
+
+                    if (Vector2.Distance(posPlayerXZ, posCreatureXZ) < petRange)
+                    {
+                        petCandidatesID.Add(i);
+                    }
+                }
+                if (petCandidatesID.Count > 0)
+                {
+                    int chosenCreatureID = Random.Range(0, petCandidatesID.Count);
+
+                    pacifiedCreatures[petCandidatesID[chosenCreatureID]].GetComponent<NEW_IAController>().canBePet = true;
+                    StartCoroutine(pacifiedCreatures[petCandidatesID[chosenCreatureID]].GetComponent<NEW_IAController>().Scale());
+
+                    GameObject tempCreature = pacifiedCreatures[petCandidatesID[chosenCreatureID]].gameObject;
+                    pacifiedCreatures.RemoveAt(petCandidatesID[chosenCreatureID]);
+                    pacifiedCreatures.Insert(0, tempCreature);
+                }
             }
         }
-    }
-
-    private void SetChoice(int chosenCreature)
-    {
-        pacifiedCreatures[chosenCreature].GetComponent<NEW_IAController>().canBePet = true;
-        GameObject temp = pacifiedCreatures[chosenCreature].gameObject;
-        pacifiedCreatures.RemoveAt(chosenCreature);
-        pacifiedCreatures.Insert(0, temp);
-        StartCoroutine(pacifiedCreatures[0].GetComponent<NEW_IAController>().Scale(pacifiedCreatures[0].transform, true));
     }
 }
