@@ -168,7 +168,7 @@ public class NEW_IAController : MonoBehaviour
 
     #endregion
 
-    #region Pet Action
+    #region Pet Actions
     public IEnumerator OnPet()
     {
         if (canBePet)

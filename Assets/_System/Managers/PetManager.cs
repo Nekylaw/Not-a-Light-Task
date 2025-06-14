@@ -19,9 +19,8 @@ public class PetManager : MonoBehaviour
         player = GameObject.Find("PF_Player");
         InvokeRepeating("ChoosePet", 10f, 10f);
     }
-    /*
-    #region Debug list UI
-    [SerializeField] public TextMeshProUGUI debugList;
+    
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,7 +30,9 @@ public class PetManager : MonoBehaviour
         }
         Instance = this;
     }
-
+    #region Debug list UI
+    /*
+    [SerializeField] public TextMeshProUGUI debugList;
     private void Update()
     {
         //Debug.Log(pacifiedCreatures.Count);
@@ -48,10 +49,9 @@ public class PetManager : MonoBehaviour
             }
         }
 
-    }
+    }*/
     #endregion
-    */
-
+    
     public void AddCreature(GameObject creature)
     {
         pacifiedCreatures.Add(creature);
