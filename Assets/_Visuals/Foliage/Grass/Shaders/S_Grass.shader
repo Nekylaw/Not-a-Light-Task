@@ -21,6 +21,7 @@ Shader "Custom/GrassWindAnimated"
         LOD 100
         Cull Off
         ZWrite On
+        Ztest Less
 
         Pass
         {

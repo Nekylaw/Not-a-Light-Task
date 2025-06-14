@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -74,7 +74,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: aec738f429fa4ab4a8b574c7c804886c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -114,7 +114,8 @@ Material:
     - _BaseColorMultiplier: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BodyAlpha: 1
+    - _BodyAlpha: 0.75
+    - _BodyEmission: 10
     - _BodyGlow: 0.7
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -144,15 +145,15 @@ Material:
     - _GrainScale: 1
     - _GrainSpeed: 3
     - _HeartBeatAmplitude: 0.1
-    - _HeartBeatSpeed: 0
+    - _HeartBeatSpeed: 1
     - _HeartCoreRadius: 0.261
     - _HeartFlickerIntensity: 0.5
     - _HeartFlickerSpeed: 5
-    - _HeartIntensity: 15
-    - _HeartRadius: 1
-    - _HeartTextureScale: 1.31
-    - _HeartTwirlSpeed: 2.6
-    - _HeartTwirlStrength: 5.13
+    - _HeartIntensity: 2.3
+    - _HeartRadius: 1.1
+    - _HeartTextureScale: 4
+    - _HeartTwirlSpeed: 2
+    - _HeartTwirlStrength: -55
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OrbCoreRadius: 0.11
@@ -165,8 +166,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RefractionStrength: 0.2
-    - _RimIntensity: 3
-    - _RimPower: 2.5
+    - _RimIntensity: 3.2
+    - _RimPower: 3.5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -177,13 +178,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.31320086, g: 0.26980242, b: 0.4433962, a: 1}
+    - _BaseColor: {r: 0.103840336, g: 0.056692775, b: 0.24528301, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EyeColor: {r: 1, g: 0.7294118, b: 0, a: 1}
     - _EyesColor: {r: 0.7169812, g: 0.66117835, b: 0.31452474, a: 1}
     - _HeartCenter: {r: 0, g: 0.84, b: 0.5, a: 0}
-    - _HeartColor: {r: 0.754717, g: 0.71165156, b: 0.43787825, a: 1}
+    - _HeartColor: {r: 0.31769025, g: 0.3137255, b: 0.7176471, a: 1}
     - _HeartCoreColor: {r: 1, g: 0.8603352, b: 0, a: 1}
     - _HeartRimColor: {r: 1, g: 0.39999998, b: 0.19999996, a: 1}
     - _HeartTextureOffset: {r: 0.5, g: 0.1, b: 0.5, a: 0}

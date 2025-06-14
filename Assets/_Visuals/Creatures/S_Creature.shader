@@ -19,14 +19,14 @@ Shader "Custom/FreshCreature"
         // Cœur avec texture
         _HeartTex ("Heart Texture", 2D) = "white" {}
         _HeartCenter ("Heart Center", Vector) = (0, 0, 0, 0)
-        _HeartRadius ("Heart Radius", Range(0, 1)) = 0.3
+        _HeartRadius ("Heart Radius", Range(0.1, 2)) = 0.3
         _HeartColor ("Heart Color", Color) = (1, 0.8, 0.2, 1)
         _HeartIntensity ("Heart Intensity", Range(0, 15)) = 8
-        _HeartBeatSpeed ("Heart Beat Speed", Range(0, 5)) = 1.5
+        _HeartBeatSpeed ("Heart Beat Speed", Range(0.5, 5)) = 1.5
         
         // Twirl parameters
-        _HeartTwirlSpeed ("Heart Twirl Speed", Range(-20, 20)) = 1.0
-        _HeartTwirlStrength ("Heart Twirl Strength", Range(0, 10)) = 3.0
+        _HeartTwirlSpeed ("Heart Twirl Speed", Range(-5, 5)) = 1.0
+        _HeartTwirlStrength ("Heart Twirl Strength", Float) = 3.0
         _HeartTextureScale ("Heart Texture Scale", Range(0.1, 5)) = 1.0
         _HeartTextureOffset ("Heart Texture Offset", Vector) = (0, 0, 0, 0)
         
@@ -39,25 +39,70 @@ Shader "Custom/FreshCreature"
     SubShader
     {
         Tags { 
-            "RenderType"="Opaque" 
-            "Queue"="Geometry" 
+            "RenderType"="Transparent" 
+            "Queue"="Transparent-100" 
             "RenderPipeline"="UniversalPipeline" 
         }
         LOD 200
         
+        // DepthOnly pass to write depth without color
+        Pass
+        {
+            Name "DepthOnly"
+            Tags 
+            { 
+                "LightMode"="DepthOnly"
+            }
+            
+            ZWrite On
+            ColorMask 0 // Don't write color, only depth
+            
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+            };
+            
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+            
+            Varyings vert(Attributes input)
+            {
+                Varyings output;
+                VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
+                output.positionCS = vertexInput.positionCS;
+                return output;
+            }
+            
+            half4 frag(Varyings input) : SV_Target
+            {
+                return 0;
+            }
+            ENDHLSL
+        }
+        
+        // Render with transparency
         Pass
         {
             Name "MainPass"
             Tags { "LightMode"="UniversalForward" }
             
             Blend SrcAlpha OneMinusSrcAlpha
-            ZWrite On
+            ZWrite Off // Done in DepthOnly pass
             ZTest LEqual
             Cull Back
             
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_fog
             
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             
@@ -127,57 +172,48 @@ Shader "Custom/FreshCreature"
                 VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS);
                 output.normalWS = normalInput.normalWS;
                 output.viewDirWS = GetWorldSpaceViewDir(output.positionWS);
-                
+                                
                 return output;
             }
             
             float4 frag(Varyings input) : SV_Target
             {
-                // === BASE COLOR AVEC TEXTURE ===
+                // Base color
                 float4 baseTexture = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
                 float3 baseColor = baseTexture.rgb * _BaseColor.rgb * _BaseColorMultiplier;
                 
-                // === YEUX AVEC TEXTURE ET COULEUR ===
-                // Transformer les UVs pour positionner et redimensionner les yeux
+                // Eyes position
                 float2 eyesUV = input.uv;
                 
-                // Centrer les UVs autour de 0.5
+                // Center UVs
                 eyesUV -= 0.5;
                 
-                // Appliquer le scale
+                // Scale + Offset
                 eyesUV /= _EyesScale;
-                
-                // Appliquer l'offset
                 eyesUV.x += _EyesOffsetX;
                 eyesUV.y += _EyesOffsetY;
                 
-                // Remettre dans l'espace 0-1
+                // Normalize UVs to 0-1 range
                 eyesUV += 0.5;
-                
-                // CLAMP pour éviter les artefacts
                 eyesUV = saturate(eyesUV);
-                
-                // Masque pour éviter les coupes nettes en dehors de 0-1
-                float2 uvMask = step(0.0, eyesUV) * step(eyesUV, 1.0);
-                float validUV = uvMask.x * uvMask.y;
-                
+                                
+                // Sample eyes texture
                 float4 eyesTexture = SAMPLE_TEXTURE2D(_EyesTex, sampler_EyesTex, eyesUV);
-                eyesTexture.a *= validUV; // Masquer en dehors des UVs valides
                 
-                // Appliquer la couleur personnalisée aux yeux
+                // Eyes color
                 float3 eyesColor = eyesTexture.rgb * _EyesColor.rgb * _EyesIntensity;
                 float eyesMask = eyesTexture.a; // Utilise l'alpha pour le masque
                 
-                // === CŒUR AVEC TEXTURE TWIRL ===
+                // Heart twirl
                 float3 heartCenter = _HeartCenter.xyz;
                 float distToHeart = distance(input.positionOS, heartCenter);
                 
-                // Battement cardiaque
-                float time = _TimeParameters.x;
-                float heartBeat = 0.2 + sin(time * _HeartBeatSpeed) * 0.3 + 1.0;
-                float heartRadius = _HeartRadius  * heartBeat ;
+                // Heart beat
+                float time = _Time.x * 10;
+                float heartBeat = sin(time * _HeartBeatSpeed) * 0.3 + 1.0;
+                float heartRadius = _HeartRadius * heartBeat;
                 
-                // Masque du cœur avec falloff plus doux
+                // Heart mask
                 float heartMask = 1.0 - saturate(distToHeart / heartRadius);
                 heartMask = pow(heartMask, 2.0);
                 
@@ -185,22 +221,17 @@ Shader "Custom/FreshCreature"
                 float3 heartColor = _HeartColor.rgb;
                 float4 heartTexture = float4(1, 1, 1, 1);
                 
-                if (heartMask > 0.01) // Seulement si on est dans la zone du cœur
+                // If in heart zone
+                if (heartMask > 0.01)
                 {
-                    // Calculer les coordonnées relatives au centre du cœur
                     float3 relativePos = input.positionOS - heartCenter;
                     
-                    // Projection sur un plan perpendiculaire à la normale principale
-                    // On peut utiliser XY, XZ ou YZ selon l'orientation souhaitée
                     float2 heartUV = relativePos.xy / heartRadius;
                     
-                    // Distance du centre pour l'effet twirl
                     float distFromCenter = length(heartUV);
                     
-                    // Angle twirl qui varie selon la distance et le temps
+                    // UVs rotation 
                     float twirlAngle = distFromCenter * _HeartTwirlStrength + time * _HeartTwirlSpeed;
-                    
-                    // Rotation des UVs
                     float cosAngle = cos(twirlAngle);
                     float sinAngle = sin(twirlAngle);
                     
@@ -209,50 +240,40 @@ Shader "Custom/FreshCreature"
                         heartUV.x * sinAngle + heartUV.y * cosAngle
                     );
                     
-                    // Appliquer le scale et l'offset de la texture
+                    // Heart Scale
                     rotatedUV *= _HeartTextureScale;
                     rotatedUV += _HeartTextureOffset.xy;
                     
-                    // Normaliser en UVs 0-1
+                    // Normalize
                     rotatedUV = rotatedUV * 0.5 + 0.5;
                     
-                    // Échantillonner la texture
+                    // Sample heart texture
                     heartTexture = SAMPLE_TEXTURE2D(_HeartTex, sampler_HeartTex, rotatedUV);
                     
-                    // Combiner avec la couleur du cœur
                     heartColor = heartTexture.rgb * _HeartColor.rgb;
                     
-                    // Optionnel : ajouter un effet de pulsation à la couleur
+                    // Heart Pusle
                     float pulse = sin(time * _HeartBeatSpeed * 2.0) * 0.2 + 1.0;
                     heartColor *= pulse;
                 }
                 
-                // === RIM LIGHTING ===
+                // Rim 
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewDirWS = normalize(input.viewDirWS);
                 float fresnel = 1.0 - saturate(dot(viewDirWS, normalWS));
                 float rim = pow(fresnel, _RimPower);
-                
-                // === ASSEMBLAGE FINAL ===
-                // Commencer avec la base
+
                 float3 finalColor = baseColor;
-                
-                // Ajouter les yeux (texture avec couleur)
                 finalColor = lerp(finalColor, eyesColor, eyesMask);
-                
-                // Ajouter le cœur (avec texture twirl)
                 finalColor = lerp(finalColor, heartColor, heartMask * 0.6);
-                
-                // Rim lighting
                 finalColor += _RimColor.rgb * rim * _RimIntensity;
                 
-                // === ÉMISSION ===
+                // Emission
                 float3 emission = float3(0, 0, 0);
                 emission += eyesColor * eyesMask * _EyesEmission;
                 emission += heartColor * heartMask * _HeartIntensity;
-                
+
                 finalColor += emission;
-                
                 return float4(finalColor, _BodyAlpha);
             }
             ENDHLSL
