@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "OrbSettings", menuName = "Game/Orb/Light Orb")]
 public class OrbSettings : ScriptableObject
 {
-    public bool HasLifetime = false;
-
-    [Min(0)]
-    public float Lifetime = 0;
+    [Header("Eating Settings")]
+    public float EatingEffectDuration = 0.5f;
+    public AnimationCurve ScaleCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+    public  AnimationCurve AlphaCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 }

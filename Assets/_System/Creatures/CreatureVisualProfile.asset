@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606f7a89caaa3d14c921b83f650ef5b2, type: 3}
+  m_Name: CreatureVisualProfile
+  m_EditorClassIdentifier: 
+  baseColorMultiplier: 3
+  bodyAlpha: 0.8
+  NormalProfile:
+    baseColor: {r: 0.0506853, g: 0.12856668, b: 0.16037738, a: 1}
+    rimColor: {r: 0.16645567, g: 0.04512282, b: 0.24528301, a: 1}
+    rimIntensity: 5
+    eyesColor: {r: 1, g: 1, b: 0.3, a: 1}
+    eyesIntensity: 3
+    heartColor: {r: 0.30627817, g: 0.250979, b: 0.3773585, a: 1}
+    heartIntensity: 15
+    heartBeatBaseSpeed: 1.5
+    heartBeatExcitedSpeed: 4
+  ExcitedProfile:
+    baseColor: {r: 1, g: 0.4, b: 0.3, a: 1}
+    rimColor: {r: 1, g: 0.5, b: 0, a: 1}
+    rimIntensity: 3
+    eyesColor: {r: 1, g: 0.14395219, b: 0, a: 1}
+    eyesIntensity: 5
+    heartColor: {r: 1, g: 0.3, b: 0.1, a: 1}
+    heartIntensity: 12
+    heartBeatBaseSpeed: 2
+    heartBeatExcitedSpeed: 6
+  EatingProfile:
+    baseColor: {r: 1, g: 0.6, b: 0.8, a: 1}
+    rimColor: {r: 1, g: 0.8, b: 0.9, a: 1}
+    rimIntensity: 2.5
+    eyesColor: {r: 1, g: 0.9, b: 0.5, a: 1}
+    eyesIntensity: 4
+    heartColor: {r: 1, g: 1, b: 0.5, a: 1}
+    heartIntensity: 10
+    heartBeatBaseSpeed: 3
+    heartBeatExcitedSpeed: 8
+  PacifiedProfile:
+    baseColor: {r: 1, g: 0.9456102, b: 0.5019608, a: 1}
+    rimColor: {r: 1, g: 0.8021469, b: 0, a: 1}
+    rimIntensity: 2
+    eyesColor: {r: 0.5, g: 1, b: 0.7, a: 1}
+    eyesIntensity: 3
+    heartColor: {r: 0.4, g: 1, b: 0.6, a: 1}
+    heartIntensity: 6
+    heartBeatBaseSpeed: 1
+    heartBeatExcitedSpeed: 2
