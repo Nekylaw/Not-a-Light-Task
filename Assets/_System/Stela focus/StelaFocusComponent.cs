@@ -31,6 +31,7 @@ public class StelaFocusComponent : MonoBehaviour
         originalFOV = mainCam.fieldOfView;
         originalRotation = mainCam.transform.rotation;
 
+        GetComponentInChildren<StelaRevealerComponent>().StartReveal();
         StartCoroutine(PlayCinematic());
         hasPlayed = true;
     }
