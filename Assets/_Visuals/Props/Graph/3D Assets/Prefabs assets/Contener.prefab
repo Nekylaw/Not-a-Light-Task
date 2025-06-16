@@ -50,12 +50,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: dd5a198e9890046ab9b1ce3930e777c8, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: dd5a198e9890046ab9b1ce3930e777c8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: -8770910374451945696, guid: dd5a198e9890046ab9b1ce3930e777c8, type: 3}
+      objectReference: {fileID: 2100000, guid: c41589fa361ef0a4faa77e562b234f74, type: 2}
+    - target: {fileID: -7511558181221131132, guid: dd5a198e9890046ab9b1ce3930e777c8, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3876542345217667742, guid: a301c0015374a479099c9730e41aaeb8, type: 3}
     - target: {fileID: 919132149155446097, guid: dd5a198e9890046ab9b1ce3930e777c8, type: 3}
       propertyPath: m_Name
       value: Contener
