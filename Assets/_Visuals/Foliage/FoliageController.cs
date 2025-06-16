@@ -178,8 +178,6 @@ public class FoliageController : MonoBehaviour
         {
             UpdatePlayerChunk(true);
         }
-
-        Debug.Log($"FoliageController initialized - Animation: {_enableAnimation}, Light-based animation: {_enableLightBasedAnimation}");
     }
 
     private void Update()
