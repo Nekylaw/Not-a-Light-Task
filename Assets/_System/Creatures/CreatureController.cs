@@ -55,10 +55,19 @@ public class CreatureController : MonoBehaviour
 
     // Stuck detection
     private Vector3 lastPositionCheck;
-    private float stuckTimer;
+    private float creatureStuckTimer;
+
+    // TRacking timeout
+    private float currentTargetTrackingTime;
+    private Vector3 lastTargetPosition;
+    private float stuckOnTargetTimer;
+    private List<Transform> orbsBlackList = new();
+    private Dictionary<Transform, float> blackListedTimers = new();
+
     #endregion
 
-    #region Inspector Settings
+    #region Serialized Settings
+
     [Header("=== Detection Settings ===")]
     [SerializeField] private float detectionRadius = 10f;
     [SerializeField] private float groupAwarenessRadius = 5f;
@@ -105,6 +114,15 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private float calmRate = 1f;
     [SerializeField] private float excitementOnOrbSight = 5f;
     [SerializeField] private float maxExcitement = 10f;
+    [SerializeField] private float excitementReducerOnGiveUp = 3f;
+
+    [Header("=== Tracking Settings ===")]
+    [SerializeField] private float maxTrackingTime = 10f;
+    [SerializeField] private float targetStuckTreshold = 0.5f; // Distance limit before a target is considered stuck
+    [SerializeField] private float maxStuckOnTargetDuration = 3f;
+    [SerializeField] private float blackListDuration = 30f;
+    [SerializeField] private bool enableSmartGiveUp = true; // Stop tracking smartly
+    [SerializeField][Range(0, 1)] private float homeInfluence = 0.7f;
 
     [Header("=== Visual Settings ===")]
     [SerializeField] private CreatureVisualProfileSO visualProfile;
@@ -166,6 +184,7 @@ public class CreatureController : MonoBehaviour
 
         UpdateNearbyCreatures();
         UpdateExcitement(delta);
+        UpdateBlacklists(delta);
         UpdateState(delta);
         UpdateAnimation();
         UpdateVisuals();
@@ -222,6 +241,10 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Seeking:
                 excitementLevel = Mathf.Min(maxExcitement, excitementLevel + 2f);
                 AlertNearbyCreatures();
+
+                currentTargetTrackingTime = 0f;
+                stuckOnTargetTimer = 0f;
+                lastTargetPosition = transform.position;
                 break;
 
             case ECreatureState.Eating:
@@ -334,6 +357,7 @@ public class CreatureController : MonoBehaviour
             }
         }
     }
+
     void UpdateSeekingState(float delta)
     {
         if (currentTarget == null)
@@ -350,23 +374,153 @@ public class CreatureController : MonoBehaviour
             return;
         }
 
-        excitementLevel = Mathf.Min(maxExcitement, excitementLevel + excitementOnOrbSight * delta);
-
-        MoveTowardsTarget(currentTarget.position, true, delta);
-
-        if (debugMode)
+        if (orbsBlackList.Contains(currentTarget))
         {
-            Debug.Log($"{name} seeking: Speed={currentSpeed:F2}, Velocity={velocity.magnitude:F2}, Distance={Vector3.Distance(transform.position, currentTarget.position):F2}");
+            if (debugMode)
+                Debug.Log($"{name} is blacklisted from {currentTarget.name} and will not seek it.");
+
+            currentTarget = null;
+            ChangeState(ECreatureState.Wandering);
+            return;
         }
 
-        float distance = Vector3.Distance(transform.position, currentTarget.position);
-        if (distance <= eatDistance)
+        currentTargetTrackingTime += delta;
+
+        float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+
+        float progressMade = Vector3.Distance(lastTargetPosition, transform.position);
+        if (progressMade < targetStuckTreshold * delta)
+        {
+            stuckOnTargetTimer += delta;
+        }
+        else
+        {
+            stuckOnTargetTimer = 0f;
+            lastTargetPosition = transform.position;
+        }
+
+        // Handle give up on target
+        bool shouldGiveUp =
+               currentTargetTrackingTime > maxTrackingTime ||
+               stuckOnTargetTimer > maxStuckOnTargetDuration ||
+              (enableSmartGiveUp && IsPathBlocked(currentTarget.position));
+
+        if (shouldGiveUp)
+        {
+            OnGiveUpTarget();
+            return;
+        }
+
+        excitementLevel = Mathf.Min(maxExcitement, excitementLevel + excitementOnOrbSight * delta);
+        MoveTowardsTarget(currentTarget.position, true, delta);
+
+        if (distanceToTarget <= eatDistance)
         {
             if (CanEatOrb())
             {
                 ChangeState(ECreatureState.Eating);
             }
         }
+    }
+
+    private void OnGiveUpTarget()
+    {
+        if (currentTarget != null && !orbsBlackList.Contains(currentTarget))
+        {
+            orbsBlackList.Add(currentTarget);
+            blackListedTimers[currentTarget] = blackListDuration;
+        }
+
+        // Reduce excitement level when giveup
+        excitementLevel = Mathf.Max(0, excitementLevel - excitementReducerOnGiveUp);
+
+        if (debugMode)
+            Debug.Log($"{name} gave up on target {currentTarget?.name ?? "null"} after {stuckOnTargetTimer:F2}s sa mere");
+
+        // Wander
+        currentTarget = null;
+
+        // Back to home if too far
+        float distanceFromHome = Vector3.Distance(transform.position, startPosition);
+        if (distanceFromHome > wanderRadius * 2f)
+        {
+            wanderTarget = startPosition + Random.insideUnitSphere * (wanderRadius * 0.5f);
+            wanderTarget.y = transform.position.y;
+
+            if (debugMode)
+                Debug.Log($"{name} is far from home ({distanceFromHome:F1}m), heading back");
+        }
+
+        ChangeState(ECreatureState.Wandering);
+    }
+
+    /// <summary>
+    /// Is the path to the target position blocked by an obstacle?
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
+    bool IsPathBlocked(Vector3 targetPos)
+    {
+        Vector3 direction = (targetPos - transform.position).normalized;
+        float distance = Vector3.Distance(transform.position, targetPos);
+
+        RaycastHit hit;
+        if (Physics.Raycast(
+            transform.position + Vector3.up * 0.5f,
+            direction,
+            out hit,
+            distance - 0.5f,
+            obstacleLayer))
+        {
+            return true;
+        }
+
+        if (Physics.SphereCast(
+            transform.position + Vector3.up * 0.5f,
+            0.3f,
+            direction,
+            out hit,
+            distance - 0.5f,
+            obstacleLayer))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void UpdateBlacklists(float delta)
+    {
+        if (blackListedTimers.Count == 0) return;
+
+        List<Transform> toRemove = new List<Transform>();
+
+        var entries = blackListedTimers.ToList();
+
+        foreach (var kvp in entries)
+        {
+            if (kvp.Key == null)
+            {
+                toRemove.Add(kvp.Key);
+                continue;
+            }
+
+            float newTime = kvp.Value - delta;
+            blackListedTimers[kvp.Key] = newTime;
+
+            if (newTime <= 0)
+            {
+                toRemove.Add(kvp.Key);
+            }
+        }
+
+        foreach (var target in toRemove)
+        {
+            blackListedTimers.Remove(target);
+            orbsBlackList.Remove(target);
+        }
+
+        orbsBlackList.RemoveAll(t => t == null);
     }
 
     void UpdateEatingState(float delta)
@@ -543,17 +697,17 @@ public class CreatureController : MonoBehaviour
 
         if (distanceMoved < movementThreshold && currentSpeed > minSpeed && currentState != ECreatureState.Idle)
         {
-            stuckTimer += Time.deltaTime;
+            creatureStuckTimer += Time.deltaTime;
 
-            if (stuckTimer > 1.5f)
+            if (creatureStuckTimer > 1.5f)
             {
                 OnStuck();
-                stuckTimer = 0f;
+                creatureStuckTimer = 0f;
             }
         }
         else
         {
-            stuckTimer = 0f;
+            creatureStuckTimer = 0f;
 
             if (distanceMoved > 0.01f)
             {
@@ -647,6 +801,9 @@ public class CreatureController : MonoBehaviour
 
         foreach (Collider col in orbsInRange)
         {
+            if (orbsBlackList.Contains(col.transform))
+                continue;
+
             OrbComponent orb = col.GetComponent<OrbComponent>();
             if (orb != null && orb.CanBeTargeted())
             {
@@ -657,6 +814,9 @@ public class CreatureController : MonoBehaviour
 
                 if (!isTargeted && distance < nearestDistance)
                 {
+                    if (enableSmartGiveUp && IsPathBlocked(col.transform.position))
+                        continue;
+
                     nearestDistance = distance;
                     nearestOrb = col.gameObject;
                 }
@@ -881,10 +1041,24 @@ public class CreatureController : MonoBehaviour
         int attempts = 0;
         Vector3 newTarget;
 
+        float distanceFromHome = Vector3.Distance(transform.position, startPosition);
+        bool shouldReturnHome = distanceFromHome > wanderRadius * 1.5f;  
+
         do
         {
-            Vector2 randomCircle = Random.insideUnitCircle * wanderRadius;
-            newTarget = startPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
+            if (shouldReturnHome)
+            {
+                Vector3 directionToHome = (startPosition - transform.position).normalized;
+                Vector2 randomOffset = Random.insideUnitCircle * wanderRadius * 0.5f;
+                newTarget = transform.position + directionToHome * wanderRadius * homeInfluence;
+                newTarget.x += randomOffset.x;
+                newTarget.z += randomOffset.y;
+            }
+            else
+            {
+                Vector2 randomCircle = Random.insideUnitCircle * wanderRadius;
+                newTarget = startPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
+            }
 
             attempts++;
         }
