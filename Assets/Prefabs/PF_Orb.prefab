@@ -202,6 +202,8 @@ GameObject:
   - component: {fileID: -7691519496961036071}
   - component: {fileID: -1049932874409772603}
   - component: {fileID: -3681317097075550551}
+  - component: {fileID: 3564713903754696092}
+  - component: {fileID: 6543733521375339327}
   m_Layer: 10
   m_Name: PF_Orb
   m_TagString: LightSource
@@ -339,7 +341,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orbSettings: {fileID: 11400000, guid: 51070dcf6430e9641a5ce4a9a6455ea6, type: 2}
-  isAttachedToReceptacle: 0
 --- !u!114 &4798598855757457158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +376,7 @@ MonoBehaviour:
   _glowRadius: 10
   _visibilityDistance: 100
   _maxScreenDist: 1
+  _fadeSpeed: 3
 --- !u!2083052967 &-1049932874409772603
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -491,6 +493,46 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3564713903754696092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079178589685399282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visibleIfLightOff: 1
+  _baseColor: {r: 1, g: 1, b: 1, a: 1}
+  _glowColor: {r: 1, g: 1, b: 1, a: 1}
+  _baseIntensity: 15
+  _glowIntensity: 20
+  _glowAnimSpeed: 1
+  _glowAnimAmplitude: 10
+  _glowRadius: 10
+  _visibilityDistance: 100
+  _maxScreenDist: 1
+  _fadeSpeed: 3
+--- !u!111 &6543733521375339327
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079178589685399282}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 648b1304b771ff14f87938951f5333bc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 648b1304b771ff14f87938951f5333bc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &8927618045907573170
 GameObject:
   m_ObjectHideFlags: 0
