@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour
     public void OnDisable()
     {
         GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-
         UnBindInputs();
         _gameInputs.Disable();
     }
@@ -101,21 +100,6 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
         UpdateCameraLook(_inputMode, delta);
-
-        if (_pacify.creaturesCanBePacified.Count != 0)
-        {
-            if (_pacify.creaturesCanBePacified[0].GetComponent<NEW_IAController>().isBeingPacified == true)
-            {
-                _gameInputs.Player.Look.performed -= HandleLookInput;
-                _gameInputs.Player.Move.performed -= HandleMoveInput;
-                _camera.transform.LookAt(_pacify.creaturesCanBePacified[0].transform);
-            }
-            else
-            {
-                _gameInputs.Player.Look.performed += HandleLookInput;
-                _gameInputs.Player.Move.performed += HandleMoveInput;
-            }
-        }
     }
 
     #endregion
@@ -140,7 +124,7 @@ public class PlayerController : MonoBehaviour
         _gameInputs.Player.Pickup.started += HandlePickupInput;
         _gameInputs.Player.Pickup.canceled += HandlePickupInput;
 
-        _gameInputs.Player.Pacify.performed += HandlePacifyInput;
+        _gameInputs.Player.Pacify.started += HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled += HandlePacifyInput;
 
         _gameInputs.Player.Jump.started += HandleJumpInput;
@@ -165,14 +149,14 @@ public class PlayerController : MonoBehaviour
         //_gameInputs.Player.Pickup.performed -= HandlePickupInput;
         _gameInputs.Player.Pickup.started -= HandlePickupInput;
         _gameInputs.Player.Pickup.canceled -= HandlePickupInput;
-        
+
         _gameInputs.Player.Pacify.performed -= HandlePacifyInput;
         _gameInputs.Player.Pacify.canceled -= HandlePacifyInput;
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
 
-        _gameInputs.Player.Pet.performed -= HandlePetInput; 
-        
+        _gameInputs.Player.Pet.performed -= HandlePetInput;
+
     }
 
     private void UpdateMovement(float delta)
@@ -242,33 +226,14 @@ public class PlayerController : MonoBehaviour
         if (context.canceled)
             _pickup.StopAttracting();
     }
-    
+
     private void HandlePacifyInput(InputAction.CallbackContext context)
     {
-                   
-        if (context.performed && _pacify.isInPacifyMode)
-        {
-            _pacify.OnPacifyHold();
-        }
-        else if (context.canceled && _pacify.isInPacifyMode)
-        {
-            
-            if (_pacify.TargetCreature().GetComponent<NEW_IAController>().isPacified == true)
-            {
-                _pacify.OnEndPacify(); 
-                Debug.Log("on end pacify");
-            }
-            else
-            { 
-                Debug.Log("cancel pacify");
-               _pacify.CancelPacify();
-                
-            }
-            
-            _pacify.HidePacifyUI();
-            
-        }
+        if (context.started)
+            _pacify.Pacify();
 
+        if (context.canceled)
+            _pacify.StopPacify();
     }
 
     private void HandlePetInput(InputAction.CallbackContext context)
