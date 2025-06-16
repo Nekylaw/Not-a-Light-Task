@@ -49,7 +49,7 @@ namespace Game.Services.LightSources
             _orbSlot = 0;
             if (_particleSystem != null)
                 _particleSystem.gameObject.SetActive(false);
-            if (ownParticlesVFX != null) 
+            if (ownParticlesVFX != null)
                 ownParticlesVFX.enabled = false;
         }
 
@@ -171,6 +171,15 @@ namespace Game.Services.LightSources
         public void SetOrbSlots(int amount)
         {
             _orbSlot += amount;
+        }
+
+        public void DrainLight()
+        {
+            if (!_isLightOn)
+                return;
+
+            _orbSlot = 0;
+            _lightService.SwitchOff(this);
         }
 
         private void DetectBuildingsToLights()

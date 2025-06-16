@@ -32,9 +32,7 @@ namespace Game.Services.LightSources
         #region Delegates
 
         public delegate void SwitchOnLightDelegate(LightSourceComponent light);
-
         public delegate void SwitchOffLightDelegate(LightSourceComponent light);
-
         public delegate void TriggerLightDelegate(LightSourceComponent light);
 
         #endregion

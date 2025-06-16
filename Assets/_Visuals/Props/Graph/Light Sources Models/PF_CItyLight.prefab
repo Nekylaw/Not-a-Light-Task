@@ -224,6 +224,7 @@ MonoBehaviour:
   _glowRadius: 0.4
   _visibilityDistance: 100
   _maxScreenDist: 0.9
+  _fadeSpeed: 3
 --- !u!65 &7898324167312766584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -299,6 +300,10 @@ PrefabInstance:
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_Name
       value: PF_CItyLight
+      objectReference: {fileID: 0}
+    - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -1606318914884519321, guid: 92380f819ec465a42aedfc513b4eb36e, type: 3}
       propertyPath: m_TagString
@@ -405,7 +410,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
   _radius: 3
-  _orbitSpeed: 200
+  _orbitSpeed: 100
+  _verticalAmplitude: 1
+  _verticalSpeed: 2
+  _spawnDelay: 0.1
+  _spawnDuration: 0.5
+  _spawnEase: 28
+  _fadeInDuration: 0.8
+  _fadeOutDuration: 0.7
   isLightOn: 0
 --- !u!136 &8517983909757272283
 CapsuleCollider:
