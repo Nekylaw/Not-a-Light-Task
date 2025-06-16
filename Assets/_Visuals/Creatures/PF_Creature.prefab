@@ -187,6 +187,13 @@ MonoBehaviour:
   calmRate: 1
   excitementOnOrbSight: 5
   maxExcitement: 10
+  excitementReducerOnGiveUp: 3
+  maxTrackingTime: 6
+  targetStuckTreshold: 0.5
+  maxStuckOnTargetDuration: 3
+  blackListDuration: 30
+  enableSmartGiveUp: 1
+  homeInfluence: 0.7
   visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
   idleSounds: []
   excitedSounds: []
