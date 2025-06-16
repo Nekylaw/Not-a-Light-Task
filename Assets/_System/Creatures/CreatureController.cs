@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Services.LightSources;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CreatureController : MonoBehaviour
@@ -14,6 +15,7 @@ public class CreatureController : MonoBehaviour
         Wandering,
         Seeking,
         Eating,
+        Draining,
         Pacified
     }
 
@@ -27,6 +29,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Core Components
+
     // Components
     private Rigidbody rb;
     private AudioSource audioSource;
@@ -63,6 +66,12 @@ public class CreatureController : MonoBehaviour
     private float stuckOnTargetTimer;
     private List<Transform> orbsBlackList = new();
     private Dictionary<Transform, float> blackListedTimers = new();
+
+    // Draining
+    private Transform currentLightTarget;
+    private float drainTimer;
+    private LightSourceComponent targetLightSource;
+    private float drainCooldownTimer = 0f;
 
     #endregion
 
@@ -108,6 +117,21 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private float wanderRadius = 8f;
     [SerializeField] private float noiseFrequency = 1f;
     [SerializeField] private float eatDuration = 2f;
+
+    [Header("=== Draining ===")]
+    [SerializeField] private bool enableDrain = false;
+    [SerializeField] private float lightSourceDetectionRadius = 6f;
+    [SerializeField] private float drainDuration = 2;
+    [SerializeField] private float drainDistance = 4f;
+    [SerializeField] private LayerMask lightSourceLayer;
+    [SerializeField] private float excitmentOnLightSourceDetection = 3f;
+    [SerializeField] private float postDrainCooldown = 5f;
+
+    [Header("=== Draining Anim ===")]
+    [SerializeField] private float drainPusle = 10f;
+    [SerializeField] private float drainScaleAmount = 0.2f;
+    [SerializeField] private ParticleSystem drainParticles;
+
 
     [Header("=== Excitement System ===")]
     [SerializeField] private float excitementLevel = 0f;
@@ -181,6 +205,9 @@ public class CreatureController : MonoBehaviour
     void Update()
     {
         float delta = Time.deltaTime;
+
+        if (drainCooldownTimer > 0)
+            drainCooldownTimer -= delta;
 
         UpdateNearbyCreatures();
         UpdateExcitement(delta);
@@ -263,6 +290,22 @@ public class CreatureController : MonoBehaviour
                     eatingParticles.Play();
                 break;
 
+            case ECreatureState.Draining:
+                drainTimer = 0f;
+                currentSpeed = 0;
+                excitementLevel = Mathf.Min(maxExcitement, excitementLevel + excitmentOnLightSourceDetection);
+
+                //if (targetLightSource != null)
+                //{
+                //    PlaySound(targetLightSource.DrainSound);
+                //    if (drainParticle != null)
+                //        drainParticle.Play();
+                //}
+
+                AlertNearbyCreatures(); ;
+                break;
+
+
             case ECreatureState.Pacified:
                 excitementLevel = 0f;
                 PlaySound(pacifySound);
@@ -281,6 +324,25 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Eating:
                 transform.localScale = originalScale;
                 currentTarget = null;
+                break;
+
+            case ECreatureState.Draining:
+                //if (drainParticle != null)
+                //{
+                //    drainParticle.Stop();
+                //    drainParticle.Clear();
+                //}
+
+                currentLightTarget = null;
+                targetLightSource = null;
+                drainTimer = 0f;
+                drainCooldownTimer = postDrainCooldown;
+
+                if (targetLightSource != null)
+                {
+                    targetLightSource.DrainLight();
+                    targetLightSource = null;
+                }
                 break;
         }
     }
@@ -303,10 +365,92 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Eating:
                 UpdateEatingState(delta);
                 break;
+            case ECreatureState.Draining:
+                UpdateDrainingState(delta);
+                break;
             case ECreatureState.Pacified:
                 UpdatePacifiedState(delta);
                 break;
         }
+    }
+
+    private void UpdateDrainingState(float delta)
+    {
+        if (currentLightTarget == null || targetLightSource == null || !targetLightSource.IsLightOn)
+        {
+            ChangeState(ECreatureState.Wandering);
+            return;
+        }
+
+        float distanceToLight = Vector3.Distance(transform.position, targetLightSource.LightPoint.position);
+
+        // Get nearby light sources
+        if (distanceToLight > drainDistance)
+        {
+            MoveTowardsTarget(targetLightSource.LightPoint.position, true, delta);
+            return;
+        }
+
+        // Disturb light orbs if close enough
+        AnimateLightOrbFeedbackComponent feedback = targetLightSource.GetComponent<AnimateLightOrbFeedbackComponent>();
+        if (feedback != null && distanceToLight < 5f)
+        {
+            float intensity = 1f - (distanceToLight / 5f);
+            feedback.DisturbOrbs(intensity);
+        }
+
+        // Drain
+        drainTimer += delta;
+
+        // Animate drain
+        float drainAnimation = 1 + Mathf.Sin(drainTimer * drainPusle) * drainScaleAmount;
+        transform.localScale = originalScale * drainAnimation;
+
+        // Look at the light source
+        Vector3 lookDirection = (targetLightSource.LightPoint.position - transform.position).normalized;
+        lookDirection.y = 0;
+        if (lookDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), rotationSpeed * delta);
+        }
+
+        // Particle effect
+        if (drainParticles != null)
+        {
+            var shape = drainParticles.shape;
+            shape.position = targetLightSource.LightPoint.position - transform.position;
+        }
+
+        if (debugMode && Time.frameCount % 30 == 0)
+        {
+            Debug.Log($"{name} draining light: {drainTimer:F1}/{drainDuration:F1}");
+        }
+
+        // End drain
+        if (drainTimer >= drainDuration)
+        {
+            targetLightSource.DrainLight();
+            excitementLevel = maxExcitement;
+            StartCoroutine(CompleteDrainAnimationCoroutine());
+            ChangeState(ECreatureState.Wandering);
+        }
+    }
+
+
+    IEnumerator CompleteDrainAnimationCoroutine()
+    {
+        float duration = 0.5f;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            float scale = 1f + Mathf.Sin((timer / duration) * Mathf.PI) * 0.5f;
+            transform.localScale = originalScale * scale;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
     }
 
     #endregion
@@ -326,6 +470,21 @@ public class CreatureController : MonoBehaviour
 
     void UpdateWanderingState(float delta)
     {
+
+        // Search for light sources if can drain
+        if (!IsPacified && enableDrain && drainCooldownTimer <= 0f)
+        {
+            LightSourceComponent nearestLight = FindNearestLightSource();
+            if (nearestLight != null)
+            {
+                currentLightTarget = nearestLight.transform;
+                targetLightSource = nearestLight;
+                ChangeState(ECreatureState.Draining);
+                return;
+            }
+        }
+
+        // Then search for orbs if not pacified
         if (!IsPacified)
         {
             GameObject nearestOrb = FindNearestOrb();
@@ -356,6 +515,33 @@ public class CreatureController : MonoBehaviour
                 behaviorTimer = 0f;
             }
         }
+    }
+
+    private LightSourceComponent FindNearestLightSource()
+    {
+        Collider[] lightsInRange = Physics.OverlapSphere(transform.position, lightSourceDetectionRadius, lightSourceLayer);
+
+        LightSourceComponent nearestLight = null;
+        float nearestDistance = float.MaxValue;
+        foreach (Collider col in lightsInRange)
+        {
+            LightSourceComponent lightSource = col.GetComponent<LightSourceComponent>();
+            if (lightSource != null && lightSource.IsLightOn)
+            {
+                float distance = Vector3.Distance(transform.position, lightSource.transform.position);
+
+                // Check if the light source is being drained by another creature
+                bool isBeingDrained = nearbyCreatures.Any(c => c.currentState == ECreatureState.Draining && c.targetLightSource == lightSource);
+
+                if (!isBeingDrained && distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestLight = lightSource;
+                }
+            }
+        }
+
+        return nearestLight;
     }
 
     void UpdateSeekingState(float delta)
@@ -928,6 +1114,9 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Eating:
                 return visualProfile.EatingProfile;
 
+            case ECreatureState.Draining:
+                return visualProfile.DrainingProfile;
+
             case ECreatureState.Pacified:
                 return visualProfile.PacifiedProfile;
 
@@ -1042,7 +1231,7 @@ public class CreatureController : MonoBehaviour
         Vector3 newTarget;
 
         float distanceFromHome = Vector3.Distance(transform.position, startPosition);
-        bool shouldReturnHome = distanceFromHome > wanderRadius * 1.5f;  
+        bool shouldReturnHome = distanceFromHome > wanderRadius * 1.5f;
 
         do
         {
@@ -1121,6 +1310,16 @@ public class CreatureController : MonoBehaviour
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
         Gizmos.DrawWireSphere(transform.position, separationDistance);
 
+        if (enableDrain)
+        {
+            Gizmos.color = new Color(1f, 0f, 1f, 0.2f);
+            Gizmos.DrawWireSphere(transform.position, lightSourceDetectionRadius);
+
+            // Drain distance
+            Gizmos.color = new Color(1f, 0f, 1f, 0.5f);
+            Gizmos.DrawWireSphere(transform.position, drainDistance);
+        }
+
         // Current velocity
         if (Application.isPlaying)
         {
@@ -1141,8 +1340,17 @@ public class CreatureController : MonoBehaviour
                 Gizmos.DrawWireSphere(wanderTarget, 0.5f);
                 Gizmos.DrawLine(transform.position, wanderTarget);
             }
+
+            // Light target
+            if (currentLightTarget != null)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawLine(transform.position, currentLightTarget.position);
+                Gizmos.DrawWireSphere(currentLightTarget.position, 0.5f);
+            }
         }
     }
+
     void OnGUI()
     {
         if (!debugMode) return;

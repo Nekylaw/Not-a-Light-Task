@@ -50,6 +50,19 @@ public class CreatureVisualProfileSO : ScriptableObject
         heartBeatExcitedSpeed = 8f
     };
 
+    public StateProfile DrainingProfile = new StateProfile
+    {
+        baseColor = new Color(0.8f, 0.3f, 1f),
+        rimColor = new Color(0.8f, 0.4f, 1f),
+        rimIntensity = 3.5f,
+        eyesColor = new Color(0.9f, 0.3f, 1f),
+        eyesIntensity = 6f,
+        heartColor = new Color(1f, 0f, 1f),
+        heartIntensity = 14f,
+        heartBeatBaseSpeed = 4f,
+        heartBeatExcitedSpeed = 10f
+};
+
     public StateProfile PacifiedProfile = new StateProfile
     {
         baseColor = new Color(0.5f, 1f, 0.5f),
