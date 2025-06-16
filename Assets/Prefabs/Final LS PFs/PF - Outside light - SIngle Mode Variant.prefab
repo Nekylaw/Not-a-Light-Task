@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureOnReceptacle: {fileID: 0}
   animateLightOrbFeedback: {fileID: 9091501119195918987}
-  propLightRendererComponent: {fileID: 3713391181943612861}
+  lightSourceComponent: {fileID: 0}
   visualEffect: {fileID: 388093698328013446}
 --- !u!65 &2999248352844756129
 BoxCollider:
@@ -268,6 +268,22 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -0.87606835
       objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _glowRadius
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _baseIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _glowIntensity
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _glowAnimAmplitude
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 9170693979604020384, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
       propertyPath: m_Name
       value: Light
@@ -286,17 +302,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
---- !u!114 &3713391181943612861 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
-  m_PrefabInstance: {fileID: 4643372556379514954}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7156899669733139510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2531859623053462652, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
@@ -428,6 +433,13 @@ MonoBehaviour:
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
   _radius: 3
   _orbitSpeed: 80
+  _verticalAmplitude: 0.15
+  _verticalSpeed: 2
+  _spawnDelay: 0.1
+  _spawnDuration: 0.5
+  _spawnEase: 27
+  _fadeInDuration: 0.3
+  _fadeOutDuration: 0.5
   isLightOn: 0
 --- !u!54 &1836055981846498248
 Rigidbody:
