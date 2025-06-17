@@ -81,6 +81,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed66fcdbcc0c8a24ea40804a5e44981c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2060144564025246000}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed66fcdbcc0c8a24ea40804a5e44981c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2056321437289679571}
   m_SourcePrefab: {fileID: 100100000, guid: ed66fcdbcc0c8a24ea40804a5e44981c, type: 3}
 --- !u!1 &7390249482882093501 stripped
 GameObject:
@@ -171,14 +174,14 @@ MonoBehaviour:
   rotationSpeed: 2
   enableObstacleAvoidance: 1
   avoidanceRadius: 2
-  avoidanceStrength: 3
+  avoidanceStrength: 2
   avoidanceRayCount: 5
   avoidanceAngle: 45
   bobAmount: 0.1
   bobSpeed: 1
   tiltAmount: 10
   squashStretchAmount: 0.2
-  separationDistance: 2
+  separationDistance: 1.5
   separationWeight: 1
   alignmentWeight: 1.2
   cohesionWeight: 0.5
@@ -193,14 +196,14 @@ MonoBehaviour:
   drainDistance: 10
   lightSourceLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   excitmentOnLightSourceDetection: 3
   postDrainCooldown: 2
   drainPusle: 2
   drainScaleAmount: 0.2
   drainParticles: {fileID: 0}
   excitementLevel: 0
-  calmRate: 1
+  calmRate: 2
   excitementOnOrbSight: 5
   maxExcitement: 10
   excitementReducerOnGiveUp: 3
@@ -219,3 +222,25 @@ MonoBehaviour:
   excitementParticles: {fileID: 0}
   eatingParticles: {fileID: 0}
   pacifyParticles: {fileID: 0}
+--- !u!95 &2056321437289679571
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390249482882093501}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
+  m_Controller: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
