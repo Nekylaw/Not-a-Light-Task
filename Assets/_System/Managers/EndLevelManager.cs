@@ -42,9 +42,7 @@ namespace _System.Game_Manager
         
         #region Serialize Fields
 
-        [SerializeField] private GameObject firstObjectEnlighten;
         [SerializeField] private GameObject firstCpToOpen;
-        [SerializeField] private GameObject secondObjectEnlighten;
         [SerializeField] private GameObject secondCpToOpen;
         //...
         
@@ -106,15 +104,16 @@ namespace _System.Game_Manager
 
         private void ListsLoader()
         {
+            Debug.Log(LightSourcesService.Instance.LightSources.Length);
             foreach (var VARIABLE in LightSourcesService.Instance.LightSources)
             {
-                if (VARIABLE.LightGroupId == 0)
+                Debug.Log(VARIABLE.name);
+                if (VARIABLE.LightGroupId != 0)
                 {
-                    Debug.Log("light source sans ID : " + VARIABLE.gameObject.name);
-                    return;
+                    SortLightSources(VARIABLE.LightGroupId, VARIABLE);
                 }
                 
-                SortLightSources(VARIABLE.LightGroupId, VARIABLE);
+                Debug.Log("light source sans ID : " + VARIABLE.gameObject.name);
             }
         }
 
@@ -142,6 +141,7 @@ namespace _System.Game_Manager
         
         private bool CheckingEachSource(List<LightSourceComponent> lightSources)
         {
+            Debug.Log("checking");
             foreach (var VARIABLE in lightSources)
             {
                 if (!VARIABLE.IsLightOn)
@@ -160,11 +160,7 @@ namespace _System.Game_Manager
 
         private void FirstCheckPoint()
         {
-            var newMat = new Material(Shader.Find("Unlit/Color"));
-            newMat.SetColor(Color1, Color.green);
-            firstObjectEnlighten.GetComponent<MeshRenderer>().material = newMat;
-            Destroy(firstCpToOpen);
-            Debug.Log("First Check Point : Activation");
+            firstCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
         }
 
         private void SecondCheckPoint()
