@@ -748,6 +748,7 @@ public class CreatureController : MonoBehaviour
             MoveTowardsTarget(wanderTarget, false, delta);
         }
     }
+
     #endregion
 
     #region Movement
