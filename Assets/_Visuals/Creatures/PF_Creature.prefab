@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
+    - target: {fileID: -5754084199372789682, guid: ed66fcdbcc0c8a24ea40804a5e44981c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3625959634731574481, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
     - target: {fileID: 919132149155446097, guid: ed66fcdbcc0c8a24ea40804a5e44981c, type: 3}
       propertyPath: m_Name
       value: PF_Creature
@@ -189,7 +193,7 @@ MonoBehaviour:
   drainDistance: 10
   lightSourceLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
   excitmentOnLightSourceDetection: 3
   postDrainCooldown: 2
   drainPusle: 2
