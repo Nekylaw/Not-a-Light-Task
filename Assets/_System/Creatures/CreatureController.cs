@@ -242,6 +242,7 @@ public class CreatureController : MonoBehaviour
         {
             _animator.SetBool("isMoving", true);
             _animator.SetFloat("speed", currentSpeed);
+
         }
         else
         {
