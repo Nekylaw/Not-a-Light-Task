@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8084543132504971580
 Transform:
@@ -53,7 +53,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2660658481243388740
 Transform:
@@ -109,7 +109,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2974844386093178405
 Transform:
@@ -119,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6980887692007628852}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -192.4663, y: 2.9752858, z: 37.770573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -143,7 +143,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5365014618223276984
 Transform:
@@ -176,6 +176,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -172.66821
@@ -219,6 +223,10 @@ PrefabInstance:
     - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_Name
       value: Wood box obj
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -282,6 +290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -303,6 +315,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -362,6 +382,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47.501793
@@ -406,6 +430,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -424,6 +452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -166.9282
@@ -468,6 +500,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -486,6 +522,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 66.151794
@@ -530,6 +570,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -548,6 +592,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -72.448204
@@ -592,6 +640,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -610,6 +662,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 58.051796
@@ -654,6 +710,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -675,6 +735,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -778,6 +846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -796,6 +868,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 46.541794
@@ -840,6 +916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -858,6 +938,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 69.38179
@@ -902,6 +986,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -920,6 +1008,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.761795
@@ -964,6 +1056,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -985,6 +1081,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1047,6 +1151,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1150,6 +1262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1168,6 +1284,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.101794
@@ -1212,6 +1332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1230,6 +1354,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 23.701794
@@ -1274,6 +1402,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1292,6 +1424,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -74.4782
@@ -1336,6 +1472,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1357,6 +1497,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1416,6 +1564,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -69.78821
@@ -1460,6 +1612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1481,6 +1637,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1540,6 +1704,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -172.3182
@@ -1584,6 +1752,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1602,6 +1774,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -69.89821
@@ -1646,6 +1822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1664,6 +1844,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -169.8
@@ -1708,6 +1892,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1726,6 +1914,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -78.4782
@@ -1770,6 +1962,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1788,6 +1984,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -174.5782
@@ -1832,6 +2032,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1850,6 +2054,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 67.6418
@@ -1893,6 +2101,10 @@ PrefabInstance:
     - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_Name
       value: Wood box obj (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1956,6 +2168,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2018,6 +2234,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2039,6 +2259,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2098,6 +2326,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -71.60821
@@ -2142,6 +2374,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2160,6 +2396,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7017937
@@ -2203,6 +2443,10 @@ PrefabInstance:
     - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_Name
       value: Wood box obj (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2266,6 +2510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2284,6 +2532,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -160.7982
@@ -2328,6 +2580,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2346,6 +2602,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -70.448204
@@ -2390,6 +2650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2411,6 +2675,14 @@ PrefabInstance:
     - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_Name
       value: Ladder obj (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104562510987277553, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316200763662340744, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6430105224943216765, guid: 7e31efc034abb4953be6fdc67f150c5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2514,6 +2786,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plateforme (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2532,6 +2808,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -176.0982
@@ -2576,6 +2856,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood box obj (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2594,6 +2878,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2660658481243388740}
     m_Modifications:
+    - target: {fileID: 2372628603204499993, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3127227893891961162, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 68.13179
@@ -2637,6 +2925,10 @@ PrefabInstance:
     - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
       propertyPath: m_Name
       value: Wood box obj (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692457926659737776, guid: 3af7e79e5dddc4c848297baec518c81b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2699,6 +2991,10 @@ PrefabInstance:
     - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
       propertyPath: m_Name
       value: plateforme (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745092884947545980, guid: dfee94cb3ee8e4e3cb878a1cc6ffb3bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
