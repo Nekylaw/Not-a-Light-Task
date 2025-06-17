@@ -73,6 +73,8 @@ public class CreatureController : MonoBehaviour
     private LightSourceComponent targetLightSource;
     private float drainCooldownTimer = 0f;
 
+    private Animator _animator;
+
     #endregion
 
     #region Serialized Settings
@@ -177,6 +179,7 @@ public class CreatureController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
 
         if (rb != null)
         {
@@ -233,6 +236,17 @@ public class CreatureController : MonoBehaviour
 
         newPosition.y = startPosition.y;
         rb.MovePosition(newPosition);
+
+        // Handle movement
+        if (velocity.magnitude > 0.01f)
+        {
+            _animator.SetBool("isMoving", true);
+            _animator.SetFloat("speed", currentSpeed);
+        }
+        else
+        {
+            _animator.SetBool("isMoving", false);
+        }
     }
 
     #endregion
@@ -284,6 +298,12 @@ public class CreatureController : MonoBehaviour
                 {
                     OrbComponent orb = currentTarget.GetComponent<OrbComponent>();
                     orb?.StartBeingEaten();
+                }
+
+                //eat animation 
+                if (_animator != null)
+                {
+                    _animator.SetTrigger("trPickUp");
                 }
 
                 if (eatingParticles != null)
@@ -426,9 +446,20 @@ public class CreatureController : MonoBehaviour
             Debug.Log($"{name} draining light: {drainTimer:F1}/{drainDuration:F1}");
         }
 
+        // animate drain 
+        if (_animator != null)
+        {
+            _animator.SetBool("isSucking", true);
+        }
+
         // End drain
         if (drainTimer >= drainDuration)
         {
+            if (_animator != null)
+            {
+                _animator.SetBool("isSucking", false);
+            }
+
             targetLightSource.DrainLight();
             excitementLevel = maxExcitement;
             StartCoroutine(CompleteDrainAnimationCoroutine());
