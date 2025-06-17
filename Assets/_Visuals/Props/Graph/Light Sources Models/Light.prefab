@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 9170693979604020384}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.1, y: 8, z: -3.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.32999998, y: 0.32999998, z: 0.32999998}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -101,15 +101,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visibleIfLightOff: 0
-  _baseColor: {r: 1, g: 0.94099784, b: 0.5518868, a: 1}
-  _glowColor: {r: 0.9803922, g: 0.97647065, b: 0.92549026, a: 1}
-  _baseIntensity: 20
-  _glowIntensity: 30
-  _glowAnimSpeed: 0.6
-  _glowAnimAmplitude: 1.5
-  _glowRadius: 0.4
+  _baseColor: {r: 0.97513473, g: 1, b: 0.6273585, a: 1}
+  _glowColor: {r: 1, g: 0.8066038, b: 0.8066038, a: 1}
+  _baseIntensity: 1
+  _glowIntensity: 3
+  _glowAnimSpeed: 1
+  _glowAnimAmplitude: 2
+  _glowRadius: 2
   _visibilityDistance: 100
-  _maxScreenDist: 0.9
+  _maxScreenDist: 1
+  _fadeSpeed: 3
 --- !u!65 &5560956622424019016
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -130,4 +131,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 25.517464, y: 20.596926, z: 17.44003}
-  m_Center: {x: -0.009406697, y: -20.88534, z: 0.62761235}
+  m_Center: {x: 0, y: 0, z: 0}

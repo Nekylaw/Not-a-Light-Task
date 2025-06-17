@@ -12,7 +12,6 @@ public class PetBehaviorComponent : MonoBehaviour
 
     private GameObject petCreature;
 
-
     public void PetTheCreature()
     {
         _canPet = false;
@@ -22,19 +21,19 @@ public class PetBehaviorComponent : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Creature") && other.GetComponent<NEW_IAController>().isPacified == true && other.GetComponent<NEW_IAController>().canBePet == true)
-        {
-            PetUI.SetActive(true);
-            petCreature = other.gameObject;
-            _canPet = true;
-        }
+        //if (other.CompareTag("Creature") && other.GetComponent<NEW_IAController>().isPacified == true && other.GetComponent<NEW_IAController>().canBePet == true)
+        //{
+        //    PetUI.SetActive(true);
+        //    petCreature = other.gameObject;
+        //    _canPet = true;
+        //}
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Creature") && other.GetComponent<NEW_IAController>().isPacified == true && other.GetComponent<NEW_IAController>().canBePet == true)
-        {
-            PetUI.SetActive(false);
-            _canPet = false;
-        }
+        //if (other.CompareTag("Creature") && other.GetComponent<NEW_IAController>().isPacified == true && other.GetComponent<NEW_IAController>().canBePet == true)
+        //{
+        //    PetUI.SetActive(false);
+        //    _canPet = false;
+        //}
     }
 }
