@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4754479857828735167
 Transform:
@@ -48,7 +48,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8750297793336348566
 Transform:
@@ -85,7 +85,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2859788652054875542
 Transform:
@@ -122,7 +122,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4973304026060571483
 Transform:
@@ -158,7 +158,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2611745848258565796
 Transform:
@@ -193,7 +193,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &941882458670478873
 Transform:
@@ -230,7 +230,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1892253162877041656
 Transform:
@@ -264,7 +264,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5506617855321488927
 Transform:
@@ -298,7 +298,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1430054067447574721
 Transform:
@@ -332,7 +332,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &959588818914280836
 Transform:
@@ -366,7 +366,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5492668902031216866
 Transform:
@@ -393,9 +393,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -459,6 +483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
       objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
       value: 95.78648
@@ -499,6 +527,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5067052139676248928, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: _lights.Array.size
       value: 3
@@ -519,6 +551,18 @@ PrefabInstance:
       propertyPath: '_lights.Array.data[2]'
       value: 
       objectReference: {fileID: 7486759313824384207}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -628,10 +672,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -749,10 +809,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -782,9 +858,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1892253162877041656}
     m_Modifications:
+    - target: {fileID: 212691222739044028, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 681313856961558261, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2016377581261125852, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_Name
       value: PF - Projector - Single mode Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3885091866614553133, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_LocalPosition.x
@@ -826,6 +918,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 2.56
       objectReference: {fileID: 0}
+    - target: {fileID: 4983726247638145792, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342162768344231111, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439123489083806173, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131986501327696889, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -847,6 +955,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -888,6 +1000,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -917,13 +1045,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7568832881685989295, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: ee57a62a5bd712d498e15753b0d4849c, type: 2}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -983,6 +1135,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1892253162877041656}
     m_Modifications:
+    - target: {fileID: 212691222739044028, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 681313856961558261, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2016377581261125852, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621807269849392681, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: _settings
       value: 
@@ -990,6 +1154,10 @@ PrefabInstance:
     - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_Name
       value: PF - Projector - Single mode Variant (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3885091866614553133, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1030,6 +1198,22 @@ PrefabInstance:
     - target: {fileID: 3885091866614553133, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 5.219
+      objectReference: {fileID: 0}
+    - target: {fileID: 4983726247638145792, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342162768344231111, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439123489083806173, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131986501327696889, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1133,10 +1317,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1246,10 +1446,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1282,6 +1498,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1323,6 +1543,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1355,6 +1591,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1395,6 +1635,22 @@ PrefabInstance:
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1509,10 +1765,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1542,13 +1814,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7568832881685989295, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1644,13 +1940,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7568832881685989295, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1805,10 +2125,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1922,10 +2258,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2027,10 +2379,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2089,9 +2457,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568832881685989295, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: _settings
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c4b069f882ed45af8e2562debf3cc33, type: 2}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2235,10 +2631,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2352,10 +2764,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2411,9 +2839,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2455,8 +2891,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
@@ -2473,9 +2930,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2517,8 +2982,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
@@ -2615,10 +3101,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2648,9 +3150,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941882458670478873}
     m_Modifications:
+    - target: {fileID: 2058132963586100674, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256404693390345761, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373530846866355166, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7892837414714797019, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8222909249955398481, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_Name
       value: PF - Enseigne - Single Mode Variant (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8605337151633099359, guid: 72c9301145eee49e4834631c70218331, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8946290877272183013, guid: 72c9301145eee49e4834631c70218331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2710,9 +3236,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1892253162877041656}
     m_Modifications:
+    - target: {fileID: 212691222739044028, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 681313856961558261, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2016377581261125852, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_Name
       value: PF - Projector - Single mode Variant (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3885091866614553133, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2753,6 +3295,22 @@ PrefabInstance:
     - target: {fileID: 3885091866614553133, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.133
+      objectReference: {fileID: 0}
+    - target: {fileID: 4983726247638145792, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342162768344231111, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439123489083806173, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131986501327696889, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2856,10 +3414,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3000,10 +3574,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF - LED - Single Shot mode Variant (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8394228018649456372, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: _settings
       value: 
       objectReference: {fileID: 11400000, guid: 0feb5346d338344e4a0925b3e9b9fe9a, type: 2}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3033,9 +3623,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3077,8 +3675,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
@@ -3098,6 +3717,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3139,6 +3762,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3171,6 +3810,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 824656369387806233, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3212,6 +3855,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5067052139676248928, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: _lights.Array.size
       value: 3
@@ -3232,6 +3879,18 @@ PrefabInstance:
       propertyPath: '_lights.Array.data[2]'
       value: 
       objectReference: {fileID: 2578008820724650083}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3261,9 +3920,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3305,8 +3972,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
@@ -3323,9 +4011,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3367,8 +4063,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
@@ -3385,9 +4102,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8750297793336348566}
     m_Modifications:
+    - target: {fileID: 1211379395838582106, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Name
       value: PF - Outside light - Three Shots Mode Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340875192259919387, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1860107929680176289, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3429,8 +4154,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986488835793265414, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672057233325063754, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970580573328421888, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
