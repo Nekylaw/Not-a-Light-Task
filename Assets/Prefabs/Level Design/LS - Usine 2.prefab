@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7311864069277341782}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1314561973410881861}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8109315960937389045}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3401444455616874448}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 577214942921807984}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7862029081216236447}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6149352760509727363}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5349081947943848012}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,6 +426,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -472,6 +476,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -480,12 +488,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -512,6 +532,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -558,6 +582,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -570,12 +598,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -651,12 +691,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -667,8 +715,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (4)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -744,6 +800,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -756,6 +816,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -764,8 +828,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -792,6 +864,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -838,6 +914,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -846,12 +926,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -878,6 +970,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -924,6 +1020,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -936,12 +1036,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -979,6 +1091,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1025,6 +1141,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1033,12 +1153,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1076,6 +1208,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1122,6 +1258,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1154,12 +1294,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1195,12 +1347,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1671474879220091392}
     m_Modifications:
     - target: {fileID: 212691222739044028, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 212691222739044028, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 681313856961558261, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 681313856961558261, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2016377581261125852, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2016377581261125852, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1213,6 +1377,10 @@ PrefabInstance:
     - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_Name
       value: PF - Projector - Single mode Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3395683265736702474, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1259,16 +1427,32 @@ PrefabInstance:
       value: -4.825
       objectReference: {fileID: 0}
     - target: {fileID: 4983726247638145792, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4983726247638145792, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342162768344231111, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6342162768344231111, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6439123489083806173, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439123489083806173, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131986501327696889, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8131986501327696889, guid: 3c2d30b6aee34458cb2f5ac4618b1c71, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1295,6 +1479,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1341,6 +1529,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1349,12 +1541,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1381,6 +1585,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1427,6 +1635,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1467,12 +1679,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1510,6 +1734,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1556,6 +1784,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1568,12 +1800,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1611,6 +1855,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1657,6 +1905,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1685,12 +1937,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1766,12 +2030,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1782,8 +2054,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1848,6 +2128,10 @@ PrefabInstance:
       value: PF - Lantern - Chain Single Shot (3)
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1892,6 +2176,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1904,12 +2192,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1947,6 +2247,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1993,6 +2297,10 @@ PrefabInstance:
       value: 4.383
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2001,12 +2309,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2044,6 +2364,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2090,6 +2414,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2098,12 +2426,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2130,6 +2470,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2176,6 +2520,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2216,12 +2564,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2297,12 +2657,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2313,8 +2681,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2352,6 +2728,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2398,6 +2778,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2418,12 +2802,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2461,6 +2857,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2507,6 +2907,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2515,12 +2919,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2596,12 +3012,20 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2612,8 +3036,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2651,6 +3083,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2697,6 +3133,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2705,12 +3145,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2786,12 +3238,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2802,8 +3262,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2868,6 +3336,10 @@ PrefabInstance:
       value: PF - Lantern - Chain Single Shot (2)
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2912,6 +3384,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -2920,12 +3396,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2963,6 +3451,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3009,6 +3501,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3017,12 +3513,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3098,12 +3606,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3114,8 +3630,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (3)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3153,6 +3677,10 @@ PrefabInstance:
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_Name
       value: PF - Lantern - Chain Single Shot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3199,6 +3727,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3207,12 +3739,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3288,6 +3832,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3300,6 +3848,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3308,8 +3860,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3374,12 +3934,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3516265172862744917, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: LightGroupId
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3390,8 +3958,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3457,6 +4033,10 @@ PrefabInstance:
       value: PF - Lantern - Chain Single Shot (6)
       objectReference: {fileID: 0}
     - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 16347770234324131, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3501,6 +4081,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336415726888264840, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3509,12 +4093,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699536923276945260, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850823330934793575, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8532793441596895725, guid: 645711af537ad47839711a43b667ce68, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3590,6 +4186,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332227070523945383, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3602,6 +4202,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063784445159115, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3610,8 +4214,16 @@ PrefabInstance:
       value: PF - LED - Single Shot mode Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760777658409306167, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8749737502770391052, guid: fa6392bb93a804c428b248b8d143f5fe, type: 3}
       propertyPath: m_StaticEditorFlags
