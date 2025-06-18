@@ -162,10 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
-  debugMode: 1
+  debugMode: 0
   showGizmos: 0
   OrbPrefab: {fileID: -7065618330261555498, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
-  detectionRadius: 10
+  detectionRadius: 40
   groupAwarenessRadius: 12
   eatDistance: 2
   orbLayer:
@@ -177,9 +177,9 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
-  moveSpeed: 5
+  moveSpeed: 6
   minSpeed: 2
-  maxSpeed: 5
+  maxSpeed: 6
   acceleration: 4
   rotationSpeed: 10
   enableObstacleAvoidance: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
   avoidanceStrength: 5
   avoidanceRayCount: 5
   avoidanceAngle: 45
-  bobAmount: 0.1
+  bobAmount: 0.15
   bobSpeed: 0.8
   tiltAmount: 1
   squashStretchAmount: 0.15
@@ -201,7 +201,7 @@ MonoBehaviour:
   noiseFrequency: 0.5
   eatDuration: 2
   enableDrain: 1
-  lightSourceDetectionRadius: 15
+  lightSourceDetectionRadius: 40
   drainDuration: 5
   drainDistance: 15
   lightSourceLayer:
