@@ -36,11 +36,17 @@ public class CreatureController : MonoBehaviour
     public delegate void CreatureIdleDelegate();
     public event CreatureIdleDelegate OnCreatureIdle;
 
-    public delegate void CreatureEatDelegate();
-    public event CreatureEatDelegate OnCreatureEat;
+    public delegate void StartCreatureEatDelegate();
+    public event StartCreatureEatDelegate OnCreatureBeginEat;
+
+    public delegate void EndCreatureEatDelegate();
+    public event EndCreatureEatDelegate OnCreatureEatEnd;
 
     public delegate void StartPacfyDelegate();
     public event StartPacfyDelegate OnPacifyStart;
+
+    public delegate void UpdatePacfyDelegate(float progress);
+    public event UpdatePacfyDelegate OnPacifyUpdate;
 
     public delegate void EndPacfyDelegate(bool isCancelled);
     public event EndPacfyDelegate OnPacifyEnd;
@@ -56,6 +62,9 @@ public class CreatureController : MonoBehaviour
     [Header("=== Debug ===")]
     [SerializeField] private bool debugMode = false;
     [SerializeField] private bool showGizmos = true;
+
+    // Player
+    private PacifyBehaviourComponent pacifier;
 
     // Components
     private Rigidbody rb;
@@ -103,11 +112,17 @@ public class CreatureController : MonoBehaviour
     // Pacify
     private bool isMovementLocked = false;
 
+    // Orb count
+    private int orbEatenCount = 0;
+
     private Animator _animator;
 
     #endregion
 
     #region Serialized Settings
+
+    [Header("=== Prefabs ===")]
+    [SerializeField] private OrbComponent OrbPrefab;
 
     [Header("=== Detection Settings ===")]
     [SerializeField] private float detectionRadius = 10f;
@@ -200,6 +215,7 @@ public class CreatureController : MonoBehaviour
 
     #region Properties
     public bool IsPacified => currentState == ECreatureState.Pacified;
+    public bool IsBeingPacified => currentState == ECreatureState.Pacifying;
     public bool IsEating => currentState == ECreatureState.Eating;
     public float ExcitementLevel => excitementLevel;
     public Vector3 Velocity => velocity;
@@ -211,6 +227,8 @@ public class CreatureController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
+
+        pacifier = FindFirstObjectByType<PacifyBehaviourComponent>();
 
         if (rb != null)
         {
@@ -333,7 +351,7 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Eating:
-                OnCreatureEat?.Invoke();
+                OnCreatureEatEnd?.Invoke();
 
                 //eat animation 
                 if (_animator != null)
@@ -407,6 +425,8 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Eating:
                 transform.localScale = originalScale;
                 currentTarget = null;
+
+                orbEatenCount++;
                 break;
 
             case ECreatureState.Draining:
@@ -415,6 +435,8 @@ public class CreatureController : MonoBehaviour
                     drainParticles.Stop();
                     drainParticles.Clear();
                 }
+
+                orbEatenCount += targetLightSource.Settings.RequiredOrbs;
 
                 currentLightTarget = null;
                 targetLightSource = null;
@@ -432,6 +454,7 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Pacifying:
+                ReleaseEatenOrbs();
                 LockMovement(false);
                 break;
         }
@@ -458,10 +481,19 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Draining:
                 UpdateDrainingState(delta);
                 break;
+            case ECreatureState.Pacifying:
+                UpdatePacifyingState(delta);
+                break;
             case ECreatureState.Pacified:
                 UpdatePacifiedState(delta);
                 break;
         }
+    }
+
+    private void UpdatePacifyingState(float delta)
+    {
+        OnPacifyUpdate?.Invoke(stateTimer / pacifier.PacifyDuration);
+        LockMovement(true);
     }
 
     private void UpdateDrainingState(float delta)
@@ -581,6 +613,9 @@ public class CreatureController : MonoBehaviour
 
     void UpdateWanderingState(float delta)
     {
+        if (currentState == ECreatureState.Pacifying)
+            return;
+
         // Search for light sources if can drain
         if (!IsPacified && enableDrain && drainCooldownTimer <= 0f)
         {
@@ -629,6 +664,9 @@ public class CreatureController : MonoBehaviour
 
     private LightSourceComponent FindNearestLightSource()
     {
+        if (currentState == ECreatureState.Pacifying || currentState == ECreatureState.Pacified)
+            return null;
+
         Collider[] lightsInRange = Physics.OverlapSphere(transform.position, lightSourceDetectionRadius, lightSourceLayer);
 
         LightSourceComponent nearestLight = null;
@@ -865,8 +903,27 @@ public class CreatureController : MonoBehaviour
                 orb?.BeEaten();
             }
 
+            OnCreatureEatEnd?.Invoke();
+
             excitementLevel = maxExcitement * 0.5f;
             ChangeState(ECreatureState.Wandering);
+        }
+    }
+
+    private void ReleaseEatenOrbs()
+    {
+        int orbCount = Mathf.Max(1, orbEatenCount);
+
+        for (int i = 0; i < orbCount; i++)
+        {
+            var rendDir = Random.insideUnitSphere;
+            Vector3 rejectDir = new Vector3(rendDir.x, Mathf.Max(0.5f, rendDir.y), rendDir.z);
+            GameObject orb = Instantiate(OrbPrefab.gameObject, transform.position + rejectDir * 0.5f, Quaternion.identity);
+
+            orb.transform.localScale = Vector3.one * Random.Range(0.5f, 1.5f);
+            orb.GetComponent<OrbComponent>();
+
+            orb.gameObject.GetComponent<Rigidbody>().AddForce(rejectDir * Random.Range(1.5f, 2f), ForceMode.Impulse);
         }
     }
 
@@ -1022,7 +1079,7 @@ public class CreatureController : MonoBehaviour
 
     void CheckIfStuck()
     {
-        if (isMovementLocked)
+        if (isMovementLocked || currentState == ECreatureState.Pacifying)
         {
             creatureStuckTimer = 0f;
             return;
@@ -1118,7 +1175,7 @@ public class CreatureController : MonoBehaviour
     {
         foreach (CreatureController creature in nearbyCreatures)
         {
-            if (!creature.IsPacified && creature.currentState != ECreatureState.Eating)
+            if ((!creature.IsPacified || !creature.IsBeingPacified) && creature.currentState != ECreatureState.Eating)
             {
                 creature.excitementLevel = Mathf.Min(5f, creature.excitementLevel + 2f);
             }
@@ -1266,6 +1323,7 @@ public class CreatureController : MonoBehaviour
             Debug.LogWarning($"No visual profile assigned to {name}");
             return new CreatureVisualProfileSO.StateProfile();
         }
+
         float t;
         switch (currentState)
         {
@@ -1277,6 +1335,14 @@ public class CreatureController : MonoBehaviour
 
             case ECreatureState.Pacified:
                 return visualProfile.PacifiedProfile;
+
+            case ECreatureState.Pacifying:
+                t = stateTimer / pacifier.PacifyDuration;
+                return CreatureVisualProfileSO.StateProfile.Lerp(
+                    visualProfile.NormalProfile,
+                    visualProfile.PacifiedProfile,
+                    t
+                );
 
             case ECreatureState.Seeking:
                 // Blend between normal and excited based on excitement level
@@ -1290,7 +1356,6 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Idle:
             case ECreatureState.Wandering:
             default:
-                // If there's some excitement even in wandering/idle, blend a bit
                 if (excitementLevel > 0)
                 {
                     t = excitementLevel / maxExcitement * 0.5f; // Half intensity for non-seeking states
@@ -1522,6 +1587,7 @@ public class CreatureController : MonoBehaviour
             string debugText = $"{currentState}\n" +
                               $"Speed: {currentSpeed:F1}/{velocity.magnitude:F1}\n" +
                               $"Excitement: {excitementLevel:F1}\n" +
+                              $"Eaten Orbs: {orbEatenCount}\n" +
                               $"BehaviorTimer: {behaviorTimer:F1}\n" +
                               $"Target Dist: {(wanderTarget != Vector3.zero ? Vector3.Distance(transform.position, wanderTarget).ToString("F1") : "N/A")}";
 

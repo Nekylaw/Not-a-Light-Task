@@ -25,8 +25,8 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubtractiveShadowColor: {r: 0.13803846, g: 0.15789813, b: 0.20754719, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 97637a2a763b7f24b8da4e139e4144ca, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -974,143 +974,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1101903194}
   m_LocalEulerAnglesHint: {x: 59.34, y: 0, z: 0}
---- !u!1 &243393812 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-  m_PrefabInstance: {fileID: 866295685}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &243393814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243393812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!54 &243393815
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243393812}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 14
-  m_CollisionDetection: 2
---- !u!136 &243393816
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243393812}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &243393817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
@@ -2888,143 +2751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &628497988 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-  m_PrefabInstance: {fileID: 1107622928}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &628497990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628497988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!54 &628497991
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628497988}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 14
-  m_CollisionDetection: 2
---- !u!136 &628497992
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628497988}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &628497993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
@@ -3210,14 +2936,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.74
@@ -3262,23 +2980,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 7038263684045722928, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1885992334}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1885992333}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1885992332}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
 --- !u!1 &722118380
 GameObject:
@@ -4072,14 +3777,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.74
@@ -4124,23 +3821,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 7038263684045722928, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1106309567}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1106309566}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1106309565}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
 --- !u!1 &776543986
 GameObject:
@@ -4794,14 +4478,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.74
@@ -4846,23 +4522,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 7038263684045722928, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 243393816}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 243393815}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 243393814}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
 --- !u!1 &884895466
 GameObject:
@@ -5953,143 +5616,6 @@ Transform:
   - {fileID: 216534651}
   m_Father: {fileID: 927530243}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1106309563 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-  m_PrefabInstance: {fileID: 770073732}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1106309565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1106309563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!54 &1106309566
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1106309563}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 14
-  m_CollisionDetection: 2
---- !u!136 &1106309567
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1106309563}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1106309568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
@@ -6103,14 +5629,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.74
@@ -6155,23 +5673,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 7038263684045722928, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 628497992}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 628497991}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 628497990}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
 --- !u!1 &1123542341
 GameObject:
@@ -8264,143 +7769,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4125833835509491195, guid: b06060ea321cae04b814038a8935373d, type: 3}
   m_PrefabInstance: {fileID: 2667404}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1662876726 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-  m_PrefabInstance: {fileID: 1986212108}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1662876728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662876726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!54 &1662876729
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662876726}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 14
-  m_CollisionDetection: 2
---- !u!136 &1662876730
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662876726}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1662876731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
@@ -9512,143 +8880,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b06060ea321cae04b814038a8935373d, type: 3}
---- !u!1 &1885992330 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-  m_PrefabInstance: {fileID: 719909518}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1885992332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885992330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!54 &1885992333
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885992330}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 14
-  m_CollisionDetection: 2
---- !u!136 &1885992334
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885992330}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1885992335 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
@@ -9804,14 +9035,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 40b2b0e3e5330a14c9a0dff6a3ea6297, type: 2}
-    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.26
@@ -9856,23 +9079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creature (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7038263684045722928, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7383be7044e19294db9c4e95b20f5082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1662876730}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1662876729}
-    - targetCorrespondingSourceObject: {fileID: 6668400132086789823, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1662876728}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
 --- !u!4 &2075150456 stripped
 Transform:

@@ -55,6 +55,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
     private AudioSource _audioSource;
     #endregion
 
+    public float PacifyDuration => _pacifyDuration;
+
+
     #region Unity Lifecycle
     void Awake()
     {

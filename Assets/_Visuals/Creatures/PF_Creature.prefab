@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6638854969539935569, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
+      propertyPath: m_Name
+      value: Renderer
+      objectReference: {fileID: 0}
+    - target: {fileID: -6638854969539935569, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -5627409634228855074, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -60,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 4c29726ad2701f34f8a859572d07de07, type: 3}
     - target: {fileID: 5866666021909216657, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
       propertyPath: m_Controller
       value: 
@@ -74,26 +86,20 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 6546218674690454747}
+      addedObject: {fileID: 7906263045421539998}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 4958952615699421678}
+      addedObject: {fileID: 3426567407815633591}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
       insertIndex: 3
-      addedObject: {fileID: 4629484959255715322}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 1674713319754383243}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
-      insertIndex: 5
-      addedObject: {fileID: 3810120865463028429}
+      addedObject: {fileID: 4420962735649103304}
   m_SourcePrefab: {fileID: 100100000, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
 --- !u!1 &6668400132086789823 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f0f6d4793b2e8504aa877649b86f6046, type: 3}
   m_PrefabInstance: {fileID: 5785862487274310638}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &6546218674690454747
+--- !u!136 &7906263045421539998
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,7 +122,7 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &4958952615699421678
+--- !u!54 &3426567407815633591
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +149,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 14
   m_CollisionDetection: 2
---- !u!114 &4629484959255715322
+--- !u!114 &4420962735649103304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,6 +164,7 @@ MonoBehaviour:
   currentState: 1
   debugMode: 1
   showGizmos: 0
+  OrbPrefab: {fileID: -7065618330261555498, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
   detectionRadius: 10
   groupAwarenessRadius: 12
   eatDistance: 2
@@ -173,11 +180,11 @@ MonoBehaviour:
   moveSpeed: 5
   minSpeed: 2
   maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
+  acceleration: 4
+  rotationSpeed: 10
   enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
+  avoidanceRadius: 3
+  avoidanceStrength: 5
   avoidanceRayCount: 5
   avoidanceAngle: 45
   bobAmount: 0.1
@@ -186,113 +193,8 @@ MonoBehaviour:
   squashStretchAmount: 0.15
   separationDistance: 1.5
   separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
-  idleChance: 0.08
-  idleDuration: 3
-  wanderRadius: 30
-  noiseFrequency: 0.5
-  eatDuration: 2
-  enableDrain: 1
-  lightSourceDetectionRadius: 15
-  drainDuration: 5
-  drainDistance: 15
-  lightSourceLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  excitmentOnLightSourceDetection: 3
-  postDrainCooldown: 2
-  drainPusle: 2
-  drainScaleAmount: 0.15
-  drainParticles: {fileID: 0}
-  excitementLevel: 0
-  calmRate: 2
-  excitementOnOrbSight: 5
-  maxExcitement: 10
-  excitementReducerOnGiveUp: 3
-  maxTrackingTime: 8
-  targetStuckTreshold: 0.5
-  maxStuckOnTargetDuration: 3
-  blackListDuration: 30
-  enableSmartGiveUp: 1
-  homeInfluence: 0.7
-  visualProfile: {fileID: 11400000, guid: ab2a556ebe026d54d970b38bf43cba01, type: 2}
-  idleSounds: []
-  excitedSounds: []
-  eatSound: {fileID: 0}
-  pacifySound: {fileID: 0}
-  soundCooldown: 3
-  excitementParticles: {fileID: 0}
-  eatingParticles: {fileID: 0}
-  pacifyParticles: {fileID: 0}
---- !u!136 &1674713319754383243
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6668400132086789823}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3810120865463028429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6668400132086789823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b02a04e35b3f408c5766b9c13b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  debugMode: 0
-  showGizmos: 0
-  detectionRadius: 10
-  groupAwarenessRadius: 12
-  eatDistance: 2
-  orbLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  creatureLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  moveSpeed: 5
-  minSpeed: 2
-  maxSpeed: 5
-  acceleration: 5
-  rotationSpeed: 8
-  enableObstacleAvoidance: 1
-  avoidanceRadius: 2
-  avoidanceStrength: 2
-  avoidanceRayCount: 5
-  avoidanceAngle: 45
-  bobAmount: 0.1
-  bobSpeed: 0.8
-  tiltAmount: 1
-  squashStretchAmount: 0.15
-  separationDistance: 1.5
-  separationWeight: 1
-  alignmentWeight: 1.2
-  cohesionWeight: 0.5
+  alignmentWeight: 0.5
+  cohesionWeight: 0.7
   idleChance: 0.08
   idleDuration: 3
   wanderRadius: 30
