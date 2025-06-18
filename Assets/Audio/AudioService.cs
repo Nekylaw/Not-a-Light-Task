@@ -93,7 +93,7 @@ public class AudioService : MonoBehaviour
 
     }
 
-    private void HandlePacify(GameObject creature)
+    private void HandlePacify(CreatureController creature)
     {
         //Debug.LogWarning("Pacify: " + creature.name);
     }
