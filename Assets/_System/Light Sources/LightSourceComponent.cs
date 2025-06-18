@@ -192,6 +192,13 @@ namespace Game.Services.LightSources
                 {
                     script.LightBuilding();
                 }
+                
+                var script2 = building.gameObject.GetComponent<EnlightTower>();
+                if (script2 != null)
+                {
+                    script2.LightTower();
+                }
+                
             }
         }
 

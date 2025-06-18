@@ -5,16 +5,17 @@ using DG.Tweening;
 public class PacifyBehaviourComponent : MonoBehaviour
 {
     #region Delegates
-    public delegate void PacifyDelegate(GameObject creature);
-    public event PacifyDelegate OnPacify;
+
+    public delegate void StartPacifyDelegate(CreatureController creature);
+    public event StartPacifyDelegate OnPacifyStart;
+
+    public delegate void EndPacifyDelegate(CreatureController creature);
+    public event EndPacifyDelegate OnPacifyEnd;
     #endregion
 
     #region Fields  
     [Header("Debug")]
     [SerializeField] private bool debugMode = false;
-
-    [Header("UI")]
-    [SerializeField] private GameObject pacifyUI;
 
     [Header("Detection")]
     [SerializeField] private LayerMask _creatureLayer;
@@ -44,44 +45,40 @@ public class PacifyBehaviourComponent : MonoBehaviour
     private float _pacifyTimer = 0f;
     private Coroutine _pacifyCoroutine;
 
-    // Base values
+    // Original creature values for restoration
     private Vector3 _originalCreaturePosition;
     private Quaternion _originalCreatureRotation;
-    private Rigidbody _creatureRb;
+    private Rigidbody _creatureRigidbody;
     private bool _originalKinematicState;
 
+    // Audio
+    private AudioSource _audioSource;
     #endregion
 
-    #region Lifecycle
+    public float PacifyDuration => _pacifyDuration;
 
+
+    #region Unity Lifecycle
     void Awake()
     {
-        //Init Audio
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+            _audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Update()
     {
-        // Update UI position if pacifying
-        if (_isPacifyPerforming && pacifyUI != null && _targetCreature != null)
-        {
-            UpdatePacifyUI();
-        }
-
         // Debug visualization
         if (debugMode)
         {
             _nearestCreature = FindNearestCreature();
         }
     }
-
     #endregion
 
-    #region Public API
-
+    #region Public Methods
     public bool Pacify()
     {
-        Debug.LogWarning("Pacify creature...");
-
         if (_isPacifyPerforming)
             return false;
 
@@ -91,7 +88,16 @@ public class PacifyBehaviourComponent : MonoBehaviour
         if (!_canPacify)
             return false;
 
-        StartPacify();
+        _isPacifyPerforming = true;
+        _canceled = false;
+        _targetCreature = _nearestCreature;
+
+        if (_pacifyCoroutine != null)
+            StopCoroutine(_pacifyCoroutine);
+
+        _pacifyCoroutine = StartCoroutine(PacifyCoroutine(_targetCreature));
+        OnPacifyStart?.Invoke(_targetCreature);
+
         return true;
     }
 
@@ -103,21 +109,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
         CancelPacify();
         return true;
     }
-
     #endregion
 
     #region Private Methods
-    private void StartPacify()
-    {
-        _isPacifyPerforming = true;
-        _canceled = false;
-        _targetCreature = _nearestCreature;
-
-        if (_pacifyCoroutine != null)
-            StopCoroutine(_pacifyCoroutine);
-
-        _pacifyCoroutine = StartCoroutine(PacifyCoroutine());
-    }
 
     private void CancelPacify()
     {
@@ -136,20 +130,16 @@ public class PacifyBehaviourComponent : MonoBehaviour
         }
 
         // Play cancel sound
-        PlaySound();
-
-        // Hide UI
-        if (pacifyUI != null)
-            pacifyUI.SetActive(false);
+        PlaySound(_pacifyCancelSound);
 
         // Stop particles
         if (_pacifyParticles != null)
             _pacifyParticles.Stop();
 
-        ResetState();
+        ResetPacifyState();
     }
 
-    private IEnumerator PacifyCoroutine()
+    private IEnumerator PacifyCoroutine(CreatureController creature)
     {
         // Initialize
         _pacifyTimer = 0f;
@@ -157,30 +147,28 @@ public class PacifyBehaviourComponent : MonoBehaviour
         // Store original creature state
         StoreCreatureState();
 
+        creature.ChangeState(CreatureController.ECreatureState.Pacifying);
+        
         // Immobilize creature
         ImmobilizeCreature();
 
-        // Show UI
-        if (pacifyUI != null)
-            pacifyUI.SetActive(true);
-
         // Play start sound
-        PlaySound();
+        PlaySound(_pacifyStartSound);
 
         // Start particles
         if (_pacifyParticles != null)
         {
-            _pacifyParticles.transform.position = _targetCreature.transform.position;
+            _pacifyParticles.transform.position = creature.transform.position;
             _pacifyParticles.Play();
         }
 
         // Start floating animation
         Sequence floatSequence = DOTween.Sequence();
-        floatSequence.Append(_targetCreature.transform.DOMoveY(_originalCreaturePosition.y + _floatHeight, _floatDuration)
+        floatSequence.Append(creature.transform.DOMoveY(_originalCreaturePosition.y + _floatHeight, _floatDuration)
             .SetEase(Ease.OutQuad));
 
         // Rotation during pacify
-        Tween rotationTween = _targetCreature.transform.DORotate(new Vector3(0, 360, 0), 60f / _rotationSpeed, RotateMode.LocalAxisAdd)
+        Tween rotationTween = creature.transform.DORotate(new Vector3(0, 360, 0), 60f / _rotationSpeed, RotateMode.LocalAxisAdd)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
 
@@ -195,7 +183,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
             // Update particle position
             if (_pacifyParticles != null)
-                _pacifyParticles.transform.position = _targetCreature.transform.position;
+                _pacifyParticles.transform.position = creature.transform.position;
 
             yield return null;
         }
@@ -208,6 +196,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
             // Pacify successful
             CompletePacify();
         }
+        else
+        {
+            // Already handled in CancelPacify
+        }
 
         _pacifyCoroutine = null;
     }
@@ -216,12 +208,12 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         if (_targetCreature == null)
         {
-            ResetState();
+            ResetPacifyState();
             return;
         }
 
         // Play complete sound
-        PlaySound();
+        PlaySound(_pacifyCompleteSound);
 
         // Create completion effect
         Sequence completeSequence = DOTween.Sequence();
@@ -243,21 +235,16 @@ public class PacifyBehaviourComponent : MonoBehaviour
             // Restore physics
             RestoreCreaturePhysics();
 
-            // Actually pacify the creature
-            _targetCreature.Pacify();
+            // Pacify
+            _targetCreature.CompletePacify();
 
-            // Fire event
-            OnPacify?.Invoke(_targetCreature.gameObject);
-
-            // Hide UI
-            if (pacifyUI != null)
-                pacifyUI.SetActive(false);
+            OnPacifyEnd?.Invoke(_targetCreature);
 
             // Stop particles
             if (_pacifyParticles != null)
                 _pacifyParticles.Stop();
 
-            ResetState();
+            ResetPacifyState();
         });
     }
 
@@ -269,9 +256,11 @@ public class PacifyBehaviourComponent : MonoBehaviour
         _originalCreaturePosition = _targetCreature.transform.position;
         _originalCreatureRotation = _targetCreature.transform.rotation;
 
-        _creatureRb = _targetCreature.GetComponent<Rigidbody>();
-        if (_creatureRb != null)
-            _originalKinematicState = _creatureRb.isKinematic;
+        _creatureRigidbody = _targetCreature.GetComponent<Rigidbody>();
+        if (_creatureRigidbody != null)
+        {
+            _originalKinematicState = _creatureRigidbody.isKinematic;
+        }
     }
 
     private void ImmobilizeCreature()
@@ -279,15 +268,12 @@ public class PacifyBehaviourComponent : MonoBehaviour
         if (_targetCreature == null)
             return;
 
-        // Force creature to idle state
-        _targetCreature.ChangeState(CreatureController.ECreatureState.Pacified);
-
         // Disable physics
-        if (_creatureRb != null)
+        if (_creatureRigidbody != null)
         {
-            _creatureRb.isKinematic = true;
-            _creatureRb.linearVelocity = Vector3.zero;
-            _creatureRb.angularVelocity = Vector3.zero;
+            _creatureRigidbody.isKinematic = true;
+            _creatureRigidbody.linearVelocity = Vector3.zero;
+            _creatureRigidbody.angularVelocity = Vector3.zero;
         }
     }
 
@@ -312,13 +298,13 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     private void RestoreCreaturePhysics()
     {
-        if (_creatureRb != null)
+        if (_creatureRigidbody != null)
         {
-            _creatureRb.isKinematic = _originalKinematicState;
+            _creatureRigidbody.isKinematic = _originalKinematicState;
         }
     }
 
-    private void ResetState()
+    private void ResetPacifyState()
     {
         _isPacifyPerforming = false;
         _canceled = false;
@@ -361,21 +347,6 @@ public class PacifyBehaviourComponent : MonoBehaviour
                _nearestCreature.CurrentState != CreatureController.ECreatureState.Eating;
     }
 
-    private void UpdatePacifyUI()
-    {
-        if (pacifyUI == null || _targetCreature == null)
-            return;
-
-        // Position UI above creature
-        Vector3 uiPosition = _targetCreature.transform.position + Vector3.up * 3f;
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(uiPosition);
-
-        if (screenPos.z > 0)
-        {
-            pacifyUI.transform.position = screenPos;
-        }
-    }
-
     private void UpdatePacifyProgress(float progress)
     {
         // Update UI progress bar if you have one
@@ -387,15 +358,16 @@ public class PacifyBehaviourComponent : MonoBehaviour
         // Could update shader properties, UI elements, etc.
     }
 
-    private void PlaySound(/* sound event */)
+    private void PlaySound(AudioClip clip)
     {
-
+        if (_audioSource != null && clip != null)
+        {
+            _audioSource.PlayOneShot(clip);
+        }
     }
-
     #endregion
 
-    #region Debug
-
+    #region Gizmos
     void OnDrawGizmos()
     {
         if (!debugMode)
@@ -420,6 +392,5 @@ public class PacifyBehaviourComponent : MonoBehaviour
             Gizmos.DrawWireSphere(_targetCreature.transform.position, 1f);
         }
     }
-
     #endregion
 }

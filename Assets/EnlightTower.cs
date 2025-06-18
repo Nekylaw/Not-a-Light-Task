@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingLightsComponent : MonoBehaviour
+public class EnlightTower : MonoBehaviour
 {
     [SerializeField] private Material _materialLight;
     private List<int> _indexes = new();
 
-    public void LightBuilding()
+    public void LightTower()
     {
         var _materials = gameObject.GetComponent<MeshRenderer>().materials;
 
@@ -29,7 +28,14 @@ public class BuildingLightsComponent : MonoBehaviour
 
             gameObject.GetComponent<MeshRenderer>().materials = _materials;
         }
-        
-    }
 
+        var enfants = GetComponentsInChildren<EnlightTower>();
+
+        foreach (var VARIABLE in enfants)
+        {
+            if (VARIABLE != this)
+                VARIABLE.LightTower();
+        }
+    }
+    
 }

@@ -35,6 +35,7 @@ namespace _System.Game_Manager
         [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteThirdCheckPoint = new();
         [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteFourthCheckPoint = new();
         [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteFifthCheckPoint = new();
+        [SerializeField] private List<LightSourceComponent> LightSourcesToCompleteSixthCheckPoint = new();
 
         public List<int> CheckPointsCompleted = new();
         
@@ -44,7 +45,11 @@ namespace _System.Game_Manager
 
         [SerializeField] private GameObject firstCpToOpen;
         [SerializeField] private GameObject secondCpToOpen;
-        //...
+        [SerializeField] private GameObject thirdCpToOpen;
+        [SerializeField] private GameObject fourthCpToOpen;
+        [SerializeField] private GameObject fifthCpToOpen;
+        [SerializeField] private GameObject sixthCpToOpen;
+        [SerializeField] private GameObject seventhCpToOpen;
         
         #endregion
         #region PUBLIC METHODS
@@ -97,6 +102,15 @@ namespace _System.Game_Manager
                 Check(5);
                 FifthCheckPoint();
             }
+
+            else if (LightSourcesToCompleteSixthCheckPoint.Contains(lightSource) && !CheckPointsCompleted.Contains(6))
+            {
+                 var completed = CheckingEachSource(LightSourcesToCompleteSixthCheckPoint);
+                 
+                 if (!completed) return;
+                 Check(6);
+                 SixthCheckPoint();
+            }
         }
         #endregion
         
@@ -136,6 +150,9 @@ namespace _System.Game_Manager
                 case 5:
                     LightSourcesToCompleteFifthCheckPoint.Add(lightSource);
                     break;
+                case 6 :
+                    LightSourcesToCompleteSixthCheckPoint.Add(lightSource);
+                    break;
             }
         }
         
@@ -165,22 +182,28 @@ namespace _System.Game_Manager
 
         private void SecondCheckPoint()
         {
-            Debug.Log("Second Check Point : Activation");
+            secondCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
         }
 
         private void ThirdCheckPoint()
         {
-            Debug.Log("Third Check Point : Activation");
+            thirdCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            fourthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
         }
 
         private void FourthCheckPoint()
         {
-            Debug.Log("Fourth Check Point : Activation");
+            fifthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
         }
 
         private void FifthCheckPoint()
         {
-            Debug.Log("Fifth Check Point : Activation");
+            sixthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+        }
+
+        private void SixthCheckPoint()
+        {
+            seventhCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
         }
         
         #endregion

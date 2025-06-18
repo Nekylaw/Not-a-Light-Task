@@ -145,6 +145,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8176245799509711254, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 373cc059be5dc40d29803619926766f9, type: 3}
     - target: {fileID: 919132149155446097, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: m_Name
       value: projecteur
@@ -223,6 +227,13 @@ MonoBehaviour:
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
   _radius: 1.5
   _orbitSpeed: 75
+  _verticalAmplitude: 0.15
+  _verticalSpeed: 2
+  _spawnDelay: 0.1
+  _spawnDuration: 0.5
+  _spawnEase: 27
+  _fadeInDuration: 0.3
+  _fadeOutDuration: 0.5
   isLightOn: 0
 --- !u!114 &5658005851476552380
 MonoBehaviour:

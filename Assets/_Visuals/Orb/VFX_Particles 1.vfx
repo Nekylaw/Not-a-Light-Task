@@ -230,7 +230,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 32
+      m_SerializableObject: 16
     m_Space: -1
   m_Property:
     name: Rate
@@ -1213,7 +1213,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.05
+      m_SerializableObject: 0.03
     m_Space: -1
   m_Property:
     name: B
@@ -1329,7 +1329,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0041656494140625,"value":0.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.16922779381275178,"value":1.000889778137207,"inTangent":1.0854973793029786,"outTangent":1.0854973793029786,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":0.0,"inTangent":-2.0,"outTangent":-2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.004786299541592598,"value":0.004824995994567871,"inTangent":0.11509650200605393,"outTangent":0.11509650200605393,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.07709062099456787,"value":0.9961358904838562,"inTangent":0.6601806282997131,"outTangent":0.6601806282997131,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":0.0,"inTangent":-2.0,"outTangent":-2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     m_Space: -1
   m_Property:
     name: Size
@@ -1687,7 +1687,7 @@ MonoBehaviour:
   - {fileID: 8926484042661618003}
   - {fileID: 8926484042661618026}
   dataType: 0
-  capacity: 1000
+  capacity: 175
   stripCapacity: 1
   particlePerStripCount: 128
   needsComputeBounds: 1
