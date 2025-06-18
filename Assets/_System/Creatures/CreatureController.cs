@@ -19,6 +19,36 @@ public class CreatureController : MonoBehaviour
         Pacified
     }
 
+
+    #endregion
+
+    #region Delegates and Events
+
+    public delegate void CreatureMoveDelegate(float speed);
+    public event CreatureMoveDelegate OnCreatureMoving;
+
+    public delegate void StartCreatureDrainDelegate();
+    public event StartCreatureDrainDelegate OnCreatureDrainingStart;
+
+    public delegate void EndCreatureDrainDelegate();
+    public event EndCreatureDrainDelegate OnCreatureDrainingEnd;
+
+    public delegate void CreatureIdleDelegate();
+    public event CreatureIdleDelegate OnCreatureIdle;
+
+    public delegate void CreatureEatDelegate();
+    public event CreatureEatDelegate OnCreatureEat;
+
+    public delegate void StartPacfyDelegate();
+    public event StartPacfyDelegate OnPacifyStart;
+
+    public delegate void EndPacfyDelegate(bool isCancelled);
+    public event EndPacfyDelegate OnPacifyEnd;
+
+    #endregion
+
+    #region Core Components
+
     [Header("=== Current State ===")]
     [SerializeField] private ECreatureState currentState = ECreatureState.Wandering;
     public ECreatureState CurrentState => currentState;
@@ -26,9 +56,6 @@ public class CreatureController : MonoBehaviour
     [Header("=== Debug ===")]
     [SerializeField] private bool debugMode = false;
     [SerializeField] private bool showGizmos = true;
-    #endregion
-
-    #region Core Components
 
     // Components
     private Rigidbody rb;
@@ -165,6 +192,7 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private ParticleSystem excitementParticles;
     [SerializeField] private ParticleSystem eatingParticles;
     [SerializeField] private ParticleSystem pacifyParticles;
+
     #endregion
 
     #region Properties
@@ -190,7 +218,7 @@ public class CreatureController : MonoBehaviour
         }
 
         audioSource = GetComponent<AudioSource>();
-        creatureRenderer = GetComponent<Renderer>();
+        creatureRenderer = GetComponentInChildren<Renderer>();
         propBlock = new MaterialPropertyBlock();
 
         originalScale = transform.localScale;
@@ -237,16 +265,18 @@ public class CreatureController : MonoBehaviour
         newPosition.y = startPosition.y;
         rb.MovePosition(newPosition);
 
+
         // Handle movement
         if (velocity.magnitude > 0.01f)
         {
-            _animator.SetBool("isMoving", true);
+            OnCreatureMoving?.Invoke(currentSpeed);
             _animator.SetFloat("speed", currentSpeed);
 
         }
         else
         {
-            _animator.SetBool("isMoving", false);
+            currentSpeed = 0f;
+            _animator.SetFloat("speed", currentSpeed);
         }
     }
 
@@ -269,8 +299,16 @@ public class CreatureController : MonoBehaviour
         switch (state)
         {
             case ECreatureState.Idle:
+                OnCreatureIdle?.Invoke();
+
                 currentSpeed = 0f;
                 velocity = Vector3.zero;
+
+                if (_animator != null)
+                {
+                    _animator.SetFloat("speed", 0);
+                }
+
                 if (Random.value < 0.5f)
                     PlayRandomSound(idleSounds);
                 break;
@@ -290,6 +328,14 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Eating:
+                OnCreatureEat?.Invoke();
+
+                //eat animation 
+                if (_animator != null)
+                {
+                    _animator.SetTrigger("triggerEat");
+                }
+
                 currentSpeed = 0f;
                 velocity = Vector3.zero;
                 PlaySound(eatSound);
@@ -301,17 +347,13 @@ public class CreatureController : MonoBehaviour
                     orb?.StartBeingEaten();
                 }
 
-                //eat animation 
-                if (_animator != null)
-                {
-                    _animator.SetTrigger("trPickUp");
-                }
-
                 if (eatingParticles != null)
                     eatingParticles.Play();
                 break;
 
             case ECreatureState.Draining:
+                OnCreatureDrainingStart?.Invoke();
+
                 drainTimer = 0f;
                 currentSpeed = 0;
                 excitementLevel = Mathf.Min(maxExcitement, excitementLevel + excitmentOnLightSourceDetection);
@@ -326,8 +368,13 @@ public class CreatureController : MonoBehaviour
                 AlertNearbyCreatures(); ;
                 break;
 
-
             case ECreatureState.Pacified:
+                //stop pacify animation 
+                if (_animator != null)
+                {
+                    _animator.SetBool("isPacifying", false);
+                }
+
                 excitementLevel = 0f;
                 PlaySound(pacifySound);
                 StartCoroutine(PacifyEffect());
@@ -408,13 +455,15 @@ public class CreatureController : MonoBehaviour
         // Get nearby light sources
         if (distanceToLight > drainDistance)
         {
-            MoveTowardsTarget(targetLightSource.LightPoint.position, true, delta);
+            Vector3 drainZone = targetLightSource.LightPoint.position + (transform.position - targetLightSource.LightPoint.position).normalized * drainDistance;
+            //MoveTowardsTarget(drainZone, true, delta);
+            MoveTowardsTarget(targetLightSource.LightPoint.position + (transform.position - targetLightSource.LightPoint.position).normalized * 2, true, delta);
             return;
         }
 
         // Disturb light orbs if close enough
         AnimateLightOrbFeedbackComponent feedback = targetLightSource.GetComponent<AnimateLightOrbFeedbackComponent>();
-        if (feedback != null && distanceToLight < 5f)
+        if (feedback != null && distanceToLight < drainDistance)
         {
             float intensity = 1f - (distanceToLight / 5f);
             feedback.DisturbOrbs(intensity);
@@ -450,16 +499,18 @@ public class CreatureController : MonoBehaviour
         // animate drain 
         if (_animator != null)
         {
-            _animator.SetBool("isSucking", true);
+            _animator.SetBool("isDraining", true);
         }
 
         // End drain
         if (drainTimer >= drainDuration)
         {
-            if (_animator != null)
-            {
-                _animator.SetBool("isSucking", false);
-            }
+            //if (_animator != null)
+            //{
+            //    _animator.SetBool("isDraining", false);
+            //}
+
+            OnCreatureDrainingEnd?.Invoke();
 
             targetLightSource.DrainLight();
             excitementLevel = maxExcitement;
@@ -471,6 +522,11 @@ public class CreatureController : MonoBehaviour
 
     IEnumerator CompleteDrainAnimationCoroutine()
     {
+        if (_animator != null)
+        {
+            _animator.SetBool("isDraining", false);
+        }
+
         float duration = 0.5f;
         float timer = 0f;
 
@@ -496,13 +552,13 @@ public class CreatureController : MonoBehaviour
 
         if (stateTimer >= idleDuration)
         {
-            ChangeState(ECreatureState.Wandering);
+            ECreatureState state = IsPacified ? ECreatureState.Pacified : ECreatureState.Wandering;
+            ChangeState(state);
         }
     }
 
     void UpdateWanderingState(float delta)
     {
-
         // Search for light sources if can drain
         if (!IsPacified && enableDrain && drainCooldownTimer <= 0f)
         {
@@ -530,7 +586,7 @@ public class CreatureController : MonoBehaviour
 
         behaviorTimer += delta;
 
-        if (behaviorTimer > 5f && Random.value < idleChance * 0.5f)
+        if (!IsPacified && behaviorTimer > 5f && Random.value < idleChance * 0.5f)
         {
             ChangeState(ECreatureState.Idle);
             behaviorTimer = 0f;
@@ -763,22 +819,16 @@ public class CreatureController : MonoBehaviour
 
     void UpdatePacifiedState(float delta)
     {
-        if (Random.value < 0.01f)
-        {
-            ChangeState(ECreatureState.Idle);
-        }
-        else
-        {
-            behaviorTimer += delta;
+        behaviorTimer += delta;
 
-            if (behaviorTimer > 3f || Vector3.Distance(transform.position, wanderTarget) < 2f)
-            {
-                SetNewWanderTarget();
-                behaviorTimer = 0f;
-            }
-
-            MoveTowardsTarget(wanderTarget, false, delta);
+        if (behaviorTimer > 3f || Vector3.Distance(transform.position, wanderTarget) < 2f)
+        {
+            SetNewWanderTarget();
+            behaviorTimer = 0f;
         }
+
+        MoveTowardsTarget(wanderTarget, false, delta);
+
     }
 
     #endregion
@@ -1062,7 +1112,7 @@ public class CreatureController : MonoBehaviour
         // Squash and stretch
         float speedFactor = currentSpeed / maxSpeed;
         float stretch = 1f + speedFactor * squashStretchAmount;
-        float squash = 1f - speedFactor * squashStretchAmount * 0.5f;
+        float squash = 1f - speedFactor * squashStretchAmount;
 
         // Tilt
         float tilt = velocity.magnitude > 0.1f ?
@@ -1238,12 +1288,14 @@ public class CreatureController : MonoBehaviour
 
     #region Public API
 
-    public void Pacify()
+    public void ApplyPacifyState()
     {
         if (currentState != ECreatureState.Pacified)
         {
             ChangeState(ECreatureState.Pacified);
         }
+
+        OnPacifyEnd?.Invoke(false);
     }
 
     public void ForceChangeTarget(Transform newTarget)
@@ -1254,6 +1306,22 @@ public class CreatureController : MonoBehaviour
             ChangeState(ECreatureState.Seeking);
         }
     }
+
+    public void StartPacify()
+    {
+        OnPacifyStart?.Invoke();
+
+        //Trigger pacify animation 
+        if (_animator != null)
+        {
+            _animator.SetBool("isPacifying", true);
+        }
+
+        // Immobilization 
+        velocity = Vector3.zero;
+        currentSpeed = 0f;
+    }
+
     #endregion
 
     #region Helper Methods
