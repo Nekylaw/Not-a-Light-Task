@@ -16,9 +16,9 @@ public class CreatureController : MonoBehaviour
         Seeking,
         Eating,
         Draining,
+        Pacifying,
         Pacified
     }
-
 
     #endregion
 
@@ -214,8 +214,9 @@ public class CreatureController : MonoBehaviour
 
         if (rb != null)
         {
+            rb.isKinematic = false;
             rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
         }
 
@@ -255,6 +256,11 @@ public class CreatureController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (rb != null && rb.isKinematic)
+        {
+            return;
+        }
+
         if (isMovementLocked || velocity.magnitude <= 0.01f)
         {
             rb.linearVelocity = Vector3.zero;
@@ -262,7 +268,8 @@ public class CreatureController : MonoBehaviour
             if (!isMovementLocked)
             {
                 OnCreatureMoving?.Invoke(0f);
-                _animator.SetFloat("speed", 0f);
+                if (_animator != null)
+                    _animator.SetFloat("speed", 0f);
             }
             return;
         }
@@ -274,7 +281,8 @@ public class CreatureController : MonoBehaviour
         rb.MovePosition(newPosition);
 
         OnCreatureMoving?.Invoke(currentSpeed);
-        _animator.SetFloat("speed", currentSpeed);
+        if (_animator != null)
+            _animator.SetFloat("speed", currentSpeed);
     }
 
     #endregion
@@ -365,8 +373,18 @@ public class CreatureController : MonoBehaviour
                 AlertNearbyCreatures(); ;
                 break;
 
+            case ECreatureState.Pacifying:
+                OnPacifyStart?.Invoke();
+
+                if (_animator != null)
+                {
+                    _animator.SetBool("isPacifying", true);
+                }
+
+                LockMovement(true);
+                break;
+
             case ECreatureState.Pacified:
-                //stop pacify animation 
                 if (_animator != null)
                 {
                     _animator.SetBool("isPacifying", false);
@@ -374,7 +392,7 @@ public class CreatureController : MonoBehaviour
 
                 excitementLevel = 0f;
                 PlaySound(pacifySound);
-                StartCoroutine(PacifyEffect());
+                StartCoroutine(PostPacifyEffectCoroutine());
 
                 if (pacifyParticles != null)
                     pacifyParticles.Play();
@@ -411,7 +429,10 @@ public class CreatureController : MonoBehaviour
 
                 if (_animator != null)
                     _animator.SetBool("isDraining", false);
+                break;
 
+            case ECreatureState.Pacifying:
+                LockMovement(false);
                 break;
         }
     }
@@ -507,7 +528,7 @@ public class CreatureController : MonoBehaviour
         // animate drain 
         if (_animator != null)
             _animator.SetBool("isDraining", true);
-        
+
 
         // End drain
         if (drainTimer >= drainDuration)
@@ -775,11 +796,18 @@ public class CreatureController : MonoBehaviour
 
             if (rb != null)
             {
+                rb.isKinematic = true;
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
         }
-
+        else
+        {
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+            }
+        }
     }
 
     private void UpdateBlacklists(float delta)
@@ -818,6 +846,12 @@ public class CreatureController : MonoBehaviour
 
     void UpdateEatingState(float delta)
     {
+        if (IsPacified)
+        {
+            ChangeState(ECreatureState.Pacified);
+            return;
+        }
+
         // Eating animation
         float eatAnimation = Mathf.Sin(stateTimer * 20f) * 0.15f + 1f;
         transform.localScale = originalScale * eatAnimation;
@@ -852,6 +886,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Movement
+
     void MoveTowardsTarget(Vector3 targetPosition, bool isUrgent, float delta)
     {
         if (isMovementLocked)
@@ -964,6 +999,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Flocking
+
     void UpdateNearbyCreatures()
     {
         if (currentState == ECreatureState.Eating) return;
@@ -986,6 +1022,12 @@ public class CreatureController : MonoBehaviour
 
     void CheckIfStuck()
     {
+        if (isMovementLocked)
+        {
+            creatureStuckTimer = 0f;
+            return;
+        }
+
         float movementThreshold = 0.1f;
         float distanceMoved = Vector3.Distance(transform.position, lastPositionCheck);
 
@@ -1088,6 +1130,9 @@ public class CreatureController : MonoBehaviour
 
     GameObject FindNearestOrb()
     {
+        if (IsPacified)
+            return null;
+
         Collider[] orbsInRange = Physics.OverlapSphere(transform.position, detectionRadius, orbLayer);
 
         GameObject nearestOrb = null;
@@ -1122,6 +1167,9 @@ public class CreatureController : MonoBehaviour
 
     bool CanEatOrb()
     {
+        if (IsPacified)
+            return false;
+
         return !nearbyCreatures.Any(c =>
             c.IsEating && c.currentTarget == currentTarget);
     }
@@ -1173,9 +1221,11 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Visuals
+
     void UpdateVisuals()
     {
-        if (creatureRenderer == null || visualProfile == null) return;
+        if (creatureRenderer == null || visualProfile == null)
+            return;
 
         creatureRenderer.GetPropertyBlock(propBlock);
 
@@ -1313,7 +1363,7 @@ public class CreatureController : MonoBehaviour
 
     #region Public API
 
-    public void ApplyPacifyState()
+    public void CompletePacify()
     {
         if (currentState != ECreatureState.Pacified)
         {
@@ -1332,31 +1382,9 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    public void StartPacify()
-    {
-        OnPacifyStart?.Invoke();
-
-        //Trigger pacify animation 
-        if (_animator != null)
-        {
-            _animator.SetBool("isPacifying", true);
-        }
-
-        // Immobilize
-        isMovementLocked = true;
-        velocity = Vector3.zero;
-        currentSpeed = 0f;
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-    }
-
     #endregion
 
-    #region Helper Methods
+    #region helper methods
 
     void SetNewWanderTarget()
     {
@@ -1409,7 +1437,7 @@ public class CreatureController : MonoBehaviour
         excitementLevel = Mathf.Max(0, excitementLevel - calmRate * delta);
     }
 
-    IEnumerator PacifyEffect()
+    IEnumerator PostPacifyEffectCoroutine()
     {
         float duration = 0.5f;
         float timer = 0f;

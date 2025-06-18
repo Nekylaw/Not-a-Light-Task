@@ -64,7 +64,7 @@ public class AudioService : MonoBehaviour
         _shoot.OnShoot += HandleShoot;
         _shoot.OnAim += HandleAim;
         _pickUp.OnPickup += HandlePickup;
-        _pacify.OnPacify += HandlePacify;
+        _pacify.OnPacifyEnd += HandlePacify;
 
 
         _lightService.OnSwitchOnLight += HandleSwitchOffLight;
@@ -81,7 +81,7 @@ public class AudioService : MonoBehaviour
         _shoot.OnShoot -= HandleShoot;
         _shoot.OnAim -= HandleAim;
         _pickUp.OnPickup -= HandlePickup;
-        _pacify.OnPacify -= HandlePacify;
+        _pacify.OnPacifyEnd -= HandlePacify;
 
         _lightService.OnSwitchOnLight -= HandleSwitchOffLight;
         _lightService.OnSwitchOffLight -= HandleSwitchOffLight;
