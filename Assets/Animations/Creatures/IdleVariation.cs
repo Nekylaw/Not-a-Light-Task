@@ -6,6 +6,6 @@ public class IdleVariation : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float blendValue = Random.Range(0.0f, 1.0f);
-        animator.SetFloat("IdleBlend", blendValue);
+        animator.SetFloat("idleBlend", blendValue);
     }
 }
