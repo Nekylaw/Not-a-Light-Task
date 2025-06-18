@@ -100,6 +100,9 @@ public class CreatureController : MonoBehaviour
     private LightSourceComponent targetLightSource;
     private float drainCooldownTimer = 0f;
 
+    // Pacify
+    private bool isMovementLocked = false;
+
     private Animator _animator;
 
     #endregion
@@ -211,7 +214,6 @@ public class CreatureController : MonoBehaviour
 
         if (rb != null)
         {
-            rb.isKinematic = false;
             rb.useGravity = false;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -253,9 +255,15 @@ public class CreatureController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (velocity.magnitude <= 0.01f)
+        if (isMovementLocked || velocity.magnitude <= 0.01f)
         {
             rb.linearVelocity = Vector3.zero;
+
+            if (!isMovementLocked)
+            {
+                OnCreatureMoving?.Invoke(0f);
+                _animator.SetFloat("speed", 0f);
+            }
             return;
         }
 
@@ -265,19 +273,8 @@ public class CreatureController : MonoBehaviour
         newPosition.y = startPosition.y;
         rb.MovePosition(newPosition);
 
-
-        // Handle movement
-        if (velocity.magnitude > 0.01f)
-        {
-            OnCreatureMoving?.Invoke(currentSpeed);
-            _animator.SetFloat("speed", currentSpeed);
-
-        }
-        else
-        {
-            currentSpeed = 0f;
-            _animator.SetFloat("speed", currentSpeed);
-        }
+        OnCreatureMoving?.Invoke(currentSpeed);
+        _animator.SetFloat("speed", currentSpeed);
     }
 
     #endregion
@@ -395,11 +392,11 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Draining:
-                //if (drainParticle != null)
-                //{
-                //    drainParticle.Stop();
-                //    drainParticle.Clear();
-                //}
+                if (drainParticles != null)
+                {
+                    drainParticles.Stop();
+                    drainParticles.Clear();
+                }
 
                 currentLightTarget = null;
                 targetLightSource = null;
@@ -411,6 +408,10 @@ public class CreatureController : MonoBehaviour
                     targetLightSource.DrainLight();
                     targetLightSource = null;
                 }
+
+                if (_animator != null)
+                    _animator.SetBool("isDraining", false);
+
                 break;
         }
     }
@@ -455,11 +456,19 @@ public class CreatureController : MonoBehaviour
         // Get nearby light sources
         if (distanceToLight > drainDistance)
         {
-            Vector3 drainZone = targetLightSource.LightPoint.position + (transform.position - targetLightSource.LightPoint.position).normalized * drainDistance;
-            //MoveTowardsTarget(drainZone, true, delta);
-            MoveTowardsTarget(targetLightSource.LightPoint.position + (transform.position - targetLightSource.LightPoint.position).normalized * 2, true, delta);
+            Vector3 dirToLight = (transform.position - targetLightSource.LightPoint.position).normalized;
+            Vector3 drainPosition = targetLightSource.LightPoint.position + dirToLight * (drainDistance * 0.85f); // 0.85 ensure in range
+
+            MoveTowardsTarget(drainPosition, true, delta);
+
+            if (_animator != null)
+                _animator.SetBool("isDraining", false);
+
             return;
         }
+
+        velocity = Vector3.zero;
+        currentSpeed = 0f;
 
         // Disturb light orbs if close enough
         AnimateLightOrbFeedbackComponent feedback = targetLightSource.GetComponent<AnimateLightOrbFeedbackComponent>();
@@ -480,11 +489,12 @@ public class CreatureController : MonoBehaviour
         Vector3 lookDirection = (targetLightSource.LightPoint.position - transform.position).normalized;
         lookDirection.y = 0;
         if (lookDirection != Vector3.zero)
-        {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), rotationSpeed * delta);
-        }
 
         // Particle effect
+        if (drainParticles != null && !drainParticles.isPlaying)
+            drainParticles.Play();
+
         if (drainParticles != null)
         {
             var shape = drainParticles.shape;
@@ -492,24 +502,16 @@ public class CreatureController : MonoBehaviour
         }
 
         if (debugMode && Time.frameCount % 30 == 0)
-        {
             Debug.Log($"{name} draining light: {drainTimer:F1}/{drainDuration:F1}");
-        }
 
         // animate drain 
         if (_animator != null)
-        {
             _animator.SetBool("isDraining", true);
-        }
+        
 
         // End drain
         if (drainTimer >= drainDuration)
         {
-            //if (_animator != null)
-            //{
-            //    _animator.SetBool("isDraining", false);
-            //}
-
             OnCreatureDrainingEnd?.Invoke();
 
             targetLightSource.DrainLight();
@@ -518,7 +520,6 @@ public class CreatureController : MonoBehaviour
             ChangeState(ECreatureState.Wandering);
         }
     }
-
 
     IEnumerator CompleteDrainAnimationCoroutine()
     {
@@ -763,6 +764,24 @@ public class CreatureController : MonoBehaviour
         return false;
     }
 
+    public void LockMovement(bool locked)
+    {
+        isMovementLocked = locked;
+
+        if (locked)
+        {
+            velocity = Vector3.zero;
+            currentSpeed = 0f;
+
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+        }
+
+    }
+
     private void UpdateBlacklists(float delta)
     {
         if (blackListedTimers.Count == 0) return;
@@ -828,7 +847,6 @@ public class CreatureController : MonoBehaviour
         }
 
         MoveTowardsTarget(wanderTarget, false, delta);
-
     }
 
     #endregion
@@ -836,6 +854,13 @@ public class CreatureController : MonoBehaviour
     #region Movement
     void MoveTowardsTarget(Vector3 targetPosition, bool isUrgent, float delta)
     {
+        if (isMovementLocked)
+        {
+            velocity = Vector3.zero;
+            currentSpeed = 0;
+            return;
+        }
+
         // Calculate direction to target
         Vector3 toTarget = targetPosition - transform.position;
         toTarget.y = 0;
@@ -1317,9 +1342,16 @@ public class CreatureController : MonoBehaviour
             _animator.SetBool("isPacifying", true);
         }
 
-        // Immobilization 
+        // Immobilize
+        isMovementLocked = true;
         velocity = Vector3.zero;
         currentSpeed = 0f;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     #endregion

@@ -5,7 +5,7 @@ using DG.Tweening;
 public class PacifyBehaviourComponent : MonoBehaviour
 {
     #region Delegates
-    public delegate void PacifyDelegate(GameObject creature);
+    public delegate void PacifyDelegate(CreatureController creature);
     public event PacifyDelegate OnPacify;
     #endregion
 
@@ -184,6 +184,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
             .SetEase(Ease.Linear)
             .SetLoops(-1);
 
+        // Set creature to pacifying state
+        _targetCreature.ChangeState(CreatureController.ECreatureState.Pacified);
+        _targetCreature.StartPacify();
+
         // Pacify progress
         while (_pacifyTimer < _pacifyDuration && !_canceled)
         {
@@ -220,6 +224,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
             return;
         }
 
+        _targetCreature.ChangeState(CreatureController.ECreatureState.Pacified);
+
         // Play complete sound
         PlaySound();
 
@@ -240,14 +246,11 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
         completeSequence.OnComplete(() =>
         {
-            // Restore physics
-            RestoreCreaturePhysics();
-
             // Actually pacify the creature
-            _targetCreature.Pacify();
+            _targetCreature.ApplyPacifyState();
 
             // Fire event
-            OnPacify?.Invoke(_targetCreature.gameObject);
+            OnPacify?.Invoke(_targetCreature);
 
             // Hide UI
             if (pacifyUI != null)
@@ -270,8 +273,6 @@ public class PacifyBehaviourComponent : MonoBehaviour
         _originalCreatureRotation = _targetCreature.transform.rotation;
 
         _creatureRb = _targetCreature.GetComponent<Rigidbody>();
-        if (_creatureRb != null)
-            _originalKinematicState = _creatureRb.isKinematic;
     }
 
     private void ImmobilizeCreature()
@@ -280,15 +281,15 @@ public class PacifyBehaviourComponent : MonoBehaviour
             return;
 
         // Force creature to idle state
-        _targetCreature.ChangeState(CreatureController.ECreatureState.Pacified);
+        _targetCreature.ChangeState(CreatureController.ECreatureState.Idle);
 
         // Disable physics
         if (_creatureRb != null)
         {
-            _creatureRb.isKinematic = true;
             _creatureRb.linearVelocity = Vector3.zero;
             _creatureRb.angularVelocity = Vector3.zero;
         }
+
     }
 
     private void RestoreCreatureState()
@@ -303,20 +304,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
         _targetCreature.transform.position = _originalCreaturePosition;
         _targetCreature.transform.rotation = _originalCreatureRotation;
 
-        // Restore physics
-        RestoreCreaturePhysics();
-
         // Let creature return to wandering
         _targetCreature.ChangeState(CreatureController.ECreatureState.Wandering);
     }
 
-    private void RestoreCreaturePhysics()
-    {
-        if (_creatureRb != null)
-        {
-            _creatureRb.isKinematic = _originalKinematicState;
-        }
-    }
 
     private void ResetState()
     {
@@ -378,13 +369,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     private void UpdatePacifyProgress(float progress)
     {
-        // Update UI progress bar if you have one
-        // You can add a UI slider component reference and update it here
-
         // Apply curve to progress for non-linear feel
         float curvedProgress = _pacifyCurve.Evaluate(progress);
 
-        // Could update shader properties, UI elements, etc.
+        // @todo update pacify feedback 
     }
 
     private void PlaySound(/* sound event */)
