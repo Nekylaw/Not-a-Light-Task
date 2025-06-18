@@ -68,11 +68,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     void Update()
     {
-        // Debug visualization
-        if (debugMode)
-        {
-            _nearestCreature = FindNearestCreature();
-        }
+        _nearestCreature = FindNearestCreature();
     }
     #endregion
 
@@ -82,7 +78,6 @@ public class PacifyBehaviourComponent : MonoBehaviour
         if (_isPacifyPerforming)
             return false;
 
-        _nearestCreature = FindNearestCreature();
         _canPacify = CanPacify();
 
         if (!_canPacify)
@@ -148,7 +143,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
         StoreCreatureState();
 
         creature.ChangeState(CreatureController.ECreatureState.Pacifying);
-        
+
         // Immobilize creature
         ImmobilizeCreature();
 
@@ -178,7 +173,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
             _pacifyTimer += Time.deltaTime;
             float progress = _pacifyTimer / _pacifyDuration;
 
-            // Update UI progress
+            // Update progress
             UpdatePacifyProgress(progress);
 
             // Update particle position
@@ -349,13 +344,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     private void UpdatePacifyProgress(float progress)
     {
-        // Update UI progress bar if you have one
-        // You can add a UI slider component reference and update it here
-
-        // Apply curve to progress for non-linear feel
         float curvedProgress = _pacifyCurve.Evaluate(progress);
-
-        // Could update shader properties, UI elements, etc.
     }
 
     private void PlaySound(AudioClip clip)
