@@ -76,9 +76,9 @@ GameObject:
   - component: {fileID: 9017194417468627701}
   - component: {fileID: 7484162787745347756}
   - component: {fileID: 5603228400674657379}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -314,7 +314,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  pacifyUI: {fileID: 0}
   _creatureLayer:
     serializedVersion: 2
     m_Bits: 2048

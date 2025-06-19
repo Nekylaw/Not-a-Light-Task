@@ -1316,6 +1316,7 @@ public class CreatureController : MonoBehaviour
 
         creatureRenderer.SetPropertyBlock(propBlock);
     }
+
     CreatureVisualProfileSO.StateProfile GetStateProfile()
     {
         if (visualProfile == null)
@@ -1411,6 +1412,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Particles
+
     void UpdateParticles()
     {
         if (excitementParticles != null)
@@ -1520,6 +1522,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Gizmos
+
     void OnDrawGizmosSelected()
     {
         if (!showGizmos) return;
