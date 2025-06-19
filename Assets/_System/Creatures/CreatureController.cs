@@ -912,7 +912,8 @@ public class CreatureController : MonoBehaviour
 
     private void ReleaseEatenOrbs()
     {
-        int orbCount = Mathf.Max(1, orbEatenCount);
+        int rnd = Random.Range(0, 5);
+        int orbCount = rnd + orbEatenCount;
 
         for (int i = 0; i < orbCount; i++)
         {
@@ -1114,14 +1115,14 @@ public class CreatureController : MonoBehaviour
         if (debugMode)
             Debug.Log($"{name} was stuck! Unstucking...");
 
-        // Petite téléportation aléatoire
+        // Petite tï¿½lï¿½portation alï¿½atoire
         Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
         transform.position += new Vector3(randomOffset.x, 0, randomOffset.y);
 
         // Nouvelle cible
         SetNewWanderTarget();
 
-        // Petite impulsion arrière
+        // Petite impulsion arriï¿½re
         velocity = -transform.forward * moveSpeed;
     }
 

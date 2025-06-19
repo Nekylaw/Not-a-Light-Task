@@ -64,13 +64,9 @@ namespace Game.Services.LightSources
                     break;
 
                 case LightDelayMode.Sequential:
-                    var sequentialOrder = chainList
-                        .OrderBy(l => l == triggeredLight ? -1 : Vector3.Distance(triggeredLight.transform.position, l.transform.position))
-                        .ToList();
-
-                    foreach (var light in sequentialOrder)
+                    foreach (var VARIABLE in _lights)
                     {
-                        LightSourcesService.Instance.SwitchOn(light);
+                        LightSourcesService.Instance.SwitchOn(VARIABLE);
                         yield return new WaitForSeconds(_delayBetweenLights);
                     }
                     break;

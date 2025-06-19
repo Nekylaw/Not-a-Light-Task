@@ -102,7 +102,7 @@ Shader "Custom/GrassWindAnimated"
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
                     float3 zonePos = _ClearZones[i].xyz;
-                    float radius = _ClearZones[i].w;
+                    float radius = 20 + _ClearZones[i].w;
                     float d = distance(worldPos, zonePos);
                     float t = saturate(1.0 - d / radius);
                     targetDistFactor = max(targetDistFactor, t);
@@ -177,7 +177,7 @@ Shader "Custom/GrassWindAnimated"
                 // Bright grass during animation
                 if (i.animationProgress > 0 && i.animationProgress < 1)
                 {
-                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 10);
+                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 3);
                     baseColor.rgb *= brightness;
                 }
                 

@@ -184,7 +184,7 @@ namespace Game.Services.LightSources
 
         private void DetectBuildingsToLights()
         {
-            var buildings = Physics.OverlapSphere(transform.position, 40f);
+            var buildings = Physics.OverlapSphere(transform.position, _settings.BrightnessRange);
             foreach (var building in buildings)
             {
                 var script = building.gameObject.GetComponent<BuildingLightsComponent>();
