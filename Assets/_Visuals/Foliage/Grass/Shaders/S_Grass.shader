@@ -172,7 +172,7 @@ Shader "Custom/GrassWindAnimated"
             {
                 half4 baseColor = lerp(_ColorBottom, _ColorTop, i.heightRatio);
                 float randomSeed = frac(sin(dot(i.worldPos, float2(12.9898, 78.233))) * 1.4898);
-                float colorVariation = lerp(0.9, 1.1, randomSeed );
+                float colorVariation = lerp(0.9, 1.1, randomSeed);
                 
                 // Bright grass during animation
                 if (i.animationProgress > 0 && i.animationProgress < 1)

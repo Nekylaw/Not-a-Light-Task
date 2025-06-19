@@ -145,8 +145,9 @@ public class PickUpBehaviorComponent : MonoBehaviour
             {
                 if (attraction.Orb.Pickup(_container))
                 {
+                    var orbComp = attraction.Orb.GetComponent<OrbComponent>();
+                    orbComp.BeEaten();
                     OnPickup?.Invoke(attraction.Orb);
-                    Destroy(attraction.Orb.gameObject);
                 }
                 _activeAttractions.RemoveAt(i);
             }

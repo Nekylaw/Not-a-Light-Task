@@ -351,7 +351,7 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Eating:
-                OnCreatureEatEnd?.Invoke();
+                OnCreatureBeginEat?.Invoke();
 
                 //eat animation 
                 if (_animator != null)
@@ -1175,12 +1175,13 @@ public class CreatureController : MonoBehaviour
     {
         foreach (CreatureController creature in nearbyCreatures)
         {
-            if ((!creature.IsPacified || !creature.IsBeingPacified) && creature.currentState != ECreatureState.Eating)
+            if (!creature.IsPacified && !creature.IsBeingPacified && creature.currentState != ECreatureState.Eating)
             {
                 creature.excitementLevel = Mathf.Min(5f, creature.excitementLevel + 2f);
             }
         }
     }
+
     #endregion
 
     #region Detection

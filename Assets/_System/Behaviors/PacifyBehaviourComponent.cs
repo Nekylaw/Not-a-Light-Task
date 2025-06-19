@@ -1,15 +1,39 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
+using static PacifyBehaviourComponent;
+using System;
+using System.Diagnostics;
+using UnityEngine.UIElements;
 
 public class PacifyBehaviourComponent : MonoBehaviour
 {
+    #region Subclasses
+
+    public enum EPacifyMode
+    {
+        Nearest,
+        Zone
+    }
+
+    private class CreatureBaseState
+    {
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public bool IsKinematic;
+        public Rigidbody Rigidbody;
+        public bool HasStartedFloating;
+    }
+
+    #endregion
+
     #region Delegates
 
-    public delegate void StartPacifyDelegate(CreatureController creature);
+    public delegate void StartPacifyDelegate();
     public event StartPacifyDelegate OnPacifyStart;
 
-    public delegate void EndPacifyDelegate(CreatureController creature);
+    public delegate void EndPacifyDelegate();
     public event EndPacifyDelegate OnPacifyEnd;
     #endregion
 
@@ -21,12 +45,19 @@ public class PacifyBehaviourComponent : MonoBehaviour
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private float _pacifyRadius = 5f;
 
-    [Header("Pacify Settings")]
+    [Header("Core Pacify Settings")]
     [SerializeField] private float _pacifyDuration = 2f;
     [SerializeField] private float _floatHeight = 1.5f;
     [SerializeField] private float _floatDuration = 0.5f;
     [SerializeField] private float _rotationSpeed = 180f;
     [SerializeField] private AnimationCurve _pacifyCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Header("Zone Pacify Settings")]
+    [SerializeField] private EPacifyMode _pacifyMode = EPacifyMode.Zone;
+    [SerializeField] private float _zoneAngle = 10f;
+    [SerializeField] private float _zoneRadius = 8f;
+    [SerializeField] private int _maxPacifiedCreature = 3;
+
 
     [Header("Visual Feedback")]
     [SerializeField] private ParticleSystem _pacifyParticles;
@@ -35,21 +66,18 @@ public class PacifyBehaviourComponent : MonoBehaviour
     [SerializeField] private AudioClip _pacifyCancelSound;
 
     // State
-    private bool _canPacify = false;
     private bool _isPacifyPerforming = false;
+    private bool _canPacify = false;
     private bool _canceled = false;
-    private CreatureController _nearestCreature;
-    private CreatureController _targetCreature;
+    private List<CreatureController> _creaturesInRange = new();
+    private List<CreatureController> _targetCreatures = new();
 
     // Pacify progress
     private float _pacifyTimer = 0f;
     private Coroutine _pacifyCoroutine;
 
-    // Original creature values for restoration
-    private Vector3 _originalCreaturePosition;
-    private Quaternion _originalCreatureRotation;
-    private Rigidbody _creatureRigidbody;
-    private bool _originalKinematicState;
+    // Original creatures states
+    private Dictionary<CreatureController, CreatureBaseState> _originalStates = new Dictionary<CreatureController, CreatureBaseState>();
 
     // Audio
     private AudioSource _audioSource;
@@ -68,32 +96,73 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     void Update()
     {
-        _nearestCreature = FindNearestCreature();
+        if (_pacifyMode == EPacifyMode.Zone)
+        {
+            _creaturesInRange = FindCreaturesInZone();
+        }
+        else
+        {
+            var nearest = FindNearestCreature();
+            _creaturesInRange.Clear();
+            if (nearest != null)
+                _creaturesInRange.Add(nearest);
+        }
     }
+
     #endregion
 
     #region Public Methods
+
     public bool Pacify()
     {
         if (_isPacifyPerforming)
             return false;
 
-        _canPacify = CanPacify();
-
-        if (!_canPacify)
+        var validTargets = GetValidTargets();
+        if (validTargets.Count <= 0)
             return false;
 
         _isPacifyPerforming = true;
         _canceled = false;
-        _targetCreature = _nearestCreature;
+        _targetCreatures = validTargets;
 
         if (_pacifyCoroutine != null)
             StopCoroutine(_pacifyCoroutine);
 
-        _pacifyCoroutine = StartCoroutine(PacifyCoroutine(_targetCreature));
-        OnPacifyStart?.Invoke(_targetCreature);
+        _pacifyCoroutine = StartCoroutine(PacifyCoroutine());
 
+        OnPacifyStart?.Invoke();
         return true;
+    }
+
+    private List<CreatureController> GetValidTargets()
+    {
+        var validTargets = new List<CreatureController>();
+
+        foreach (var creature in _creaturesInRange)
+        {
+            if (creature != null && !creature.IsPacified && !creature.IsBeingPacified && creature.CurrentState != CreatureController.ECreatureState.Eating)
+            {
+                validTargets.Add(creature);
+            }
+        }
+
+        switch (_pacifyMode)
+        {
+            case EPacifyMode.Zone:
+                if (validTargets.Count > _maxPacifiedCreature)
+                    validTargets.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position).CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+                validTargets = validTargets.GetRange(0, Mathf.Min(validTargets.Count, _maxPacifiedCreature));
+                break;
+            case EPacifyMode.Nearest:
+                if (validTargets.Count > 1)
+                    validTargets = new List<CreatureController> { validTargets[0] };
+                break;
+            default:
+                break;
+        }
+
+        return validTargets;
     }
 
     public bool StopPacify()
@@ -119,9 +188,12 @@ public class PacifyBehaviourComponent : MonoBehaviour
         }
 
         // Restore creature state
-        if (_targetCreature != null)
+        foreach (var creature in _targetCreatures)
         {
-            RestoreCreatureState();
+            if (creature != null)
+            {
+                RestoreCreatureState(creature);
+            }
         }
 
         // Play cancel sound
@@ -134,38 +206,41 @@ public class PacifyBehaviourComponent : MonoBehaviour
         ResetPacifyState();
     }
 
-    private IEnumerator PacifyCoroutine(CreatureController creature)
+    private IEnumerator PacifyCoroutine()
     {
         // Initialize
         _pacifyTimer = 0f;
 
         // Store original creature state
-        StoreCreatureState();
 
-        creature.ChangeState(CreatureController.ECreatureState.Pacifying);
-
-        // Immobilize creature
-        ImmobilizeCreature();
+        foreach (var creature in _targetCreatures)
+        {
+            StoreCreatureState(creature);
+            creature.ChangeState(CreatureController.ECreatureState.Pacifying);
+            ImmobilizeCreature(creature);
+        }
 
         // Play start sound
         PlaySound(_pacifyStartSound);
 
-        // Start particles
-        if (_pacifyParticles != null)
+        foreach (var creature in _targetCreatures)
         {
-            _pacifyParticles.transform.position = creature.transform.position;
-            _pacifyParticles.Play();
+
+            if (creature == null || !_originalStates.ContainsKey(creature))
+                continue;
+
+            var state = _originalStates[creature];
+            state.HasStartedFloating = true;
+
+            // Start floating animation
+            creature.transform.DOMoveY(state.Position.y + _floatHeight, _floatDuration)
+                .SetEase(Ease.OutQuad);
+
+            // Rotation during pacify
+            creature.transform.DORotate(new Vector3(0, 360, 0), 60f / _rotationSpeed, RotateMode.LocalAxisAdd)
+                .SetEase(Ease.Linear)
+                .SetLoops(-1);
         }
-
-        // Start floating animation
-        Sequence floatSequence = DOTween.Sequence();
-        floatSequence.Append(creature.transform.DOMoveY(_originalCreaturePosition.y + _floatHeight, _floatDuration)
-            .SetEase(Ease.OutQuad));
-
-        // Rotation during pacify
-        Tween rotationTween = creature.transform.DORotate(new Vector3(0, 360, 0), 60f / _rotationSpeed, RotateMode.LocalAxisAdd)
-            .SetEase(Ease.Linear)
-            .SetLoops(-1);
 
         // Pacify progress
         while (_pacifyTimer < _pacifyDuration && !_canceled)
@@ -177,23 +252,36 @@ public class PacifyBehaviourComponent : MonoBehaviour
             UpdatePacifyProgress(progress);
 
             // Update particle position
-            if (_pacifyParticles != null)
-                _pacifyParticles.transform.position = creature.transform.position;
+            if (_pacifyParticles != null && _targetCreatures.Count > 0)
+            {
+                Vector3 centerPos = Vector3.zero;
+                int validCount = 0;
+                foreach (var creature in _targetCreatures)
+                {
+                    if (creature != null)
+                    {
+                        centerPos += creature.transform.position;
+                        validCount++;
+                    }
+                }
+                if (validCount > 0)
+                    _pacifyParticles.transform.position = centerPos / validCount;
+            }
 
             yield return null;
         }
 
-        // Kill rotation tween
-        rotationTween.Kill();
+        // Kill tweens
+        foreach (var creature in _targetCreatures)
+        {
+            if (creature != null)
+                creature.transform.DOKill();
+        }
 
         if (!_canceled)
         {
             // Pacify successful
             CompletePacify();
-        }
-        else
-        {
-            // Already handled in CancelPacify
         }
 
         _pacifyCoroutine = null;
@@ -201,109 +289,130 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     private void CompletePacify()
     {
-        if (_targetCreature == null)
-        {
-            ResetPacifyState();
-            return;
-        }
-
         // Play complete sound
         PlaySound(_pacifyCompleteSound);
 
-        // Create completion effect
-        Sequence completeSequence = DOTween.Sequence();
+        int completedCount = 0;
 
-        // Quick spin and scale
-        completeSequence.Append(_targetCreature.transform.DORotate(new Vector3(0, 720, 0), 0.5f, RotateMode.LocalAxisAdd)
-            .SetEase(Ease.OutQuad));
-        completeSequence.Join(_targetCreature.transform.DOScale(1.2f, 0.25f)
-            .SetEase(Ease.OutQuad));
-        completeSequence.Append(_targetCreature.transform.DOScale(1f, 0.25f)
-            .SetEase(Ease.InQuad));
-
-        // Return to ground
-        completeSequence.Append(_targetCreature.transform.DOMoveY(_originalCreaturePosition.y, 0.5f)
-            .SetEase(Ease.InQuad));
-
-        completeSequence.OnComplete(() =>
+        // Complete pacify for each creature
+        foreach (var creature in _targetCreatures)
         {
-            // Restore physics
-            RestoreCreaturePhysics();
+            if (creature == null) continue;
 
-            // Pacify
-            _targetCreature.CompletePacify();
+            // Create completion effect
+            Sequence completeSequence = DOTween.Sequence();
 
-            OnPacifyEnd?.Invoke(_targetCreature);
+            // Quick spin and scale
+            completeSequence.Append(creature.transform.DORotate(new Vector3(0, 720, 0), 0.5f, RotateMode.LocalAxisAdd)
+                .SetEase(Ease.OutQuad));
+            completeSequence.Join(creature.transform.DOScale(1.2f, 0.25f)
+                .SetEase(Ease.OutQuad));
+            completeSequence.Append(creature.transform.DOScale(1f, 0.25f)
+                .SetEase(Ease.InQuad));
 
-            // Stop particles
-            if (_pacifyParticles != null)
-                _pacifyParticles.Stop();
+            // Return to ground - use the stored original position
+            if (_originalStates.ContainsKey(creature))
+            {
+                var originalPos = _originalStates[creature].Position;
+                completeSequence.Append(creature.transform.DOMoveY(originalPos.y, 0.5f)
+                    .SetEase(Ease.InQuad));
+            }
 
-            ResetPacifyState();
-        });
-    }
+            completeSequence.OnComplete(() =>
+            {
+                // Restore physics
+                RestoreCreaturePhysics(creature);
 
-    private void StoreCreatureState()
-    {
-        if (_targetCreature == null)
-            return;
+                // Pacify
+                creature.CompletePacify();
 
-        _originalCreaturePosition = _targetCreature.transform.position;
-        _originalCreatureRotation = _targetCreature.transform.rotation;
+                OnPacifyEnd?.Invoke();
 
-        _creatureRigidbody = _targetCreature.GetComponent<Rigidbody>();
-        if (_creatureRigidbody != null)
-        {
-            _originalKinematicState = _creatureRigidbody.isKinematic;
+                completedCount++;
+                if (completedCount >= _targetCreatures.Count)
+                {
+                    // All creatures completed
+                    if (_pacifyParticles != null)
+                        _pacifyParticles.Stop();
+
+                    ResetPacifyState();
+                }
+            });
         }
     }
 
-    private void ImmobilizeCreature()
+    private void StoreCreatureState(CreatureController creature)
     {
-        if (_targetCreature == null)
+        if (creature == null) return;
+
+        var state = new CreatureBaseState
+        {
+            Position = creature.transform.position,
+            Rotation = creature.transform.rotation,
+            Rigidbody = creature.GetComponent<Rigidbody>(),
+            HasStartedFloating = false
+        };
+
+        if (state.Rigidbody != null)
+        {
+            state.IsKinematic = state.Rigidbody.isKinematic;
+        }
+
+        _originalStates[creature] = state;
+
+    }
+
+    private void ImmobilizeCreature(CreatureController creature)
+    {
+        if (creature == null || !_originalStates.ContainsKey(creature))
             return;
 
-        // Disable physics
-        if (_creatureRigidbody != null)
+        var state = _originalStates[creature];
+        if (state.Rigidbody != null)
         {
-            _creatureRigidbody.isKinematic = true;
-            _creatureRigidbody.linearVelocity = Vector3.zero;
-            _creatureRigidbody.angularVelocity = Vector3.zero;
+            state.Rigidbody.isKinematic = true;
+            state.Rigidbody.linearVelocity = Vector3.zero;
+            state.Rigidbody.angularVelocity = Vector3.zero;
         }
     }
 
-    private void RestoreCreatureState()
+    private void RestoreCreatureState(CreatureController creature)
     {
-        if (_targetCreature == null)
+        if (creature == null || _originalStates.ContainsKey(creature))
             return;
 
         // Kill any active tweens on the creature
-        _targetCreature.transform.DOKill();
+        creature.transform.DOKill();
 
-        // Restore position and rotation
-        _targetCreature.transform.position = _originalCreaturePosition;
-        _targetCreature.transform.rotation = _originalCreatureRotation;
+        var state = _originalStates[creature];
+
+        // Restore position and rotation to original ground position
+        creature.transform.position = state.Position;
+        creature.transform.rotation = state.Rotation;
 
         // Restore physics
-        RestoreCreaturePhysics();
+        RestoreCreaturePhysics(creature);
 
-        // Let creature return to wandering
-        _targetCreature.ChangeState(CreatureController.ECreatureState.Wandering);
+        // Creature return to wandering
+        creature.ChangeState(CreatureController.ECreatureState.Wandering);
     }
 
-    private void RestoreCreaturePhysics()
+    private void RestoreCreaturePhysics(CreatureController creature)
     {
-        if (_creatureRigidbody != null)
-        {
-            _creatureRigidbody.isKinematic = _originalKinematicState;
-        }
+        if (creature == null || !_originalStates.ContainsKey(creature))
+            return;
+
+        var state = _originalStates[creature];
+        if (state.Rigidbody != null)
+            state.Rigidbody.isKinematic = state.IsKinematic;
     }
 
     private void ResetPacifyState()
     {
         _isPacifyPerforming = false;
         _canceled = false;
-        _targetCreature = null;
+        _targetCreatures.Clear();
+        _originalStates.Clear();
         _pacifyTimer = 0f;
     }
 
@@ -330,16 +439,28 @@ public class PacifyBehaviourComponent : MonoBehaviour
         return nearest;
     }
 
-    private bool CanPacify()
+    private List<CreatureController> FindCreaturesInZone()
     {
-        if (_isPacifyPerforming)
-            return false;
+        List<CreatureController> creaturesInZone = new List<CreatureController>();
+        Collider[] creaturesInRange = Physics.OverlapSphere(transform.position, _zoneRadius, _creatureLayer);
 
-        if (_nearestCreature == null)
-            return false;
+        foreach (var col in creaturesInRange)
+        {
+            CreatureController creature = col.GetComponent<CreatureController>();
+            if (creature == null || creature.IsPacified || creature.CurrentState == CreatureController.ECreatureState.Eating)
+                continue;
 
-        return !_nearestCreature.IsPacified &&
-               _nearestCreature.CurrentState != CreatureController.ECreatureState.Eating;
+            // Check if creature is within the zone angle
+            Vector3 directionToCreature = (creature.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(transform.forward, directionToCreature);
+
+            if (angle <= _zoneAngle * 0.5) // Half angle cauz forward
+            {
+                creaturesInZone.Add(creature);
+            }
+        }
+
+        return creaturesInZone;
     }
 
     private void UpdatePacifyProgress(float progress)
@@ -357,29 +478,65 @@ public class PacifyBehaviourComponent : MonoBehaviour
     #endregion
 
     #region Gizmos
+
     void OnDrawGizmos()
     {
-        if (!debugMode)
-            return;
+        if (!debugMode) return;
 
-        // Draw pacify radius
-        Gizmos.color = new Color(0, 1, 1, 0.3f);
-        Gizmos.DrawWireSphere(transform.position, _pacifyRadius);
-
-        // Highlight nearest creature
-        if (_nearestCreature != null)
+        if (_pacifyMode == EPacifyMode.Zone)
         {
-            Gizmos.color = _nearestCreature.IsPacified ? Color.gray : Color.cyan;
-            Gizmos.DrawLine(transform.position, _nearestCreature.transform.position);
-            Gizmos.DrawWireCube(_nearestCreature.transform.position, Vector3.one * 0.5f);
+            // Draw zone cone
+            Gizmos.color = new Color(0, 1, 1, 0.3f);
+
+            // Draw arc representing the zone
+            int segments = 20;
+            float angleStep = _zoneAngle / segments;
+            float startAngle = -_zoneAngle * 0.5f;
+
+            Vector3 previousPoint = transform.position + Quaternion.Euler(0, startAngle, 0) * transform.forward * _zoneRadius;
+
+            for (int i = 1; i <= segments; i++)
+            {
+                float currentAngle = startAngle + angleStep * i;
+                Vector3 currentPoint = transform.position + Quaternion.Euler(0, currentAngle, 0) * transform.forward * _zoneRadius;
+
+                Gizmos.DrawLine(previousPoint, currentPoint);
+                previousPoint = currentPoint;
+            }
+
+            // Draw zone boundaries
+            Gizmos.DrawLine(transform.position, transform.position + Quaternion.Euler(0, -_zoneAngle * 0.5f, 0) * transform.forward * _zoneRadius);
+            Gizmos.DrawLine(transform.position, transform.position + Quaternion.Euler(0, _zoneAngle * 0.5f, 0) * transform.forward * _zoneRadius);
+        }
+        else
+        {
+            // Draw radius
+            Gizmos.color = new Color(0, 1, 1, 0.3f);
+            Gizmos.DrawWireSphere(transform.position, _pacifyRadius);
         }
 
-        // Show active pacify target
-        if (_isPacifyPerforming && _targetCreature != null)
+        // Highlight creatures in range
+        foreach (var creature in _creaturesInRange)
+        {
+            if (creature != null)
+            {
+                Gizmos.color = creature.IsPacified ? Color.gray : Color.cyan;
+                Gizmos.DrawLine(transform.position, creature.transform.position);
+                Gizmos.DrawWireCube(creature.transform.position, Vector3.one * 0.5f);
+            }
+        }
+
+        // Show active pacify targets
+        if (_isPacifyPerforming)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_targetCreature.transform.position, 1f);
+            foreach (var creature in _targetCreatures)
+            {
+                if (creature != null)
+                    Gizmos.DrawWireSphere(creature.transform.position, 1f);
+            }
         }
     }
+
     #endregion
 }

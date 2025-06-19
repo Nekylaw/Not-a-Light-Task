@@ -14,7 +14,6 @@ public class PickableComponent : MonoBehaviour
             return false;
 
         container.CollectBullet(_settings.LightAmmoRetrived);
-        Debug.Log($"PickableComponent: {gameObject.name}");
         //Destroy(gameObject); 
      /*   gameObject.SetActive(false); *///@todo Use object pooling instead of destroying
 

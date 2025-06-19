@@ -163,11 +163,11 @@ public class OrbComponent : MonoBehaviour
                 orbRenderer.GetPropertyBlock(propBlock);
                 propBlock.SetColor("_BaseColor", currentColor);
 
-                // If using standard shader
-                if (orbRenderer.material.HasProperty("_Color"))
-                {
-                    propBlock.SetColor("_Color", currentColor);
-                }
+                //// If using standard shader
+                //if (orbRenderer.material.HasProperty("_Color"))
+                //{
+                //    propBlock.SetColor("_Color", currentColor);
+                //}
 
                 orbRenderer.SetPropertyBlock(propBlock);
             }
