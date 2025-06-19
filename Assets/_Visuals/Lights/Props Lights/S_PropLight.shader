@@ -2,7 +2,7 @@ Shader "Custom/PropLight"
 {
     Properties
     {
-        _BaseColor ("Base Color", Color) = (1,1,1,1)
+        _PropColor ("Base Color", Color) = (1,1,1,1)
         _GlowColor ("Glow Color", Color) = (1,1,1,1)
 
         _GlowRadius ("Glow Radius", Float) = 0.2
@@ -44,7 +44,7 @@ Shader "Custom/PropLight"
                 float4 clipPos : TEXCOORD1;
             };
 
-            float4 _BaseColor;
+            float4 _PropColor;
             float4 _GlowColor;
 
             float _GlowRadius;
@@ -91,7 +91,7 @@ Shader "Custom/PropLight"
                 // glow
                 float glow = _GlowIntensity * glowFactor * animIntensity;
 
-                float3 baseCol = _BaseColor.rgb * _BaseIntensity;
+                float3 baseCol = _PropColor.rgb * _BaseIntensity;
                 float3 glowCol = _GlowColor.rgb * glow;
 
                 return half4(baseCol + glowCol, glow);

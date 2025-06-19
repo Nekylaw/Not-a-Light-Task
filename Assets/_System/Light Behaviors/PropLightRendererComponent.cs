@@ -76,7 +76,10 @@ public class PropLightRendererComponent : MonoBehaviour
         _currentBaseIntensity = Mathf.Lerp(_currentBaseIntensity, targetBase, Time.deltaTime * _fadeSpeed);
         _currentGlowIntensity = Mathf.Lerp(_currentGlowIntensity, targetGlow, Time.deltaTime * _fadeSpeed);
 
-        _mpb.SetColor("_BaseColor", _baseColor);
+        if (_mpb.HasProperty("_PropColor"))
+            _mpb.SetColor("_PropColor", _baseColor);
+        
+        
         _mpb.SetColor("_GlowColor", _glowColor);
         _mpb.SetFloat("_BaseIntensity", _currentBaseIntensity);
         _mpb.SetFloat("_GlowIntensity", _currentGlowIntensity);
