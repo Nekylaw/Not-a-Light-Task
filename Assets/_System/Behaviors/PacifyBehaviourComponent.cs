@@ -176,19 +176,20 @@ public class PacifyBehaviourComponent : MonoBehaviour
     private void CancelPacify()
     {
         _canceled = true;
-
         if (_pacifyCoroutine != null)
         {
             StopCoroutine(_pacifyCoroutine);
             _pacifyCoroutine = null;
         }
 
-        // Restore creature state
+        // Kill all active tweens on creatures
         foreach (var creature in _targetCreatures)
         {
             if (creature != null)
             {
+                creature.transform.DOKill();
                 RestoreCreatureState(creature);
+                creature.CompletePacify(false);
             }
         }
 
@@ -206,9 +207,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
     {
         // Initialize
         _pacifyTimer = 0f;
+        _isPacifyPerforming = true;
 
         // Store original creature state
-
         foreach (var creature in _targetCreatures)
         {
             StoreCreatureState(creature);
@@ -241,6 +242,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
         // Pacify progress
         while (_pacifyTimer < _pacifyDuration && !_canceled)
         {
+
             _pacifyTimer += Time.deltaTime;
             float progress = _pacifyTimer / _pacifyDuration;
 
@@ -267,6 +269,9 @@ public class PacifyBehaviourComponent : MonoBehaviour
             yield return null;
         }
 
+        if (_canceled)
+            yield break;
+
         // Kill tweens
         foreach (var creature in _targetCreatures)
         {
@@ -274,11 +279,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
                 creature.transform.DOKill();
         }
 
-        if (!_canceled)
-        {
-            // Pacify successful
-            CompletePacify();
-        }
+        // Pacify successful
+        CompletePacify();
 
         _pacifyCoroutine = null;
     }
@@ -320,7 +322,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
                 RestoreCreaturePhysics(creature);
 
                 // Pacify
-                creature.CompletePacify();
+                creature.CompletePacify(true);
 
                 OnPacifyEnd?.Invoke();
 
@@ -373,7 +375,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
     }
     private void RestoreCreatureState(CreatureController creature)
     {
-        if (creature == null || _originalStates.ContainsKey(creature))
+        if (creature == null || !_originalStates.ContainsKey(creature))
             return;
 
         // Kill any active tweens on the creature
@@ -390,6 +392,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
         // Creature return to wandering
         creature.ChangeState(CreatureController.ECreatureState.Wandering);
+       //creature.CompletePacify(false);
     }
 
     private void RestoreCreaturePhysics(CreatureController creature)
