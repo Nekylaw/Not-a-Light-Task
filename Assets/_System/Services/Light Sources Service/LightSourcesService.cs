@@ -45,6 +45,7 @@ namespace Game.Services.LightSources
         public event TriggerLightDelegate OnTriggerLight = null;
 
         private List<LightSourceComponent> _lightSourceList = new List<LightSourceComponent>();
+        private int _lightsOnCount = 0;
 
         private bool _isDisposed = false;
 
@@ -104,9 +105,11 @@ namespace Game.Services.LightSources
 
         #region Public API
 
-        public LightSourceComponent[] LightSources => _lightSourceList.ToArray(); 
+        public LightSourceComponent[] LightSources => _lightSourceList.ToArray();
 
         public int TotalLightSources => _lightSourceList.Count;
+        public int LightSourceOnCount => _lightsOnCount;
+
 
         public bool SwitchOn(LightSourceComponent light)
         {
@@ -118,6 +121,9 @@ namespace Game.Services.LightSources
             if (!light.SwitchOn())
                 return false;
 
+
+            _lightsOnCount++;
+
             OnSwitchOnLight?.Invoke(light);
             return true;
         }
@@ -126,6 +132,8 @@ namespace Game.Services.LightSources
         {
             if (!light.SwitchOff())
                 return false;
+
+            _lightsOnCount--;
 
             OnSwitchOffLight?.Invoke(light);
             return true;

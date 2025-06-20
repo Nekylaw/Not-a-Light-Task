@@ -1136,6 +1136,30 @@ PrefabInstance:
       propertyPath: PetUI
       value: 
       objectReference: {fileID: 1136481604}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _radius
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _showGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _creatureLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _pettableSearchRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603228400674657379, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
+      propertyPath: _minPacifiedCreaturesRequired
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7484162787745347756, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: _zoneAngle
       value: 70
@@ -2944,6 +2968,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.74
@@ -3236,7 +3264,7 @@ GameObject:
   - component: {fileID: 731630559}
   - component: {fileID: 731630558}
   m_Layer: 0
-  m_Name: Crosshair
+  m_Name: TopBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3256,11 +3284,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1016176027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_SizeDelta: {x: 0, y: 200}
+  m_Pivot: {x: 0.5, y: 1.0000001}
 --- !u!114 &731630558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3274,14 +3302,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 33c6d45fb30485e45879413ec31261d6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3785,6 +3813,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.74
@@ -3942,6 +3974,337 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0f9e9c0c6848147b7256956d541f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lightConfigurations:
+  - configName: PF_CItyLight (2)
+    lightGroupName: Stem1
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (8)
+    lightGroupName: Stem2
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: PF_CItyLight
+    lightGroupName: Stem3
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere
+    lightGroupName: Stem2
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (5)
+    lightGroupName: Stem2
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (2)
+    lightGroupName: Stem2
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (1)
+    lightGroupName: 
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (6)
+    lightGroupName: 
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (4)
+    lightGroupName: 
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (7)
+    lightGroupName: 
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: Sphere (3)
+    lightGroupName: 
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  - configName: PF_CItyLight (1)
+    lightGroupName: Stem4
+    useCustomSound: 0
+    customOnSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    customOffSound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volumeMultiplier: 1
+  _lightGroups:
+  - groupName: Stem1
+    lights: []
+    ambientTrack:
+      Guid:
+        Data1: -656332838
+        Data2: 1200072588
+        Data3: 20813758
+        Data4: -378908198
+      Path: event:/Interractive/New Event
+    requireAllLights: 0
+    volumeMultiplier: 0
+    fadeInTime: 0
+    fadeOutTime: 0
+  - groupName: Stem2
+    lights: []
+    ambientTrack:
+      Guid:
+        Data1: 1749228602
+        Data2: 1315468402
+        Data3: 1912430507
+        Data4: -1346386089
+      Path: event:/Interractive/New Event 2
+    requireAllLights: 0
+    volumeMultiplier: 0
+    fadeInTime: 0
+    fadeOutTime: 0
+  - groupName: Stem3
+    lights: []
+    ambientTrack:
+      Guid:
+        Data1: 1673483187
+        Data2: 1267059225
+        Data3: 821546175
+        Data4: -1823433278
+      Path: event:/Interractive/New Event 3
+    requireAllLights: 0
+    volumeMultiplier: 0
+    fadeInTime: 0
+    fadeOutTime: 0
+  - groupName: Stem4
+    lights: []
+    ambientTrack:
+      Guid:
+        Data1: -543842103
+        Data2: 1296329034
+        Data3: 1627803816
+        Data4: 830026541
+      Path: event:/Interractive/New Event 4
+    requireAllLights: 0
+    volumeMultiplier: 0
+    fadeInTime: 0
+    fadeOutTime: 0
+  _shootSound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: -1057977067
+        Data2: 1198213472
+        Data3: -688022616
+        Data4: 1583534567
+      Path: event:/Gun/Gun_Tir
+    description: 
+  _pickupSound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: -1710006075
+        Data2: 1315964256
+        Data3: 909423035
+        Data4: -2015894828
+      Path: event:/Aspiro
+    description: 
+  _walkSound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: -270066511
+        Data2: 1183780161
+        Data3: 385433781
+        Data4: 720864113
+      Path: event:/FFS_grass
+    description: 
+  _aimSound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    description: 
+  _pacifySound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: -760689783
+        Data2: 1209209718
+        Data3: 1316214157
+        Data4: 1455780199
+      Path: event:/Ding
+    description: 
+  _lampToggleSound:
+    soundName: 
+    eventRef:
+      Guid:
+        Data1: -1952285697
+        Data2: 1281419493
+        Data3: -532792162
+        Data4: -334212190
+      Path: event:/Boule
+    description: 
+  _soundCategories: []
 --- !u!4 &799781886
 Transform:
   m_ObjectHideFlags: 0
@@ -3951,7 +4314,7 @@ Transform:
   m_GameObject: {fileID: 799781884}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4486,6 +4849,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.74
@@ -5173,7 +5540,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &1016176026
 Canvas:
   m_ObjectHideFlags: 0
@@ -5210,6 +5577,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 731630557}
+  - {fileID: 1062796686}
   m_Father: {fileID: 382141788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5325,6 +5693,81 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055579370}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1062796685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1062796686}
+  - component: {fileID: 1062796688}
+  - component: {fileID: 1062796687}
+  m_Layer: 0
+  m_Name: TopBar (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1062796686
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062796685}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1016176027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 200}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1062796687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062796685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1062796688
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062796685}
+  m_CullTransparentMesh: 1
 --- !u!1 &1077097768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5632,6 +6075,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.74
@@ -6120,6 +6567,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.26
@@ -9038,6 +9489,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1322871208}
     m_Modifications:
+    - target: {fileID: 81371483938420351, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6323399374726704133, guid: be440909560683a4ab1ea2c7ebfe407f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.26
@@ -9264,6 +9719,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 666696336}
     - target: {fileID: 541646107065823202, guid: a2251cf7cb43e0d4ba2f744687abbd25, type: 3}
+      propertyPath: dissolvePropertyName
+      value: _Dissolve
+      objectReference: {fileID: 0}
+    - target: {fileID: 541646107065823202, guid: a2251cf7cb43e0d4ba2f744687abbd25, type: 3}
       propertyPath: triggerRevealComponent
       value: 0
       objectReference: {fileID: 0}
@@ -9282,6 +9741,10 @@ PrefabInstance:
     - target: {fileID: 1700506901352325970, guid: a2251cf7cb43e0d4ba2f744687abbd25, type: 3}
       propertyPath: m_LocalPosition.z
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4373437598015861189, guid: a2251cf7cb43e0d4ba2f744687abbd25, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6134091730864765089, guid: a2251cf7cb43e0d4ba2f744687abbd25, type: 3}
       propertyPath: m_Name

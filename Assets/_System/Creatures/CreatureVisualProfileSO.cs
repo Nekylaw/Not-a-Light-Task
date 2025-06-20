@@ -61,7 +61,7 @@ public class CreatureVisualProfileSO : ScriptableObject
         heartIntensity = 14f,
         heartBeatBaseSpeed = 4f,
         heartBeatExcitedSpeed = 10f
-};
+    };
 
     public StateProfile PacifiedProfile = new StateProfile
     {
@@ -89,6 +89,19 @@ public class CreatureVisualProfileSO : ScriptableObject
         heartBeatExcitedSpeed = 2f
     };
 
+    public StateProfile PettableProfile = new StateProfile
+    {
+        baseColor = new Color(0.8f, 0.2f, 0.5f),
+        rimColor = new Color(0.1f, 1f, 0.7f),
+        rimIntensity = 2f,
+        eyesColor = new Color(0.5f, 1f, 0.7f),
+        eyesIntensity = 3f,
+        heartColor = new Color(0.4f, 1f, 0.6f),
+        heartIntensity = 6f,
+        heartBeatBaseSpeed = 1f,
+        heartBeatExcitedSpeed = 2f
+    };
+
     [System.Serializable]
     public struct StateProfile
     {
@@ -97,19 +110,19 @@ public class CreatureVisualProfileSO : ScriptableObject
 
         [Header("Rim Lighting")]
         public Color rimColor;
-        [Range(0f, 5f)]
+        [Min(0f)]
         public float rimIntensity;
 
         [Header("Eyes")]
         public Color eyesColor;
-        [Range(0f, 10f)]
+        [Min(0f)]
         public float eyesIntensity;
 
         [Header("Heart")]
         public Color heartColor;
-        [Range(0f, 15f)]
+        [Min(0f)]
         public float heartIntensity;
-        [Range(0.5f, 10f)]
+        [Min(0f)]
         public float heartBeatBaseSpeed;
         [Range(1f, 15f)]
         public float heartBeatExcitedSpeed;

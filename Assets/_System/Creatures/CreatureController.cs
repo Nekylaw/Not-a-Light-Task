@@ -71,11 +71,11 @@ public class CreatureController : MonoBehaviour
 
     #region Core Components
 
-    [Header("=== Current State ===")]
+    [Header("Current State")]
     [SerializeField] private ECreatureState currentState = ECreatureState.Wandering;
     public ECreatureState CurrentState => currentState;
 
-    [Header("=== Debug ===")]
+    [Header("Debug")]
     [SerializeField] private bool debugMode = false;
     [SerializeField] private bool showGizmos = true;
 
@@ -129,6 +129,10 @@ public class CreatureController : MonoBehaviour
     // Pacify
     private bool isMovementLocked = false;
 
+    // Pet
+    private bool _isPettable = false;
+    private GameObject _pettableEffect;
+
     // Orb count
     private int orbEatenCount = 0;
 
@@ -136,12 +140,12 @@ public class CreatureController : MonoBehaviour
 
     #endregion
 
-    #region Serialized Settings
+    #region  Settings
 
-    [Header("=== Prefabs ===")]
+    [Header("Orb ref")]
     [SerializeField] private OrbComponent OrbPrefab;
 
-    [Header("=== Detection Settings ===")]
+    [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 10f;
     [SerializeField] private float groupAwarenessRadius = 5f;
     [SerializeField] private float eatDistance = 1.5f;
@@ -149,40 +153,40 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private LayerMask creatureLayer;
     [SerializeField] private LayerMask obstacleLayer;
 
-    [Header("=== Movement Settings ===")]
+    [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float minSpeed = 1f;
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float acceleration = 2f;
     [SerializeField] private float rotationSpeed = 5f;
 
-    [Header("=== Obstacle Avoidance ===")]
+    [Header("Obstacle Avoidance")]
     [SerializeField] private bool enableObstacleAvoidance = true;
     [SerializeField] private float avoidanceRadius = 2f;
     [SerializeField] private float avoidanceStrength = 3f;
     [SerializeField] private int avoidanceRayCount = 5;
     [SerializeField] private float avoidanceAngle = 45f;
 
-    [Header("=== Animation Settings ===")]
+    [Header("Animation Settings")]
     [SerializeField] private float bobAmount = 0.08f;
     [SerializeField] private float bobSpeed = 3f;
     [SerializeField] private float tiltAmount = 10f;
     [SerializeField] private float squashStretchAmount = 0.15f;
 
-    [Header("=== Flocking Behavior ===")]
+    [Header("Flocking Behavior")]
     [SerializeField] private float separationDistance = 1.5f;
     [SerializeField] private float separationWeight = 2f;
     [SerializeField] private float alignmentWeight = 1f;
     [SerializeField] private float cohesionWeight = 1f;
 
-    [Header("=== Natural Behavior ===")]
+    [Header("Natural Behavior")]
     [SerializeField] private float idleChance = 0.3f;
     [SerializeField] private float idleDuration = 2f;
     [SerializeField] private float wanderRadius = 8f;
     [SerializeField] private float noiseFrequency = 1f;
     [SerializeField] private float eatDuration = 2f;
 
-    [Header("=== Draining ===")]
+    [Header("Draining")]
     [SerializeField] private bool enableDrain = false;
     [SerializeField] private float lightSourceDetectionRadius = 6f;
     [SerializeField] private float drainDuration = 2;
@@ -191,20 +195,20 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private float excitmentOnLightSourceDetection = 3f;
     [SerializeField] private float postDrainCooldown = 5f;
 
-    [Header("=== Draining Anim ===")]
+    [Header("Draining Anim")]
     [SerializeField] private float drainPusle = 10f;
     [SerializeField] private float drainScaleAmount = 0.2f;
     [SerializeField] private ParticleSystem drainParticles;
 
 
-    [Header("=== Excitement System ===")]
+    [Header("Excitement System")]
     [SerializeField] private float excitementLevel = 0f;
     [SerializeField] private float calmRate = 1f;
     [SerializeField] private float excitementOnOrbSight = 5f;
     [SerializeField] private float maxExcitement = 10f;
     [SerializeField] private float excitementReducerOnGiveUp = 3f;
 
-    [Header("=== Tracking Settings ===")]
+    [Header("Tracking Settings")]
     [SerializeField] private float maxTrackingTime = 10f;
     [SerializeField] private float targetStuckTreshold = 0.5f; // Distance limit before a target is considered stuck
     [SerializeField] private float maxStuckOnTargetDuration = 3f;
@@ -212,10 +216,10 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private bool enableSmartGiveUp = true; // Stop tracking smartly
     [SerializeField][Range(0, 1)] private float homeInfluence = 0.7f;
 
-    [Header("=== Visual Settings ===")]
+    [Header("Visual Settings")]
     [SerializeField] private CreatureVisualProfileSO visualProfile;
 
-    [Header("=== Audio Settings ===")]
+    [Header("Audio Settings")]
     [SerializeField] private AudioClip[] idleSounds;
     [SerializeField] private AudioClip[] excitedSounds;
     [SerializeField] private AudioClip eatSound;
@@ -223,7 +227,7 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private float soundCooldown = 3f;
     private float currentSoundCooldown;
 
-    [Header("=== Effects (Optional) ===")]
+    [Header("Effects")]
     [SerializeField] private ParticleSystem excitementParticles;
     [SerializeField] private ParticleSystem eatingParticles;
     [SerializeField] private ParticleSystem pacifyParticles;
@@ -231,11 +235,15 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Properties
+
     public bool IsPacified => currentState == ECreatureState.Pacified;
     public bool IsBeingPacified => currentState == ECreatureState.Pacifying;
     public bool IsEating => currentState == ECreatureState.Eating;
     public bool IsPetting => IsPacified && currentState == ECreatureState.Petting;
     public bool IsBeingPetted => !IsPacified && currentState == ECreatureState.Petting;
+
+    public bool IsPettable => _isPettable && IsPacified && currentState != ECreatureState.Petting;
+    public bool IsDesignatedPettable => _isPettable;
     public float ExcitementLevel => excitementLevel;
     public Vector3 Velocity => velocity;
 
@@ -321,6 +329,12 @@ public class CreatureController : MonoBehaviour
         OnCreatureMoving?.Invoke(currentSpeed);
         if (_animator != null)
             _animator.SetFloat("speed", currentSpeed);
+    }
+
+    void OnDestroy()
+    {
+        if (_pettableEffect != null)
+            Destroy(_pettableEffect);
     }
 
     #endregion
@@ -1226,6 +1240,29 @@ public class CreatureController : MonoBehaviour
         return separation * separationWeight + alignment * alignmentWeight + cohesion * cohesionWeight;
     }
 
+    public void SetPettable(bool isPettable)
+    {
+        _isPettable = isPettable;
+
+        // Update visual feedback
+        UpdatePettableEffects();
+
+        if (debugMode)
+            Debug.Log($"{name} pettable status set to: {isPettable}");
+    }
+
+    private void UpdatePettableEffects()
+    {
+        // Pettable effect 
+        if (!_isPettable )
+            return;
+
+
+
+    }
+
+
+
     void AlertNearbyCreatures()
     {
         foreach (CreatureController creature in nearbyCreatures)
@@ -1289,6 +1326,7 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Animation
+
     void UpdateAnimation()
     {
         // Bobbing
@@ -1379,6 +1417,16 @@ public class CreatureController : MonoBehaviour
         {
             Debug.LogWarning($"No visual profile assigned to {name}");
             return new CreatureVisualProfileSO.StateProfile();
+        }
+
+        // If pettable and pacified
+        if (_isPettable && IsPacified && currentState != ECreatureState.Petting)
+        {
+            var pettableProfile = visualProfile.PettableProfile;
+            // not enough intensitiy for base color ?
+            //pettableProfile.baseColor *= x;
+
+            return pettableProfile;
         }
 
         float t;
@@ -1669,10 +1717,11 @@ public class CreatureController : MonoBehaviour
                               $"Speed: {currentSpeed:F1}/{velocity.magnitude:F1}\n" +
                               $"Excitement: {excitementLevel:F1}\n" +
                               $"Eaten Orbs: {orbEatenCount}\n" +
+                              $"Pettable: {_isPettable}\n" +
                               $"BehaviorTimer: {behaviorTimer:F1}\n" +
                               $"Target Dist: {(wanderTarget != Vector3.zero ? Vector3.Distance(transform.position, wanderTarget).ToString("F1") : "N/A")}";
 
-            GUI.Label(new Rect(screenPos.x - 50, Screen.height - screenPos.y - 20, 100, 100), debugText);
+            GUI.Label(new Rect(screenPos.x - 50, Screen.height - screenPos.y - 20, 100, 120), debugText);
         }
     }
 

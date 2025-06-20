@@ -1,9 +1,9 @@
-Shader "Custom/FreshCreature"
+Shader "Custom/Creature"
 {
     Properties
     {
         _BaseColor ("Base Color", Color) = (1, 0, 1, 1)
-        _BaseColorMultiplier ("Base Color Multiplier", Range(1, 10)) = 3
+        _BaseColorMultiplier ("Base Color Multiplier", Float) = 3
         _BodyAlpha ("Body Alpha", Range(0, 1)) = 0.8
         
         // Textures
@@ -13,27 +13,27 @@ Shader "Custom/FreshCreature"
         _EyesOffsetX ("Eyes Offset X", Range(-1, 1)) = 0
         _EyesOffsetY ("Eyes Offset Y", Range(-1, 1)) = 0
         _EyesColor ("Eyes Color", Color) = (1, 1, 1, 1)
-        _EyesIntensity ("Eyes Intensity", Range(0, 10)) = 3
-        _EyesEmission ("Eyes Emission", Range(0, 5)) = 2
+        _EyesIntensity ("Eyes Intensity", Float) = 3
+        _EyesEmission ("Eyes Emission", Float) = 2
         
-        // Cœur avec texture
+        // Hearrt
         _HeartTex ("Heart Texture", 2D) = "white" {}
         _HeartCenter ("Heart Center", Vector) = (0, 0, 0, 0)
         _HeartRadius ("Heart Radius", Range(0.1, 2)) = 0.3
         _HeartColor ("Heart Color", Color) = (1, 0.8, 0.2, 1)
-        _HeartIntensity ("Heart Intensity", Range(0, 15)) = 8
+        _HeartIntensity ("Heart Intensity", Float) = 8
         _HeartBeatSpeed ("Heart Beat Speed", Range(0.5, 5)) = 1.5
         
         // Twirl parameters
-        _HeartTwirlSpeed ("Heart Twirl Speed", Range(-5, 5)) = 1.0
+        _HeartTwirlSpeed ("Heart Twirl Speed", Range(-10, 10)) = 1.0
         _HeartTwirlStrength ("Heart Twirl Strength", Float) = 3.0
         _HeartTextureScale ("Heart Texture Scale", Range(0.1, 5)) = 1.0
         _HeartTextureOffset ("Heart Texture Offset", Vector) = (0, 0, 0, 0)
         
         // Rim lighting
-        _RimPower ("Rim Power", Range(1, 8)) = 3
+        _RimPower ("Rim Power", Float) = 3
         _RimColor ("Rim Color", Color) = (1, 1, 1, 1)
-        _RimIntensity ("Rim Intensity", Range(0, 5)) = 2
+        _RimIntensity ("Rim Intensity", Float) = 2
     }
     
     SubShader

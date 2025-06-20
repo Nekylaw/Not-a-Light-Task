@@ -18,7 +18,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     #endregion
 
-    #region Events
+    #region Delegates
 
     public delegate void PickupDelegate(PickableComponent pickableComponent);
     public event PickupDelegate OnPickup = null;
@@ -37,19 +37,13 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     #endregion
 
-    #region Serialized Fields
+    #region Fields
 
     [SerializeField] private PickupSettings _settings;
     [SerializeField] private Transform _orbAttractionPoint;
 
-    #endregion
-
-    #region Private Fields
-
     private OrbContainerComponent _container;
     private readonly List<OrbAttraction> _activeAttractions = new();
-
-
     private bool _isHoldingPickup = false;
 
     #endregion
@@ -85,7 +79,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     #endregion
 
-    #region Attraction Logic
+    #region Public API
 
     public void StartAttracting()
     {
@@ -104,6 +98,10 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
         OnReleasePickup?.Invoke();
     }
+
+    #endregion
+
+    #region Private API
 
     private void DetectOrbs()
     {
