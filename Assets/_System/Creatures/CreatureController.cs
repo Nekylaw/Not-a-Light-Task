@@ -17,7 +17,8 @@ public class CreatureController : MonoBehaviour
         Eating,
         Draining,
         Pacifying,
-        Pacified
+        Pacified,
+        Petting
     }
 
     #endregion
@@ -27,20 +28,24 @@ public class CreatureController : MonoBehaviour
     public delegate void CreatureMoveDelegate(float speed);
     public event CreatureMoveDelegate OnCreatureMoving;
 
+
     public delegate void StartCreatureDrainDelegate();
     public event StartCreatureDrainDelegate OnCreatureDrainingStart;
 
     public delegate void EndCreatureDrainDelegate();
     public event EndCreatureDrainDelegate OnCreatureDrainingEnd;
 
+
     public delegate void CreatureIdleDelegate();
     public event CreatureIdleDelegate OnCreatureIdle;
+
 
     public delegate void StartCreatureEatDelegate();
     public event StartCreatureEatDelegate OnCreatureBeginEat;
 
     public delegate void EndCreatureEatDelegate();
     public event EndCreatureEatDelegate OnCreatureEatEnd;
+
 
     public delegate void StartPacfyDelegate();
     public event StartPacfyDelegate OnPacifyStart;
@@ -50,6 +55,17 @@ public class CreatureController : MonoBehaviour
 
     public delegate void EndPacfyDelegate(bool isCancelled);
     public event EndPacfyDelegate OnPacifyEnd;
+
+
+    public delegate void StartPetDelegate(CreatureController creature);
+    public event StartPetDelegate OnPetStart;
+
+    public delegate void UpdatePetDelegate(float progress);
+    public event UpdatePetDelegate OnPetUpdate;
+
+    public delegate void EndPetDelegate(bool success);
+    public event EndPetDelegate OnPetEnd;
+
 
     #endregion
 
@@ -63,8 +79,9 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private bool debugMode = false;
     [SerializeField] private bool showGizmos = true;
 
-    // Player
+    // Player Behaviors
     private PacifyBehaviourComponent pacifier;
+    private PetBehaviorComponent peter;
 
     // Components
     private Rigidbody rb;
@@ -217,6 +234,8 @@ public class CreatureController : MonoBehaviour
     public bool IsPacified => currentState == ECreatureState.Pacified;
     public bool IsBeingPacified => currentState == ECreatureState.Pacifying;
     public bool IsEating => currentState == ECreatureState.Eating;
+    public bool IsPetting => IsPacified && currentState == ECreatureState.Petting;
+    public bool IsBeingPetted => !IsPacified && currentState == ECreatureState.Petting;
     public float ExcitementLevel => excitementLevel;
     public Vector3 Velocity => velocity;
 
@@ -229,6 +248,7 @@ public class CreatureController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         pacifier = FindFirstObjectByType<PacifyBehaviourComponent>();
+        peter = FindFirstObjectByType<PetBehaviorComponent>();
 
         if (rb != null)
         {
@@ -415,6 +435,14 @@ public class CreatureController : MonoBehaviour
                 if (pacifyParticles != null)
                     pacifyParticles.Play();
                 break;
+
+            case ECreatureState.Petting:
+                OnPetStart?.Invoke(this);
+
+                LockMovement(true);
+                currentSpeed = 0f;
+                velocity = Vector3.zero;
+                break;
         }
     }
 
@@ -454,7 +482,13 @@ public class CreatureController : MonoBehaviour
                 break;
 
             case ECreatureState.Pacifying:
-                ReleaseEatenOrbs();
+                ReleaseOrbs();
+                LockMovement(false);
+                break;
+
+            case ECreatureState.Petting:
+                if (_animator != null)
+                    _animator.SetTrigger("triggerPet");
                 LockMovement(false);
                 break;
         }
@@ -487,13 +521,27 @@ public class CreatureController : MonoBehaviour
             case ECreatureState.Pacified:
                 UpdatePacifiedState(delta);
                 break;
+            case ECreatureState.Petting:
+                UpdatePettingState(delta);
+                break;
         }
+    }
+
+    private void UpdatePettingState(float delta)
+    {
+        velocity = Vector3.zero;
+        currentSpeed = 0f;
+
+        float sway = Mathf.Sin(Time.time * 2f) * 0.05f;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + sway, 0);
+
+        OnPetUpdate?.Invoke(stateTimer / peter.PetDuration);
     }
 
     private void UpdatePacifyingState(float delta)
     {
-        OnPacifyUpdate?.Invoke(stateTimer / pacifier.PacifyDuration);
         LockMovement(true);
+        OnPacifyUpdate?.Invoke(stateTimer / pacifier.PacifyDuration);
     }
 
     private void UpdateDrainingState(float delta)
@@ -910,12 +958,18 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    private void ReleaseEatenOrbs()
+    public void ReleaseOrbs()
     {
         int rnd = Random.Range(0, 5);
         int orbCount = rnd + orbEatenCount;
+        InternalReleaseOrbs(orbCount);
+    }
 
-        for (int i = 0; i < orbCount; i++)
+    public void ReleaseOrbs(int orbsCount) => InternalReleaseOrbs(orbsCount);
+
+    private void InternalReleaseOrbs(int count)
+    {
+        for (int i = 0; i < count; i++)
         {
             var rendDir = Random.insideUnitSphere;
             Vector3 rejectDir = new Vector3(rendDir.x, Mathf.Max(0.5f, rendDir.y), rendDir.z);
@@ -1080,7 +1134,7 @@ public class CreatureController : MonoBehaviour
 
     void CheckIfStuck()
     {
-        if (isMovementLocked || currentState == ECreatureState.Pacifying)
+        if (isMovementLocked || currentState == ECreatureState.Pacifying || currentState == ECreatureState.Petting)
         {
             creatureStuckTimer = 0f;
             return;
@@ -1348,7 +1402,6 @@ public class CreatureController : MonoBehaviour
                 );
 
             case ECreatureState.Seeking:
-                // Blend between normal and excited based on excitement level
                 t = excitementLevel / maxExcitement;
                 return CreatureVisualProfileSO.StateProfile.Lerp(
                     visualProfile.NormalProfile,
@@ -1357,7 +1410,17 @@ public class CreatureController : MonoBehaviour
                 );
 
             case ECreatureState.Idle:
+
             case ECreatureState.Wandering:
+                return visualProfile.NormalProfile;
+
+            case ECreatureState.Petting:
+                t = stateTimer / peter.PetDuration;
+                return CreatureVisualProfileSO.StateProfile.Lerp(
+                    visualProfile.PacifiedProfile,
+                    visualProfile.PetProfile,
+                    t
+                    );
             default:
                 if (excitementLevel > 0)
                 {
@@ -1431,6 +1494,18 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Public API
+
+    public void CompletePet()
+    {
+        if (currentState != ECreatureState.Petting)
+            return;
+
+        int orbsCount = 1;
+        ReleaseOrbs(orbsCount);
+
+        OnPetEnd?.Invoke(true);
+        ChangeState(ECreatureState.Pacified);
+    }
 
     public void CompletePacify()
     {
@@ -1521,6 +1596,7 @@ public class CreatureController : MonoBehaviour
 
         transform.localScale = originalScale;
     }
+
     #endregion
 
     #region Gizmos

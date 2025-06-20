@@ -129,7 +129,8 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Jump.started += HandleJumpInput;
 
-        _gameInputs.Player.Pet.performed += HandlePetInput;
+        _gameInputs.Player.Pet.started += HandlePetInput;
+        _gameInputs.Player.Pet.canceled += HandlePetInput;
     }
 
     private void UnBindInputs()
@@ -155,8 +156,8 @@ public class PlayerController : MonoBehaviour
 
         _gameInputs.Player.Jump.started -= HandleJumpInput;
 
-        _gameInputs.Player.Pet.performed -= HandlePetInput;
-
+        _gameInputs.Player.Pet.started -= HandlePetInput;
+        _gameInputs.Player.Pet.canceled -= HandlePetInput;
     }
 
     private void UpdateMovement(float delta)
@@ -234,14 +235,16 @@ public class PlayerController : MonoBehaviour
 
         if (context.canceled)
             _pacify.StopPacify();
+
     }
 
     private void HandlePetInput(InputAction.CallbackContext context)
     {
-        if (context.performed && _pet._canPet)
-        {
-            _pet.PetTheCreature();
-        }
+        if (context.started)
+            _pet.Pet();
+
+        if (context.canceled)
+            _pet.StopPet();
     }
 
     private void HandleJumpInput(InputAction.CallbackContext context)

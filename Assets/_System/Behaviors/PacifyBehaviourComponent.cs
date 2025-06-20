@@ -2,10 +2,6 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
-using static PacifyBehaviourComponent;
-using System;
-using System.Diagnostics;
-using UnityEngine.UIElements;
 
 public class PacifyBehaviourComponent : MonoBehaviour
 {
@@ -67,7 +63,6 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     // State
     private bool _isPacifyPerforming = false;
-    private bool _canPacify = false;
     private bool _canceled = false;
     private List<CreatureController> _creaturesInRange = new();
     private List<CreatureController> _targetCreatures = new();
@@ -85,8 +80,8 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     public float PacifyDuration => _pacifyDuration;
 
+    #region Lifecycle
 
-    #region Unity Lifecycle
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -111,7 +106,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
     #endregion
 
-    #region Public Methods
+    #region Public API
 
     public bool Pacify()
     {
@@ -141,7 +136,7 @@ public class PacifyBehaviourComponent : MonoBehaviour
 
         foreach (var creature in _creaturesInRange)
         {
-            if (creature != null && !creature.IsPacified && !creature.IsBeingPacified && creature.CurrentState != CreatureController.ECreatureState.Eating)
+            if (creature != null && !creature.IsPetting && !creature.IsPacified && !creature.IsBeingPacified && creature.CurrentState != CreatureController.ECreatureState.Eating)
             {
                 validTargets.Add(creature);
             }
@@ -173,9 +168,10 @@ public class PacifyBehaviourComponent : MonoBehaviour
         CancelPacify();
         return true;
     }
+
     #endregion
 
-    #region Private Methods
+    #region Private API
 
     private void CancelPacify()
     {
@@ -375,7 +371,6 @@ public class PacifyBehaviourComponent : MonoBehaviour
             state.Rigidbody.angularVelocity = Vector3.zero;
         }
     }
-
     private void RestoreCreatureState(CreatureController creature)
     {
         if (creature == null || _originalStates.ContainsKey(creature))

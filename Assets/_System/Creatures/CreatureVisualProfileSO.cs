@@ -76,6 +76,19 @@ public class CreatureVisualProfileSO : ScriptableObject
         heartBeatExcitedSpeed = 2f
     };
 
+    public StateProfile PetProfile = new StateProfile
+    {
+        baseColor = new Color(0.8f, 0.2f, 0.5f),
+        rimColor = new Color(0.1f, 1f, 0.7f),
+        rimIntensity = 2f,
+        eyesColor = new Color(0.5f, 1f, 0.7f),
+        eyesIntensity = 3f,
+        heartColor = new Color(0.4f, 1f, 0.6f),
+        heartIntensity = 6f,
+        heartBeatBaseSpeed = 1f,
+        heartBeatExcitedSpeed = 2f
+    };
+
     [System.Serializable]
     public struct StateProfile
     {
