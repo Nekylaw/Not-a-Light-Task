@@ -65,6 +65,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
+  _baseColor: {r: 0, g: 0, b: 0, a: 0}
+  _glowColor: {r: 0, g: 0, b: 0, a: 0}
   _radius: 2.5
   _orbitSpeed: 65
   _verticalAmplitude: 0.15
@@ -309,6 +311,10 @@ PrefabInstance:
     - target: {fileID: 2531859623053462652, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8399345431410930549, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
       propertyPath: m_Mesh

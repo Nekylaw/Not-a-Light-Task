@@ -93,6 +93,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3213081892976627938}
     m_Modifications:
+    - target: {fileID: 150728982981063245, guid: c741fb6ee32721d4ba0721b2e60c2675, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 33231a3d37f7b524aa6922ec3438b75d, type: 2}
     - target: {fileID: 1012752532030342219, guid: c741fb6ee32721d4ba0721b2e60c2675, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -141,6 +145,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: portal grillage
       objectReference: {fileID: 0}
+    - target: {fileID: 7212379339140686108, guid: c741fb6ee32721d4ba0721b2e60c2675, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 33231a3d37f7b524aa6922ec3438b75d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

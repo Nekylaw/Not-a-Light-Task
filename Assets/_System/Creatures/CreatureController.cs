@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Game.Services.CullingService;
 using Game.Services.LightSources;
 using Random = UnityEngine.Random;
@@ -1273,7 +1274,7 @@ public class CreatureController : MonoBehaviour, ICullable
         if (!_isPettable )
             return;
 
-
+        transform.DOScale(2f, 1.5f);
 
     }
 
@@ -1359,25 +1360,28 @@ public class CreatureController : MonoBehaviour, ICullable
             Vector3.SignedAngle(transform.forward, velocity.normalized, Vector3.up) * -0.5f : 0f;
         tilt = Mathf.Clamp(tilt, -tiltAmount, tiltAmount);
 
-        // Apply transformations
-        if (currentState != ECreatureState.Eating)
+        if (!_isPettable)
         {
-            transform.localScale = new Vector3(
-                originalScale.x * squash,
-                originalScale.y * stretch,
-                originalScale.z * squash
-            );
-        }
+            // Apply transformations
+            if (currentState != ECreatureState.Eating)
+            {
+                transform.localScale = new Vector3(
+                    originalScale.x * squash,
+                    originalScale.y * stretch,
+                    originalScale.z * squash
+                );
+            }
 
 
-        if (currentState != ECreatureState.Eating)
-        {
-            float bobScale = 1f + bobOffset * 0.5f;
-            transform.localScale = new Vector3(
-                originalScale.x * squash,
-                originalScale.y * stretch * bobScale,
-                originalScale.z * squash
-            );
+            if (currentState != ECreatureState.Eating)
+            {
+                float bobScale = 1f + bobOffset * 0.5f;
+                transform.localScale = new Vector3(
+                    originalScale.x * squash,
+                    originalScale.y * stretch * bobScale,
+                    originalScale.z * squash
+                );
+            }
         }
 
         // Tilt rotation

@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: _glowAnimAmplitude
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8356445764487826935, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 9170693979604020384, guid: 14368a797fb504e3b915315d7476e4fc, type: 3}
       propertyPath: m_Name
       value: Light
@@ -284,6 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
+  _baseColor: {r: 0, g: 0, b: 0, a: 0}
+  _glowColor: {r: 0, g: 0, b: 0, a: 0}
   _radius: 1.2
   _orbitSpeed: 75
   _verticalAmplitude: 0.15
