@@ -346,6 +346,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _pacifyMode: 1
+  _zoneAngle: 70
+  _zoneRadius: 15
+  _maxPacifiedCreature: 5
   _pacifyParticles: {fileID: 0}
   _pacifyStartSound: {fileID: 0}
   _pacifyCompleteSound: {fileID: 0}
@@ -362,8 +366,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da101a0a7ef51643b8d8b95cc4a6eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PetUI: {fileID: 0}
-  _canPet: 0
+  _radius: 40
+  _creatureLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  _petDuration: 2
+  _petCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _pettableCheckInterval: 15
+  _minPacifiedCreaturesRequired: 2
+  _pettableSearchRadius: 20
+  _petAnimationScale: 1.5
+  _petAnimationSpeed: 3
+  _petParticles: {fileID: 0}
+  _pettableIndicatorPrefab: {fileID: 0}
+  _debugMode: 0
+  _showGizmos: 1
 --- !u!1 &1611587026064609485
 GameObject:
   m_ObjectHideFlags: 0
