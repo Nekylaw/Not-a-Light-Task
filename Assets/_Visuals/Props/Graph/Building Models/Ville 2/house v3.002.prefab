@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 15e4c1fb1b4294d4dba61b0007149aee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1225289835563276171}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 15e4c1fb1b4294d4dba61b0007149aee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4981597843172560994}
   m_SourcePrefab: {fileID: 100100000, guid: 15e4c1fb1b4294d4dba61b0007149aee, type: 3}
 --- !u!1 &468832839418306029 stripped
 GameObject:
@@ -102,3 +105,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _materialLight: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
+--- !u!114 &-4981597843172560994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468832839418306029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visibleIfLightOff: 1
+  _baseColor: {r: 0.043137252, g: 0.58776945, b: 1, a: 1}
+  _glowColor: {r: 0.2216981, g: 1, b: 0.98459893, a: 1}
+  _baseIntensity: 1.5
+  _glowIntensity: 1
+  _glowAnimSpeed: 0.5
+  _glowAnimAmplitude: 3
+  _glowRadius: 3
+  _visibilityDistance: 1000
+  _maxScreenDist: 1
+  _fadeSpeed: 3
