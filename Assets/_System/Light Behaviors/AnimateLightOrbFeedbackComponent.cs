@@ -2,7 +2,7 @@ using UnityEngine;
 using Game.Services.LightSources;
 using System.Collections.Generic;
 using System.Collections;
-using DG.Tweening; 
+using DG.Tweening;
 
 public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 {
@@ -11,7 +11,11 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 
     private LightSourceComponent _lightSource;
     private int _remainingOrbs = 0;
-
+    
+    [Header ("Colors")]
+    public Color _baseColor;
+    public Color _glowColor;
+    
     [Header("Orbit Settings")]
     public float _radius = 1f;
     public float _orbitSpeed = 5f;
@@ -78,6 +82,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
         {
             var orb = GameObject.Instantiate<GameObject>(_orbParticuleFeedbackPrefab);
             orb.transform.SetParent(transform);
+            
+            orb.GetComponent<PropLightRendererComponent>().SetColor(_baseColor, _glowColor);
 
             float angle = i * (360f / _remainingOrbs);
 
@@ -112,8 +118,11 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 
             _orbParticuleList.Add(orb);
 
+            
             yield return new WaitForSeconds(_spawnDelay);
         }
+        
+        
 
         _spawnCoroutine = null;
     }

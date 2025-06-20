@@ -92,4 +92,10 @@ public class PropLightRendererComponent : MonoBehaviour
 
         _renderer.SetPropertyBlock(_mpb);
     }
+
+    public void SetColor(Color baseColor, Color glowColor)
+    {
+        _baseColor = baseColor;
+        _glowColor = glowColor;
+    }
 }

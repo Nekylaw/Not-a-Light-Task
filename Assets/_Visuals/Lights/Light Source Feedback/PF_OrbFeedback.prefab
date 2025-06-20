@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 8437062752422716257}
   - component: {fileID: 6971646851651298968}
   - component: {fileID: 2784570378309265995}
+  - component: {fileID: 2255658756089172508}
   m_Layer: 0
   m_Name: PF_OrbFeedback
   m_TagString: Untagged
@@ -5143,3 +5144,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadeDuration: 1.5
+--- !u!114 &2255658756089172508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8801202460656879023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visibleIfLightOff: 1
+  _baseColor: {r: 1, g: 1, b: 1, a: 1}
+  _glowColor: {r: 1, g: 1, b: 1, a: 1}
+  _baseIntensity: 1.5
+  _glowIntensity: 1
+  _glowAnimSpeed: 1.5
+  _glowAnimAmplitude: 0.5
+  _glowRadius: 3
+  _visibilityDistance: 1000
+  _maxScreenDist: 1
+  _fadeSpeed: 3
