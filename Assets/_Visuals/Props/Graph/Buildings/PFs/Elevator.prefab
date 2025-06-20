@@ -278,6 +278,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -4973734387028869240, guid: 3ce8f2e91b3104aaa8bc169329a2447f, type: 3}
     - target: {fileID: 439585246836936496, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e5d0e8889dbe8414789c105cf3ef1f9b, type: 2}
+    - target: {fileID: 439585246836936496, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
@@ -556,7 +560,7 @@ MonoBehaviour:
   _visibleIfLightOff: 1
   _baseColor: {r: 1, g: 0, b: 0, a: 1}
   _glowColor: {r: 0.6509434, g: 0, b: 0, a: 1}
-  _baseIntensity: 1.5
+  _baseIntensity: 1
   _glowIntensity: 2
   _glowAnimSpeed: 1.5
   _glowAnimAmplitude: 1

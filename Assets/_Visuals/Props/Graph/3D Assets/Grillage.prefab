@@ -51,6 +51,8 @@ MonoBehaviour:
   panelGauche: {fileID: 9161591787285559209}
   charniereDroite: {fileID: 1746360424084483934}
   charniereGauche: {fileID: 7449507593516510841}
+  vecDroit: {x: 0, y: 0, z: 70}
+  vecGauche: {x: 0, y: 0, z: -70}
   duration: 0
 --- !u!1 &2734295858735229934
 GameObject:
@@ -91,6 +93,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3213081892976627938}
     m_Modifications:
+    - target: {fileID: 1012752532030342219, guid: c741fb6ee32721d4ba0721b2e60c2675, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd08c57facbadb7488b50f2b4b54a936, type: 2}
     - target: {fileID: 6161990417258197519, guid: c741fb6ee32721d4ba0721b2e60c2675, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.3099976
