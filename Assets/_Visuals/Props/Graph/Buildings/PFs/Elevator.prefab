@@ -72,6 +72,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   activator: {fileID: 0}
+  orb: {fileID: 0}
+  rejectPosition: {fileID: 0}
+  RejectForce: 0
   isPlayerIn: 0
 --- !u!1 &4199483590626218276
 GameObject:
@@ -218,6 +221,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9153843844995756472, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e5d0e8889dbe8414789c105cf3ef1f9b, type: 2}
+    - target: {fileID: -9153843844995756472, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e5d0e8889dbe8414789c105cf3ef1f9b, type: 2}
+    - target: {fileID: -9153843844995756472, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
     - target: {fileID: -8679921383154817045, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -101.35
@@ -258,6 +273,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 439585246836936496, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -4973734387028869240, guid: 3ce8f2e91b3104aaa8bc169329a2447f, type: 3}
+    - target: {fileID: 439585246836936496, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 21a26e745b704e44f81ddf8ffd02b096, type: 2}
     - target: {fileID: 919132149155446097, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       propertyPath: m_Name
       value: Elevator
@@ -293,12 +316,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4097834336297889281, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3836693180433921944}
+    - targetCorrespondingSourceObject: {fileID: -4097834336297889281, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1871077652129805675}
     - targetCorrespondingSourceObject: {fileID: -8825173602714364784, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1425808451584046427}
     - targetCorrespondingSourceObject: {fileID: -8825173602714364784, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8501914161058818721}
+    - targetCorrespondingSourceObject: {fileID: -8825173602714364784, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6081554556193758507}
   m_SourcePrefab: {fileID: 100100000, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
 --- !u!1 &625168200238536677 stripped
 GameObject:
@@ -368,6 +397,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.2113853, y: 1.2784176, z: 3.765421}
   m_Center: {x: -0.007044752, y: 5.1908693, z: 0.16772509}
+--- !u!114 &1871077652129805675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625168200238536677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visibleIfLightOff: 1
+  _baseColor: {r: 1, g: 0, b: 0, a: 1}
+  _glowColor: {r: 0.6509434, g: 0, b: 0, a: 1}
+  _baseIntensity: 1.5
+  _glowIntensity: 2
+  _glowAnimSpeed: 1.5
+  _glowAnimAmplitude: 1
+  _glowRadius: 3
+  _visibilityDistance: 1000
+  _maxScreenDist: 1
+  _fadeSpeed: 3
 --- !u!4 &3904443878596845955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -458305794812614759, guid: 49578bb87cf864d4e8f55fcbab733fc0, type: 3}
@@ -439,6 +491,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   activator: {fileID: 8501914161058818721}
+  orb: {fileID: 0}
+  rejectPosition: {fileID: 0}
+  RejectForce: 0
   isPlayerIn: 0
 --- !u!4 &5189874339423134193 stripped
 Transform:
@@ -486,3 +541,26 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: c45cbe0f3ceb59f4ea3527597c7eda9f, type: 2}
   _lightPoint: {fileID: 1285316439082563313}
   LightGroupId: 0
+--- !u!114 &6081554556193758507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335135077876109962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3aea5203b0c43448c145ad6f96ca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visibleIfLightOff: 1
+  _baseColor: {r: 1, g: 0, b: 0, a: 1}
+  _glowColor: {r: 0.6509434, g: 0, b: 0, a: 1}
+  _baseIntensity: 1.5
+  _glowIntensity: 2
+  _glowAnimSpeed: 1.5
+  _glowAnimAmplitude: 1
+  _glowRadius: 3
+  _visibilityDistance: 1000
+  _maxScreenDist: 1
+  _fadeSpeed: 3
