@@ -42,6 +42,7 @@ namespace Game.Scenes
 
         public const string PersistentSceneName = "SC_Persistent"; // _Scenes/SC_Persistent
         public const string GameSceneName = "SC_Game"; // _Scenes/SC_Game
+        public const string RendererSceneName = "SC_Rendering"; // _Scenes/SC_Rendering
 
         public event StartLoadingSceneDelegate OnBeginNavigation;
         public event EndLoadingDelegate OnEndNavigation;
@@ -69,6 +70,7 @@ namespace Game.Scenes
             Debug.Log("_sceneLoaderComponent in Service found? " + (SceneLoader != null));
             Debug.Log("Scene to load " + scene);
             SceneLoader.LoadScene(scene);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
             OnBeginNavigation?.Invoke(scene, SceneManager.GetActiveScene().name == scene ? null : new string[] { SceneManager.GetActiveScene().name });
 
             Debug.Log("Load scene:" + scene);

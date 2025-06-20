@@ -92,16 +92,16 @@ namespace Game.Services.CullingService
 
         public void Register(ICullable cullable)
         {
-            switch (cullable.Mode)
+            switch (cullable.CullMode)
             {
-                case ICullable.CullMode.Frustum:
+                case ICullable.ECullMode.Frustum:
                     if (_frustumCullables.Contains(cullable)) return;
                     cullable.CullableIndex = _frustumCullables.Count;
                     _frustumCullables.Add(cullable);
                     UpdateBoundingSpheres();
                     break;
 
-                case ICullable.CullMode.Range:
+                case ICullable.ECullMode.Range:
                     if (_rangeCullables.Contains(cullable)) return;
                     _rangeCullables.Add(cullable);
                     break;
@@ -110,14 +110,14 @@ namespace Game.Services.CullingService
 
         public void Unregister(ICullable cullable)
         {
-            switch (cullable.Mode)
+            switch (cullable.CullMode)
             {
-                case ICullable.CullMode.Frustum:
+                case ICullable.ECullMode.Frustum:
                     if (_frustumCullables.Remove(cullable))
                         UpdateBoundingSpheres();
                     break;
 
-                case ICullable.CullMode.Range:
+                case ICullable.ECullMode.Range:
                     _rangeCullables.Remove(cullable);
                     break;
             }
@@ -130,6 +130,8 @@ namespace Game.Services.CullingService
             for (int i = 0; i < _frustumCullables.Count; i++)
             {
                 var cullable = _frustumCullables[i];
+                if (cullable == null)
+                    continue;
                 cullable.CullableIndex = i;
                 _spheres[i] = new BoundingSphere(cullable.GetCullPosition(), cullable.GetCullRadius());
             }

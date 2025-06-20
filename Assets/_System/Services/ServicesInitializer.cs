@@ -130,7 +130,8 @@ public class ServicesInitializer : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         // If all services are initialized
-        SceneLoadingService.Instance.LoadScene(SceneLoadingService.GameSceneName);
+        //SceneLoadingService.Instance.LoadScene(SceneLoadingService.GameSceneName);
+        SceneLoadingService.Instance.LoadScene(SceneLoadingService.RendererSceneName);
     }
 
     private IEnumerator InitializeServiceCoroutine(Service service)

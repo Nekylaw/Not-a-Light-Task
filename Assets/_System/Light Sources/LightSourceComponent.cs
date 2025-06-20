@@ -1,8 +1,5 @@
-using System;
 using _System.Game_Manager;
-using Unity.VisualScripting;
 using UnityEngine;
-using Game.Services.CullingService;
 using UnityEngine.VFX;
 
 namespace Game.Services.LightSources
@@ -48,7 +45,7 @@ namespace Game.Services.LightSources
 
         private void Start()
         {
-            Mode = ICullable.CullMode.Frustum;
+            CullMode = ICullable.ECullMode.Frustum;
             CullRange = 7f;
             _orbSlot = 0;
             if (_particleSystem != null)
@@ -61,6 +58,7 @@ namespace Game.Services.LightSources
         {
             if (isCulled)
                 return;
+
             DetectOrb();
         }
 
@@ -68,8 +66,16 @@ namespace Game.Services.LightSources
         {
             _lightService = LightSourcesService.Instance;
             Register();
+
+
+            // found cull service
+            if (CullingService.CullingService.Instance == null)
+            {
+                Debug.LogError("CullingService not found. Please ensure it is initialized before using LightSourceComponent.");
+                return;
+            }
             CullingService.CullingService.Instance.Register(this);
-     
+
         }
 
         private void OnDisable()
@@ -201,13 +207,13 @@ namespace Game.Services.LightSources
                 {
                     script.LightBuilding();
                 }
-                
+
                 var script2 = building.gameObject.GetComponent<EnlightTower>();
                 if (script2 != null)
                 {
                     script2.LightTower();
                 }
-                
+
             }
         }
 
@@ -227,14 +233,15 @@ namespace Game.Services.LightSources
 
         #endregion
 
+
         #region CULL
 
-        public ICullable.CullMode Mode { get; set; }
+        public ICullable.ECullMode CullMode { get; set; }
         public float CullRange { get; set; }
         public int CullableIndex { get; set; }
 
         private bool isCulled;
-        
+
         public void OnBecomeVisible()
         {
             isCulled = false;
@@ -247,7 +254,7 @@ namespace Game.Services.LightSources
         public void OnBecomeInvisible()
         {
             isCulled = true;
-            if (ownParticlesVFX !=null && _isLightOn)
+            if (ownParticlesVFX != null && _isLightOn)
                 ownParticlesVFX.enabled = false;
             if (_particleSystem != null && _isLightOn)
                 _particleSystem.gameObject.SetActive(false);

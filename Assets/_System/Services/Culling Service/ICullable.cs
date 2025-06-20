@@ -2,15 +2,15 @@ using UnityEngine;
 
 public interface ICullable
 {
-    enum CullMode
+    enum ECullMode
     {
-        Frustum,     
-        Range      
+        Frustum,
+        Range
     }
 
-    CullMode Mode { get; }
+    ECullMode CullMode { get; }
 
-    float CullRange { get; } 
+    float CullRange { get; }
 
     int CullableIndex { get; set; }
 

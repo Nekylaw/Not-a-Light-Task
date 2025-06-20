@@ -291,8 +291,9 @@ public class CreatureController : MonoBehaviour, ICullable
 
     void Start()
     {
-        Mode = ICullable.CullMode.Range;
+        CullMode = ICullable.ECullMode.Range;
         CullRange = 50f;
+
         startPosition = transform.position;
         lastPositionCheck = transform.position;
         SetNewWanderTarget();
@@ -305,6 +306,9 @@ public class CreatureController : MonoBehaviour, ICullable
 
         if (drainCooldownTimer > 0)
             drainCooldownTimer -= delta;
+
+        if (_isCulled)
+            return;
 
         UpdateNearbyCreatures();
         UpdateExcitement(delta);
@@ -319,10 +323,11 @@ public class CreatureController : MonoBehaviour, ICullable
 
     void FixedUpdate()
     {
-        if (rb != null && rb.isKinematic)
-        {
+        if (_isCulled)
             return;
-        }
+
+        if (rb != null && rb.isKinematic)
+            return;
 
         if (isMovementLocked || velocity.magnitude <= 0.01f)
         {
@@ -513,7 +518,6 @@ public class CreatureController : MonoBehaviour, ICullable
                 break;
 
             case ECreatureState.Pacifying:
-                ReleaseOrbs();
                 LockMovement(false);
                 break;
 
@@ -532,7 +536,7 @@ public class CreatureController : MonoBehaviour, ICullable
         switch (currentState)
         {
             case ECreatureState.Idle:
-                UpdateIdleState();
+                UpdateIdleState(delta);
                 break;
             case ECreatureState.Wandering:
                 UpdateWanderingState(delta);
@@ -678,7 +682,7 @@ public class CreatureController : MonoBehaviour, ICullable
 
     #region State Behaviors
 
-    void UpdateIdleState()
+    void UpdateIdleState(float delta)
     {
         // Idle animation
         transform.rotation *= Quaternion.Euler(0, Mathf.Sin(Time.time * 2f) * 0.5f, 0);
@@ -1271,7 +1275,7 @@ public class CreatureController : MonoBehaviour, ICullable
     private void UpdatePettableEffects()
     {
         // Pettable effect 
-        if (!_isPettable )
+        if (!_isPettable)
             return;
 
         transform.DOScale(2f, 1.5f);
@@ -1548,16 +1552,14 @@ public class CreatureController : MonoBehaviour, ICullable
 
     void UpdateParticles()
     {
-        if (excitementParticles != null)
-        {
-            var emission = excitementParticles.emission;
-            emission.enabled = excitementLevel > maxExcitement * 0.5f && !IsPacified;
+        if (excitementParticles == null)
+            return;
 
-            if (emission.enabled)
-            {
-                emission.rateOverTime = Mathf.Lerp(5f, 20f, (excitementLevel - 5f) / 5f);
-            }
-        }
+        var emission = excitementParticles.emission;
+        emission.enabled = excitementLevel > maxExcitement * 0.5f && !IsPacified;
+
+        if (emission.enabled)
+            emission.rateOverTime = Mathf.Lerp(5f, 20f, (excitementLevel - 5f) / 5f);
     }
     #endregion
 
@@ -1575,14 +1577,20 @@ public class CreatureController : MonoBehaviour, ICullable
         ChangeState(ECreatureState.Pacified);
     }
 
-    public void CompletePacify()
+    public void CompletePacify(bool success)
     {
-        if (currentState != ECreatureState.Pacified)
-        {
-            ChangeState(ECreatureState.Pacified);
-        }
+        if (currentState != ECreatureState.Pacifying)
+            return;
 
-        OnPacifyEnd?.Invoke(false);
+        if (success && currentState != ECreatureState.Pacified)
+            ChangeState(ECreatureState.Pacified);
+        else
+            ChangeState(ECreatureState.Wandering);
+
+        if (success)
+            ReleaseOrbs();
+
+        OnPacifyEnd?.Invoke(success);
     }
 
     public void ForceChangeTarget(Transform newTarget)
@@ -1748,21 +1756,29 @@ public class CreatureController : MonoBehaviour, ICullable
     #endregion
 
 
-    #region CULL
+    #region Cull
 
-    public ICullable.CullMode Mode { get; set; }
+    public ICullable.ECullMode CullMode { get; set; }
     public float CullRange { get; set; }
     public int CullableIndex { get; set; }
 
-    private bool isCulled;
+    private bool _isCulled;
     public void OnBecomeVisible()
     {
-        isCulled = false;
+        _isCulled = false;
+
+        if (excitementParticles != null && !excitementParticles.isPlaying)
+            excitementParticles.Play();
     }
 
     public void OnBecomeInvisible()
     {
-        isCulled = true;
+        _isCulled = true;
+
+        Debug.Log($"{name} has been culled");
+
+        if (excitementParticles != null && !excitementParticles.isStopped)
+            excitementParticles.Stop();
     }
 
     public Vector3 GetCullPosition()

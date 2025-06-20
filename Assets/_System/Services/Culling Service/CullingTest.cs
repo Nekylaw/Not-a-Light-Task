@@ -4,7 +4,7 @@ using UnityEngine;
 public class CullerTest : MonoBehaviour, ICullable
 {
     [SerializeField]
-    private ICullable.CullMode _mode;
+    private ICullable.ECullMode _mode;
 
     [SerializeField]
     private float _cullRange = 0f;
@@ -13,7 +13,7 @@ public class CullerTest : MonoBehaviour, ICullable
     private float _cullRadius = 0f;
 
     public float CullRange => _cullRange;
-    public ICullable.CullMode Mode => _mode;
+    public ICullable.ECullMode CullMode => _mode;
     public int CullableIndex { get; set; }
 
     public void OnEnable()

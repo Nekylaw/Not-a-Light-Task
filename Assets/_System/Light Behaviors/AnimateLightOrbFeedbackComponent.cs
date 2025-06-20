@@ -63,8 +63,9 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
 
     void Start()
     {
-        Mode = ICullable.CullMode.Frustum;
+        CullMode = ICullable.ECullMode.Frustum;
         CullRange = 7f;
+
         InitRequiredOrbs();
     }
 
@@ -279,7 +280,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     }
     #region CULL
 
-    public ICullable.CullMode Mode { get; set; }
+    public ICullable.ECullMode CullMode { get; set; }
     public float CullRange { get; set; }
     public int CullableIndex { get; set; }
 
