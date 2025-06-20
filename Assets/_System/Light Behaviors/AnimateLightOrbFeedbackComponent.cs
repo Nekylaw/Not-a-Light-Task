@@ -3,8 +3,9 @@ using Game.Services.LightSources;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
+using Game.Services.CullingService;
 
-public class AnimateLightOrbFeedbackComponent : MonoBehaviour
+public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
 {
     [SerializeField]
     private GameObject _orbParticuleFeedbackPrefab = null;
@@ -46,10 +47,13 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
     {
         LightSourcesService.Instance.OnTriggerLight += HandleTriggerLight;
         LightSourcesService.Instance.OnSwitchOffLight += HandleLightOff;
+        
+        CullingService.Instance.Register(this);
     }
 
     private void OnDisable()
     {
+        CullingService.Instance.Unregister(this);
         LightSourcesService.Instance.OnTriggerLight -= HandleTriggerLight;
         LightSourcesService.Instance.OnSwitchOffLight -= HandleLightOff;
 
@@ -59,6 +63,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 
     void Start()
     {
+        Mode = ICullable.CullMode.Frustum;
+        CullRange = 7f;
         InitRequiredOrbs();
     }
 
@@ -142,6 +148,9 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
 
     void Update()
     {
+        if (isCulled)
+            return;
+        
         if (!isLightOn && _spawnCoroutine == null) 
         {
             AnimateOrbits();
@@ -268,4 +277,33 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour
             }
         }
     }
+    #region CULL
+
+    public ICullable.CullMode Mode { get; set; }
+    public float CullRange { get; set; }
+    public int CullableIndex { get; set; }
+
+    private bool isCulled = false;
+
+    public void OnBecomeVisible()
+    {
+        isCulled = false;
+    }
+
+    public void OnBecomeInvisible()
+    {
+        isCulled = true;
+    }
+
+    public Vector3 GetCullPosition()
+    {
+        return transform.position;
+    }
+
+    public float GetCullRadius()
+    {
+        return CullRange;
+    }
+
+    #endregion
 }

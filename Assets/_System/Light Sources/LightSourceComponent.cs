@@ -1,12 +1,14 @@
+using System;
 using _System.Game_Manager;
 using Unity.VisualScripting;
 using UnityEngine;
+using Game.Services.CullingService;
 using UnityEngine.VFX;
 
 namespace Game.Services.LightSources
 {
     [System.Serializable]
-    public class LightSourceComponent : MonoBehaviour
+    public class LightSourceComponent : MonoBehaviour, ICullable
     {
 
         #region Fields
@@ -46,6 +48,8 @@ namespace Game.Services.LightSources
 
         private void Start()
         {
+            Mode = ICullable.CullMode.Frustum;
+            CullRange = 7f;
             _orbSlot = 0;
             if (_particleSystem != null)
                 _particleSystem.gameObject.SetActive(false);
@@ -55,6 +59,8 @@ namespace Game.Services.LightSources
 
         private void Update()
         {
+            if (isCulled)
+                return;
             DetectOrb();
         }
 
@@ -62,10 +68,13 @@ namespace Game.Services.LightSources
         {
             _lightService = LightSourcesService.Instance;
             Register();
+            CullingService.CullingService.Instance.Register(this);
+     
         }
 
         private void OnDisable()
         {
+            CullingService.CullingService.Instance.Unregister(this);
             Unregister();
         }
 
@@ -218,5 +227,42 @@ namespace Game.Services.LightSources
 
         #endregion
 
+        #region CULL
+
+        public ICullable.CullMode Mode { get; set; }
+        public float CullRange { get; set; }
+        public int CullableIndex { get; set; }
+
+        private bool isCulled;
+        
+        public void OnBecomeVisible()
+        {
+            isCulled = false;
+            if (ownParticlesVFX != null && _isLightOn)
+                ownParticlesVFX.enabled = true;
+            if (_particleSystem != null && _particleSystem.isPlaying)
+                _particleSystem.gameObject.SetActive(true);
+        }
+
+        public void OnBecomeInvisible()
+        {
+            isCulled = true;
+            if (ownParticlesVFX !=null && _isLightOn)
+                ownParticlesVFX.enabled = false;
+            if (_particleSystem != null && _isLightOn)
+                _particleSystem.gameObject.SetActive(false);
+        }
+
+        public Vector3 GetCullPosition()
+        {
+            return transform.position;
+        }
+
+        public float GetCullRadius()
+        {
+            return CullRange;
+        }
+
+        #endregion
     }
 }

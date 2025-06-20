@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Services.CullingService;
 using Game.Services.LightSources;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
-public class CreatureController : MonoBehaviour
+public class CreatureController : MonoBehaviour, ICullable
 {
     #region Enums and States
 
@@ -250,6 +253,17 @@ public class CreatureController : MonoBehaviour
     #endregion
 
     #region Lifecycle
+
+    private void OnEnable()
+    {
+        CullingService.Instance.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        CullingService.Instance.Unregister(this);
+    }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -276,6 +290,8 @@ public class CreatureController : MonoBehaviour
 
     void Start()
     {
+        Mode = ICullable.CullMode.Range;
+        CullRange = 50f;
         startPosition = transform.position;
         lastPositionCheck = transform.position;
         SetNewWanderTarget();
@@ -1723,6 +1739,36 @@ public class CreatureController : MonoBehaviour
 
             GUI.Label(new Rect(screenPos.x - 50, Screen.height - screenPos.y - 20, 100, 120), debugText);
         }
+    }
+
+    #endregion
+
+
+    #region CULL
+
+    public ICullable.CullMode Mode { get; set; }
+    public float CullRange { get; set; }
+    public int CullableIndex { get; set; }
+
+    private bool isCulled;
+    public void OnBecomeVisible()
+    {
+        isCulled = false;
+    }
+
+    public void OnBecomeInvisible()
+    {
+        isCulled = true;
+    }
+
+    public Vector3 GetCullPosition()
+    {
+        return transform.position;
+    }
+
+    public float GetCullRadius()
+    {
+        return CullRange;
     }
 
     #endregion
