@@ -177,7 +177,7 @@ Shader "Custom/GrassWindAnimated"
                 // Bright grass during animation
                 if (i.animationProgress > 0 && i.animationProgress < 1)
                 {
-                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 3);
+                    float brightness = 1.0 + (sin(i.animationProgress * 3.14159) * 1.5);
                     baseColor.rgb *= brightness;
                 }
                 
