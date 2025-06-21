@@ -134,6 +134,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Option"",
+                    ""type"": ""Button"",
+                    ""id"": ""b3b3efa7-1592-4c1d-a32c-8afbbd8511a6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -359,6 +368,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b494840c-6607-4152-9c65-7f09e53c1e0f"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""f2e9ba44-c423-42a7-ad56-f20975884794"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
@@ -414,6 +434,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""612f1882-5cb4-4d15-a8e9-09ca8741e174"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""25c5154c-7be6-4e47-8ca1-d0e8354b4671"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -431,17 +462,6 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6aa4d4fb-69d1-4cf1-b353-579e595fa475"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -471,6 +491,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b8d59db5-7824-4058-b6b5-83f130b7fa6f"",
                     ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7df7b088-735f-407f-84e6-8d59ab9f69a5"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -557,6 +588,28 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""844c1a87-3402-41bc-a757-b30c57f202f2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pacify"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aac50cbc-cb9d-46b5-8347-051511fc62ee"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pacify"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""11380d1c-e575-414e-a551-3c8cc5e6d6a3"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -574,6 +627,50 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96c45a56-26cd-42e1-b39e-e64800d38eab"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22974e59-95d9-4631-8ab8-5cd6e0026429"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a67a7c3e-4438-407f-a44d-76206fb418ff"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Option"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f3c9e4d-eeee-4b39-86d6-c19343a720d4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Option"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -605,7 +702,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""15cef263-9014-4fd5-94d9-4e4a6234a6ef"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1162,6 +1259,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Player_Press = m_Player.FindAction("Press", throwIfNotFound: true);
         m_Player_Pacify = m_Player.FindAction("Pacify", throwIfNotFound: true);
         m_Player_Pet = m_Player.FindAction("Pet", throwIfNotFound: true);
+        m_Player_Option = m_Player.FindAction("Option", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1253,6 +1351,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Press;
     private readonly InputAction m_Player_Pacify;
     private readonly InputAction m_Player_Pet;
+    private readonly InputAction m_Player_Option;
     public struct PlayerActions
     {
         private @GameInputs m_Wrapper;
@@ -1269,6 +1368,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         public InputAction @Press => m_Wrapper.m_Player_Press;
         public InputAction @Pacify => m_Wrapper.m_Player_Pacify;
         public InputAction @Pet => m_Wrapper.m_Player_Pet;
+        public InputAction @Option => m_Wrapper.m_Player_Option;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1314,6 +1414,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Pet.started += instance.OnPet;
             @Pet.performed += instance.OnPet;
             @Pet.canceled += instance.OnPet;
+            @Option.started += instance.OnOption;
+            @Option.performed += instance.OnOption;
+            @Option.canceled += instance.OnOption;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1354,6 +1457,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Pet.started -= instance.OnPet;
             @Pet.performed -= instance.OnPet;
             @Pet.canceled -= instance.OnPet;
+            @Option.started -= instance.OnOption;
+            @Option.performed -= instance.OnOption;
+            @Option.canceled -= instance.OnOption;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1548,6 +1654,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         void OnPress(InputAction.CallbackContext context);
         void OnPacify(InputAction.CallbackContext context);
         void OnPet(InputAction.CallbackContext context);
+        void OnOption(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

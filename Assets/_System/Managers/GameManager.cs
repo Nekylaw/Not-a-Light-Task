@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void Pause()
+    private void OnOption()
     {
         if (gameState == GameState.Playing)
         {
