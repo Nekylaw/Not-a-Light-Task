@@ -247,27 +247,27 @@ public class PlayerController : MonoBehaviour
         _jump.Jump();
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Fresque"))
-        {
-            Vector3 directionToTarget = other.transform.position - mainCamera.transform.position;
-
-            float dotProduct = Vector3.Dot(directionToTarget.normalized, mainCamera.transform.forward);
-
-            if (dotProduct > 0.8f)
-            {
-                UnBindInputs();
-                _cameraLookInput = Vector2.zero;
-                //mainCamera.transform.LookAt(other.transform);
-                StartCoroutine(WaitForRebind(5f));
-                StartCoroutine(SmoothLookAt(other.transform, 3f));
-                other.GetComponent<BoxCollider>().enabled = false;
-
-            }
-        }
-
-    }
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     if (other.gameObject.CompareTag("Fresque"))
+    //     {
+    //         Vector3 directionToTarget = other.transform.position - mainCamera.transform.position;
+    //
+    //         float dotProduct = Vector3.Dot(directionToTarget.normalized, mainCamera.transform.forward);
+    //
+    //         if (dotProduct > 0.8f)
+    //         {
+    //             UnBindInputs();
+    //             _cameraLookInput = Vector2.zero;
+    //             //mainCamera.transform.LookAt(other.transform);
+    //             StartCoroutine(WaitForRebind(5f));
+    //             StartCoroutine(SmoothLookAt(other.transform, 3f));
+    //             other.GetComponent<BoxCollider>().enabled = false;
+    //
+    //         }
+    //     }
+    //
+    // }
 
     private IEnumerator WaitForRebind(float delay)
     {
@@ -275,6 +275,12 @@ public class PlayerController : MonoBehaviour
         BindInputs();
     }
 
+
+    public void StopMovement()
+    {
+        _movementDirection = Vector3.zero;
+    }
+    
     public IEnumerator SmoothLookAt(Transform target, float duration)
     {
         Quaternion startRotation = mainCamera.transform.rotation;

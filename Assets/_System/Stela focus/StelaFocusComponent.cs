@@ -193,7 +193,11 @@ public class EnhancedFocusComponent : MonoBehaviour
 
         // Disable player controls
         if (playerController != null)
+        {  
+            playerController.StopMovement();
             playerController.enabled = false;
+        }
+        
 
         // Trigger the reveal component if present
         if (triggerRevealComponent)
