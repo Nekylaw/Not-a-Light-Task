@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
 using Game.Services.LightSources;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioService : MonoBehaviour
 {
     #region Singleton
-
     private static AudioService _instance;
     public static AudioService Instance
     {
@@ -23,19 +23,23 @@ public class AudioService : MonoBehaviour
             return _instance;
         }
     }
-
     #endregion
 
-    #region Subclasses
-
+    #region Classes
     [System.Serializable]
     public class LightGroup
     {
         public string groupName = "New Light Group";
         public List<LightSourceComponent> lightSources = new List<LightSourceComponent>();
         public EventReference ambientTrack;
-        [Range(0f, 1f)] public float volume = 1f;
+        [Range(0f, 1f)] public float targetVolume = 1f;
+        [Range(0f, 10f)] public float fadeInTime = 2f;
+        [Range(0f, 10f)] public float fadeOutTime = 1f;
         public bool requireAllLights = true;
+
+        [Header("Progressive Settings")]
+        public bool startOnAwake = true;
+        public bool muteWhenInactive = true;
 
         [Header("Visual Feedback")]
         public bool showDebugInfo = true;
@@ -43,7 +47,10 @@ public class AudioService : MonoBehaviour
 
         // Runtime
         private FMOD.Studio.EventInstance _instance;
-        private bool _isPlaying = false;
+        private bool _isInitialized = false;
+        private float _currentVolume = 0f;
+        private float _targetVolumeInternal = 0f;
+        private Coroutine _fadeCoroutine;
 
         public bool IsActive
         {
@@ -63,35 +70,89 @@ public class AudioService : MonoBehaviour
 
         public int ActiveCount => lightSources.Count(l => l != null && l.IsLightOn);
         public int TotalCount => lightSources.Count;
+        public float CurrentVolume => _currentVolume;
+        public bool IsInitialized => _isInitialized;
 
-        public void UpdateState()
+        public void Initialize(MonoBehaviour coroutineRunner)
         {
-            bool shouldPlay = IsActive;
+            if (_isInitialized || ambientTrack.IsNull) return;
 
-            if (shouldPlay && !_isPlaying && !ambientTrack.IsNull)
+            _instance = RuntimeManager.CreateInstance(ambientTrack);
+            _instance.setVolume(0f);
+            _instance.start();
+            _isInitialized = true;
+            _currentVolume = 0f;
+
+            Debug.Log($"[AudioService] Initialized track for group: {groupName}");
+
+            // Start fade if should be active
+            if (startOnAwake || IsActive)
             {
-                _instance = RuntimeManager.CreateInstance(ambientTrack);
-                _instance.setVolume(volume);
-                _instance.start();
-                _isPlaying = true;
-                Debug.Log($"[AudioService] Started ambient track for group: {groupName}");
+                UpdateState(coroutineRunner);
             }
-            else if (!shouldPlay && _isPlaying)
+        }
+
+        public void UpdateState(MonoBehaviour coroutineRunner)
+        {
+            if (!_isInitialized) return;
+
+            float newTargetVolume = IsActive ? targetVolume : (muteWhenInactive ? 0f : 0.1f);
+
+            if (Mathf.Abs(newTargetVolume - _targetVolumeInternal) > 0.01f)
             {
-                _instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                _instance.release();
-                _isPlaying = false;
-                Debug.Log($"[AudioService] Stopped ambient track for group: {groupName}");
+                _targetVolumeInternal = newTargetVolume;
+
+                if (_fadeCoroutine != null)
+                    coroutineRunner.StopCoroutine(_fadeCoroutine);
+
+                _fadeCoroutine = coroutineRunner.StartCoroutine(FadeVolume(coroutineRunner, newTargetVolume));
+
+                Debug.Log($"[AudioService] Fading group '{groupName}' to volume: {newTargetVolume}");
             }
+        }
+
+        private System.Collections.IEnumerator FadeVolume(MonoBehaviour coroutineRunner, float targetVol)
+        {
+            float startVolume = _currentVolume;
+            float fadeTime = targetVol > startVolume ? fadeInTime : fadeOutTime;
+            float elapsed = 0f;
+
+            while (elapsed < fadeTime)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / fadeTime;
+
+                // Use a curve for smoother fades
+                t = Mathf.SmoothStep(0f, 1f, t);
+
+                _currentVolume = Mathf.Lerp(startVolume, targetVol, t);
+                _instance.setVolume(_currentVolume);
+
+                yield return null;
+            }
+
+            _currentVolume = targetVol;
+            _instance.setVolume(_currentVolume);
+            _fadeCoroutine = null;
         }
 
         public void Stop()
         {
-            if (_isPlaying)
+            if (_isInitialized)
             {
-                _instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _instance.release();
-                _isPlaying = false;
+                _isInitialized = false;
+                _currentVolume = 0f;
+            }
+        }
+
+        public void SetVolume(float volume)
+        {
+            if (_isInitialized)
+            {
+                _currentVolume = volume;
+                _instance.setVolume(volume);
             }
         }
     }
@@ -122,9 +183,7 @@ public class AudioService : MonoBehaviour
             }
         }
     }
-
     #endregion
-
 
     #region Fields
     [Header("Light Groups")]
@@ -133,19 +192,18 @@ public class AudioService : MonoBehaviour
     [Header("Movement Events")]
     [SerializeField] private EventSound _onWalkSound = new EventSound { eventName = "On Walk" };
 
-    [Header("Gun Events")]
+    [Header("Combat Events")]
     [SerializeField] private EventSound _onShootSound = new EventSound { eventName = "On Shoot" };
     [SerializeField] private EventSound _onAimSound = new EventSound { eventName = "On Aim" };
 
-    [Header("Lights Events")]
+    [Header("Interaction Events")]
     [SerializeField] private EventSound _onPickupSound = new EventSound { eventName = "On Pickup" };
     [SerializeField] private EventSound _onLampToggleSound = new EventSound { eventName = "On Lamp Toggle" };
 
     [Header("Ability Events")]
     [SerializeField] private EventSound _onPacifyEndSound = new EventSound { eventName = "On Pacify End" };
-    [SerializeField] private EventSound _onPetSound = new EventSound { eventName = "On Pet" };
 
-    [Header("=== Custom Events ===")]
+    [Header("Custom Events")]
     [SerializeField] private List<EventSound> _customEventSounds = new List<EventSound>();
 
     // Components
@@ -153,21 +211,18 @@ public class AudioService : MonoBehaviour
     private ShootBehaviorComponent _shoot;
     private PickUpBehaviorComponent _pickUp;
     private PacifyBehaviorComponent _pacify;
-    private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
 
     // For editor
-    [HideInInspector] public bool ShowLightGroups = true;
-    [HideInInspector] public bool ShowMovementEvents = true;
-    [HideInInspector] public bool ShowGunEvents = true;
-    [HideInInspector] public bool ShowAbilityEvents = true;
-    [HideInInspector] public bool ShowOtherEvents = true;
-    [HideInInspector] public bool ShowCustomEvents = true;
+    [HideInInspector] public bool showLightGroups = true;
+    [HideInInspector] public bool showMovementEvents = true;
+    [HideInInspector] public bool showCombatEvents = true;
+    [HideInInspector] public bool showInteractionEvents = true;
+    [HideInInspector] public bool showOtherEvents = true;
+    [HideInInspector] public bool showCustomEvents = true;
     #endregion
 
-
-    #region Lifecycle
-
+    #region Unity Lifecycle
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -179,12 +234,13 @@ public class AudioService : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        Init();
+        InitEmitters();
     }
 
     private void Start()
     {
         SubscribeToEvents();
+        InitializeAllLightGroups();
     }
 
     private void OnDestroy()
@@ -201,18 +257,15 @@ public class AudioService : MonoBehaviour
             group.lightSources.RemoveAll(l => l == null);
         }
     }
-
     #endregion
 
     #region Initialization
-
-    private void Init()
+    private void InitEmitters()
     {
         _movement = FindFirstObjectByType<MovementBehaviorComponent>(FindObjectsInactive.Exclude);
         _shoot = FindFirstObjectByType<ShootBehaviorComponent>(FindObjectsInactive.Exclude);
         _pickUp = FindFirstObjectByType<PickUpBehaviorComponent>(FindObjectsInactive.Exclude);
         _pacify = FindFirstObjectByType<PacifyBehaviorComponent>(FindObjectsInactive.Exclude);
-        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
         _lightService = LightSourcesService.Instance;
     }
 
@@ -222,29 +275,27 @@ public class AudioService : MonoBehaviour
         if (_movement != null)
             _movement.OnWalk += HandleWalk;
 
-        // Gun
+        // Combat
         if (_shoot != null)
         {
             _shoot.OnShoot += HandleShoot;
             _shoot.OnAim += HandleAim;
         }
 
-        // Lights
+        // Interaction
         if (_pickUp != null)
             _pickUp.OnPickup += HandlePickup;
 
+        // Other
+        if (_pacify != null)
+            _pacify.OnPacifyEnd += HandlePacifyEnd;
+
+        // Lights
         if (_lightService != null)
         {
             _lightService.OnSwitchOnLight += HandleLightSwitch;
             _lightService.OnSwitchOffLight += HandleLightSwitch;
         }
-
-        // Ability
-        if (_pacify != null)
-            _pacify.OnPacifyEnd += HandlePacifyEnd;
- 
-        if (_pet != null)
-            _pet.OnPetStart += HandlePetStart;
 
         Debug.Log("[AudioService] Subscribed to all events");
     }
@@ -272,10 +323,9 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOffLight -= HandleLightSwitch;
         }
     }
-
     #endregion
 
-    #region Handlers
+    #region Event Handlers
     private void HandleWalk(Vector3 direction, float speed)
     {
         if (speed > 0.1f) // Only play when actually moving
@@ -304,11 +354,6 @@ public class AudioService : MonoBehaviour
         _onPacifyEndSound.Play(transform.position);
     }
 
-    private void HandlePetStart(CreatureController creature)
-    {
-        _onPetSound.Play(creature.transform.position);
-    }
-
     private void HandleLightSwitch(LightSourceComponent light)
     {
         _onLampToggleSound.Play(light.LightPoint.position);
@@ -317,12 +362,24 @@ public class AudioService : MonoBehaviour
     #endregion
 
     #region Light System
+    private void InitializeAllLightGroups()
+    {
+        Debug.Log($"[AudioService] Initializing {_lightGroups.Count} light groups...");
+
+        foreach (var group in _lightGroups)
+        {
+            group.Initialize(this);
+        }
+
+        // Initial update to set correct volumes
+        UpdateLightGroups();
+    }
 
     private void UpdateLightGroups()
     {
         foreach (var group in _lightGroups)
         {
-            group.UpdateState();
+            group.UpdateState(this);
         }
     }
 
@@ -333,11 +390,9 @@ public class AudioService : MonoBehaviour
             group.Stop();
         }
     }
-
     #endregion
 
     #region Public API
-
     // For custom events added at runtime
     public void RegisterCustomEvent(string eventName, Action eventAction, EventReference sound)
     {
@@ -357,6 +412,7 @@ public class AudioService : MonoBehaviour
         customEvent?.Play(position);
     }
 
+    // Direct play methods
     public void PlaySound(EventReference eventRef, Vector3 position = default)
     {
         if (!eventRef.IsNull)
@@ -369,13 +425,25 @@ public class AudioService : MonoBehaviour
     }
     #endregion
 
-    #region Editor Menu
-
+    #region Editor Helpers
     [ContextMenu("Find All Light Sources")]
     private void FindAllLightSources()
     {
         var allLights = FindObjectsByType<LightSourceComponent>(FindObjectsSortMode.InstanceID);
         Debug.Log($"Found {allLights.Length} light sources in scene");
+    }
+
+    [ContextMenu("Initialize All Groups (Editor)")]
+    private void InitializeAllGroupsEditor()
+    {
+        if (Application.isPlaying)
+        {
+            InitializeAllLightGroups();
+        }
+        else
+        {
+            Debug.LogError("Can only initialize groups in Play mode!");
+        }
     }
 
     [ContextMenu("Validate Configuration")]
@@ -431,5 +499,34 @@ public class AudioService : MonoBehaviour
         }
     }
 
+    [ContextMenu("Debug: Set All Groups Active")]
+    private void DebugSetAllGroupsActive()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("Only works in Play mode!");
+            return;
+        }
+
+        foreach (var group in _lightGroups)
+        {
+            group.SetVolume(group.targetVolume);
+        }
+    }
+
+    [ContextMenu("Debug: Mute All Groups")]
+    private void DebugMuteAllGroups()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("Only works in Play mode!");
+            return;
+        }
+
+        foreach (var group in _lightGroups)
+        {
+            group.SetVolume(0f);
+        }
+    }
     #endregion
 }

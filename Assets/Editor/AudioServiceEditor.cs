@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using Game.Services.LightSources;
-using Unity.VisualScripting;
 
 [CustomEditor(typeof(AudioService))]
 public class AudioServiceEditor : Editor
@@ -60,12 +59,17 @@ public class AudioServiceEditor : Editor
 
         lightGroupsList.elementHeightCallback = (int index) => {
             var element = lightGroups.GetArrayElementAtIndex(index);
-            var height = EditorGUIUtility.singleLineHeight * 4 + 10;
+            float height = EditorGUIUtility.singleLineHeight * 5 + 20; // Base height
 
             if (element.isExpanded)
             {
+                // Add height for progressive settings
+                height += EditorGUIUtility.singleLineHeight * 4 + 20;
+
+                // Add height for light sources
                 var lights = element.FindPropertyRelative("lightSources");
-                height += (EditorGUIUtility.singleLineHeight + 2) * Mathf.Max(1, lights.arraySize) + 40;
+                int lightCount = Mathf.Max(3, lights.arraySize); // Minimum 3 slots for drop area
+                height += (EditorGUIUtility.singleLineHeight + 4) * lightCount + 40;
             }
 
             return height;
@@ -76,15 +80,21 @@ public class AudioServiceEditor : Editor
             var groupName = element.FindPropertyRelative("groupName");
             var lights = element.FindPropertyRelative("lightSources");
             var ambientTrack = element.FindPropertyRelative("ambientTrack");
-            var volume = element.FindPropertyRelative("volume");
+            var targetVolume = element.FindPropertyRelative("targetVolume");
+            var fadeInTime = element.FindPropertyRelative("fadeInTime");
+            var fadeOutTime = element.FindPropertyRelative("fadeOutTime");
             var requireAll = element.FindPropertyRelative("requireAllLights");
+            var startOnAwake = element.FindPropertyRelative("startOnAwake");
+            var muteWhenInactive = element.FindPropertyRelative("muteWhenInactive");
 
             rect.y += 2;
 
+            // Background box for the entire element
+            GUI.Box(new Rect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height - 4), GUIContent.none);
+
             // Header with foldout
-            var headerRect = new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight);
-            var foldoutRect = new Rect(rect.x, rect.y, rect.width - 100, EditorGUIUtility.singleLineHeight);
-            var statusRect = new Rect(rect.x + rect.width - 90, rect.y, 90, EditorGUIUtility.singleLineHeight);
+            var foldoutRect = new Rect(rect.x + 10, rect.y, rect.width - 120, EditorGUIUtility.singleLineHeight);
+            var statusRect = new Rect(rect.x + rect.width - 100, rect.y, 100, EditorGUIUtility.singleLineHeight);
 
             element.isExpanded = EditorGUI.Foldout(foldoutRect, element.isExpanded, groupName.stringValue, true);
 
@@ -98,44 +108,74 @@ public class AudioServiceEditor : Editor
                 if (group != null && index < group.Count)
                 {
                     var lightGroup = group[index];
+                    var volumeText = lightGroup.IsInitialized ? $"Vol: {lightGroup.CurrentVolume:F2}" : "Not Init";
                     EditorGUI.LabelField(statusRect,
-                        $"{lightGroup.ActiveCount}/{lightGroup.TotalCount} - {(lightGroup.IsActive ? "ACTIVE" : "INACTIVE")}",
+                        $"{lightGroup.ActiveCount}/{lightGroup.TotalCount} | {volumeText}",
                         lightGroup.IsActive ? EditorStyles.boldLabel : EditorStyles.miniLabel);
                 }
             }
 
-            rect.y += EditorGUIUtility.singleLineHeight + 2;
+            rect.y += EditorGUIUtility.singleLineHeight + 5;
+
+            // Indent content
+            rect.x += 15;
+            rect.width -= 15;
 
             // Basic info always visible
-            EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+            EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 10, EditorGUIUtility.singleLineHeight),
                 groupName, new GUIContent("Group Name"));
-            rect.y += EditorGUIUtility.singleLineHeight + 2;
+            rect.y += EditorGUIUtility.singleLineHeight + 3;
 
-            EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+            EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 10, EditorGUIUtility.singleLineHeight),
                 ambientTrack, new GUIContent("Ambient Track"));
-            rect.y += EditorGUIUtility.singleLineHeight + 2;
+            rect.y += EditorGUIUtility.singleLineHeight + 3;
 
-            // Volume and require all on same line
-            var halfWidth = rect.width / 2 - 5;
+            // Progressive settings
+            var halfWidth = (rect.width - 20) / 2;
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
-                volume, new GUIContent("Volume"));
+                targetVolume, new GUIContent("Target Volume"));
             EditorGUI.PropertyField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
                 requireAll, new GUIContent("Require All"));
-            rect.y += EditorGUIUtility.singleLineHeight + 5;
+            rect.y += EditorGUIUtility.singleLineHeight + 8;
 
             // Expanded content
             if (element.isExpanded)
             {
-                EditorGUI.indentLevel++;
-
-                // Light sources header
+                // Progressive settings section
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                    $"Light Sources ({lights.arraySize})", EditorStyles.boldLabel);
-                rect.y += EditorGUIUtility.singleLineHeight + 2;
+                    "Progressive Settings", EditorStyles.boldLabel);
+                rect.y += EditorGUIUtility.singleLineHeight + 3;
 
-                // Drop area for adding lights
-                var dropArea = new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight * Mathf.Max(1, lights.arraySize) + 20);
-                GUI.Box(dropArea, "Drop Light Sources Here", EditorStyles.helpBox);
+                EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
+                    fadeInTime, new GUIContent("Fade In Time"));
+                EditorGUI.PropertyField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
+                    fadeOutTime, new GUIContent("Fade Out Time"));
+                rect.y += EditorGUIUtility.singleLineHeight + 3;
+
+                EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
+                    startOnAwake, new GUIContent("Start On Awake"));
+                EditorGUI.PropertyField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
+                    muteWhenInactive, new GUIContent("Mute When Inactive"));
+                rect.y += EditorGUIUtility.singleLineHeight + 8;
+
+                // Light sources section
+                EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width - 100, EditorGUIUtility.singleLineHeight),
+                    $"Light Sources ({lights.arraySize})", EditorStyles.boldLabel);
+
+                // Add button
+                if (GUI.Button(new Rect(rect.x + rect.width - 90, rect.y, 80, EditorGUIUtility.singleLineHeight), "+ Add Slot"))
+                {
+                    lights.arraySize++;
+                }
+                rect.y += EditorGUIUtility.singleLineHeight + 5;
+
+                // Light sources list with drop area
+                int displayCount = Mathf.Max(3, lights.arraySize);
+                var dropAreaHeight = (EditorGUIUtility.singleLineHeight + 4) * displayCount;
+                var dropArea = new Rect(rect.x, rect.y, rect.width - 10, dropAreaHeight);
+
+                // Draw drop area background
+                GUI.Box(dropArea, lights.arraySize == 0 ? "Drop Light Sources Here" : "", EditorStyles.helpBox);
 
                 // Handle drag and drop
                 Event evt = Event.current;
@@ -157,9 +197,23 @@ public class AudioServiceEditor : Editor
                                     var lightSource = go.GetComponent<LightSourceComponent>();
                                     if (lightSource != null)
                                     {
-                                        lights.arraySize++;
-                                        var newElement = lights.GetArrayElementAtIndex(lights.arraySize - 1);
-                                        newElement.objectReferenceValue = lightSource;
+                                        // Check if already in list
+                                        bool alreadyExists = false;
+                                        for (int i = 0; i < lights.arraySize; i++)
+                                        {
+                                            if (lights.GetArrayElementAtIndex(i).objectReferenceValue == lightSource)
+                                            {
+                                                alreadyExists = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (!alreadyExists)
+                                        {
+                                            lights.arraySize++;
+                                            var newElement = lights.GetArrayElementAtIndex(lights.arraySize - 1);
+                                            newElement.objectReferenceValue = lightSource;
+                                        }
                                     }
                                 }
                             }
@@ -174,19 +228,22 @@ public class AudioServiceEditor : Editor
                 // Draw light sources
                 for (int i = 0; i < lights.arraySize; i++)
                 {
-                    var lightRect = new Rect(rect.x + 10, rect.y + 5 + (EditorGUIUtility.singleLineHeight + 2) * i,
-                        rect.width - 40, EditorGUIUtility.singleLineHeight);
-                    var deleteRect = new Rect(lightRect.x + lightRect.width + 5, lightRect.y, 20, EditorGUIUtility.singleLineHeight);
+                    var lightRect = new Rect(rect.x + 5, rect.y + 5 + (EditorGUIUtility.singleLineHeight + 4) * i,
+                        rect.width - 50, EditorGUIUtility.singleLineHeight);
+                    var deleteRect = new Rect(lightRect.x + lightRect.width + 5, lightRect.y, 30, EditorGUIUtility.singleLineHeight);
 
                     EditorGUI.PropertyField(lightRect, lights.GetArrayElementAtIndex(i), GUIContent.none);
 
-                    if (GUI.Button(deleteRect, "X"))
+                    if (GUI.Button(deleteRect, "X", EditorStyles.miniButton))
                     {
                         lights.DeleteArrayElementAtIndex(i);
+                        // If the element was a reference, we might need to delete twice
+                        if (i < lights.arraySize && lights.GetArrayElementAtIndex(i).objectReferenceValue == null)
+                        {
+                            lights.DeleteArrayElementAtIndex(i);
+                        }
                     }
                 }
-
-                EditorGUI.indentLevel--;
             }
         };
 
@@ -194,8 +251,12 @@ public class AudioServiceEditor : Editor
             lightGroups.arraySize++;
             var newElement = lightGroups.GetArrayElementAtIndex(lightGroups.arraySize - 1);
             newElement.FindPropertyRelative("groupName").stringValue = $"Light Group {lightGroups.arraySize}";
-            newElement.FindPropertyRelative("volume").floatValue = 1f;
+            newElement.FindPropertyRelative("targetVolume").floatValue = 1f;
+            newElement.FindPropertyRelative("fadeInTime").floatValue = 2f;
+            newElement.FindPropertyRelative("fadeOutTime").floatValue = 1f;
             newElement.FindPropertyRelative("requireAllLights").boolValue = true;
+            newElement.FindPropertyRelative("startOnAwake").boolValue = true;
+            newElement.FindPropertyRelative("muteWhenInactive").boolValue = true;
             newElement.isExpanded = true;
         };
     }
@@ -216,7 +277,7 @@ public class AudioServiceEditor : Editor
             var element = customEventSounds.GetArrayElementAtIndex(index);
             var eventName = element.FindPropertyRelative("eventName");
             var sound = element.FindPropertyRelative("soundToPlay");
-            var volume = element.FindPropertyRelative("volume");
+            var volume = element.FindPropertyRelative("targetVolume");
 
             rect.y += 2;
 
@@ -247,7 +308,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.Space();
 
         // Toolbar
-        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
         if (GUILayout.Button("Find All Lights", EditorStyles.toolbarButton))
         {
             audioService.SendMessage("FindAllLightSources");
@@ -256,17 +317,24 @@ public class AudioServiceEditor : Editor
         {
             audioService.SendMessage("ValidateConfiguration");
         }
-        if (Application.isPlaying && GUILayout.Button("Test All Sounds", EditorStyles.toolbarButton))
+        if (Application.isPlaying)
         {
-            audioService.SendMessage("TestAllSounds");
+            if (GUILayout.Button("Test All Sounds", EditorStyles.toolbarButton))
+            {
+                audioService.SendMessage("TestAllSounds");
+            }
+            if (GUILayout.Button("Initialize Groups", EditorStyles.toolbarButton))
+            {
+                audioService.SendMessage("InitializeAllGroupsEditor");
+            }
         }
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
 
         // Light Groups Section
-        audioService.ShowLightGroups = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowLightGroups, "Light Groups");
-        if (audioService.ShowLightGroups)
+        audioService.showLightGroups = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showLightGroups, "Light Groups");
+        if (audioService.showLightGroups)
         {
             EditorGUILayout.BeginVertical("box");
             lightGroupsList.DoLayoutList();
@@ -277,8 +345,8 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.Space();
 
         // Movement Events
-        audioService.ShowMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowMovementEvents, "Movement Events");
-        if (audioService.ShowMovementEvents)
+        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "Movement Events");
+        if (audioService.showMovementEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onWalkSound, "_movement.OnWalk");
@@ -286,9 +354,9 @@ public class AudioServiceEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-        // Gun Events
-        audioService.ShowGunEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowGunEvents, "Gun Events");
-        if (audioService.ShowGunEvents)
+        // Combat Events
+        audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "Gun Events");
+        if (audioService.showCombatEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onShootSound, "_shoot.OnShoot");
@@ -298,8 +366,8 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Interaction Events
-        audioService.ShowAbilityEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowAbilityEvents, "Ability Events");
-        if (audioService.ShowAbilityEvents)
+        audioService.showInteractionEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showInteractionEvents, "Interaction Events");
+        if (audioService.showInteractionEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onPickupSound, "_pickUp.OnPickup");
@@ -308,9 +376,9 @@ public class AudioServiceEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-        // Other Events
-        audioService.ShowOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowOtherEvents, "Other Events");
-        if (audioService.ShowOtherEvents)
+        // Ability Events
+        audioService.showOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showOtherEvents, "Ability Events");
+        if (audioService.showOtherEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onPacifyEndSound, "_pacify.OnPacifyEnd");
@@ -319,8 +387,8 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Custom Events
-        audioService.ShowCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.ShowCustomEvents, "Custom Events");
-        if (audioService.ShowCustomEvents)
+        audioService.showCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCustomEvents, "Custom Events");
+        if (audioService.showCustomEvents)
         {
             EditorGUILayout.BeginVertical("box");
             customEventsList.DoLayoutList();
@@ -354,11 +422,8 @@ public class AudioServiceEditor : Editor
         if (Application.isPlaying && GUILayout.Button("Test", GUILayout.Width(40)))
         {
             Debug.Log($"Testing sound: {eventName.stringValue}");
-            // Simple test play
-            if (!sound.FindPropertyRelative("Guid").stringValue.Equals(""))
-            {
-                FMODUnity.RuntimeManager.PlayOneShot(sound.FindPropertyRelative("Path").stringValue);
-            }
+            // Try to play the sound
+            audioService.PlaySound((FMODUnity.EventReference)sound.boxedValue);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -383,157 +448,6 @@ public class AudioServiceEditor : Editor
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(2);
-    }
-}
-
-// Property Drawer for EventSound when shown in arrays
-[CustomPropertyDrawer(typeof(AudioService.EventSound))]
-public class EventSoundDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        EditorGUI.BeginProperty(position, label, property);
-
-        var eventName = property.FindPropertyRelative("eventName");
-        var sound = property.FindPropertyRelative("soundToPlay");
-
-        // Draw event name as label
-        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive),
-            new GUIContent(eventName.stringValue));
-
-        // Draw sound field
-        EditorGUI.PropertyField(position, sound, GUIContent.none);
-
-        EditorGUI.EndProperty();
-    }
-}
-
-// Helper window for debugging
-public class AudioServiceDebugWindow : EditorWindow
-{
-    private AudioService audioService;
-    private Vector2 scrollPos;
-
-    [MenuItem("Window/Audio/Audio Service Debug")]
-    public static void ShowWindow()
-    {
-        GetWindow<AudioServiceDebugWindow>("Audio Debug");
-    }
-
-    private void OnEnable()
-    {
-        audioService = FindFirstObjectByType<AudioService>();
-    }
-
-    private void OnGUI()
-    {
-        if (!Application.isPlaying)
-        {
-            EditorGUILayout.HelpBox("Debug window only works in Play Mode", MessageType.Info);
-            return;
-        }
-
-        if (audioService == null)
-        {
-            EditorGUILayout.HelpBox("No AudioService found in scene", MessageType.Warning);
-            if (GUILayout.Button("Create AudioService"))
-            {
-                audioService = AudioService.Instance;
-            }
-            return;
-        }
-
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-
-        EditorGUILayout.LabelField("Audio Service Status", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-
-        // Show light groups status
-        EditorGUILayout.LabelField("Light Groups:", EditorStyles.boldLabel);
-        var lightGroups = audioService.GetType()
-            .GetField("_lightGroups", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-            ?.GetValue(audioService) as System.Collections.Generic.List<AudioService.LightGroup>;
-
-        if (lightGroups != null)
-        {
-            foreach (var group in lightGroups)
-            {
-                EditorGUILayout.BeginHorizontal("box");
-
-                // Status indicator
-                var statusColor = group.IsActive ? Color.green : Color.red;
-                var oldColor = GUI.backgroundColor;
-                GUI.backgroundColor = statusColor;
-                GUILayout.Box("", GUILayout.Width(20), GUILayout.Height(20));
-                GUI.backgroundColor = oldColor;
-
-                EditorGUILayout.LabelField(group.groupName);
-                EditorGUILayout.LabelField($"{group.ActiveCount}/{group.TotalCount}", GUILayout.Width(50));
-
-                if (GUILayout.Button("Toggle All", GUILayout.Width(80)))
-                {
-                    foreach (var light in group.lightSources)
-                    {
-                        if (light != null)
-                        {
-                            // Toggle light logic here
-                        }
-                    }
-                }
-
-                EditorGUILayout.EndHorizontal();
-
-                // Show individual lights
-                if (group.showDebugInfo)
-                {
-                    EditorGUI.indentLevel++;
-                    foreach (var light in group.lightSources)
-                    {
-                        if (light != null)
-                        {
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField($"  - {light.name}", light.IsLightOn ? EditorStyles.boldLabel : EditorStyles.label);
-                            EditorGUILayout.LabelField(light.IsLightOn ? "ON" : "OFF", GUILayout.Width(40));
-                            EditorGUILayout.EndHorizontal();
-                        }
-                    }
-                    EditorGUI.indentLevel--;
-                }
-            }
-        }
-
-        EditorGUILayout.Space();
-
-        // Test buttons for events
-        EditorGUILayout.LabelField("Test Events:", EditorStyles.boldLabel);
-
-        if (GUILayout.Button("Trigger Walk Event"))
-        {
-            var movement = FindFirstObjectByType<MovementBehaviorComponent>();
-            if (movement != null)
-            {
-                // Trigger walk event
-                Debug.Log("Walk event triggered from debug window");
-            }
-        }
-
-        if (GUILayout.Button("Trigger Shoot Event"))
-        {
-            var shoot = FindFirstObjectByType<ShootBehaviorComponent>();
-            if (shoot != null)
-            {
-                // Trigger shoot event
-                Debug.Log("Shoot event triggered from debug window");
-            }
-        }
-
-        EditorGUILayout.EndScrollView();
-
-        // Repaint in play mode
-        if (Application.isPlaying)
-        {
-            Repaint();
-        }
     }
 }
 #endif
