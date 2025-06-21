@@ -143,7 +143,6 @@ public class PetBehaviorComponent : MonoBehaviour
         if (_currentPettableCreature != null && IsCreatureInRange(_currentPettableCreature, _radius))
             return;
 
-
         // Find all pacified creatures in the larger search radius
         List<CreatureController> pacifiedCreatures = FindPacifiedCreaturesInRadius(_pettableSearchRadius);
 
@@ -157,8 +156,26 @@ public class PetBehaviorComponent : MonoBehaviour
             return;
         }
 
+        // Exclude creature that was last pettable
+        List<CreatureController> eligibleCreatures = pacifiedCreatures.Where(c => !c.WasLastPettable).ToList();
+
+
+        // If no eligible creatures, we might need to reset all WasLastPettable flags
+        if (eligibleCreatures.Count == 0 && pacifiedCreatures.Count >= _minPacifiedCreaturesRequired)
+        {
+            if (_debugMode)
+                Debug.Log("No eligible creatures found, resetting all WasLastPettable flags");
+
+            foreach (var creature in pacifiedCreatures)
+            {
+                creature.SetWasLastPettable(false);
+            }
+
+            eligibleCreatures = pacifiedCreatures;
+        }
+
         // Select one to be pettable
-        CreatureController newPettable = SelectPettableCreature(pacifiedCreatures);
+        CreatureController newPettable = SelectPettableCreature(eligibleCreatures);
 
         if (newPettable != null)
         {
@@ -210,6 +227,7 @@ public class PetBehaviorComponent : MonoBehaviour
         if (_currentPettableCreature != null)
         {
             _currentPettableCreature.SetPettable(false);
+            _currentPettableCreature.SetWasLastPettable(true);
             _currentPettableCreature = null;
         }
 
@@ -365,6 +383,8 @@ public class PetBehaviorComponent : MonoBehaviour
             ResetPetState();
             return;
         }
+
+        _targetCreature.SetWasLastPettable(true);
 
         // Animation 
         _petSequence = DOTween.Sequence();
