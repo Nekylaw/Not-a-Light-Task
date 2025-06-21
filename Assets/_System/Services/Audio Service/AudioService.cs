@@ -9,6 +9,7 @@ using UnityEngine;
 public class AudioService : MonoBehaviour
 {
     #region Singleton
+
     private static AudioService _instance;
     public static AudioService Instance
     {
@@ -23,9 +24,11 @@ public class AudioService : MonoBehaviour
             return _instance;
         }
     }
+
     #endregion
 
     #region Classes
+
     [System.Serializable]
     public class LightGroup
     {
@@ -162,6 +165,7 @@ public class AudioService : MonoBehaviour
     {
         public string eventName = "New Event";
         public EventReference soundToPlay;
+        public bool isLooped = false;
         [Range(0f, 1f)] public float volume = 1f;
         public bool playAtPosition = true;
         [TextArea(2, 3)]
@@ -170,22 +174,68 @@ public class AudioService : MonoBehaviour
         // For organization in editor
         public bool isExpanded = true;
 
+        private FMOD.Studio.EventInstance _instance; // sound ref
+
         public void Play(Vector3 position = default)
         {
-            if (!soundToPlay.IsNull)
+            if (soundToPlay.IsNull) return;
+
+            if (isLooped)
+            {
+                StartLoop(position);
+            }
+            else
             {
                 if (playAtPosition)
                     RuntimeManager.PlayOneShot(soundToPlay, position);
                 else
                     RuntimeManager.PlayOneShot(soundToPlay);
 
-                Debug.Log($"[AudioService] Played sound for event: {eventName}");
+                Debug.Log($"[AudioService] Played one-shot sound for event: {eventName}");
             }
         }
+
+        public void StartLoop(Vector3 position = default)
+        {
+            if (_instance.isValid())
+                return;
+
+
+            _instance = RuntimeManager.CreateInstance(soundToPlay);
+
+            if (playAtPosition)
+                _instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
+
+            _instance.setVolume(volume);
+            _instance.start();
+
+            Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
+        }
+
+        public void Stop()
+        {
+            if (_instance.isValid())
+            {
+                _instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _instance.release();
+                _instance.clearHandle();
+            }
+        }
+
+        public bool IsPlaying()
+        {
+            if (!_instance.isValid()) return false;
+
+            _instance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state);
+            return state == FMOD.Studio.PLAYBACK_STATE.PLAYING ||
+                   state == FMOD.Studio.PLAYBACK_STATE.STARTING;
+        }
     }
+
     #endregion
 
     #region Fields
+
     [Header("Light Groups")]
     [SerializeField] private List<LightGroup> _lightGroups = new List<LightGroup>();
 
@@ -222,7 +272,8 @@ public class AudioService : MonoBehaviour
     [HideInInspector] public bool showCustomEvents = true;
     #endregion
 
-    #region Unity Lifecycle
+    #region Lifecycle
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -260,6 +311,7 @@ public class AudioService : MonoBehaviour
     #endregion
 
     #region Initialization
+
     private void InitEmitters()
     {
         _movement = FindFirstObjectByType<MovementBehaviorComponent>(FindObjectsInactive.Exclude);
@@ -284,7 +336,10 @@ public class AudioService : MonoBehaviour
 
         // Interaction
         if (_pickUp != null)
+        {
             _pickUp.OnPickup += HandlePickup;
+            _pickUp.OnReleasePickup += HandlePickupRelease;
+        }
 
         // Other
         if (_pacify != null)
@@ -312,7 +367,10 @@ public class AudioService : MonoBehaviour
         }
 
         if (_pickUp != null)
+        {
             _pickUp.OnPickup -= HandlePickup;
+            _pickUp.OnReleasePickup -= HandlePickupRelease;
+        }
 
         if (_pacify != null)
             _pacify.OnPacifyEnd -= HandlePacifyEnd;
@@ -323,9 +381,11 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOffLight -= HandleLightSwitch;
         }
     }
+
     #endregion
 
     #region Event Handlers
+
     private void HandleWalk(Vector3 direction, float speed)
     {
         if (speed > 0.1f) // Only play when actually moving
@@ -346,7 +406,19 @@ public class AudioService : MonoBehaviour
 
     private void HandlePickup(PickableComponent pickable)
     {
-        _onPickupSound.Play(pickable.transform.position);
+        if (_onPickupSound.isLooped)
+            _onPickupSound.StartLoop(pickable.transform.position);
+
+        else
+            _onPickupSound.Play(pickable.transform.position);
+
+    }
+
+    private void HandlePickupRelease()
+    {
+        if (_onPickupSound.isLooped)
+            _onPickupSound.Stop();
+
     }
 
     private void HandlePacifyEnd()

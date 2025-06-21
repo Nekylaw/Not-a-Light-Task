@@ -1,8 +1,10 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using Game.Services.LightSources;
+using System.ComponentModel;
+using UnityEngine.Rendering.Universal;
 
 [CustomEditor(typeof(AudioService))]
 public class AudioServiceEditor : Editor
@@ -53,11 +55,13 @@ public class AudioServiceEditor : Editor
     {
         lightGroupsList = new ReorderableList(serializedObject, lightGroups, true, true, true, true);
 
-        lightGroupsList.drawHeaderCallback = (Rect rect) => {
+        lightGroupsList.drawHeaderCallback = (Rect rect) =>
+        {
             EditorGUI.LabelField(rect, "Light Groups", EditorStyles.boldLabel);
         };
 
-        lightGroupsList.elementHeightCallback = (int index) => {
+        lightGroupsList.elementHeightCallback = (int index) =>
+        {
             var element = lightGroups.GetArrayElementAtIndex(index);
             float height = EditorGUIUtility.singleLineHeight * 5 + 20; // Base height
 
@@ -69,13 +73,19 @@ public class AudioServiceEditor : Editor
                 // Add height for light sources
                 var lights = element.FindPropertyRelative("lightSources");
                 int lightCount = Mathf.Max(3, lights.arraySize); // Minimum 3 slots for drop area
-                height += (EditorGUIUtility.singleLineHeight + 4) * lightCount + 40;
+                height += (EditorGUIUtility.singleLineHeight + 4) * lightCount;
+
+                var ambiantTrack = element.FindPropertyRelative("ambientTrack");
+                height += ambiantTrack.isExpanded ?
+                    EditorGUIUtility.singleLineHeight * 8 :
+                    EditorGUIUtility.singleLineHeight;
             }
 
-            return height;
+            return height + 10;
         };
 
-        lightGroupsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
+        lightGroupsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+        {
             var element = lightGroups.GetArrayElementAtIndex(index);
             var groupName = element.FindPropertyRelative("groupName");
             var lights = element.FindPropertyRelative("lightSources");
@@ -128,9 +138,16 @@ public class AudioServiceEditor : Editor
 
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 10, EditorGUIUtility.singleLineHeight),
                 ambientTrack, new GUIContent("Ambient Track"));
+
+            float yOffset = ambientTrack.isExpanded ? EditorGUIUtility.singleLineHeight * 8 : EditorGUIUtility.singleLineHeight;
+            rect.y += EditorGUIUtility.singleLineHeight + yOffset;
+
+            // Progressive settings section
+            EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                "Progressive Settings", EditorStyles.boldLabel);
+
             rect.y += EditorGUIUtility.singleLineHeight + 3;
 
-            // Progressive settings
             var halfWidth = (rect.width - 20) / 2;
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
                 targetVolume, new GUIContent("Target Volume"));
@@ -141,11 +158,6 @@ public class AudioServiceEditor : Editor
             // Expanded content
             if (element.isExpanded)
             {
-                // Progressive settings section
-                EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                    "Progressive Settings", EditorStyles.boldLabel);
-                rect.y += EditorGUIUtility.singleLineHeight + 3;
-
                 EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
                     fadeInTime, new GUIContent("Fade In Time"));
                 EditorGUI.PropertyField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
@@ -247,7 +259,8 @@ public class AudioServiceEditor : Editor
             }
         };
 
-        lightGroupsList.onAddCallback = (ReorderableList list) => {
+        lightGroupsList.onAddCallback = (ReorderableList list) =>
+        {
             lightGroups.arraySize++;
             var newElement = lightGroups.GetArrayElementAtIndex(lightGroups.arraySize - 1);
             newElement.FindPropertyRelative("groupName").stringValue = $"Light Group {lightGroups.arraySize}";
@@ -265,15 +278,18 @@ public class AudioServiceEditor : Editor
     {
         customEventsList = new ReorderableList(serializedObject, customEventSounds, true, true, true, true);
 
-        customEventsList.drawHeaderCallback = (Rect rect) => {
+        customEventsList.drawHeaderCallback = (Rect rect) =>
+        {
             EditorGUI.LabelField(rect, "Custom Events", EditorStyles.boldLabel);
         };
 
-        customEventsList.elementHeightCallback = (int index) => {
+        customEventsList.elementHeightCallback = (int index) =>
+        {
             return EditorGUIUtility.singleLineHeight * 3 + 10;
         };
 
-        customEventsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
+        customEventsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+        {
             var element = customEventSounds.GetArrayElementAtIndex(index);
             var eventName = element.FindPropertyRelative("eventName");
             var sound = element.FindPropertyRelative("soundToPlay");
@@ -302,7 +318,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.Space();
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
-        GUILayout.Label("Audio Service Configuration", EditorStyles.boldLabel);
+        GUILayout.Label("🔊 Audio Service Configuration", EditorStyles.boldLabel);
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
@@ -333,7 +349,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.Space();
 
         // Light Groups Section
-        audioService.showLightGroups = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showLightGroups, "Light Groups");
+        audioService.showLightGroups = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showLightGroups, "💡 Light Groups");
         if (audioService.showLightGroups)
         {
             EditorGUILayout.BeginVertical("box");
@@ -345,7 +361,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.Space();
 
         // Movement Events
-        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "Movement Events");
+        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "🚶 Movement Events");
         if (audioService.showMovementEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -355,7 +371,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Combat Events
-        audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "Gun Events");
+        audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "🔫 Gun Events");
         if (audioService.showCombatEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -366,7 +382,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Interaction Events
-        audioService.showInteractionEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showInteractionEvents, "Interaction Events");
+        audioService.showInteractionEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showInteractionEvents, "✋ Interaction Events");
         if (audioService.showInteractionEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -377,7 +393,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Ability Events
-        audioService.showOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showOtherEvents, "Ability Events");
+        audioService.showOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showOtherEvents, "🎮 Ability Events");
         if (audioService.showOtherEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -387,7 +403,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Custom Events
-        audioService.showCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCustomEvents, "Custom Events");
+        audioService.showCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCustomEvents, "⚡ Custom Events");
         if (audioService.showCustomEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -404,6 +420,7 @@ public class AudioServiceEditor : Editor
         var expanded = eventSound.FindPropertyRelative("isExpanded");
         var eventName = eventSound.FindPropertyRelative("eventName");
         var sound = eventSound.FindPropertyRelative("soundToPlay");
+        var isLooped = eventSound.FindPropertyRelative("isLooped");
         var volume = eventSound.FindPropertyRelative("volume");
         var playAtPos = eventSound.FindPropertyRelative("playAtPosition");
         var notes = eventSound.FindPropertyRelative("notes");
@@ -434,12 +451,10 @@ public class AudioServiceEditor : Editor
             EditorGUI.indentLevel++;
 
             EditorGUILayout.PropertyField(sound, new GUIContent("Sound To Play"));
+            EditorGUILayout.PropertyField(isLooped, new GUIContent("Is looped"), GUILayout.Width(EditorGUIUtility.labelWidth + 100));
 
-            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(volume, new GUIContent("Volume"), GUILayout.Width(EditorGUIUtility.labelWidth + 100));
-            GUILayout.FlexibleSpace();
             EditorGUILayout.PropertyField(playAtPos, new GUIContent("3D Position"));
-            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.PropertyField(notes, new GUIContent("Notes"));
 
