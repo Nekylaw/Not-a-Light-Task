@@ -50,6 +50,10 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
         LightSourcesService.Instance.OnTriggerLight += HandleTriggerLight;
         LightSourcesService.Instance.OnSwitchOffLight += HandleLightOff;
 
+
+        CullMode = ICullable.ECullMode.Frustum;
+        float visualRange = _radius + 2f;
+        CullRange = visualRange * _lightSource.Settings.RequiredOrbs;
         CullingService.Instance.Register(this);
     }
 
@@ -65,11 +69,6 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
 
     void Start()
     {
-        CullMode = ICullable.ECullMode.Frustum;
-
-        float visualRange = _radius + 2f;
-        CullRange = visualRange * _lightSource.Settings.RequiredOrbs;
-
         InitRequiredOrbs();
     }
 

@@ -136,6 +136,7 @@ public class CreatureController : MonoBehaviour, ICullable
     // Pet
     private bool _isPettable = false;
     private GameObject _pettableEffect;
+    private bool _wasLastPettable = false;
 
     // Orb count
     private int orbEatenCount = 0;
@@ -248,6 +249,8 @@ public class CreatureController : MonoBehaviour, ICullable
 
     public bool IsPettable => _isPettable && IsPacified && currentState != ECreatureState.Petting;
     public bool IsDesignatedPettable => _isPettable;
+    public bool WasLastPettable => _wasLastPettable;
+
     public float ExcitementLevel => excitementLevel;
     public Vector3 Velocity => velocity;
 
@@ -257,6 +260,8 @@ public class CreatureController : MonoBehaviour, ICullable
 
     private void OnEnable()
     {
+        CullMode = ICullable.ECullMode.Range;
+        CullRange = 80;
         CullingService.Instance.Register(this);
     }
 
@@ -291,9 +296,6 @@ public class CreatureController : MonoBehaviour, ICullable
 
     void Start()
     {
-        CullMode = ICullable.ECullMode.Range;
-        CullRange = 50f;
-
         startPosition = transform.position;
         lastPositionCheck = transform.position;
         SetNewWanderTarget();
@@ -321,7 +323,7 @@ public class CreatureController : MonoBehaviour, ICullable
             UpdateVisuals();
             UpdateAudio();
             UpdateParticles();
-            
+
             CheckIfStuck();
         }
 
@@ -721,7 +723,7 @@ public class CreatureController : MonoBehaviour, ICullable
         // Then search for orbs if not pacified
         if (!IsPacified)
         {
-            GameObject nearestOrb = FindNearestOrb();
+            OrbComponent nearestOrb = FindNearestOrb();
             if (nearestOrb != null)
             {
                 currentTarget = nearestOrb.transform;
@@ -1274,6 +1276,10 @@ public class CreatureController : MonoBehaviour, ICullable
     {
         _isPettable = isPettable;
 
+        if (isPettable)
+            _wasLastPettable = false;
+
+
         // Update visual feedback
         UpdatePettableEffects();
 
@@ -1287,7 +1293,7 @@ public class CreatureController : MonoBehaviour, ICullable
         if (!_isPettable)
             return;
 
-        transform.DOScale(1.6f, 1.5f);
+        transform.DOScale(2f, 1.5f);
 
     }
 
@@ -1308,14 +1314,14 @@ public class CreatureController : MonoBehaviour, ICullable
 
     #region Detection
 
-    GameObject FindNearestOrb()
+    OrbComponent FindNearestOrb()
     {
         if (IsPacified)
             return null;
 
         Collider[] orbsInRange = Physics.OverlapSphere(transform.position, detectionRadius, orbLayer);
 
-        GameObject nearestOrb = null;
+        OrbComponent nearestOrb = null;
         float nearestDistance = float.MaxValue;
 
         foreach (Collider col in orbsInRange)
@@ -1337,13 +1343,19 @@ public class CreatureController : MonoBehaviour, ICullable
                         continue;
 
                     nearestDistance = distance;
-                    nearestOrb = col.gameObject;
+                    nearestOrb = orb;
                 }
             }
         }
 
         return nearestOrb;
     }
+
+    public void SetWasLastPettable(bool wasLastPettable)
+    {
+        _wasLastPettable = wasLastPettable;
+    }
+
 
     bool CanEatOrb()
     {
@@ -1452,17 +1464,26 @@ public class CreatureController : MonoBehaviour, ICullable
             return new CreatureVisualProfileSO.StateProfile();
         }
 
+        float t;
+
         // If pettable and pacified
         if (_isPettable && IsPacified && currentState != ECreatureState.Petting)
         {
-            var pettableProfile = visualProfile.PettableProfile;
+            //var pettableProfile = visualProfile.PettableProfile;
             // not enough intensitiy for base color ?
             //pettableProfile.baseColor *= x;
+
+            t = stateTimer / peter.PetDuration;
+            var pettableProfile = CreatureVisualProfileSO.StateProfile.Lerp(
+                visualProfile.PetProfile,
+                visualProfile.PettableProfile,
+                t
+            );
+
 
             return pettableProfile;
         }
 
-        float t;
         switch (currentState)
         {
             case ECreatureState.Eating:
@@ -1578,7 +1599,7 @@ public class CreatureController : MonoBehaviour, ICullable
     {
         if (currentState != ECreatureState.Petting)
             return;
-
+        _wasLastPettable = true;
         int orbsCount = 1;
         ReleaseOrbs(orbsCount);
 
@@ -1756,9 +1777,10 @@ public class CreatureController : MonoBehaviour, ICullable
                               $"Eaten Orbs: {orbEatenCount}\n" +
                               $"Pettable: {_isPettable}\n" +
                               $"BehaviorTimer: {behaviorTimer:F1}\n" +
-                              $"Target Dist: {(wanderTarget != Vector3.zero ? Vector3.Distance(transform.position, wanderTarget).ToString("F1") : "N/A")}";
+                              $"Target Dist: {(wanderTarget != Vector3.zero ? Vector3.Distance(transform.position, wanderTarget).ToString("F1") : "N/A")}\n" +
+                              $"Is culled: {_isCulled}";
 
-            GUI.Label(new Rect(screenPos.x - 50, Screen.height - screenPos.y - 20, 100, 120), debugText);
+            GUI.Label(new Rect(screenPos.x - 50, Screen.height - screenPos.y - 15, 100, 200), debugText);
         }
     }
 
@@ -1783,6 +1805,7 @@ public class CreatureController : MonoBehaviour, ICullable
     public void OnBecomeInvisible()
     {
         _isCulled = true;
+
         if (excitementParticles != null && !excitementParticles.isStopped)
             excitementParticles.Stop();
     }

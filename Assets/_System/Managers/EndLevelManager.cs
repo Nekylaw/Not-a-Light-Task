@@ -121,13 +121,13 @@ namespace _System.Game_Manager
             Debug.Log(LightSourcesService.Instance.LightSources.Length);
             foreach (var VARIABLE in LightSourcesService.Instance.LightSources)
             {
-                Debug.Log(VARIABLE.name);
+                //Debug.Log(VARIABLE.name);
                 if (VARIABLE.LightGroupId != 0)
                 {
                     SortLightSources(VARIABLE.LightGroupId, VARIABLE);
                 }
                 
-                Debug.Log("light source sans ID : " + VARIABLE.gameObject.name);
+                //Debug.Log("light source sans ID : " + VARIABLE.gameObject.name);
             }
         }
 
@@ -158,7 +158,7 @@ namespace _System.Game_Manager
         
         private bool CheckingEachSource(List<LightSourceComponent> lightSources)
         {
-            Debug.Log("checking");
+            //Debug.Log("checking");
             foreach (var VARIABLE in lightSources)
             {
                 if (!VARIABLE.IsLightOn)

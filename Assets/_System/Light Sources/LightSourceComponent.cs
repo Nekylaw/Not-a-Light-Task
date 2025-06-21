@@ -46,9 +46,7 @@ namespace Game.Services.LightSources
 
         private void Start()
         {
-            CullMode = ICullable.ECullMode.Frustum;
-            CullRange = Mathf.Max(_settings.AttractRange, _settings.BrightnessRange) + 2f;
-            _orbSlot = 0;
+                      _orbSlot = 0;
 
             if (_particleSystem != null)
                 _particleSystem.Stop();
@@ -76,6 +74,9 @@ namespace Game.Services.LightSources
 
             if (CullingService.CullingService.Instance == null)
                 return;
+
+            CullMode = ICullable.ECullMode.Frustum;
+            CullRange = Mathf.Max(_settings.AttractRange, _settings.BrightnessRange) + 2f;
 
             CullingService.CullingService.Instance.Register(this);
         }
