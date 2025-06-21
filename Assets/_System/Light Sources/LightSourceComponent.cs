@@ -7,7 +7,6 @@ namespace Game.Services.LightSources
     [System.Serializable]
     public class LightSourceComponent : MonoBehaviour, ICullable
     {
-
         #region Fields
 
         private LightSourcesService _lightService = null;
@@ -18,19 +17,21 @@ namespace Game.Services.LightSources
         [SerializeField]
         private Transform _lightPoint = null;
 
-        //[SerializeField]
-        //private bool _isAllowedToLight = false;
-
         private int _orbSlot = 0;
         private bool _isLightOn = false;
 
-        [SerializeField] public int LightGroupId;
+        public int LightGroupId;
 
         private VisualEffect ownParticlesVFX;
         private ParticleSystem _particleSystem = null;
 
-        #endregion
+        private float _detectionTimer = 0f;
+        private const float DETECTION_INTERVAL = 0.2f;
 
+        // Cache pour les buildings
+        private bool _buildingsDetected = false;
+
+        #endregion
 
         #region Lifecycle
 
@@ -46,20 +47,26 @@ namespace Game.Services.LightSources
         private void Start()
         {
             CullMode = ICullable.ECullMode.Frustum;
-            CullRange = 7f;
+            CullRange = Mathf.Max(_settings.AttractRange, _settings.BrightnessRange) + 2f;
             _orbSlot = 0;
+
             if (_particleSystem != null)
-                _particleSystem.gameObject.SetActive(false);
+                _particleSystem.Stop();
             if (ownParticlesVFX != null)
                 ownParticlesVFX.enabled = false;
         }
 
         private void Update()
         {
-            if (isCulled)
+            if (isCulled || _isLightOn)
                 return;
 
-            DetectOrb();
+            _detectionTimer += Time.deltaTime;
+            if (_detectionTimer >= DETECTION_INTERVAL)
+            {
+                _detectionTimer = 0f;
+                DetectOrb();
+            }
         }
 
         private void OnEnable()
@@ -67,20 +74,17 @@ namespace Game.Services.LightSources
             _lightService = LightSourcesService.Instance;
             Register();
 
-
-            // found cull service
             if (CullingService.CullingService.Instance == null)
-            {
-                Debug.LogError("CullingService not found. Please ensure it is initialized before using LightSourceComponent.");
                 return;
-            }
-            CullingService.CullingService.Instance.Register(this);
 
+            CullingService.CullingService.Instance.Register(this);
         }
 
         private void OnDisable()
         {
-            CullingService.CullingService.Instance.Unregister(this);
+            if (CullingService.CullingService.Instance != null)
+                CullingService.CullingService.Instance.Unregister(this);
+
             Unregister();
         }
 
@@ -102,14 +106,11 @@ namespace Game.Services.LightSources
 
         #endregion
 
-
         #region Public API
 
         public bool IsLightOn => _isLightOn;
         public int OrbSlot => _orbSlot;
-
         public Transform LightPoint => _lightPoint;
-
         public LightSourceSettings Settings => _settings;
 
         internal bool SwitchOn()
@@ -123,11 +124,20 @@ namespace Game.Services.LightSources
 
             EndLevelManager.instance.CheckLightSources(this);
 
-            if (ownParticlesVFX != null)
-                ownParticlesVFX.enabled = true;
-            if (_particleSystem != null)
-                _particleSystem.gameObject.SetActive(true);
-            DetectBuildingsToLights();
+            if (!isCulled)
+            {
+                if (ownParticlesVFX != null)
+                    ownParticlesVFX.enabled = true;
+                if (_particleSystem != null)
+                    _particleSystem.Play();
+            }
+
+            if (!_buildingsDetected)
+            {
+                DetectBuildingsToLights();
+                _buildingsDetected = true;
+            }
+
             return true;
         }
 
@@ -137,16 +147,17 @@ namespace Game.Services.LightSources
                 return false;
 
             _isLightOn = false;
+            _buildingsDetected = false;
 
             if (ownParticlesVFX != null)
                 ownParticlesVFX.enabled = false;
             if (_particleSystem != null)
-                _particleSystem.gameObject.SetActive(false);
+                _particleSystem.Stop();
+
             return true;
         }
 
         #endregion
-
 
         #region Private API
 
@@ -155,29 +166,28 @@ namespace Game.Services.LightSources
             if (_isLightOn)
                 return false;
 
-            Collider[] colliders = Physics.OverlapSphere(_lightPoint.position, _settings.AttractRange, _settings.OrbLayer);
+            Collider[] colliders = new Collider[10]; // 10 is rly engough
+            int count = Physics.OverlapSphereNonAlloc(_lightPoint.position, _settings.AttractRange, colliders, _settings.OrbLayer);
 
-            if (colliders.Length <= 0)
+            if (count <= 0)
                 return false;
 
-            foreach (Collider collider in colliders)
+            bool orbDetected = false;
+            for (int i = 0; i < count; i++)
             {
-                if (!collider.TryGetComponent(out OrbComponent orb))
-                    continue;
-
-                orb.AttractTo(_lightPoint.position, this);
+                if (colliders[i].TryGetComponent(out OrbComponent orb))
+                {
+                    orb.AttractTo(_lightPoint.position, this);
+                    orbDetected = true;
+                }
             }
-            return true;
-        }
 
-        //public void AllowLight(bool allow)
-        //{
-        //    _isAllowedToLight = allow;
-        //}
+            return orbDetected;
+        }
 
         private bool CanLightOn()
         {
-            if (_isLightOn /*|| !_isAllowedToLight*/)
+            if (_isLightOn)
                 return false;
 
             return _orbSlot >= _settings.RequiredOrbs;
@@ -199,31 +209,30 @@ namespace Game.Services.LightSources
 
         private void DetectBuildingsToLights()
         {
-            var buildings = Physics.OverlapSphere(transform.position, _settings.BrightnessRange);
+            var buildings = Physics.OverlapSphere(transform.position, _settings.BrightnessRange, _settings.BuildingLayer);
+
             foreach (var building in buildings)
             {
-                var script = building.gameObject.GetComponent<BuildingLightsComponent>();
-                if (script != null)
+                if (building.TryGetComponent<BuildingLightsComponent>(out var buildingLights))
                 {
-                    script.LightBuilding();
+                    buildingLights.LightBuilding();
                 }
-
-                var script2 = building.gameObject.GetComponent<EnlightTower>();
-                if (script2 != null)
+                else if (building.TryGetComponent<EnlightTower>(out var tower))
                 {
-                    script2.LightTower();
+                    tower.LightTower();
                 }
-
             }
         }
 
         #endregion
 
-
         #region Debug
 
         private void OnDrawGizmos()
         {
+            if (_lightPoint == null || _settings == null)
+                return;
+
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(_lightPoint.position, _settings.AttractRange);
 
@@ -232,7 +241,6 @@ namespace Game.Services.LightSources
         }
 
         #endregion
-
 
         #region CULL
 
@@ -245,30 +253,28 @@ namespace Game.Services.LightSources
         public void OnBecomeVisible()
         {
             isCulled = false;
-            if (ownParticlesVFX != null && _isLightOn)
-                ownParticlesVFX.enabled = true;
-            if (_particleSystem != null && _particleSystem.isPlaying)
-                _particleSystem.gameObject.SetActive(true);
+
+            if (_isLightOn)
+            {
+                if (ownParticlesVFX != null)
+                    ownParticlesVFX.enabled = true;
+                if (_particleSystem != null && !_particleSystem.isPlaying)
+                    _particleSystem.Play();
+            }
         }
 
         public void OnBecomeInvisible()
         {
             isCulled = true;
-            if (ownParticlesVFX != null && _isLightOn)
+
+            if (ownParticlesVFX != null)
                 ownParticlesVFX.enabled = false;
-            if (_particleSystem != null && _isLightOn)
-                _particleSystem.gameObject.SetActive(false);
+            if (_particleSystem != null)
+                _particleSystem.Pause();
         }
 
-        public Vector3 GetCullPosition()
-        {
-            return transform.position;
-        }
-
-        public float GetCullRadius()
-        {
-            return CullRange;
-        }
+        public Vector3 GetCullPosition() => transform.position;
+        public float GetCullRadius() => CullRange;
 
         #endregion
     }

@@ -84,7 +84,7 @@ public class CreatureController : MonoBehaviour, ICullable
     [SerializeField] private bool showGizmos = true;
 
     // Player Behaviors
-    private PacifyBehaviourComponent pacifier;
+    private PacifyBehaviorComponent pacifier;
     private PetBehaviorComponent peter;
 
     // Components
@@ -270,7 +270,7 @@ public class CreatureController : MonoBehaviour, ICullable
         rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
-        pacifier = FindFirstObjectByType<PacifyBehaviourComponent>();
+        pacifier = FindFirstObjectByType<PacifyBehaviorComponent>();
         peter = FindFirstObjectByType<PetBehaviorComponent>();
 
         if (rb != null)
@@ -307,18 +307,24 @@ public class CreatureController : MonoBehaviour, ICullable
         if (drainCooldownTimer > 0)
             drainCooldownTimer -= delta;
 
-        if (_isCulled)
-            return;
+        if (!_isCulled)
+        {
+            // Every 3 frames 
+            if (Time.frameCount % 3 == 0)
+                UpdateNearbyCreatures();
 
-        UpdateNearbyCreatures();
-        UpdateExcitement(delta);
-        UpdateBlacklists(delta);
-        UpdateState(delta);
-        UpdateAnimation();
-        UpdateVisuals();
-        UpdateAudio();
-        UpdateParticles();
-        CheckIfStuck();
+            UpdateExcitement(delta);
+            UpdateBlacklists(delta);
+            UpdateState(delta);
+
+            UpdateAnimation();
+            UpdateVisuals();
+            UpdateAudio();
+            UpdateParticles();
+            
+            CheckIfStuck();
+        }
+
     }
 
     void FixedUpdate()
@@ -1149,6 +1155,9 @@ public class CreatureController : MonoBehaviour, ICullable
 
     void UpdateNearbyCreatures()
     {
+        if (_isCulled)
+            return;
+
         if (currentState == ECreatureState.Eating) return;
 
         nearbyCreatures.Clear();
@@ -1774,22 +1783,13 @@ public class CreatureController : MonoBehaviour, ICullable
     public void OnBecomeInvisible()
     {
         _isCulled = true;
-
-        Debug.Log($"{name} has been culled");
-
         if (excitementParticles != null && !excitementParticles.isStopped)
             excitementParticles.Stop();
     }
 
-    public Vector3 GetCullPosition()
-    {
-        return transform.position;
-    }
+    public Vector3 GetCullPosition() => transform.position;
 
-    public float GetCullRadius()
-    {
-        return CullRange;
-    }
+    public float GetCullRadius() => CullRange;
 
     #endregion
 }

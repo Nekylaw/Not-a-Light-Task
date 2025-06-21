@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Security.Cryptography;
-using DG.Tweening;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using static DG.Tweening.DOTween;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private ShootBehaviorComponent _shoot = null;
     private JumpBehaviorComponent _jump = null;
     private PickUpBehaviorComponent _pickup = null;
-    private PacifyBehaviourComponent _pacify = null;
+    private PacifyBehaviorComponent _pacify = null;
     private PetBehaviorComponent _pet = null;
 
     private Vector3 _movementDirection = Vector3.zero;
@@ -61,8 +56,8 @@ public class PlayerController : MonoBehaviour
         if (!TryGetComponent<PickUpBehaviorComponent>(out _pickup))
             Debug.LogError($"{nameof(PickUpBehaviorComponent)} component not found", this);
 
-        if (!TryGetComponent<PacifyBehaviourComponent>(out _pacify))
-            Debug.LogError($"{nameof(PacifyBehaviourComponent)} component not found", this);
+        if (!TryGetComponent<PacifyBehaviorComponent>(out _pacify))
+            Debug.LogError($"{nameof(PacifyBehaviorComponent)} component not found", this);
 
         if (!TryGetComponent<PetBehaviorComponent>(out _pet))
             Debug.LogError($"{nameof(PetBehaviorComponent)} component not found", this);

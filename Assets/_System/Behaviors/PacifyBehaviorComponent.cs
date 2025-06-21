@@ -3,7 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 
-public class PacifyBehaviourComponent : MonoBehaviour
+public class PacifyBehaviorComponent : MonoBehaviour
 {
     #region Subclasses
 

@@ -12,11 +12,11 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
 
     private LightSourceComponent _lightSource;
     private int _remainingOrbs = 0;
-    
-    [Header ("Colors")]
+
+    [Header("Colors")]
     public Color _baseColor;
     public Color _glowColor;
-    
+
     [Header("Orbit Settings")]
     public float _radius = 1f;
     public float _orbitSpeed = 5f;
@@ -37,6 +37,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     private List<GameObject> _orbParticuleList = new();
     private Coroutine _spawnCoroutine;
 
+    private List<Tween> _activeTweens = new List<Tween>();
+
     private void Awake()
     {
         if (!TryGetComponent<LightSourceComponent>(out _lightSource))
@@ -47,7 +49,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     {
         LightSourcesService.Instance.OnTriggerLight += HandleTriggerLight;
         LightSourcesService.Instance.OnSwitchOffLight += HandleLightOff;
-        
+
         CullingService.Instance.Register(this);
     }
 
@@ -64,7 +66,9 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     void Start()
     {
         CullMode = ICullable.ECullMode.Frustum;
-        CullRange = 7f;
+
+        float visualRange = _radius + 2f;
+        CullRange = visualRange * _lightSource.Settings.RequiredOrbs;
 
         InitRequiredOrbs();
     }
@@ -89,7 +93,7 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
         {
             var orb = GameObject.Instantiate<GameObject>(_orbParticuleFeedbackPrefab);
             orb.transform.SetParent(transform);
-            
+
             orb.GetComponent<PropLightRendererComponent>().SetColor(_baseColor, _glowColor);
 
             float angle = i * (360f / _remainingOrbs);
@@ -107,9 +111,10 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
             orb.transform.localScale = Vector3.zero;
 
             Sequence spawnSequence = DOTween.Sequence();
+            _activeTweens.Add(spawnSequence);
 
             spawnSequence.Append(
-                orb.transform.DOScale(new Vector3(0.3f,0.3f,0.3f), _spawnDuration)
+                orb.transform.DOScale(new Vector3(0.3f, 0.3f, 0.3f), _spawnDuration)
                     .SetEase(_spawnEase)
             );
 
@@ -123,13 +128,18 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
                     .SetEase(Ease.OutQuad)
             );
 
+            spawnSequence.OnComplete(() =>
+            {
+                _activeTweens.Remove(spawnSequence);
+            });
+
             _orbParticuleList.Add(orb);
 
-            
+
             yield return new WaitForSeconds(_spawnDelay);
         }
-        
-        
+
+
 
         _spawnCoroutine = null;
     }
@@ -151,8 +161,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     {
         if (isCulled)
             return;
-        
-        if (!isLightOn && _spawnCoroutine == null) 
+
+        if (!isLightOn && _spawnCoroutine == null)
         {
             AnimateOrbits();
         }
@@ -228,7 +238,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
                 .SetEase(Ease.InQuad)
         );
 
-        consumeSequence.OnComplete(() => {
+        consumeSequence.OnComplete(() =>
+        {
             if (orb != null)
                 Destroy(orb);
         });
@@ -278,7 +289,8 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
             }
         }
     }
-    #region CULL
+
+    #region Culling
 
     public ICullable.ECullMode CullMode { get; set; }
     public float CullRange { get; set; }
@@ -289,11 +301,32 @@ public class AnimateLightOrbFeedbackComponent : MonoBehaviour, ICullable
     public void OnBecomeVisible()
     {
         isCulled = false;
+
+        foreach (var orb in _orbParticuleList)
+        {
+            if (orb != null)
+            {
+                orb.SetActive(true);
+
+                var renderer = orb.GetComponent<Renderer>();
+                if (renderer != null)
+                    renderer.enabled = true;
+            }
+        }
+        DOTween.Play(transform);
     }
 
     public void OnBecomeInvisible()
     {
         isCulled = true;
+
+        foreach (var orb in _orbParticuleList)
+        {
+            if (orb != null)
+                orb.SetActive(false);
+        }
+
+        DOTween.Pause(transform);
     }
 
     public Vector3 GetCullPosition()

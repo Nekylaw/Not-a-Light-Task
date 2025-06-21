@@ -29,15 +29,24 @@ namespace Game.Services.CullingService
 
         private CullingGroup _group;
         private BoundingSphere[] _spheres;
-
         private readonly List<ICullable> _frustumCullables = new();
+        private readonly HashSet<ICullable> _frustumCullablesSet = new();
         private readonly List<ICullable> _rangeCullables = new();
+        private readonly HashSet<ICullable> _rangeCullablesSet = new();
+
+        private readonly Queue<int> _freeIndexQueue = new();
+        private Vector3 _cachedPlayerPos;
+        private int _frameCount;
 
         private Camera _camera;
         private Transform _player;
 
         private bool _initialized = false;
         private bool _disposed = false;
+        private bool _boundingSpheresNeedUpdate = false;
+
+        private const int RANGE_UPDATE_INTERVAL = 3; 
+        private const int INITIAL_SPHERE_CAPACITY = 150;
 
         private void Initialize()
         {
@@ -45,10 +54,13 @@ namespace Game.Services.CullingService
             if (_camera == null)
                 return;
 
-
             _group = new CullingGroup();
             _group.targetCamera = _camera;
             _group.onStateChanged += OnFrustumStateChanged;
+
+            _spheres = new BoundingSphere[INITIAL_SPHERE_CAPACITY];
+            _group.SetBoundingSpheres(_spheres);
+            _group.SetBoundingSphereCount(0);
 
             _initialized = true;
 
@@ -68,8 +80,17 @@ namespace Game.Services.CullingService
             if (!_initialized)
                 return;
 
-            UpdateFrustumCullables();
-            UpdateRangeCullables();
+            _frameCount++;
+
+            if (_boundingSpheresNeedUpdate)
+            {
+                UpdateFrustumCullables();
+            }
+
+            if (_frameCount % RANGE_UPDATE_INTERVAL == 0 && _rangeCullables.Count > 0)
+            {
+                UpdateRangeCullables();
+            }
         }
 
         private void OnDestroy()
@@ -92,80 +113,116 @@ namespace Game.Services.CullingService
 
         public void Register(ICullable cullable)
         {
+            if (cullable == null) return;
+
             switch (cullable.CullMode)
             {
                 case ICullable.ECullMode.Frustum:
-                    if (_frustumCullables.Contains(cullable)) return;
-                    cullable.CullableIndex = _frustumCullables.Count;
-                    _frustumCullables.Add(cullable);
-                    UpdateBoundingSpheres();
+                    if (_frustumCullablesSet.Contains(cullable)) return;
+
+                    int index;
+                    if (_freeIndexQueue.Count > 0)
+                    {
+                        index = _freeIndexQueue.Dequeue();
+                        _frustumCullables[index] = cullable;
+                    }
+                    else
+                    {
+                        index = _frustumCullables.Count;
+                        _frustumCullables.Add(cullable);
+
+                        if (index >= _spheres.Length)
+                        {
+                            Array.Resize(ref _spheres, _spheres.Length * 2);
+                            _group.SetBoundingSpheres(_spheres);
+                        }
+                    }
+
+                    cullable.CullableIndex = index;
+                    _frustumCullablesSet.Add(cullable);
+
+                    _spheres[index] = new BoundingSphere(cullable.GetCullPosition(), cullable.GetCullRadius());
+
+                    UpdateBoundingSphereCount();
                     break;
 
                 case ICullable.ECullMode.Range:
-                    if (_rangeCullables.Contains(cullable)) return;
+                    if (_rangeCullablesSet.Contains(cullable)) return;
                     _rangeCullables.Add(cullable);
+                    _rangeCullablesSet.Add(cullable);
                     break;
             }
         }
 
         public void Unregister(ICullable cullable)
         {
+            if (cullable == null) return;
+
             switch (cullable.CullMode)
             {
                 case ICullable.ECullMode.Frustum:
-                    if (_frustumCullables.Remove(cullable))
-                        UpdateBoundingSpheres();
+                    if (!_frustumCullablesSet.Remove(cullable)) return;
+
+                    int index = cullable.CullableIndex;
+                    if (index >= 0 && index < _frustumCullables.Count && _frustumCullables[index] == cullable)
+                    {
+                        _frustumCullables[index] = null;
+                        _freeIndexQueue.Enqueue(index);
+
+                        _spheres[index].radius = 0;
+
+                        UpdateBoundingSphereCount();
+                    }
                     break;
 
                 case ICullable.ECullMode.Range:
-                    _rangeCullables.Remove(cullable);
+                    if (_rangeCullablesSet.Remove(cullable))
+                    {
+                        _rangeCullables.Remove(cullable);
+                    }
                     break;
             }
         }
 
-        private void UpdateBoundingSpheres()
+        private void UpdateBoundingSphereCount()
         {
-            _spheres = new BoundingSphere[_frustumCullables.Count];
-
+            int activeCount = 0;
             for (int i = 0; i < _frustumCullables.Count; i++)
             {
-                var cullable = _frustumCullables[i];
-                if (cullable == null)
-                    continue;
-                cullable.CullableIndex = i;
-                _spheres[i] = new BoundingSphere(cullable.GetCullPosition(), cullable.GetCullRadius());
+                if (_frustumCullables[i] != null)
+                    activeCount++;
             }
 
-            if (_group == null)
-                return;
-
-            _group.SetBoundingSpheres(_spheres);
-            _group.SetBoundingSphereCount(_spheres.Length);
+            _group.SetBoundingSphereCount(activeCount);
         }
 
         private void UpdateFrustumCullables()
         {
-            if (_spheres == null || _spheres.Length != _frustumCullables.Count)
-                return;
-
             for (int i = 0; i < _frustumCullables.Count; i++)
             {
-                _spheres[i].position = _frustumCullables[i].GetCullPosition();
-                _spheres[i].radius = _frustumCullables[i].GetCullRadius();
+                var cullable = _frustumCullables[i];
+                if (cullable == null) continue;
+
+                _spheres[i].position = cullable.GetCullPosition();
+                _spheres[i].radius = cullable.GetCullRadius();
             }
+
+            _boundingSpheresNeedUpdate = false;
         }
 
         private void UpdateRangeCullables()
         {
-            if (_player == null)
-                return;
+            if (_player == null) return;
 
-            Vector3 playerPos = _player.position;
+            _cachedPlayerPos = _player.position;
 
             foreach (var cullable in _rangeCullables)
             {
-                float sqrDist = (playerPos - cullable.GetCullPosition()).sqrMagnitude;
+                if (cullable == null) continue;
+
+                float sqrDist = (_cachedPlayerPos - cullable.GetCullPosition()).sqrMagnitude;
                 float range = cullable.CullRange;
+
                 if (sqrDist <= range * range)
                     cullable.OnBecomeVisible();
                 else
@@ -178,10 +235,8 @@ namespace Game.Services.CullingService
             if (evt.index < 0 || evt.index >= _frustumCullables.Count)
                 return;
 
-            if (_frustumCullables[evt.index] == null)
-                return;
-
-            ICullable cullable = _frustumCullables[evt.index];
+            var cullable = _frustumCullables[evt.index];
+            if (cullable == null) return;
 
             if (evt.hasBecomeVisible)
                 cullable.OnBecomeVisible();
@@ -193,5 +248,6 @@ namespace Game.Services.CullingService
         {
             _player = player;
         }
+
     }
 }
