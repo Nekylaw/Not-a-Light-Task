@@ -47,8 +47,6 @@ public class FoliageController : MonoBehaviour
     [Header("Performance")]
     [SerializeField] private int _maxChunksDrawnPerFrame = 50;
 
-    [SerializeField] private bool _enableOcclusion = false;
-
     [Header("Debug")]
     [SerializeField] private bool _showDebugInfo = false;
 

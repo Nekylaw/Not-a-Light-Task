@@ -29,12 +29,6 @@ public class PickUpBehaviorComponent : MonoBehaviour
     public delegate void ReleasePickupDelegate();
     public event ReleasePickupDelegate OnReleasePickup = null;
 
-    public delegate void PickableInRangeDelegate(PickableComponent pickableComponent);
-    public delegate void PickableOutOfRangeDelegate();
-
-    public event PickableInRangeDelegate OnPickableInRange = null;
-    public event PickableOutOfRangeDelegate OnPickableOutOfRange = null;
-
     #endregion
 
     #region Fields
