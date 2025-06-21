@@ -65,6 +65,16 @@ MonoBehaviour:
     heartBeatBaseSpeed: 3
     heartBeatExcitedSpeed: 3
   PetProfile:
+    baseColor: {r: 0.8, g: 0.2, b: 0.5, a: 1}
+    rimColor: {r: 0.763186, g: 0.4764151, b: 1, a: 1}
+    rimIntensity: 3
+    eyesColor: {r: 1, g: 1, b: 1, a: 1}
+    eyesIntensity: 3
+    heartColor: {r: 0.6545442, g: 0.3063813, b: 0.764151, a: 1}
+    heartIntensity: 8
+    heartBeatBaseSpeed: 3
+    heartBeatExcitedSpeed: 6
+  PettableProfile:
     baseColor: {r: 0.30704877, g: 0.4983491, b: 0.9433962, a: 1}
     rimColor: {r: 0.1, g: 1, b: 0.7, a: 1}
     rimIntensity: 2.56
@@ -72,15 +82,5 @@ MonoBehaviour:
     eyesIntensity: 3
     heartColor: {r: 0.4, g: 1, b: 0.6, a: 1}
     heartIntensity: 5
-    heartBeatBaseSpeed: 1.2
-    heartBeatExcitedSpeed: 2
-  PettableProfile:
-    baseColor: {r: 0.8, g: 0.2, b: 0.5, a: 1}
-    rimColor: {r: 0.763186, g: 0.4764151, b: 1, a: 1}
-    rimIntensity: 2
-    eyesColor: {r: 1, g: 1, b: 1, a: 1}
-    eyesIntensity: 3
-    heartColor: {r: 0.47251633, g: 0.048415814, b: 0.6037736, a: 1}
-    heartIntensity: 8
     heartBeatBaseSpeed: 1.5
-    heartBeatExcitedSpeed: 8.71
+    heartBeatExcitedSpeed: 2

@@ -1287,7 +1287,7 @@ public class CreatureController : MonoBehaviour, ICullable
         if (!_isPettable)
             return;
 
-        transform.DOScale(2f, 1.5f);
+        transform.DOScale(1.6f, 1.5f);
 
     }
 
