@@ -26,7 +26,7 @@ namespace Game.Services.LightSources
         private ParticleSystem _particleSystem = null;
 
         private float _detectionTimer = 0f;
-        private const float DETECTION_INTERVAL = 0.2f;
+        private const float DETECTION_INTERVAL = 0.02f;
 
         // Cache pour les buildings
         private bool _buildingsDetected = false;

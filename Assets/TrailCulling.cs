@@ -27,7 +27,7 @@ public class TrailCulling : MonoBehaviour,ICullable
     private void Start()
     {
         CullMode = ICullable.ECullMode.Frustum;
-        CullRange = 50f;
+        CullRange = 100f;
         VFX = GetComponentInChildren<VisualEffect>();
         TrailRenderer = GetComponentInChildren<TrailRenderer>();
     }

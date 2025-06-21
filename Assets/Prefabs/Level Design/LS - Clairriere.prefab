@@ -96,6 +96,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3069534266113602358, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3069534266113602358, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Name
+      value: PartColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3069534266113602358, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.x
+      value: 0.051315226
+      objectReference: {fileID: 0}
+    - target: {fileID: 3069534266113602358, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
+      value: 1.5839192
+      objectReference: {fileID: 0}
+    - target: {fileID: 3069534266113602358, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3168508041509950434, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_Layer
       value: 12
@@ -111,6 +131,38 @@ PrefabInstance:
     - target: {fileID: 5326442218017727911, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _baseColor.b
+      value: 0.627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _baseColor.r
+      value: 0.9764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _glowColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _glowColor.b
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _glowColor.g
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895321958639381307, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
+      propertyPath: _glowColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6620296430090072846, guid: 34ed24ab302e4440ab0bd449928d648b, type: 3}
       propertyPath: _settings

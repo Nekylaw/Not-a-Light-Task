@@ -261,7 +261,7 @@ public class CreatureController : MonoBehaviour, ICullable
     private void OnEnable()
     {
         CullMode = ICullable.ECullMode.Range;
-        CullRange = 80;
+        CullRange = 100;
         CullingService.Instance.Register(this);
     }
 
