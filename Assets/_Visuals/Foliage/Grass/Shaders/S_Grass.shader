@@ -1,4 +1,4 @@
-Shader "Custom/GrassWindAnimated"
+Shader "Custom/GrassWind"
 {
     Properties
     {
@@ -13,6 +13,7 @@ Shader "Custom/GrassWindAnimated"
         _FlowTime("Flow Time", Float) = 0.0
         _MatrixOffset("Matrix Offset", Int) = 0
         _AnimationDuration("Animation Duration", Float) = 1.0
+        _PropagationSpeed("Propagation Speed", Float) = 15.0
     }
 
     SubShader
@@ -44,6 +45,7 @@ Shader "Custom/GrassWindAnimated"
             float _FlowStrength;
             float _FlowMap_Scale;
             float _AnimationDuration;
+            float _PropagationSpeed;
             int _MatrixOffset;
             int _ClearZoneCount;
 
@@ -62,27 +64,20 @@ Shader "Custom/GrassWindAnimated"
 
             struct Attributes
             {
-                float3 positionOS : POSITION;
-                float2 uv : TEXCOORD0;
-                uint instanceID : SV_InstanceID;
+                float3 positionOS   : POSITION;
+                float2 uv           : TEXCOORD0;
+                uint instanceID     : SV_InstanceID;
             };
 
             struct Varyings
             {
-                float4 positionHCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float heightRatio : TEXCOORD1;
-                float animationProgress : TEXCOORD2;
-                float worldPos : TEXCOORD3; 
+                float4 positionHCS          : SV_POSITION;
+                float2 uv                   : TEXCOORD0;
+                float heightRatio           : TEXCOORD1;
+                float animationProgress     : TEXCOORD2;
+                float3 instanceWorldPos     : TEXCOORD3;
             };
 
-            // Smooth step function for easing animation
-            float smoothstep3(float t)
-            {
-                return t * t * (3.0 - 2.0 * t);
-            }
-
-            // Enhanced easing function for more natural animation
             float easeOutCubic(float t)
             {
                 return 1.0 - pow(1.0 - t, 3.0);
@@ -94,61 +89,60 @@ Shader "Custom/GrassWindAnimated"
                 uint idx = v.instanceID + _MatrixOffset;
                 float4x4 modelMatrix = _Matrices[idx];
                 float3 baseScale = _BaseScales[idx].xyz;
-
+            
                 float3 worldPos = mul(modelMatrix, float4(v.positionOS, 1)).xyz;
-
-                // Calculate distance factor based on clear zones
-                float targetDistFactor = 0;
+                o.instanceWorldPos = mul(modelMatrix, float4(0, 0, 0, 1)).xyz;
+                
+                float targetScaleFactor = 0.0; 
+                float closestDistanceToZone = 99999.0;
+            
                 for (int i = 0; i < _ClearZoneCount; i++)
                 {
                     float3 zonePos = _ClearZones[i].xyz;
-                    float radius = 20 + _ClearZones[i].w;
-                    float d = distance(worldPos, zonePos);
-                    float t = saturate(1.0 - d / radius);
-                    targetDistFactor = max(targetDistFactor, t);
+                    float radius = _ClearZones[i].w ; 
+                    
+                    float d = distance(worldPos.xz, zonePos.xz); 
+                    float insideZoneFactor = saturate(1.0 - (d / (radius)));
+                    
+                    targetScaleFactor = max(targetScaleFactor , insideZoneFactor);
+                    
+                    closestDistanceToZone = min(closestDistanceToZone, d);
                 }
-
-                // Get animation start time for this instance
+                
                 float animStartTime = _AnimationStartTimes[idx];
                 float currentTime = _FlowTime;
                 
-                // Calculate animation progress (0 to 1)
-                float animationProgress = 0;
-                float currentDistFactor = targetDistFactor;
+                float animationProgress = 0.0;
+                float currentScaleFactor = targetScaleFactor; 
                 
-                if (animStartTime > 0) // Animation has been triggered
+                if (animStartTime > 0) 
                 {
-                    float elapsed = currentTime - animStartTime;
-                    animationProgress = saturate(elapsed / _AnimationDuration);
+                    float timeSinceEventStart = currentTime - animStartTime;
+                    float propagationDelay = closestDistanceToZone / _PropagationSpeed;
+                    float timeSinceBladeShouldAnimate = timeSinceEventStart - propagationDelay;
+                    animationProgress = saturate(timeSinceBladeShouldAnimate / _AnimationDuration);
                     
-                    // Apply easing function for smooth animation
                     float easedProgress = easeOutCubic(animationProgress);
                     
-                    // Interpolate from previous state to target state
-                    // Note: This assumes we're animating from MinScale to target
-                    currentDistFactor = lerp(0, targetDistFactor, easedProgress);
+                    currentScaleFactor = lerp(0.0, targetScaleFactor, easedProgress);
                 }
-
-                // Calculate final scale
-                float scale = lerp(_MinScale, baseScale.x, currentDistFactor);
-
-                // Apply scaling
+            
+                float scale = lerp(_MinScale, baseScale.x, currentScaleFactor);
+            
                 float3 scaled = v.positionOS;
                 scaled.y = _YOffset + (scaled.y - _YOffset) * scale;
                 scaled.xz *= scale;
-
-                // Enhanced wind effect that responds to scale changes
+            
+                // Wind effect
                 float2 flowUV = worldPos.xz / _FlowMap_Scale + float2(_FlowTime * 0.05, _FlowTime * 0.05);
                 float2 flow = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV, 0).rg;
                 float2 flow2 = SAMPLE_TEXTURE2D_LOD(_FlowMap, sampler_FlowMap, flowUV * 7.2, 0).rg;
                 float2 combinedFlow = (flow + flow2 * 0.5) / 1.5;
                 float2 flowDir = normalize(combinedFlow * 2.0 - 1.0);
                 
-                // Wind strength varies with scale and animation progress
-                float windMultiplier = 1.0 + (currentDistFactor * 0.5); // More wind when grass is larger
+                float windMultiplier = 1.0 + (currentScaleFactor * 0.5); 
                 float swayAmount = _FlowStrength * windMultiplier * max(0, scaled.y - _YOffset);
                 
-                // Add slight animation wobble during scaling
                 if (animationProgress > 0 && animationProgress < 1)
                 {
                     float wobble = sin(animationProgress * 3.14159 * 4) * 0.1 * (1 - animationProgress);
@@ -156,14 +150,13 @@ Shader "Custom/GrassWindAnimated"
                 }
                 
                 scaled.xz += flowDir * swayAmount;
-
+            
                 // Final transformation
                 float4 finalWorldPos = mul(modelMatrix, float4(scaled, 1));
                 o.positionHCS = mul(UNITY_MATRIX_VP, finalWorldPos);
                 o.uv = v.uv;
                 o.heightRatio = saturate((v.positionOS.y - _YOffset) / _OldGrassHeight);
                 o.animationProgress = animationProgress;
-                o.worldPos = finalWorldPos.y; 
                 
                 return o;
             }
@@ -171,7 +164,8 @@ Shader "Custom/GrassWindAnimated"
             half4 frag(Varyings i) : SV_Target
             {
                 half4 baseColor = lerp(_ColorBottom, _ColorTop, i.heightRatio);
-                float randomSeed = frac(sin(dot(i.worldPos, float2(12.9898, 78.233))) * 1.4898);
+                
+                float randomSeed = frac(sin(dot(i.instanceWorldPos.xz, float2(12.9898, 78.233))) * 1.4898);
                 float colorVariation = lerp(0.9, 1.1, randomSeed);
                 
                 // Bright grass during animation

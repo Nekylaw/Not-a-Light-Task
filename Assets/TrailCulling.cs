@@ -33,6 +33,7 @@ public class TrailCulling : MonoBehaviour,ICullable
     }
 
     private bool _isCulled;
+
     public void OnBecomeVisible()
     {
         _isCulled = false;
@@ -43,8 +44,6 @@ public class TrailCulling : MonoBehaviour,ICullable
     public void OnBecomeInvisible()
     {
         _isCulled = true;
-
-        Debug.Log($"{name} has been culled");
         
         VFX.enabled = false;
         TrailRenderer.enabled = false;

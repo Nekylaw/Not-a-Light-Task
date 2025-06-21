@@ -979,7 +979,7 @@ public class FoliageController : MonoBehaviour
     {
         if (!_showDebugInfo) return;
 
-        GUILayout.BeginArea(new Rect(10, 10, 350, 300));
+        GUILayout.BeginArea(new Rect(10, 150, 350, 800));
         GUILayout.Label("=== FOLIAGE CONTROLLER DEBUG ===");
 
         GUILayout.Space(5);

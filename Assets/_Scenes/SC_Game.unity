@@ -13447,7 +13447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &775489990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16615,7 +16615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8129215436254250207, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -570
       objectReference: {fileID: 0}
     - target: {fileID: 8129215436254250207, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30661,17 +30661,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 81f9e861c9790dd4bbc834333b78a034, type: 2}
-  _renderDistance: 150
+  _renderDistance: 120
   _cullDistance: 150
   _lodDistances:
   - 50
   - 100
   - 200
   - 500
-  _enableLOD: 1
+  _enableLOD: 0
   _enableFrustumCulling: 1
   _enableAnimation: 1
-  _animationDuration: 4
+  _animationDuration: 10
   _animationCurve:
     serializedVersion: 2
     m_Curve:
@@ -30697,12 +30697,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enableLightBasedAnimation: 1
-  _chunkLoadRadius: 32
+  _chunkLoadRadius: 8
   _chunkFolder: FoliageChunks
-  _maxConcurrentLoads: 2
-  _loadFrameBudgetMs: 5
-  _chunkSize: {x: 16, y: 16}
-  _maxChunksDrawnPerFrame: 256
+  _maxConcurrentLoads: 3
+  _loadFrameBudgetMs: 8
+  _chunkSize: {x: 50, y: 50}
+  _maxChunksDrawnPerFrame: 50
   _showDebugInfo: 1
   _showMemoryUsage: 0
 --- !u!1 &1703049645
@@ -33829,6 +33829,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 33231a3d37f7b524aa6922ec3438b75d, type: 2}
+    - target: {fileID: 2733373661458651294, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2812784721601465337, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -34040,6 +34044,10 @@ PrefabInstance:
     - target: {fileID: 4580869416146788406, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660343063137742975, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4943795094166984761, guid: d821c04d0e23e4aa895b926316360ff2, type: 3}
       propertyPath: m_Enabled
@@ -34776,6 +34784,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 576481429}
     m_Modifications:
+    - target: {fileID: 3089138814760717493, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6441fe70e05fd2048ab49196fcaf3a1d, type: 2}
     - target: {fileID: 3593361309812436320, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_Name
       value: "st\xE8le"
@@ -35923,7 +35935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25.887833
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -35951,7 +35963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7788353
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -36039,7 +36051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -27.445503
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchoredPosition.x
