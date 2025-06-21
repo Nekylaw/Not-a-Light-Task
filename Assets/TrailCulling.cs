@@ -1,4 +1,5 @@
 using System;
+using Game.Services.CullingService;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -12,10 +13,21 @@ public class TrailCulling : MonoBehaviour,ICullable
 
     private VisualEffect VFX;
     private TrailRenderer TrailRenderer;
-    
+
+    private void OnEnable()
+    {
+        CullingService.Instance.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        CullingService.Instance.Unregister(this);
+    }
+
     private void Start()
     {
         CullMode = ICullable.ECullMode.Frustum;
+        CullRange = 50f;
         VFX = GetComponentInChildren<VisualEffect>();
         TrailRenderer = GetComponentInChildren<TrailRenderer>();
     }
