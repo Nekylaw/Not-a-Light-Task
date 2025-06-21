@@ -16,13 +16,13 @@ public class ElevatorComponent : MonoBehaviour
     [SerializeField]
     private AnimationCurve _animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [SerializeField] private LightSourceComponent activator;
+    //[SerializeField] private LightSourceComponent activator;
 
     [SerializeField]
     private OrbComponent orb;
 
-    [SerializeField] private Transform rejectPosition;
-    [SerializeField] private float RejectForce;
+    //[SerializeField] private Transform rejectPosition;
+    //[SerializeField] private float RejectForce;
     
     private bool _isActivated = false;
     private bool _isTop = false;
@@ -34,12 +34,12 @@ public class ElevatorComponent : MonoBehaviour
 
     private void OnEnable()
     {
-        LightSourcesService.Instance.OnSwitchOnLight += ActivateElevator;
+        //LightSourcesService.Instance.OnSwitchOnLight += ActivateElevator;
     }
 
     private void OnDisable()
     {
-        LightSourcesService.Instance.OnSwitchOnLight -= ActivateElevator;
+        //LightSourcesService.Instance.OnSwitchOnLight -= ActivateElevator;
     }
 
     private void Awake()
@@ -62,6 +62,8 @@ public class ElevatorComponent : MonoBehaviour
 
         isPlayerIn = true;
         
+        ActivateElevator();
+        
     }
 
     private void OnTriggerExit(Collider other)
@@ -75,15 +77,15 @@ public class ElevatorComponent : MonoBehaviour
         isPlayerIn = false;
     }
 
-    public void ActivateElevator(LightSourceComponent light)
+    public void ActivateElevator()//LightSourceComponent light)
     {
-        if (light != activator)
-            return;
+        //if (light != activator)
+          //  return;
         
         if (!isPlayerIn)
         {
-            RejectorBehaviour();
-            LightSourcesService.Instance.SwitchOff(light);
+            //RejectorBehaviour();
+            //LightSourcesService.Instance.SwitchOff(light);
             return;
         }
         
@@ -95,11 +97,11 @@ public class ElevatorComponent : MonoBehaviour
         StartCoroutine(AnimateElevatorCoroutine(target));
     }
 
-    public void RejectorBehaviour()
+    /*public void RejectorBehaviour()
     {
         var iObj = Instantiate( orb.gameObject, rejectPosition.position, quaternion.identity);
         //iObj.gameObject.GetComponent<Rigidbody>().AddForce( iObj.gameObject.transform.forward * RejectForce, ForceMode.Impulse);
-    }
+    }*/
 
     private IEnumerator AnimateElevatorCoroutine(Transform target)
     {
@@ -122,7 +124,7 @@ public class ElevatorComponent : MonoBehaviour
         _isTop = !_isTop;
         _isActivated = false;
 
-        LightSourcesService.Instance.SwitchOff(activator);
-        RejectorBehaviour();
+        //LightSourcesService.Instance.SwitchOff(activator);
+        //RejectorBehaviour();
     }
 }
