@@ -22,4 +22,7 @@ public class LightSourceSettings : ScriptableObject
     public float Duration = 0;
 
     public float SpiralSpeed = 0;
+    
+    [Header("Layer")]
+    public LayerMask BuildingLayer = ~0;
 }

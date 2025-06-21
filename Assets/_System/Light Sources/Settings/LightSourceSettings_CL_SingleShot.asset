@@ -16,9 +16,12 @@ MonoBehaviour:
   RequiredOrbs: 1
   OrbLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
   DissipationSpeed: 8
   DebugColor: {r: 1, g: 1, b: 1, a: 1}
   AttractRange: 2
   Duration: 1
   SpiralSpeed: 1000
+  BuildingLayer:
+    serializedVersion: 2
+    m_Bits: 128
