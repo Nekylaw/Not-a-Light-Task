@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8738030917546358624
 Transform:
@@ -46,6 +46,10 @@ PrefabInstance:
     - target: {fileID: 977658099434918695, guid: 15630b104772b49d9aa746e28e2a8234, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 977658099434918695, guid: 15630b104772b49d9aa746e28e2a8234, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3155487701137611760, guid: 15630b104772b49d9aa746e28e2a8234, type: 3}
       propertyPath: m_LocalPosition.x
@@ -146,12 +150,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8176245799509711254, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8176245799509711254, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: -876546973899608171, guid: 373cc059be5dc40d29803619926766f9, type: 3}
     - target: {fileID: 919132149155446097, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: m_Name
       value: projecteur
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291207221326350998, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5914130066151792269, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462335756876826026, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8462335756876826026, guid: 1cd92d9cfd3cd48afa73eb75f8f96bce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -225,6 +249,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orbParticuleFeedbackPrefab: {fileID: 8801202460656879023, guid: 4571399ab68596d478423bdd1ad6f723, type: 3}
+  _baseColor: {r: 0, g: 0, b: 0, a: 0}
+  _glowColor: {r: 0, g: 0, b: 0, a: 0}
   _radius: 1.5
   _orbitSpeed: 75
   _verticalAmplitude: 0.15
