@@ -1215,14 +1215,13 @@ public class CreatureController : MonoBehaviour, ICullable
         if (debugMode)
             Debug.Log($"{name} was stuck! Unstucking...");
 
-        // Petite t�l�portation al�atoire
+        // Random tp
         Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
         transform.position += new Vector3(randomOffset.x, 0, randomOffset.y);
 
-        // Nouvelle cible
         SetNewWanderTarget();
 
-        // Petite impulsion arri�re
+        // back step
         velocity = -transform.forward * moveSpeed;
     }
 
