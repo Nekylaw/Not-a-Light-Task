@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
 using Game.Services.LightSources;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Siccity.GLTFUtility.Extensions;
 
 public class AudioService : MonoBehaviour
 {
@@ -246,6 +244,14 @@ public class AudioService : MonoBehaviour
     [Header("Light Groups")]
     [SerializeField] private List<LightGroup> _lightGroups = new List<LightGroup>();
 
+    [Header("UI Events")]
+    [SerializeField] private EventSound _playSound = new EventSound { eventName = "Play" };
+    [SerializeField] private EventSound _pauseSound = new EventSound { eventName = "Pause" };
+    [SerializeField] private EventSound _switchUISound = new EventSound { eventName = "Switch" };
+
+    [Header("Fog Event")]
+    [SerializeField] private EventSound _fogSound = new EventSound { eventName = "Fog" };
+
     [Header("Movement Events")]
     [SerializeField] private EventSound _onWalkSound = new EventSound { eventName = "On Walk" };
 
@@ -258,6 +264,7 @@ public class AudioService : MonoBehaviour
     [SerializeField] private EventSound _onLampToggleSound = new EventSound { eventName = "On Lamp Toggle" };
 
     [Header("Ability Events")]
+    [SerializeField] private EventSound _onPacifyStartSound = new EventSound { eventName = "On Pacify Start" };
     [SerializeField] private EventSound _onPacifyEndSound = new EventSound { eventName = "On Pacify End" };
 
     [Header("Custom Events")]
@@ -269,6 +276,9 @@ public class AudioService : MonoBehaviour
     private PickUpBehaviorComponent _pickUp;
     private PacifyBehaviorComponent _pacify;
     private LightSourcesService _lightService;
+    private CreatureController _creature;
+
+    private GrillageBehaviour _grillage;
 
     // For editor
     [HideInInspector] public bool showLightGroups = true;
@@ -299,6 +309,8 @@ public class AudioService : MonoBehaviour
     {
         SubscribeToEvents();
         InitializeAllLightGroups();
+
+        PlaySound(_fogSound.soundToPlay);
     }
 
     private void OnDestroy()
@@ -325,6 +337,9 @@ public class AudioService : MonoBehaviour
         _shoot = FindFirstObjectByType<ShootBehaviorComponent>(FindObjectsInactive.Exclude);
         _pickUp = FindFirstObjectByType<PickUpBehaviorComponent>(FindObjectsInactive.Exclude);
         _pacify = FindFirstObjectByType<PacifyBehaviorComponent>(FindObjectsInactive.Exclude);
+
+        _creature = FindFirstObjectByType<CreatureController>(FindObjectsInactive.Exclude);
+
         _lightService = LightSourcesService.Instance;
     }
 
@@ -350,7 +365,8 @@ public class AudioService : MonoBehaviour
 
         // Other
         if (_pacify != null)
-            _pacify.OnPacifyEnd += HandlePacifyEnd;
+            _pacify.OnPacifyStart += HandlePacifyStart;
+        _pacify.OnPacifyEnd += HandlePacifyEnd;
 
         // Lights
         if (_lightService != null)
@@ -358,6 +374,29 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOnLight += HandleLightSwitch;
             _lightService.OnSwitchOffLight += HandleLightSwitch;
         }
+
+        //Creature 
+        //if (_creature != null)
+        //{
+        //    _creature.OnCreatureIdle += HandleCreatureIdle;
+
+        //    _creature.OnCreatureBeginEat += HandleCreatureEat;
+        //    _creature.OnCreatureEatEnd+= HandleCreatureAttack;
+
+        //    _creature.OnCreatureMoving += HandleCreatureMove;
+
+        //    _creature.OnCreatureSeekStart += HandleCreatureSeek;
+        //    _creature.OnCreatureSeekEnd += HandleCreatureSeek;
+
+        //    _creature.OnPacifyStart += HandleCreaturePacify;
+        //    _creature.OnPacifyEnd += HandleCreatureAttack;
+
+        //    _creature.OnPetStart += HandleCreatureAttack;
+        //    _creature.OnPetEnd += HandleCreatureAttack;
+        //}
+
+        GameManager.Instance.OnPlay += HandlePlayGame;
+        GameManager.Instance.OnPause += HandlePlayGame;
 
         Debug.Log("[AudioService] Subscribed to all events");
     }
@@ -425,18 +464,36 @@ public class AudioService : MonoBehaviour
     {
         if (_onPickupSound.isLooped)
             _onPickupSound.Stop();
+    }
 
+    private void HandlePacifyStart()
+    {
+        _onPacifyStartSound.Play(transform.position);
     }
 
     private void HandlePacifyEnd()
     {
         _onPacifyEndSound.Play(transform.position);
+        Debug.Log("[AudioService] Pacify ended, playing end sound.");
     }
 
     private void HandleLightSwitch(LightSourceComponent light)
     {
         _onLampToggleSound.Play(light.LightPoint.position);
         UpdateLightGroups();
+    }
+
+    public void HandlePlayGame()
+    {
+        PlaySound(_playSound.soundToPlay);
+    }
+    public void HandlePauseGame()
+    {
+        PlaySound(_pauseSound.soundToPlay);
+    }
+    public void HandleSwitchMenu()
+    {
+        PlaySound(_switchUISound.soundToPlay);
     }
     #endregion
 
