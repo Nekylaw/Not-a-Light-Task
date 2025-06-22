@@ -5,6 +5,7 @@ using FMODUnity;
 using Game.Services.LightSources;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Siccity.GLTFUtility.Extensions;
 
 public class AudioService : MonoBehaviour
 {
@@ -143,7 +144,7 @@ public class AudioService : MonoBehaviour
         {
             if (_isInitialized)
             {
-                _instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                _instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 _instance.release();
                 _isInitialized = false;
                 _currentVolume = 0f;
@@ -157,6 +158,12 @@ public class AudioService : MonoBehaviour
                 _currentVolume = volume;
                 _instance.setVolume(volume);
             }
+        }
+
+        public void FadeAndStop()
+        {
+            _fadeCoroutine = Instance.StartCoroutine(FadeVolume(Instance, 0));
+            Stop();
         }
     }
 
@@ -495,6 +502,33 @@ public class AudioService : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(eventPath, position);
     }
+
+    public void FadeAndStopStem(LightGroup group)
+    {
+        if (group == null || !group.IsInitialized)
+            return;
+
+        group.FadeAndStop();
+        Debug.Log($"[AudioService] Fading and stopping group: {group.groupName}");
+    }
+
+    /// <summary>
+    /// Fades and stops all light groups except the ones in the excluded list.
+    /// </summary>
+    /// <param name="excludedDroups"></param>
+    public void FadeAndStopAllGroups(List<LightGroup> excludedDroups)
+    {
+        var filteredGroups = _lightGroups.Where(g => !excludedDroups.Contains(g)).ToList();
+        foreach (var group in filteredGroups)
+        {
+            if (!group.IsInitialized)
+                continue;
+
+            group.FadeAndStop();
+            Debug.Log($"[AudioService] Fading and stopping group: {group.groupName}");
+        }
+    }
+
     #endregion
 
     #region Editor Helpers
