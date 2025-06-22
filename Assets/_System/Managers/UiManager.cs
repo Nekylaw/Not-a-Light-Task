@@ -8,6 +8,8 @@ using UnityEngine.Serialization;
 public class UiManager : MonoBehaviour
 {
     public static UiManager Instance;
+    [SerializeField] GameObject LeftAnchor;
+    [SerializeField] GameObject RightAnchor;
     
     private void Awake()
     {
@@ -25,10 +27,8 @@ public class UiManager : MonoBehaviour
 
     private void Update()
     {
-        if (!CheckMenuVisibility())
-        {
-            UIPlacement();
-        }
+         UIPlacement();
+        
     }
 
     private void LateUpdate()
@@ -98,13 +98,11 @@ public class UiManager : MonoBehaviour
 
     public void UIPlacement()
     {
-        var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
-        ImmersiveCanvas.transform.DOMove(pos, 0.1f);
-        ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
-        
-        
-        //ImmersiveCanvas.transform.position = MenuPoper.transform.position;
-        //ImmersiveCanvas.transform.rotation = Player.transform.rotation;
+   
+            var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
+            ImmersiveCanvas.transform.DOMove(pos, 0.1f);
+            ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
+            
     }
 
     public void HideUI()
