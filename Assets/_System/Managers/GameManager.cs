@@ -119,9 +119,9 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
-    public void PauseGame(GameObject panel)
+    public void NavigateMenu(GameObject nextPanel)
     {
-        UiManager.Instance.UIPauseGame(panel);
+        UiManager.Instance.UINavigate(nextPanel);
         Cursor.visible = true;
         
         EventSystem.current.SetSelectedGameObject(playButton);
@@ -146,14 +146,14 @@ public class GameManager : MonoBehaviour
         gameState = GameState.GameOver;
     }
 
-    public void Back()
-    {
-        UiManager.Instance.UIBack();
-        EventSystem.current.SetSelectedGameObject(backButton);
-    }
-    
+    //public void Back(GameObject previousPanel)
+    //{
+    //    UiManager.Instance.UIBack(previousPanel);
+    //    EventSystem.current.SetSelectedGameObject(backButton);
+    //}
+
     #endregion
-    
+
     #region Creature Spawner
 
     [SerializeField]

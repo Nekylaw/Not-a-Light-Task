@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
@@ -54,6 +56,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject StartGamePanel;
     [SerializeField] private GameObject EndGamePanel;
     [SerializeField] private GameObject OptionsPanel;
+    [SerializeField] private GameObject AudioPanel;
 
     [SerializeField] private GameObject ImmersiveCanvas;
     [SerializeField] private GameObject Player;
@@ -63,7 +66,7 @@ public class UiManager : MonoBehaviour
     
     #region PRIVATE ATTRIBUTES
     
-    private GameObject _panelClosed;
+    //private GameObject _panelClosed;
     
     #endregion
     
@@ -73,16 +76,19 @@ public class UiManager : MonoBehaviour
     {
         StartGamePanel.SetActive(true);
         OptionsPanel.SetActive(false);
+        AudioPanel.SetActive(false);
         EndGamePanel.SetActive(false);
     }
 
-    public void UIPauseGame(GameObject panelToSave)
+    public void UINavigate(GameObject nextPanel)
     {
-        _panelClosed = panelToSave;
-        
-        OptionsPanel.SetActive(true);
+        //_panelClosed = panelToSave;
+
+        OptionsPanel.SetActive(false);
         StartGamePanel.SetActive(false);
+        AudioPanel.SetActive(false);
         EndGamePanel.SetActive(false);
+        nextPanel.SetActive(true);
     }
 
     public void UIEndGame()
@@ -90,11 +96,14 @@ public class UiManager : MonoBehaviour
         EndGamePanel.SetActive(true);
     }
 
-    public void UIBack()
-    {
-        OptionsPanel.SetActive(false);
-        _panelClosed.SetActive(true);
-    }
+    //public void UIBack(GameObject previousPanel)
+    //{
+    //    OptionsPanel.SetActive(false);
+    //    StartGamePanel.SetActive(false);
+    //    AudioPanel.SetActive(false);
+    //    EndGamePanel.SetActive(false);
+    //    previousPanel.SetActive(true);
+    //}
 
     public void UIPlacement()
     {
