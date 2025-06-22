@@ -19,7 +19,11 @@ public class AudioServiceEditor : Editor
     private SerializedProperty onPickupSound;
     private SerializedProperty onLampToggleSound;
     private SerializedProperty onPacifyEndSound;
+    private SerializedProperty fogEventSounds;
     private SerializedProperty customEventSounds;
+    private SerializedProperty onPlaySound;
+    private SerializedProperty onPauseSound;
+    private SerializedProperty fogSound;
 
     // Reorderable Lists
     private ReorderableList lightGroupsList;
@@ -36,6 +40,7 @@ public class AudioServiceEditor : Editor
 
         // Get properties
         lightGroups = serializedObject.FindProperty("_lightGroups");
+        fogSound = serializedObject.FindProperty("_fogSound");
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
         onShootSound = serializedObject.FindProperty("_onShootSound");
         onAimSound = serializedObject.FindProperty("_onAimSound");
@@ -43,6 +48,9 @@ public class AudioServiceEditor : Editor
         onLampToggleSound = serializedObject.FindProperty("_onLampToggleSound");
         onPacifyEndSound = serializedObject.FindProperty("_onPacifyEndSound");
         customEventSounds = serializedObject.FindProperty("_customEventSounds");
+        
+        onPlaySound = serializedObject.FindProperty("_playSound");
+        onPauseSound = serializedObject.FindProperty("_pauseSound");
 
         // Setup light groups list
         SetupLightGroupsList();
@@ -360,6 +368,27 @@ public class AudioServiceEditor : Editor
 
         EditorGUILayout.Space();
 
+        // UI Events
+        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, " Fog Event");
+        if (audioService.showMovementEvents)
+        {
+            EditorGUILayout.BeginVertical("box");
+            DrawEventSound(fogSound, "Self");
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        // UI Events
+        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, " UI Events");
+        if (audioService.showMovementEvents)
+        {
+            EditorGUILayout.BeginVertical("box");
+            DrawEventSound(onPlaySound, "GameManager.Instance.OnPlay");
+            DrawEventSound(onPauseSound, "GameManager.Instance.OnPause");
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
         // Movement Events
         audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "🚶 Movement Events");
         if (audioService.showMovementEvents)
@@ -370,7 +399,7 @@ public class AudioServiceEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-        // Combat Events
+        // Gun Events
         audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "🔫 Gun Events");
         if (audioService.showCombatEvents)
         {
