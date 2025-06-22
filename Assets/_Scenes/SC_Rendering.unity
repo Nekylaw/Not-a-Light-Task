@@ -416,8 +416,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1327164970}
-  - {fileID: 339546462}
-  - {fileID: 750459409}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &54144405
@@ -1222,59 +1220,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8129215436254250207, guid: 34a7e79e0eb8d45cbbc34ef64b326c91, type: 3}
   m_PrefabInstance: {fileID: 337630987}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &339546461
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 339546462}
-  - component: {fileID: 339546463}
-  m_Layer: 0
-  m_Name: 'Foliage Volume '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &339546462
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339546461}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -100.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 49900712}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &339546463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339546461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f216714b97975ba4b9968cbe55595afd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeSize: {x: 100, y: 0.5, z: 100}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
-  _foliageModels:
-  - prefabSource: {fileID: 6283798706201470139, guid: c93947e7a95c5384e88d0174e32982c4, type: 3}
-    density: 5
-    scaleRange: {x: 0.8, y: 1.2}
-    rotationYRange: {x: 0, y: 360}
 --- !u!1 &348915209
 GameObject:
   m_ObjectHideFlags: 0
@@ -3371,59 +3316,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731630556}
   m_CullTransparentMesh: 1
---- !u!1 &750459408
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 750459409}
-  - component: {fileID: 750459410}
-  m_Layer: 0
-  m_Name: Foliage Volume (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &750459409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750459408}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -95.5, y: 0, z: 0.7}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 49900712}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &750459410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750459408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f216714b97975ba4b9968cbe55595afd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeSize: {x: 100, y: 0.5, z: 100}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
-  _foliageModels:
-  - prefabSource: {fileID: 6283798706201470139, guid: c93947e7a95c5384e88d0174e32982c4, type: 3}
-    density: 5
-    scaleRange: {x: 0.8, y: 1.2}
-    rotationYRange: {x: 0, y: 360}
 --- !u!1 &751212878
 GameObject:
   m_ObjectHideFlags: 0
@@ -4018,6 +3910,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0f9e9c0c6848147b7256956d541f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lightGroups: []
+  _onWalkSound:
+    eventName: On Walk
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onShootSound:
+    eventName: On Shoot
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onAimSound:
+    eventName: On Aim
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onPickupSound:
+    eventName: On Pickup
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onLampToggleSound:
+    eventName: On Lamp Toggle
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onPacifyEndSound:
+    eventName: On Pacify End
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _customEventSounds: []
+  showLightGroups: 1
+  showMovementEvents: 1
+  showCombatEvents: 1
+  showInteractionEvents: 1
+  showOtherEvents: 1
+  showCustomEvents: 1
 --- !u!4 &799781886
 Transform:
   m_ObjectHideFlags: 0
@@ -5997,8 +5975,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 81f9e861c9790dd4bbc834333b78a034, type: 2}
-  _renderDistance: 200
-  _cullDistance: 100
+  _renderDistance: 120
+  _cullDistance: 180
   _lodDistances:
   - 50
   - 100
@@ -6033,13 +6011,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enableLightBasedAnimation: 1
-  _chunkLoadRadius: 32
+  _chunkLoadRadius: 4
   _chunkFolder: FoliageChunks
   _maxConcurrentLoads: 2
-  _loadFrameBudgetMs: 5
-  _chunkSize: {x: 16, y: 16}
-  _maxChunksDrawnPerFrame: 256
-  _enableOcclusion: 1
+  _loadFrameBudgetMs: 8
+  _chunkSize: {x: 50, y: 50}
+  _maxChunksDrawnPerFrame: 50
   _showDebugInfo: 0
   _showMemoryUsage: 0
 --- !u!1 &1124182892 stripped
@@ -6492,7 +6469,7 @@ Transform:
   m_GameObject: {fileID: 1327164966}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -100.3, y: 0, z: -95.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6510,13 +6487,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f216714b97975ba4b9968cbe55595afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSize: {x: 100, y: 0.5, z: 100}
+  volumeSize: {x: 200, y: 0.5, z: 190.6}
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   _foliageModels:
   - prefabSource: {fileID: 5751120010687637640, guid: 5465982329eb14b4f97a8fa96dc262da, type: 3}
-    density: 0.5
+    density: 3
     scaleRange: {x: 0.8, y: 1.2}
     rotationYRange: {x: 0, y: 360}
 --- !u!1 &1366466867

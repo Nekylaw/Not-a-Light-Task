@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Game.Services.LightSources;
 using Unity.Mathematics;
