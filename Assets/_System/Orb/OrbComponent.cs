@@ -1,15 +1,11 @@
-using System;
 using Game.Services.LightSources;
 using System.Collections;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class OrbComponent : MonoBehaviour
 {
     [SerializeField]
     private OrbSettings _orbSettings = null;
-    [SerializeField]
-    private OrbSettings _absorbSettings = null;
 
     private Coroutine _attractOrbCoroutine = null;
     private Coroutine _eatingCoroutine = null;
@@ -19,8 +15,6 @@ public class OrbComponent : MonoBehaviour
     private Collider orbCollider;
     private Rigidbody orbRigidbody;
 
-    private bool isAbsorbed = false;
-
     // State tracking
     private bool isBeingEaten = false;
     public bool IsActive => enabled && !isBeingEaten;
@@ -28,10 +22,6 @@ public class OrbComponent : MonoBehaviour
     // Events
     public delegate void OrbEatenDelegate();
     public OrbEatenDelegate OnEaten = null;
-    
-    //original look
-    private Vector3 ab_originalScale;
-    private Color ab_originalColor;
 
     private void Awake()
     {
@@ -131,7 +121,7 @@ public class OrbComponent : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public IEnumerator EatingEffectCoroutine()
+    private IEnumerator EatingEffectCoroutine()
     {
         float timer = 0f;
         Vector3 originalScale = transform.localScale;
@@ -191,85 +181,9 @@ public class OrbComponent : MonoBehaviour
         _eatingCoroutine = null;
     }
 
-    public IEnumerator AbsorbingOrbCoroutine()
-    {
-        isAbsorbed = true;
-        float timer = 0f;
-        ab_originalScale = transform.localScale;
-        ab_originalColor = orbRenderer.material.GetColor("_BaseColor");
-        
-        Vector3 originalScale = transform.localScale;
-        Color originalColor = orbRenderer.material.GetColor("_BaseColor");
-        
-
-        if (orbRenderer != null)
-        {
-            orbRenderer.GetPropertyBlock(propBlock);
-            if (propBlock.HasProperty("_BaseColor"))
-            {
-                originalColor = propBlock.GetColor("_BaseColor");
-            }
-            else if (orbRenderer.material.HasProperty("_BaseColor"))
-            {
-                originalColor = orbRenderer.material.GetColor("_BaseColor");
-            }
-        }
-
-        while (timer < _absorbSettings.EatingEffectDuration)
-        {
-            timer += Time.deltaTime;
-            float t = timer / _absorbSettings.EatingEffectDuration;
-
-            // Scale effect
-            float scaleMultiplier = _absorbSettings.ScaleCurve.Evaluate(t);
-            transform.localScale = originalScale * scaleMultiplier;
-
-            // Visual effect - pulsing and fading
-            if (orbRenderer != null)
-            {
-                float alpha = _absorbSettings.AlphaCurve.Evaluate(t);
-                Color currentColor = originalColor;
-                currentColor.a = alpha;
-
-                // Add pulsing effect
-                float pulse = Mathf.Sin(t * Mathf.PI * 8f) * 0.3f + 1f;
-                currentColor *= pulse;
-
-                orbRenderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_BaseColor", currentColor);
-
-                //// If using standard shader
-                //if (orbRenderer.material.HasProperty("_Color"))
-                //{
-                //    propBlock.SetColor("_Color", currentColor);
-                //}
-
-                orbRenderer.SetPropertyBlock(propBlock);
-            }
-
-            // Small rotation while being eaten
-            transform.Rotate(Vector3.up * 200f * Time.deltaTime);
-
-            yield return null;
-        }
-    }
-    
-    
-
     // Helper method to check if orb can be targeted
     public bool CanBeTargeted()
     {
         return IsActive && !isBeingEaten && gameObject.activeInHierarchy;
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground") && isBeingEaten)
-        {
-            isBeingEaten = false;
-            
-            transform.localScale = ab_originalScale;
-            gameObject.GetComponent<Renderer>().material.color = ab_originalColor;
-        }
     }
 }
