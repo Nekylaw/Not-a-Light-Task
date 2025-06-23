@@ -5362,6 +5362,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b309f6b4746d8f4597257cadb897629, type: 3}
+--- !u!1 &270374983 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6532529750180998861, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+  m_PrefabInstance: {fileID: 1938213386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &270721812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21004,6 +21009,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1938213388}
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
+      propertyPath: masterSlider
+      value: 
+      objectReference: {fileID: 270374983}
+    - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: StartGamePanel
       value: 
       objectReference: {fileID: 1938213390}
@@ -36459,12 +36468,12 @@ PrefabInstance:
       objectReference: {fileID: 1131317834}
     - target: {fileID: 5701849622942639191, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NavigateMenu
+      value: PauseGame
       objectReference: {fileID: 0}
     - target: {fileID: 5701849622942639191, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1938213388}
+      objectReference: {fileID: 1938213390}
     - target: {fileID: 5780162584274337785, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -36579,7 +36588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -36587,15 +36596,15 @@ PrefabInstance:
       objectReference: {fileID: 1131317834}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NavigateMenu
+      value: Back
       objectReference: {fileID: 0}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1938213390}
+      objectReference: {fileID: 0}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6475360110597969603, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_AnchorMax.y

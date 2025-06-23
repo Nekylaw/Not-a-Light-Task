@@ -40,11 +40,17 @@ public class SliderKeyboardInputs : MonoBehaviour, ISelectHandler, IDeselectHand
 
         if (direction.x > 0 && slider.value < slider.maxValue)
         {
-            slider.value++;
+            if (context.started)
+            {
+                slider.value++;
+            }
         }
         else if (direction.x < 0 && slider.value > slider.minValue)
         {
-            slider.value--;
+            if (context.started)
+            {
+                slider.value--;
+            }
         }
     }
 

@@ -38,7 +38,7 @@ public class UiManager : MonoBehaviour
             }
             else if (OptionsPanel.activeSelf)
             {
-                EventSystem.current.SetSelectedGameObject(backButton);
+                EventSystem.current.SetSelectedGameObject(masterSlider);
             }
         }
     }
@@ -67,7 +67,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject EndGamePanel;
     [SerializeField] private GameObject OptionsPanel;
     [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject backButton;
+    [SerializeField] private GameObject masterSlider;
 
     [SerializeField] private GameObject ImmersiveCanvas;
     [SerializeField] private GameObject Player;
