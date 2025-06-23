@@ -3,59 +3,82 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using Game.Services.LightSources;
-using System.ComponentModel;
-using UnityEngine.Rendering.Universal;
 
 [CustomEditor(typeof(AudioService))]
 public class AudioServiceEditor : Editor
 {
     private AudioService audioService;
 
-    // Serialized Properties
+    // Play Properties
     private SerializedProperty lightGroups;
+    private SerializedProperty fogSound;
+    private SerializedProperty onPlaySound;
+    private SerializedProperty onPauseSound;
     private SerializedProperty onWalkSound;
     private SerializedProperty onShootSound;
     private SerializedProperty onAimSound;
     private SerializedProperty onPickupSound;
     private SerializedProperty onLampToggleSound;
+    private SerializedProperty onPacifyStartSound;
     private SerializedProperty onPacifyEndSound;
-    private SerializedProperty fogEventSounds;
     private SerializedProperty customEventSounds;
-    private SerializedProperty onPlaySound;
-    private SerializedProperty onPauseSound;
-    private SerializedProperty fogSound;
+
+    // Creature Events Properties
+    private SerializedProperty onCreatureIdleSound;
+    private SerializedProperty onCreatureEatSound;
+    private SerializedProperty onCreatureEatEndSound;
+    private SerializedProperty onCreatureMoveSound;
+    private SerializedProperty onCreatureSeekStartSound;
+    private SerializedProperty onCreatureStopSeekSound;
+    private SerializedProperty onCreaturePacifyStartSound;
+    private SerializedProperty onCreaturePacifyEndSound;
+    private SerializedProperty onCreatureDrainStartSound;
+    private SerializedProperty onCreatureDrainEndSound;
+    private SerializedProperty onCreaturePetStartSound;
+    private SerializedProperty onCreaturePetEndSound;
 
     // Reorderable Lists
     private ReorderableList lightGroupsList;
     private ReorderableList customEventsList;
 
-    // Colors
-    private readonly Color headerColor = new Color(0.2f, 0.2f, 0.2f);
-    private readonly Color activeColor = new Color(0.2f, 0.8f, 0.2f);
-    private readonly Color inactiveColor = new Color(0.8f, 0.2f, 0.2f);
-
     private void OnEnable()
     {
         audioService = (AudioService)target;
 
-        // Get properties
+        // Get core properties
         lightGroups = serializedObject.FindProperty("_lightGroups");
         fogSound = serializedObject.FindProperty("_fogSound");
+
+        // Get UI properties
+        onPlaySound = serializedObject.FindProperty("_playSound");
+        onPauseSound = serializedObject.FindProperty("_pauseSound");
+
+        // Get player event properties
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
         onShootSound = serializedObject.FindProperty("_onShootSound");
         onAimSound = serializedObject.FindProperty("_onAimSound");
         onPickupSound = serializedObject.FindProperty("_onPickupSound");
         onLampToggleSound = serializedObject.FindProperty("_onLampToggleSound");
+        onPacifyStartSound = serializedObject.FindProperty("_onPacifyStartSound");
         onPacifyEndSound = serializedObject.FindProperty("_onPacifyEndSound");
         customEventSounds = serializedObject.FindProperty("_customEventSounds");
-        
-        onPlaySound = serializedObject.FindProperty("_playSound");
-        onPauseSound = serializedObject.FindProperty("_pauseSound");
 
-        // Setup light groups list
+        // Get creature event properties 
+        onCreatureIdleSound = serializedObject.FindProperty("_onCreatureIdleSound");
+        onCreatureEatSound = serializedObject.FindProperty("_onCreatureEatSound");
+        onCreatureEatEndSound = serializedObject.FindProperty("_onCreatureEatEndSound");
+        onCreatureMoveSound = serializedObject.FindProperty("_onCreatureMoveSound");
+        onCreatureSeekStartSound = serializedObject.FindProperty("_onCreatureSeekStartSound");
+        onCreatureStopSeekSound = serializedObject.FindProperty("_onCreatureStopSeekSound");
+        onCreaturePacifyStartSound = serializedObject.FindProperty("_onCreaturePacifyStartSound");
+        onCreaturePacifyEndSound = serializedObject.FindProperty("_onCreaturePacifyEndSound");
+        onCreatureDrainStartSound = serializedObject.FindProperty("_onCreatureDrainStartSound");
+        onCreatureDrainEndSound = serializedObject.FindProperty("_onCreatureDrainEndSound");
+        onCreaturePetStartSound = serializedObject.FindProperty("_onCreaturePetStartSound");
+        onCreaturePetEndSound = serializedObject.FindProperty("_onCreaturePetEndSound");
+
+        // Setup lists
         SetupLightGroupsList();
-
-        // Setup custom events list
         SetupCustomEventsList();
     }
 
@@ -71,16 +94,13 @@ public class AudioServiceEditor : Editor
         lightGroupsList.elementHeightCallback = (int index) =>
         {
             var element = lightGroups.GetArrayElementAtIndex(index);
-            float height = EditorGUIUtility.singleLineHeight * 5 + 20; // Base height
+            float height = EditorGUIUtility.singleLineHeight * 5 + 20;
 
             if (element.isExpanded)
             {
-                // Add height for progressive settings
                 height += EditorGUIUtility.singleLineHeight * 4 + 20;
-
-                // Add height for light sources
                 var lights = element.FindPropertyRelative("lightSources");
-                int lightCount = Mathf.Max(3, lights.arraySize); // Minimum 3 slots for drop area
+                int lightCount = Mathf.Max(3, lights.arraySize);
                 height += (EditorGUIUtility.singleLineHeight + 4) * lightCount;
 
                 var ambiantTrack = element.FindPropertyRelative("ambientTrack");
@@ -107,16 +127,13 @@ public class AudioServiceEditor : Editor
 
             rect.y += 2;
 
-            // Background box for the entire element
             GUI.Box(new Rect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height - 4), GUIContent.none);
 
-            // Header with foldout
             var foldoutRect = new Rect(rect.x + 10, rect.y, rect.width - 120, EditorGUIUtility.singleLineHeight);
             var statusRect = new Rect(rect.x + rect.width - 100, rect.y, 100, EditorGUIUtility.singleLineHeight);
 
             element.isExpanded = EditorGUI.Foldout(foldoutRect, element.isExpanded, groupName.stringValue, true);
 
-            // Show status in play mode
             if (Application.isPlaying)
             {
                 var group = audioService.GetType()
@@ -134,12 +151,9 @@ public class AudioServiceEditor : Editor
             }
 
             rect.y += EditorGUIUtility.singleLineHeight + 5;
-
-            // Indent content
             rect.x += 15;
             rect.width -= 15;
 
-            // Basic info always visible
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 10, EditorGUIUtility.singleLineHeight),
                 groupName, new GUIContent("Group Name"));
             rect.y += EditorGUIUtility.singleLineHeight + 3;
@@ -150,7 +164,6 @@ public class AudioServiceEditor : Editor
             float yOffset = ambientTrack.isExpanded ? EditorGUIUtility.singleLineHeight * 8 : EditorGUIUtility.singleLineHeight;
             rect.y += EditorGUIUtility.singleLineHeight + yOffset;
 
-            // Progressive settings section
             EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                 "Progressive Settings", EditorStyles.boldLabel);
 
@@ -163,7 +176,6 @@ public class AudioServiceEditor : Editor
                 requireAll, new GUIContent("Require All"));
             rect.y += EditorGUIUtility.singleLineHeight + 8;
 
-            // Expanded content
             if (element.isExpanded)
             {
                 EditorGUI.PropertyField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight),
@@ -178,26 +190,21 @@ public class AudioServiceEditor : Editor
                     muteWhenInactive, new GUIContent("Mute When Inactive"));
                 rect.y += EditorGUIUtility.singleLineHeight + 8;
 
-                // Light sources section
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width - 100, EditorGUIUtility.singleLineHeight),
                     $"Light Sources ({lights.arraySize})", EditorStyles.boldLabel);
 
-                // Add button
                 if (GUI.Button(new Rect(rect.x + rect.width - 90, rect.y, 80, EditorGUIUtility.singleLineHeight), "+ Add Slot"))
                 {
                     lights.arraySize++;
                 }
                 rect.y += EditorGUIUtility.singleLineHeight + 5;
 
-                // Light sources list with drop area
                 int displayCount = Mathf.Max(3, lights.arraySize);
                 var dropAreaHeight = (EditorGUIUtility.singleLineHeight + 4) * displayCount;
                 var dropArea = new Rect(rect.x, rect.y, rect.width - 10, dropAreaHeight);
 
-                // Draw drop area background
                 GUI.Box(dropArea, lights.arraySize == 0 ? "Drop Light Sources Here" : "", EditorStyles.helpBox);
 
-                // Handle drag and drop
                 Event evt = Event.current;
                 if (dropArea.Contains(evt.mousePosition))
                 {
@@ -217,7 +224,6 @@ public class AudioServiceEditor : Editor
                                     var lightSource = go.GetComponent<LightSourceComponent>();
                                     if (lightSource != null)
                                     {
-                                        // Check if already in list
                                         bool alreadyExists = false;
                                         for (int i = 0; i < lights.arraySize; i++)
                                         {
@@ -245,7 +251,6 @@ public class AudioServiceEditor : Editor
                     }
                 }
 
-                // Draw light sources
                 for (int i = 0; i < lights.arraySize; i++)
                 {
                     var lightRect = new Rect(rect.x + 5, rect.y + 5 + (EditorGUIUtility.singleLineHeight + 4) * i,
@@ -257,7 +262,6 @@ public class AudioServiceEditor : Editor
                     if (GUI.Button(deleteRect, "X", EditorStyles.miniButton))
                     {
                         lights.DeleteArrayElementAtIndex(i);
-                        // If the element was a reference, we might need to delete twice
                         if (i < lights.arraySize && lights.GetArrayElementAtIndex(i).objectReferenceValue == null)
                         {
                             lights.DeleteArrayElementAtIndex(i);
@@ -301,7 +305,7 @@ public class AudioServiceEditor : Editor
             var element = customEventSounds.GetArrayElementAtIndex(index);
             var eventName = element.FindPropertyRelative("eventName");
             var sound = element.FindPropertyRelative("soundToPlay");
-            var volume = element.FindPropertyRelative("targetVolume");
+            var volume = element.FindPropertyRelative("volume");
 
             rect.y += 2;
 
@@ -356,7 +360,7 @@ public class AudioServiceEditor : Editor
 
         EditorGUILayout.Space();
 
-        // Light Groups Section
+        // Light Groups
         audioService.showLightGroups = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showLightGroups, "💡 Light Groups");
         if (audioService.showLightGroups)
         {
@@ -368,9 +372,9 @@ public class AudioServiceEditor : Editor
 
         EditorGUILayout.Space();
 
-        // UI Events
-        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, " Fog Event");
-        if (audioService.showMovementEvents)
+        // Fog Event
+        bool showFogEvents = EditorGUILayout.BeginFoldoutHeaderGroup(true, "Fog Event");
+        if (showFogEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(fogSound, "Self");
@@ -379,8 +383,8 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // UI Events
-        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, " UI Events");
-        if (audioService.showMovementEvents)
+        bool showUIEvents = EditorGUILayout.BeginFoldoutHeaderGroup(true, "UI Events");
+        if (showUIEvents)
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onPlaySound, "GameManager.Instance.OnPlay");
@@ -390,7 +394,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Movement Events
-        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "🚶 Movement Events");
+        audioService.showMovementEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showMovementEvents, "Movement Events");
         if (audioService.showMovementEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -400,7 +404,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Gun Events
-        audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "🔫 Gun Events");
+        audioService.showCombatEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCombatEvents, "Gun Events");
         if (audioService.showCombatEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -411,7 +415,7 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Interaction Events
-        audioService.showInteractionEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showInteractionEvents, "✋ Interaction Events");
+        audioService.showInteractionEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showInteractionEvents, "Interaction Events");
         if (audioService.showInteractionEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -422,17 +426,68 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Ability Events
-        audioService.showOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showOtherEvents, "🎮 Ability Events");
+        audioService.showOtherEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showOtherEvents, "Ability Events");
         if (audioService.showOtherEvents)
         {
             EditorGUILayout.BeginVertical("box");
+            DrawEventSound(onPacifyStartSound, "_pacify.OnPacifyStart");
             DrawEventSound(onPacifyEndSound, "_pacify.OnPacifyEnd");
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
+        // Creatures Events
+        audioService.showCreatureEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCreatureEvents, "Creature Events");
+        if (audioService.showCreatureEvents)
+        {
+            EditorGUILayout.BeginVertical("box");
+
+            // Movement Events
+            EditorGUILayout.LabelField("Movement Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreatureIdleSound, "_creatureService.OnCreatureIdle");
+            DrawEventSound(onCreatureMoveSound, "_creatureService.OnCreatureMoving");
+
+            EditorGUILayout.Space(5);
+
+            // Eating Events
+            EditorGUILayout.LabelField("Eating Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreatureEatSound, "_creatureService.OnCreatureBeginEat");
+            DrawEventSound(onCreatureEatEndSound, "_creatureService.OnCreatureEatEnd");
+
+            EditorGUILayout.Space(5);
+
+            // Seeking Events
+            EditorGUILayout.LabelField("Seeking Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreatureSeekStartSound, "_creatureService.OnCreatureSeek");
+            DrawEventSound(onCreatureStopSeekSound, "_creatureService.OnCreatureStopSeek");
+
+            EditorGUILayout.Space(5);
+
+            // Pacify Events
+            EditorGUILayout.LabelField("Pacify Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreaturePacifyStartSound, "_creatureService.OnPacifyStart");
+            DrawEventSound(onCreaturePacifyEndSound, "_creatureService.OnPacifyEnd");
+
+            EditorGUILayout.Space(5);
+
+            // Pet Events
+            EditorGUILayout.LabelField("Pet Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreaturePetStartSound, "_creatureService.OnPetStart");
+            DrawEventSound(onCreaturePetEndSound, "_creatureService.OnPetEnd");
+
+            EditorGUILayout.Space(5);
+
+            // Drain Events
+            EditorGUILayout.LabelField("Drain Events", EditorStyles.boldLabel);
+            DrawEventSound(onCreatureDrainStartSound, "_creatureService.OnCreatureDrainingStart");
+            DrawEventSound(onCreatureDrainEndSound, "_creatureService.OnCreatureDrainingEnd");
+
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
         // Custom Events
-        audioService.showCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCustomEvents, "⚡ Custom Events");
+        audioService.showCustomEvents = EditorGUILayout.BeginFoldoutHeaderGroup(audioService.showCustomEvents, "Custom Events");
         if (audioService.showCustomEvents)
         {
             EditorGUILayout.BeginVertical("box");
@@ -446,6 +501,12 @@ public class AudioServiceEditor : Editor
 
     private void DrawEventSound(SerializedProperty eventSound, string eventPath)
     {
+        if (eventSound == null)
+        {
+            EditorGUILayout.HelpBox($"Missing property for event: {eventPath}", MessageType.Warning);
+            return;
+        }
+
         var expanded = eventSound.FindPropertyRelative("isExpanded");
         var eventName = eventSound.FindPropertyRelative("eventName");
         var sound = eventSound.FindPropertyRelative("soundToPlay");
@@ -458,34 +519,44 @@ public class AudioServiceEditor : Editor
 
         // Header
         EditorGUILayout.BeginHorizontal();
-        expanded.boolValue = EditorGUILayout.Foldout(expanded.boolValue, eventName.stringValue, true);
+
+        if (expanded != null)
+            expanded.boolValue = EditorGUILayout.Foldout(expanded.boolValue, eventName?.stringValue ?? "Unknown Event", true);
+        else
+            EditorGUILayout.LabelField(eventName?.stringValue ?? "Unknown Event", EditorStyles.boldLabel);
 
         // Show event path
         GUILayout.FlexibleSpace();
-        EditorGUILayout.LabelField(eventPath, EditorStyles.miniLabel, GUILayout.Width(150));
+        EditorGUILayout.LabelField(eventPath, EditorStyles.miniLabel, GUILayout.Width(250));
 
         // Test button in play mode
-        if (Application.isPlaying && GUILayout.Button("Test", GUILayout.Width(40)))
+        if (Application.isPlaying && sound != null && GUILayout.Button("Test", GUILayout.Width(40)))
         {
-            Debug.Log($"Testing sound: {eventName.stringValue}");
-            // Try to play the sound
+            Debug.Log($"Testing sound: {eventName?.stringValue ?? "Unknown"}");
             audioService.PlaySound((FMODUnity.EventReference)sound.boxedValue);
         }
 
         EditorGUILayout.EndHorizontal();
 
         // Expanded content
-        if (expanded.boolValue)
+        if (expanded?.boolValue == true)
         {
             EditorGUI.indentLevel++;
 
-            EditorGUILayout.PropertyField(sound, new GUIContent("Sound To Play"));
-            EditorGUILayout.PropertyField(isLooped, new GUIContent("Is looped"), GUILayout.Width(EditorGUIUtility.labelWidth + 100));
+            if (sound != null)
+                EditorGUILayout.PropertyField(sound, new GUIContent("Sound To Play"));
 
-            EditorGUILayout.PropertyField(volume, new GUIContent("Volume"), GUILayout.Width(EditorGUIUtility.labelWidth + 100));
-            EditorGUILayout.PropertyField(playAtPos, new GUIContent("3D Position"));
+            if (isLooped != null)
+                EditorGUILayout.PropertyField(isLooped, new GUIContent("Is looped"));
 
-            EditorGUILayout.PropertyField(notes, new GUIContent("Notes"));
+            if (volume != null)
+                EditorGUILayout.PropertyField(volume, new GUIContent("Volume"));
+
+            if (playAtPos != null)
+                EditorGUILayout.PropertyField(playAtPos, new GUIContent("3D Position"));
+
+            if (notes != null)
+                EditorGUILayout.PropertyField(notes, new GUIContent("Notes"));
 
             EditorGUI.indentLevel--;
         }

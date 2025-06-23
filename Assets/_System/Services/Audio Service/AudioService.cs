@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using FMODUnity;
 using Game.Services.LightSources;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AudioService : MonoBehaviour
 {
@@ -217,6 +219,23 @@ public class AudioService : MonoBehaviour
             Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
         }
 
+        public void StartLoop(Transform transform)
+        {
+            if (_instance.isValid())
+                return;
+
+
+            _instance = RuntimeManager.CreateInstance(soundToPlay);
+
+            if (playAtPosition)
+                _instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
+
+            _instance.setVolume(volume);
+            _instance.start();
+
+            Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
+        }
+
         public void Stop()
         {
             if (_instance.isValid())
@@ -255,9 +274,10 @@ public class AudioService : MonoBehaviour
     [Header("Movement Events")]
     [SerializeField] private EventSound _onWalkSound = new EventSound { eventName = "On Walk" };
 
-    [Header("Combat Events")]
+    [Header("Shoot Events")]
     [SerializeField] private EventSound _onShootSound = new EventSound { eventName = "On Shoot" };
     [SerializeField] private EventSound _onAimSound = new EventSound { eventName = "On Aim" };
+    [SerializeField] private EventSound _orbSound = new EventSound { eventName = "Orb" };
 
     [Header("Interaction Events")]
     [SerializeField] private EventSound _onPickupSound = new EventSound { eventName = "On Pickup" };
@@ -267,17 +287,38 @@ public class AudioService : MonoBehaviour
     [SerializeField] private EventSound _onPacifyStartSound = new EventSound { eventName = "On Pacify Start" };
     [SerializeField] private EventSound _onPacifyEndSound = new EventSound { eventName = "On Pacify End" };
 
+    [Header("Creature Events")]
+    // States
+    [SerializeField] private EventSound _onCreatureIdleSound = new EventSound { eventName = "Creature Idle" };
+    [SerializeField] private EventSound _onCreatureEatSound = new EventSound { eventName = "Creature Eat Start" };
+    [SerializeField] private EventSound _onCreatureEatEndSound = new EventSound { eventName = "Creature Eat End" };
+    [SerializeField] private EventSound _onCreatureMoveSound = new EventSound { eventName = "Creature Move" };
+    [SerializeField] private EventSound _onCreatureSeekStartSound = new EventSound { eventName = "Creature Seek Start" };
+    [SerializeField] private EventSound _onCreatureStopSeekSound = new EventSound { eventName = "Creature Stop Seek" };
+
+    // Pacify
+    [SerializeField] private EventSound _onCreaturePacifyStartSound = new EventSound { eventName = "Creature Pacify Start" };
+    [SerializeField] private EventSound _onCreaturePacifyEndSound = new EventSound { eventName = "Creature Pacify End" };
+
+    // Drain
+    [SerializeField] private EventSound _onCreatureDrainStartSound = new EventSound { eventName = "Creature Drain Start" };
+    [SerializeField] private EventSound _onCreatureDrainEndSound = new EventSound { eventName = "Creature Drain End" };
+
+    // Pet
+    [SerializeField] private EventSound _onCreaturePetStartSound = new EventSound { eventName = "Creature Pet Start" };
+    [SerializeField] private EventSound _onCreaturePetEndSound = new EventSound { eventName = "Creature Pet End" };
+
     [Header("Custom Events")]
     [SerializeField] private List<EventSound> _customEventSounds = new List<EventSound>();
 
-    // Components
+    // Refs 
     private MovementBehaviorComponent _movement;
     private ShootBehaviorComponent _shoot;
     private PickUpBehaviorComponent _pickUp;
     private PacifyBehaviorComponent _pacify;
+    private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
-    private CreatureController _creature;
-
+    private CreatureService _creatureService;
     private GrillageBehaviour _grillage;
 
     // For editor
@@ -286,7 +327,13 @@ public class AudioService : MonoBehaviour
     [HideInInspector] public bool showCombatEvents = true;
     [HideInInspector] public bool showInteractionEvents = true;
     [HideInInspector] public bool showOtherEvents = true;
+    [HideInInspector] public bool showCreatureEvents = true; 
     [HideInInspector] public bool showCustomEvents = true;
+
+    // Creature move sound cooldowns
+    private float _lastCreatureMoveSoundTime = 0f;
+    private float _creatureMoveSoundCooldown = 0.5f;
+
     #endregion
 
     #region Lifecycle
@@ -337,9 +384,9 @@ public class AudioService : MonoBehaviour
         _shoot = FindFirstObjectByType<ShootBehaviorComponent>(FindObjectsInactive.Exclude);
         _pickUp = FindFirstObjectByType<PickUpBehaviorComponent>(FindObjectsInactive.Exclude);
         _pacify = FindFirstObjectByType<PacifyBehaviorComponent>(FindObjectsInactive.Exclude);
+        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude); // CORRECTION
 
-        _creature = FindFirstObjectByType<CreatureController>(FindObjectsInactive.Exclude);
-
+        _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
         _lightService = LightSourcesService.Instance;
     }
 
@@ -349,24 +396,33 @@ public class AudioService : MonoBehaviour
         if (_movement != null)
             _movement.OnWalk += HandleWalk;
 
-        // Combat
+        // Shoot
         if (_shoot != null)
         {
             _shoot.OnShoot += HandleShoot;
             _shoot.OnAim += HandleAim;
         }
 
-        // Interaction
+        // Pickup
         if (_pickUp != null)
         {
-            _pickUp.OnPickup += HandlePickup;
+            _pickUp.OnPickup += (pickable) => HandlePickup(pickable); 
             _pickUp.OnReleasePickup += HandlePickupRelease;
         }
 
-        // Other
+        // Pacify
         if (_pacify != null)
+        {
             _pacify.OnPacifyStart += HandlePacifyStart;
-        _pacify.OnPacifyEnd += HandlePacifyEnd;
+            _pacify.OnPacifyEnd += HandlePacifyEnd;
+        }
+
+        // Pet 
+        if (_pet != null)
+        {
+            _pet.OnPetStart += (creature) => HandlePlayerPetStart(creature);
+            _pet.OnPetEnd += (creature, success) => HandlePlayerPetEnd(creature, success);
+        }
 
         // Lights
         if (_lightService != null)
@@ -375,28 +431,29 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOffLight += HandleLightSwitch;
         }
 
-        //Creature 
-        //if (_creature != null)
-        //{
-        //    _creature.OnCreatureIdle += HandleCreatureIdle;
+        // Creatures
+        if (_creatureService != null)
+        {
+            _creatureService.OnCreatureIdle += HandleCreatureIdle;
+            _creatureService.OnCreatureBeginEat += HandleCreatureEat;
+            _creatureService.OnCreatureEatEnd += HandleCreatureEatEnd;
+            _creatureService.OnCreatureMoving += HandleCreatureMove;
+            _creatureService.OnCreatureSeek += HandleCreatureSeek;
+            _creatureService.OnCreatureStopSeek += HandleCreatureStopSeek;
+            _creatureService.OnPacifyStart += HandleCreaturePacifyStart;
+            _creatureService.OnPacifyEnd += HandleCreaturePacifyEnd;
+            _creatureService.OnPetStart += HandleCreaturePetStart;
+            _creatureService.OnPetEnd += HandleCreaturePetEnd;
+            _creatureService.OnCreatureDrainingStart += HandleCreatureDrainStart;
+            _creatureService.OnCreatureDrainingEnd += HandleCreatureDrainEnd;
+        }
 
-        //    _creature.OnCreatureBeginEat += HandleCreatureEat;
-        //    _creature.OnCreatureEatEnd+= HandleCreatureAttack;
-
-        //    _creature.OnCreatureMoving += HandleCreatureMove;
-
-        //    _creature.OnCreatureSeekStart += HandleCreatureSeek;
-        //    _creature.OnCreatureSeekEnd += HandleCreatureSeek;
-
-        //    _creature.OnPacifyStart += HandleCreaturePacify;
-        //    _creature.OnPacifyEnd += HandleCreatureAttack;
-
-        //    _creature.OnPetStart += HandleCreatureAttack;
-        //    _creature.OnPetEnd += HandleCreatureAttack;
-        //}
-
-        GameManager.Instance.OnPlay += HandlePlayGame;
-        GameManager.Instance.OnPause += HandlePlayGame;
+        // GameManager events
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlay += HandlePlayGame;
+            GameManager.Instance.OnPause += HandlePauseGame;
+        }
 
         Debug.Log("[AudioService] Subscribed to all events");
     }
@@ -414,17 +471,48 @@ public class AudioService : MonoBehaviour
 
         if (_pickUp != null)
         {
-            _pickUp.OnPickup -= HandlePickup;
+            _pickUp.OnPickup -= (pickable) => HandlePickup(pickable);
             _pickUp.OnReleasePickup -= HandlePickupRelease;
         }
 
         if (_pacify != null)
+        {
+            _pacify.OnPacifyStart -= HandlePacifyStart;
             _pacify.OnPacifyEnd -= HandlePacifyEnd;
+        }
+
+        if (_pet != null)
+        {
+            _pet.OnPetStart -= (creature) => HandlePlayerPetStart(creature);
+            _pet.OnPetEnd -= (creature, success) => HandlePlayerPetEnd(creature, success);
+        }
 
         if (_lightService != null)
         {
             _lightService.OnSwitchOnLight -= HandleLightSwitch;
             _lightService.OnSwitchOffLight -= HandleLightSwitch;
+        }
+
+        if (_creatureService != null)
+        {
+            _creatureService.OnCreatureIdle -= HandleCreatureIdle;
+            _creatureService.OnCreatureBeginEat -= HandleCreatureEat;
+            _creatureService.OnCreatureEatEnd -= HandleCreatureEatEnd;
+            _creatureService.OnCreatureMoving -= HandleCreatureMove;
+            _creatureService.OnCreatureSeek -= HandleCreatureSeek;
+            _creatureService.OnCreatureStopSeek -= HandleCreatureStopSeek;
+            _creatureService.OnPacifyStart -= HandleCreaturePacifyStart;
+            _creatureService.OnPacifyEnd -= HandleCreaturePacifyEnd;
+            _creatureService.OnPetStart -= HandleCreaturePetStart;
+            _creatureService.OnPetEnd -= HandleCreaturePetEnd;
+            _creatureService.OnCreatureDrainingStart -= HandleCreatureDrainStart;
+            _creatureService.OnCreatureDrainingEnd -= HandleCreatureDrainEnd;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlay -= HandlePlayGame;
+            GameManager.Instance.OnPause -= HandlePauseGame;
         }
     }
 
@@ -434,7 +522,7 @@ public class AudioService : MonoBehaviour
 
     private void HandleWalk(Vector3 direction, float speed)
     {
-        if (speed > 0.1f) // Only play when actually moving
+        if (speed > 0.1f)
         {
             _onWalkSound.Play(transform.position);
         }
@@ -453,11 +541,9 @@ public class AudioService : MonoBehaviour
     private void HandlePickup(PickableComponent pickable)
     {
         if (_onPickupSound.isLooped)
-            _onPickupSound.StartLoop(pickable.transform.position);
-
+            _onPickupSound.StartLoop(pickable?.transform.position ?? transform.position);
         else
-            _onPickupSound.Play(pickable.transform.position);
-
+            _onPickupSound.Play(pickable?.transform.position ?? transform.position);
     }
 
     private void HandlePickupRelease()
@@ -477,6 +563,18 @@ public class AudioService : MonoBehaviour
         Debug.Log("[AudioService] Pacify ended, playing end sound.");
     }
 
+    private void HandlePlayerPetStart(CreatureController creature)
+    {
+        //@todo
+        Debug.Log($"[AudioService] Player started petting creature {creature.name}");
+    }
+
+    private void HandlePlayerPetEnd(CreatureController creature, bool success)
+    {
+        //@todo
+        Debug.Log($"[AudioService] Player finished petting creature {creature.name} - Success: {success}");
+    }
+
     private void HandleLightSwitch(LightSourceComponent light)
     {
         _onLampToggleSound.Play(light.LightPoint.position);
@@ -485,16 +583,177 @@ public class AudioService : MonoBehaviour
 
     public void HandlePlayGame()
     {
+        Debug.Log("Play game audio event");
+
+        float currentHPF;
+        FMODUnity.RuntimeManager.StudioSystem.getParameterByName("HPF", out currentHPF);
+
+        DOTween.To(() => currentHPF, x =>
+        {
+            currentHPF = x;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("HPF", currentHPF);
+        }, 0f, 0.2f);
+
         PlaySound(_playSound.soundToPlay);
     }
+
     public void HandlePauseGame()
     {
+        Debug.Log("Pause game audio event");
+
+        float currentHPF;
+        FMODUnity.RuntimeManager.StudioSystem.getParameterByName("HPF", out currentHPF);
+
+        DOTween.To(() => currentHPF, x =>
+        {
+            currentHPF = x;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("HPF", currentHPF);
+        }, 1f, 0.2f);
+
         PlaySound(_pauseSound.soundToPlay);
     }
+
     public void HandleSwitchMenu()
     {
         PlaySound(_switchUISound.soundToPlay);
     }
+
+    #endregion
+
+    #region Creature Event 
+
+    private void HandleCreatureIdle(CreatureController creature)
+    {
+        if (_onCreatureIdleSound != null && !_onCreatureIdleSound.soundToPlay.IsNull)
+        {
+            _onCreatureIdleSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} is now idle");
+    }
+
+    private void HandleCreatureEat(CreatureController creature)
+    {
+        if (_onCreatureEatSound != null && !_onCreatureEatSound.soundToPlay.IsNull)
+        {
+            _onCreatureEatSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} started eating");
+    }
+
+    private void HandleCreatureEatEnd(CreatureController creature)
+    {
+        if (_onCreatureEatEndSound != null && !_onCreatureEatEndSound.soundToPlay.IsNull)
+        {
+            _onCreatureEatEndSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} finished eating");
+    }
+
+    private void HandleCreatureMove(CreatureController creature, float speed)
+    {
+        if (speed > 0.1f && _onCreatureMoveSound != null && !_onCreatureMoveSound.soundToPlay.IsNull)
+        {
+            if (_onCreatureMoveSound.isLooped)
+            {
+                if (!_onCreatureMoveSound.IsPlaying())
+                    _onCreatureMoveSound.StartLoop(creature.transform.position);
+            }
+            else
+            {
+                if (Time.time - _lastCreatureMoveSoundTime > _creatureMoveSoundCooldown)
+                {
+                    _onCreatureMoveSound.Play(creature.transform.position);
+                    _lastCreatureMoveSoundTime = Time.time;
+                }
+            }
+        }
+        else if (speed <= 0.1f && _onCreatureMoveSound != null && _onCreatureMoveSound.isLooped)
+        {
+            _onCreatureMoveSound.Stop();
+        }
+    }
+
+    private void HandleCreatureSeek(CreatureController creature, Vector3 position)
+    {
+        if (_onCreatureSeekStartSound != null && !_onCreatureSeekStartSound.soundToPlay.IsNull)
+        {
+            _onCreatureSeekStartSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} started seeking at {position}");
+    }
+
+    private void HandleCreatureStopSeek(CreatureController creature)
+    {
+        if (_onCreatureStopSeekSound != null && !_onCreatureStopSeekSound.soundToPlay.IsNull)
+        {
+            _onCreatureStopSeekSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} stopped seeking");
+    }
+
+    private void HandleCreaturePacifyStart(CreatureController creature)
+    {
+        if (_onCreaturePacifyStartSound != null && !_onCreaturePacifyStartSound.soundToPlay.IsNull)
+        {
+            _onCreaturePacifyStartSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} is being pacified");
+    }
+
+    private void HandleCreaturePacifyEnd(CreatureController creature, bool isCancelled)
+    {
+        if (_onCreaturePacifyEndSound != null && !_onCreaturePacifyEndSound.soundToPlay.IsNull)
+        {
+            _onCreaturePacifyEndSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} pacify ended - Cancelled: {isCancelled}");
+    }
+
+    private void HandleCreatureDrainStart(CreatureController creature)
+    {
+        if (_onCreatureDrainStartSound != null && !_onCreatureDrainStartSound.soundToPlay.IsNull)
+        {
+            if (_onCreatureDrainStartSound.isLooped)
+                _onCreatureDrainStartSound.StartLoop(creature.transform.position);
+            else
+                _onCreatureDrainStartSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} started draining");
+    }
+
+    private void HandleCreatureDrainEnd(CreatureController creature)
+    {
+        if (_onCreatureDrainEndSound != null && !_onCreatureDrainEndSound.soundToPlay.IsNull)
+        {
+            _onCreatureDrainEndSound.Play(creature.transform.position);
+        }
+
+        if (_onCreatureDrainStartSound != null && _onCreatureDrainStartSound.isLooped)
+        {
+            _onCreatureDrainStartSound.Stop();
+        }
+
+        Debug.Log($"[AudioService] Creature {creature.name} stopped draining");
+    }
+
+    private void HandleCreaturePetStart(CreatureController creature)
+    {
+        if (_onCreaturePetStartSound != null && !_onCreaturePetStartSound.soundToPlay.IsNull)
+        {
+            _onCreaturePetStartSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} started being petted");
+    }
+
+    private void HandleCreaturePetEnd(CreatureController creature, bool success)
+    {
+        if (_onCreaturePetEndSound != null && !_onCreaturePetEndSound.soundToPlay.IsNull)
+        {
+            _onCreaturePetEndSound.Play(creature.transform.position);
+        }
+        Debug.Log($"[AudioService] Creature {creature.name} finished being petted - Success: {success}");
+    }
+
     #endregion
 
     #region Light System
@@ -529,7 +788,6 @@ public class AudioService : MonoBehaviour
     #endregion
 
     #region Public API
-    // For custom events added at runtime
     public void RegisterCustomEvent(string eventName, Action eventAction, EventReference sound)
     {
         var customEvent = new EventSound
@@ -548,7 +806,6 @@ public class AudioService : MonoBehaviour
         customEvent?.Play(position);
     }
 
-    // Direct play methods
     public void PlaySound(EventReference eventRef, Vector3 position = default)
     {
         if (!eventRef.IsNull)
