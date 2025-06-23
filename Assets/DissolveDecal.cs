@@ -11,8 +11,7 @@ public class DissolveDecal : MonoBehaviour
     
     [SerializeField] private DecalProjector m_fourthDecalProjector;
     
-    [SerializeField]
-    private float m_dissolveFirstValue = 1f;
+    [SerializeField] private float m_dissolveFirstValue = 1f;
     [SerializeField] private float m_dissolveSecondValue = 1f;
     [SerializeField] private float m_dissolveThirdValue = 1f;
     [SerializeField] private float m_dissolveFourthValue = 1f;
@@ -37,23 +36,24 @@ public class DissolveDecal : MonoBehaviour
         m_thirdMaterial = m_thirdDecalProjector.material;
         m_fourthMaterial = m_fourthDecalProjector.material;
         
-        m_firstMaterial.SetFloat("_DissolveAmount", m_dissolveFirstValue);
-        m_secondMaterial.SetFloat("_DissolveAmount", m_dissolveSecondValue);
-        m_thirdMaterial.SetFloat("_DissolveAmount", m_dissolveThirdValue);
-        m_fourthMaterial.SetFloat("_DissolveAmount", m_dissolveFourthValue);
+        m_firstMaterial.SetFloat("_OpacityDissolve", m_dissolveFirstValue);
+        m_secondMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
+        m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveThirdValue);
+        m_fourthMaterial.SetFloat("_OpacityDissolve", m_dissolveFourthValue);
     }
 
     public void Update()
     {
-        m_firstMaterial.SetFloat("_DissolveAmount", m_dissolveFirstValue);
-        m_secondMaterial.SetFloat("_DissolveAmount", m_dissolveSecondValue);
-        m_thirdMaterial.SetFloat("_DissolveAmount", m_dissolveThirdValue);
-        m_fourthMaterial.SetFloat("_DissolveAmount", m_dissolveFourthValue);
+        //m_secondMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
+        //m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveThirdValue);
+        //m_fourthMaterial.SetFloat("_OpacityDissolve", m_dissolveFourthValue);
 
+        
         if (m_firstIsPlaying)
         {
             if (m_dissolveFirstValue > m_time)
             {
+                m_firstMaterial.SetFloat("_OpacityDissolve", m_dissolveFirstValue);
                 m_dissolveFirstValue -= Time.deltaTime;
             }
             

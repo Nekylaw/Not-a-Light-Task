@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
         _jump.Jump();
     }
 
-    // private void OnTriggerStay(Collider other)
+    //private void OnTriggerStay(Collider other)
     // {
     //     if (other.gameObject.CompareTag("Fresque"))
     //     {
