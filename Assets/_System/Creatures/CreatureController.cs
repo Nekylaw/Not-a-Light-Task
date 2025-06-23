@@ -27,52 +27,6 @@ public class CreatureController : MonoBehaviour, ICullable
 
     #endregion
 
-    #region Delegates and Events
-
-    public delegate void CreatureMoveDelegate(float speed);
-    public event CreatureMoveDelegate OnCreatureMoving;
-
-
-    public delegate void StartCreatureDrainDelegate();
-    public event StartCreatureDrainDelegate OnCreatureDrainingStart;
-
-    public delegate void EndCreatureDrainDelegate();
-    public event EndCreatureDrainDelegate OnCreatureDrainingEnd;
-
-
-    public delegate void CreatureIdleDelegate();
-    public event CreatureIdleDelegate OnCreatureIdle;
-
-
-    public delegate void StartCreatureEatDelegate();
-    public event StartCreatureEatDelegate OnCreatureBeginEat;
-
-    public delegate void EndCreatureEatDelegate();
-    public event EndCreatureEatDelegate OnCreatureEatEnd;
-
-
-    public delegate void StartPacfyDelegate();
-    public event StartPacfyDelegate OnPacifyStart;
-
-    public delegate void UpdatePacfyDelegate(float progress);
-    public event UpdatePacfyDelegate OnPacifyUpdate;
-
-    public delegate void EndPacfyDelegate(bool isCancelled);
-    public event EndPacfyDelegate OnPacifyEnd;
-
-
-    public delegate void StartPetDelegate(CreatureController creature);
-    public event StartPetDelegate OnPetStart;
-
-    public delegate void UpdatePetDelegate(float progress);
-    public event UpdatePetDelegate OnPetUpdate;
-
-    public delegate void EndPetDelegate(bool success);
-    public event EndPetDelegate OnPetEnd;
-
-
-    #endregion
-
     #region Core Components
 
     [Header("Current State")]
@@ -82,6 +36,9 @@ public class CreatureController : MonoBehaviour, ICullable
     [Header("Debug")]
     [SerializeField] private bool debugMode = false;
     [SerializeField] private bool showGizmos = true;
+
+    // Creature service
+    private CreatureService creatureService;
 
     // Player Behaviors
     private PacifyBehaviorComponent pacifier;
@@ -275,6 +232,7 @@ public class CreatureController : MonoBehaviour, ICullable
         rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
+        creatureService = FindFirstObjectByType<CreatureService>();
         pacifier = FindFirstObjectByType<PacifyBehaviorComponent>();
         peter = FindFirstObjectByType<PetBehaviorComponent>();
 
@@ -343,7 +301,7 @@ public class CreatureController : MonoBehaviour, ICullable
 
             if (!isMovementLocked)
             {
-                OnCreatureMoving?.Invoke(0f);
+                TriggerMoving(0f); 
                 if (_animator != null)
                     _animator.SetFloat("speed", 0f);
             }
@@ -356,7 +314,7 @@ public class CreatureController : MonoBehaviour, ICullable
         newPosition.y = startPosition.y;
         rb.MovePosition(newPosition);
 
-        OnCreatureMoving?.Invoke(currentSpeed);
+        TriggerMoving(currentSpeed); 
         if (_animator != null)
             _animator.SetFloat("speed", currentSpeed);
     }
@@ -386,8 +344,7 @@ public class CreatureController : MonoBehaviour, ICullable
         switch (state)
         {
             case ECreatureState.Idle:
-                OnCreatureIdle?.Invoke();
-
+                TriggerIdle();
                 currentSpeed = 0f;
                 velocity = Vector3.zero;
 
@@ -412,11 +369,13 @@ public class CreatureController : MonoBehaviour, ICullable
                 currentTargetTrackingTime = 0f;
                 stuckOnTargetTimer = 0f;
                 lastTargetPosition = transform.position;
+
+                if (currentTarget != null)
+                    TriggerSeek(currentTarget.position);
                 break;
 
             case ECreatureState.Eating:
-                OnCreatureBeginEat?.Invoke();
-
+                TriggerBeginEat();
                 //eat animation 
                 if (_animator != null)
                 {
@@ -439,24 +398,17 @@ public class CreatureController : MonoBehaviour, ICullable
                 break;
 
             case ECreatureState.Draining:
-                OnCreatureDrainingStart?.Invoke();
+                TriggerDrainingStart();
 
                 drainTimer = 0f;
                 currentSpeed = 0;
                 excitementLevel = Mathf.Min(maxExcitement, excitementLevel + excitmentOnLightSourceDetection);
 
-                //if (targetLightSource != null)
-                //{
-                //    PlaySound(targetLightSource.DrainSound);
-                //    if (drainParticle != null)
-                //        drainParticle.Play();
-                //}
-
                 AlertNearbyCreatures(); ;
                 break;
 
             case ECreatureState.Pacifying:
-                OnPacifyStart?.Invoke();
+                TriggerPacifyStart();
 
                 if (_animator != null)
                 {
@@ -481,7 +433,7 @@ public class CreatureController : MonoBehaviour, ICullable
                 break;
 
             case ECreatureState.Petting:
-                OnPetStart?.Invoke(this);
+                TriggerPetStart();
 
                 LockMovement(true);
                 currentSpeed = 0f;
@@ -499,6 +451,7 @@ public class CreatureController : MonoBehaviour, ICullable
                 currentTarget = null;
 
                 orbEatenCount++;
+                TriggerEatEnd();
                 break;
 
             case ECreatureState.Draining:
@@ -523,6 +476,8 @@ public class CreatureController : MonoBehaviour, ICullable
 
                 if (_animator != null)
                     _animator.SetBool("isDraining", false);
+
+                TriggerDrainingEnd();
                 break;
 
             case ECreatureState.Pacifying:
@@ -578,13 +533,13 @@ public class CreatureController : MonoBehaviour, ICullable
         float sway = Mathf.Sin(Time.time * 2f) * 0.05f;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + sway, 0);
 
-        OnPetUpdate?.Invoke(stateTimer / peter.PetDuration);
+        TriggerPetUpdate(stateTimer / peter.PetDuration);
     }
 
     private void UpdatePacifyingState(float delta)
     {
         LockMovement(true);
-        OnPacifyUpdate?.Invoke(stateTimer / pacifier.PacifyDuration);
+        TriggerPacifyUpdate(stateTimer / pacifier.PacifyDuration);
     }
 
     private void UpdateDrainingState(float delta)
@@ -656,7 +611,7 @@ public class CreatureController : MonoBehaviour, ICullable
         // End drain
         if (drainTimer >= drainDuration)
         {
-            OnCreatureDrainingEnd?.Invoke();
+            TriggerDrainingEnd();
 
             targetLightSource.DrainLight();
             excitementLevel = maxExcitement;
@@ -862,6 +817,9 @@ public class CreatureController : MonoBehaviour, ICullable
         if (debugMode)
             Debug.Log($"{name} gave up on target {currentTarget?.name ?? "null"} after {stuckOnTargetTimer:F2}s sa mere");
 
+        if (currentTarget != null)
+            TriggerStopSeek();
+
         // Wander
         currentTarget = null;
 
@@ -993,8 +951,6 @@ public class CreatureController : MonoBehaviour, ICullable
                 OrbComponent orb = currentTarget.GetComponent<OrbComponent>();
                 orb?.BeEaten();
             }
-
-            OnCreatureEatEnd?.Invoke();
 
             excitementLevel = maxExcitement * 0.5f;
             ChangeState(ECreatureState.Wandering);
@@ -1468,10 +1424,6 @@ public class CreatureController : MonoBehaviour, ICullable
         // If pettable and pacified
         if (_isPettable && IsPacified && currentState != ECreatureState.Petting)
         {
-            //var pettableProfile = visualProfile.PettableProfile;
-            // not enough intensitiy for base color ?
-            //pettableProfile.baseColor *= x;
-
             t = stateTimer / peter.PetDuration;
             var pettableProfile = CreatureVisualProfileSO.StateProfile.Lerp(
                 visualProfile.PetProfile,
@@ -1602,7 +1554,7 @@ public class CreatureController : MonoBehaviour, ICullable
         int orbsCount = 1;
         ReleaseOrbs(orbsCount);
 
-        OnPetEnd?.Invoke(true);
+        TriggerPetEnd(true);
         ChangeState(ECreatureState.Pacified);
     }
 
@@ -1619,7 +1571,7 @@ public class CreatureController : MonoBehaviour, ICullable
         if (success)
             ReleaseOrbs();
 
-        OnPacifyEnd?.Invoke(success);
+        TriggerPacifyEnd(success);
     }
 
     public void ForceChangeTarget(Transform newTarget)
@@ -1633,7 +1585,97 @@ public class CreatureController : MonoBehaviour, ICullable
 
     #endregion
 
-    #region helper methods
+    #region Direct Service Calls
+
+    private void TriggerMoving(float speed)
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureMoving(this, speed);
+    }
+
+    private void TriggerDrainingStart()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureDrainingStart(this);
+    }
+
+    private void TriggerDrainingEnd()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureDrainingEnd(this);
+    }
+
+    private void TriggerIdle()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureIdle(this);
+    }
+
+    private void TriggerBeginEat()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureBeginEat(this);
+    }
+
+    private void TriggerEatEnd()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureEatEnd(this);
+    }
+
+    private void TriggerPacifyStart()
+    {
+        if (creatureService != null)
+            creatureService.HandlePacifyStart(this);
+    }
+
+    private void TriggerPacifyUpdate(float progress)
+    {
+        if (creatureService != null)
+            creatureService.HandlePacifyUpdate(this, progress);
+    }
+
+    private void TriggerPacifyEnd(bool isCancelled)
+    {
+        if (creatureService != null)
+            creatureService.HandlePacifyEnd(this, isCancelled);
+    }
+
+    private void TriggerPetStart()
+    {
+        if (creatureService != null)
+            creatureService.HandlePetStart(this);
+    }
+
+    private void TriggerPetUpdate(float progress)
+    {
+        if (creatureService != null)
+            creatureService.HandlePetUpdate(this, progress); 
+    }
+
+    private void TriggerPetEnd(bool success)
+    {
+        if (creatureService != null)
+            creatureService.HandlePetEnd(this, success);
+    }
+
+    private void TriggerSeek(Vector3 position)
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureSeek(this, position);
+    }
+
+    private void TriggerStopSeek()
+    {
+        if (creatureService != null)
+            creatureService.HandleCreatureStopSeek(this);
+    }
+
+    #endregion
+
+
+
+    #region Helper
 
     void SetNewWanderTarget()
     {

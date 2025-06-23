@@ -5,7 +5,6 @@ using DG.Tweening;
 using FMODUnity;
 using Game.Services.LightSources;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AudioService : MonoBehaviour
 {
@@ -178,7 +177,7 @@ public class AudioService : MonoBehaviour
         [TextArea(2, 3)]
         public string notes = "";
 
-        // For organization in editor
+        // For editor
         public bool isExpanded = true;
 
         private FMOD.Studio.EventInstance _instance; // sound ref
@@ -327,7 +326,7 @@ public class AudioService : MonoBehaviour
     [HideInInspector] public bool showCombatEvents = true;
     [HideInInspector] public bool showInteractionEvents = true;
     [HideInInspector] public bool showOtherEvents = true;
-    [HideInInspector] public bool showCreatureEvents = true; 
+    [HideInInspector] public bool showCreatureEvents = true;
     [HideInInspector] public bool showCustomEvents = true;
 
     // Creature move sound cooldowns
@@ -384,7 +383,7 @@ public class AudioService : MonoBehaviour
         _shoot = FindFirstObjectByType<ShootBehaviorComponent>(FindObjectsInactive.Exclude);
         _pickUp = FindFirstObjectByType<PickUpBehaviorComponent>(FindObjectsInactive.Exclude);
         _pacify = FindFirstObjectByType<PacifyBehaviorComponent>(FindObjectsInactive.Exclude);
-        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude); // CORRECTION
+        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude); 
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
         _lightService = LightSourcesService.Instance;
@@ -406,7 +405,7 @@ public class AudioService : MonoBehaviour
         // Pickup
         if (_pickUp != null)
         {
-            _pickUp.OnPickup += (pickable) => HandlePickup(pickable); 
+            _pickUp.OnPickup += HandlePickup;
             _pickUp.OnReleasePickup += HandlePickupRelease;
         }
 
@@ -420,8 +419,8 @@ public class AudioService : MonoBehaviour
         // Pet 
         if (_pet != null)
         {
-            _pet.OnPetStart += (creature) => HandlePlayerPetStart(creature);
-            _pet.OnPetEnd += (creature, success) => HandlePlayerPetEnd(creature, success);
+            _pet.OnPetStart += HandlePlayerPetStart;
+            _pet.OnPetEnd +=HandlePlayerPetEnd;
         }
 
         // Lights
@@ -471,7 +470,7 @@ public class AudioService : MonoBehaviour
 
         if (_pickUp != null)
         {
-            _pickUp.OnPickup -= (pickable) => HandlePickup(pickable);
+            _pickUp.OnPickup -= HandlePickup;
             _pickUp.OnReleasePickup -= HandlePickupRelease;
         }
 
@@ -483,8 +482,8 @@ public class AudioService : MonoBehaviour
 
         if (_pet != null)
         {
-            _pet.OnPetStart -= (creature) => HandlePlayerPetStart(creature);
-            _pet.OnPetEnd -= (creature, success) => HandlePlayerPetEnd(creature, success);
+            _pet.OnPetStart -=  HandlePlayerPetStart;
+            _pet.OnPetEnd -= HandlePlayerPetEnd;
         }
 
         if (_lightService != null)
@@ -538,12 +537,12 @@ public class AudioService : MonoBehaviour
         _onAimSound.Play(transform.position);
     }
 
-    private void HandlePickup(PickableComponent pickable)
+    private void HandlePickup()
     {
         if (_onPickupSound.isLooped)
-            _onPickupSound.StartLoop(pickable?.transform.position ?? transform.position);
+            _onPickupSound.StartLoop(_movement.transform.position);
         else
-            _onPickupSound.Play(pickable?.transform.position ?? transform.position);
+            _onPickupSound.Play(_movement.transform.position);
     }
 
     private void HandlePickupRelease()

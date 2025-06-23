@@ -20,7 +20,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
 
     #region Delegates
 
-    public delegate void PickupDelegate(PickableComponent pickableComponent);
+    public delegate void PickupDelegate();
     public event PickupDelegate OnPickup = null;
 
     public delegate void HoldPickupDelegate();
@@ -78,6 +78,7 @@ public class PickUpBehaviorComponent : MonoBehaviour
     public void StartAttracting()
     {
         _isHoldingPickup = true;
+        OnPickup?.Invoke();
     }
 
     public void StopAttracting()
@@ -139,7 +140,6 @@ public class PickUpBehaviorComponent : MonoBehaviour
                 {
                     var orbComp = attraction.Orb.GetComponent<OrbComponent>();
                     orbComp.BeEaten();
-                    OnPickup?.Invoke(attraction.Orb);
                 }
                 _activeAttractions.RemoveAt(i);
             }
