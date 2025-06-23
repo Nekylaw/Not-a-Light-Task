@@ -15,28 +15,21 @@ public class PortalComponent : MonoBehaviour
 
     [SerializeField] private float duration;
 
-    private Activators*Service portalService;
+    private ActivatorsService portalService;
 
     private void Awake()
     {
-        portalService = FindFirstObjectByType<Activators*Service>();
+        portalService = FindFirstObjectByType<ActivatorsService>();
     }
 
-    public void OpenGateRotateAround()
-    {
-        transform.RotateAround(pivot.position, Vector3.up, 150f);
-    }
 
     public void OpenGateProperly()
     {
-        portalService.HandlePortalOpenedDelegate(this);
+        portalService.HandlePortalTriggered(this);
 
         panelDroit.DOLocalRotate(vecDroit, duration, RotateMode.LocalAxisAdd);
         panelGauche.DOLocalRotate(vecGauche, duration, RotateMode.LocalAxisAdd);
         charniereDroite.DOLocalRotate(vecDroit, duration, RotateMode.LocalAxisAdd);
         charniereGauche.DOLocalRotate(vecGauche, duration, RotateMode.LocalAxisAdd);
-
-        portalService.HandlePortalOpenedDelegate(this);
-
     }
 }

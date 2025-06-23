@@ -114,6 +114,10 @@ public class PickUpBehaviorComponent : MonoBehaviour
                 Duration = _settings.Duration,
                 Elapsed = 0f
             });
+
+            var orb = pickable;
+            StartCoroutine(pickable.GetComponent<OrbComponent>().AbsorbingOrbCoroutine());
+
         }
     }
 

@@ -1,3 +1,6 @@
+using System;
+using Unity.VisualScripting;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -28,6 +31,13 @@ public class DissolveDecal : MonoBehaviour
     private Material m_secondMaterial;
     private Material m_thirdMaterial;
     private Material m_fourthMaterial;
+
+    private ActivatorsService activator;
+    
+    private void Awake()
+    {
+        activator = GameObject.FindFirstObjectByType<ActivatorsService>();
+    }
 
     public void Start()
     {
@@ -90,15 +100,19 @@ public class DissolveDecal : MonoBehaviour
         {
             case 1:
                 m_firstIsPlaying = true;
+                activator.HandleRevealStela(m_firstMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 2:
                 m_secondIsPlaying = true;
+                activator.HandleRevealStela(m_secondMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 3:
                 m_thirdIsPlaying = true;
+                activator.HandleRevealStela(m_thirdMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 4:
                 m_fourthIsPlaying = true;
+                activator.HandleRevealStela(m_fourthMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             
         }

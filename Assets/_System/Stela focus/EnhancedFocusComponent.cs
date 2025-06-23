@@ -15,6 +15,8 @@ public class EnhancedFocusComponent : MonoBehaviour
     public CameraBobbingComponent handCameraBobbingComponent;
     public CameraBobbingComponent headProcessCameraBobbingComponent;
 
+    public int stelaIndex;
+
     [SerializeField]
     private int MaterialIndex ;
     

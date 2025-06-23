@@ -31,6 +31,8 @@ public class ElevatorComponent : MonoBehaviour
     private Vector3 _bottomPos = Vector3.zero;
     private Vector3 _topPos = Vector3.zero;
 
+    private ActivatorsService activator;
+
     private void OnEnable()
     {
         //LightSourcesService.Instance.OnSwitchOnLight += ActivateElevator;
@@ -78,6 +80,8 @@ public class ElevatorComponent : MonoBehaviour
 
     public void ActivateElevator()//LightSourceComponent light)
     {
+        activator.HandleActivateElevator(this);
+        
         //if (light != activator)
           //  return;
         

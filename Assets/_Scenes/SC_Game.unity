@@ -8468,6 +8468,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 436283834041255932, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 436283834041255932, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8476,6 +8480,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1716997011}
     - target: {fileID: 807654252354535806, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 807654252354535806, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8484,6 +8492,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1716997011}
     - target: {fileID: 1153668795011856534, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153668795011856534, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8492,6 +8504,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1716997011}
     - target: {fileID: 1993416821359108854, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1993416821359108854, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8499,6 +8515,10 @@ PrefabInstance:
       propertyPath: headProcessCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997011}
+    - target: {fileID: 2377212177950878624, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2377212177950878624, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
@@ -8552,6 +8572,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5293930774975921373, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5293930774975921373, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8560,6 +8584,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1716997011}
     - target: {fileID: 7664519082837477013, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664519082837477013, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997012}
@@ -8567,6 +8595,10 @@ PrefabInstance:
       propertyPath: headProcessCameraBobbingComponent
       value: 
       objectReference: {fileID: 1716997011}
+    - target: {fileID: 7938576825626485303, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7938576825626485303, guid: 7403de27b993144c5a320e7d23b02f97, type: 3}
       propertyPath: handCameraBobbingComponent
       value: 
@@ -9992,8 +10024,7 @@ MonoBehaviour:
     showDebugInfo: 0
     debugColor: {r: 0, g: 0, b: 0, a: 0}
   - groupName: 'LEVEL 1 '
-    lightSources:
-    - {fileID: 2116405874}
+    lightSources: []
     ambientTrack:
       Guid:
         Data1: -248917542
@@ -10528,8 +10559,7 @@ MonoBehaviour:
     showDebugInfo: 0
     debugColor: {r: 0, g: 0, b: 0, a: 0}
   - groupName: Light Group 5
-    lightSources:
-    - {fileID: 1825341726}
+    lightSources: []
     ambientTrack:
       Guid:
         Data1: 709404345
@@ -10619,6 +10649,20 @@ MonoBehaviour:
     playAtPosition: 1
     notes: 
     isExpanded: 1
+  _windSound:
+    eventName: Wind
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
   _onWalkSound:
     eventName: On Walk
     soundToPlay:
@@ -10642,6 +10686,20 @@ MonoBehaviour:
         Data3: -688022616
         Data4: 1583534567
       Path: event:/Gun/Gun_Tir
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onShootNoAmmoSound:
+    eventName: On Shoot No Ammo
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
     isLooped: 0
     volume: 1
     playAtPosition: 1
@@ -10686,20 +10744,6 @@ MonoBehaviour:
       Path: event:/Aspiro
     isLooped: 1
     volume: 0.7
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onPickupSound:
-    eventName: On Pickup
-    soundToPlay:
-      Guid:
-        Data1: 1002373057
-        Data2: 1108941323
-        Data3: -962948208
-        Data4: 1946529510
-      Path: event:/Pick up
-    isLooped: 0
-    volume: 1
     playAtPosition: 1
     notes: 
     isExpanded: 1
@@ -10913,22 +10957,8 @@ MonoBehaviour:
     playAtPosition: 1
     notes: 
     isExpanded: 1
-  _onCreatureIdleSound:
-    eventName: Creature Idle
-    soundToPlay:
-      Guid:
-        Data1: -270066511
-        Data2: 1183780161
-        Data3: 385433781
-        Data4: 720864113
-      Path: event:/FFS_grass
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureEatSound:
-    eventName: Creature Eat Start
+  _onPortalTriggeredSound:
+    eventName: Portal Triggered
     soundToPlay:
       Guid:
         Data1: 0
@@ -10941,134 +10971,8 @@ MonoBehaviour:
     playAtPosition: 1
     notes: 
     isExpanded: 1
-  _onCreatureEatEndSound:
-    eventName: Creature Eat End
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureMoveSound:
-    eventName: Creature Move
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureSeekStartSound:
-    eventName: Creature Seek Start
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureStopSeekSound:
-    eventName: Creature Stop Seek
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreaturePacifyStartSound:
-    eventName: Creature Pacify Start
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreaturePacifyEndSound:
-    eventName: Creature Pacify End
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureDrainStartSound:
-    eventName: Creature Drain Start
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreatureDrainEndSound:
-    eventName: Creature Drain End
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreaturePetStartSound:
-    eventName: Creature Pet Start
-    soundToPlay:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
-    isLooped: 0
-    volume: 1
-    playAtPosition: 1
-    notes: 
-    isExpanded: 1
-  _onCreaturePetEndSound:
-    eventName: Creature Pet End
+  _onPortalOpennedSound:
+    eventName: Portal Openned
     soundToPlay:
       Guid:
         Data1: 0
@@ -11417,7 +11321,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1744752565}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4908972784478995562, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
       propertyPath: player
@@ -11492,11 +11396,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
---- !u!4 &571181825 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
-  m_PrefabInstance: {fileID: 571181824}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &573368506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33878,24 +33777,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2701578701714439495, guid: 0e6312f64dcb8d945823ff21799f1a4e, type: 3}
   m_PrefabInstance: {fileID: 1808884308}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1825341726 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4960747954378190762, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
-  m_PrefabInstance: {fileID: 5164637682557329979}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1825550732
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1744752565}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2187737916978009534, guid: f1611f1a7827add449a891094159e351, type: 3}
       propertyPath: player
@@ -34018,11 +33906,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1611f1a7827add449a891094159e351, type: 3}
---- !u!4 &1825550733 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
-  m_PrefabInstance: {fileID: 1825550732}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1830673194
 GameObject:
   m_ObjectHideFlags: 0
@@ -36454,6 +36337,38 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1131317834}
+    - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1330385308141599195, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068904941345141055, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2369950248409171440, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_Name
       value: Menu Immersive Canvas
@@ -36508,6 +36423,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5784390256120910550, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974008710046579364, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6263687781578520170, guid: cd0d56e20b44d4c6aa1ff8025f270f59, type: 3}
@@ -39691,17 +39622,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 351907694099490420, guid: e087c7b41dee54f4b9a20cefee60c26f, type: 3}
   m_PrefabInstance: {fileID: 2111187617}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2116405874 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3811259982981447978, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
-  m_PrefabInstance: {fileID: 5164637682557329979}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2122501629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43895,3 +43815,5 @@ SceneRoots:
   - {fileID: 1900255451}
   - {fileID: 443895221}
   - {fileID: 1792589568}
+  - {fileID: 571181824}
+  - {fileID: 1825550732}
