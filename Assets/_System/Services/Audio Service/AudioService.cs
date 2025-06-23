@@ -483,15 +483,21 @@ public class AudioService : MonoBehaviour
         if (_creatureService != null)
         {
             _creatureService.OnCreatureIdle += HandleCreatureIdle;
+            
             _creatureService.OnCreatureBeginEat += HandleCreatureEat;
             _creatureService.OnCreatureEatEnd += HandleCreatureEatEnd;
+            
             _creatureService.OnCreatureMoving += HandleCreatureMove;
+            
             _creatureService.OnCreatureSeek += HandleCreatureSeek;
             _creatureService.OnCreatureStopSeek += HandleCreatureStopSeek;
+            
             _creatureService.OnPacifyStart += HandleCreaturePacifyStart;
             _creatureService.OnPacifyEnd += HandleCreaturePacifyEnd;
+
             _creatureService.OnPetStart += HandleCreaturePetStart;
             _creatureService.OnPetEnd += HandleCreaturePetEnd;
+            
             _creatureService.OnCreatureDrainingStart += HandleCreatureDrainStart;
             _creatureService.OnCreatureDrainingEnd += HandleCreatureDrainEnd;
         }
@@ -755,39 +761,44 @@ public class AudioService : MonoBehaviour
     private void HandleCreatureStopSeek(CreatureController creature)
     {
         if (_onCreatureStopSeekSound != null && !_onCreatureStopSeekSound.soundToPlay.IsNull)
-        {
             _onCreatureStopSeekSound.Play(creature.transform.position);
-        }
+
         Debug.Log($"[AudioService] Creature {creature.name} stopped seeking");
     }
 
     private void HandleCreaturePacifyStart(CreatureController creature)
     {
-        Debug.Log("Pacifyyyyyyyyyyyyy");
-
         if (_onCreaturePacifyStartSound != null && !_onCreaturePacifyStartSound.soundToPlay.IsNull)
         {
             if (_onCreaturePacifyStartSound.isLooped)
                 _onCreaturePacifyStartSound.StartLoop(creature.transform.position);
             else
+            {
                 _onCreaturePacifyStartSound.Play(creature.transform.position);
+            }
         }
+
         Debug.Log($"[AudioService] Creature {creature.name} is being pacified");
+        Debug.Log($"HHHHHHHHHHHHHHHHHHHHHHHAAAAAAAAAAAAAAAAAAAAAAAAAA");
     }
 
     private void HandleCreaturePacifyEnd(CreatureController creature, bool isCancelled)
     {
         if (_onCreaturePacifyEndSound != null && !_onCreaturePacifyEndSound.soundToPlay.IsNull)
-        {
             _onCreaturePacifyEndSound.Play(creature.transform.position);
-        }
+
 
         if (_onCreaturePacifyEndSound != null && _onCreaturePacifyEndSound.isLooped)
-        {
             _onCreaturePacifyEndSound.Stop();
-        }
+
+        if (_onCreaturePacifyStartSound != null && _onCreaturePacifyStartSound.isLooped)
+
+            _onCreaturePacifyStartSound.Stop();
+
 
         Debug.Log($"[AudioService] Creature {creature.name} pacify ended - Cancelled: {isCancelled}");
+        Debug.Log($"Hbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+
     }
 
     private void HandleCreatureDrainStart(CreatureController creature)
