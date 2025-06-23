@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
         spawnTimer = spawnRate;
 
-        OnPlay?.Invoke();
+        //OnPlay?.Invoke();
     }
 
 
@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.UIStartGame();
             UiManager.Instance.UIPlacement();
             EventSystem.current.SetSelectedGameObject(playButton);
-
             OnPause?.Invoke();  
         }
         else if ( gameState == GameState.Paused)
@@ -67,7 +66,6 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.HideUI();
             gameState = GameState.Playing;
             EventSystem.current.SetSelectedGameObject(null);
-
             OnPlay?.Invoke();
         }
     }

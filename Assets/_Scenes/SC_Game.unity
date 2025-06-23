@@ -10879,6 +10879,20 @@ MonoBehaviour:
     eventName: On Pacify Start
     soundToPlay:
       Guid:
+        Data1: 1481821241
+        Data2: 1315339832
+        Data3: -4006264
+        Data4: 862407321
+      Path: event:/Pacify
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onPacifyEndSound:
+    eventName: On Pacify End
+    soundToPlay:
+      Guid:
         Data1: -760689783
         Data2: 1209209718
         Data3: 1316214157
@@ -10889,8 +10903,50 @@ MonoBehaviour:
     playAtPosition: 1
     notes: 
     isExpanded: 1
-  _onPacifyEndSound:
-    eventName: On Pacify End
+  _onCreatureIdleSound:
+    eventName: Creature Idle
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureEatSound:
+    eventName: Creature Eat Start
+    soundToPlay:
+      Guid:
+        Data1: -1177423881
+        Data2: 1253187477
+        Data3: 1018196896
+        Data4: 1627693689
+      Path: event:/Musique Ambiance/Zone 5/Theme banjo
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureEatEndSound:
+    eventName: Creature Eat End
+    soundToPlay:
+      Guid:
+        Data1: -1952285697
+        Data2: 1281419493
+        Data3: -532792162
+        Data4: -334212190
+      Path: event:/Boule
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureMoveSound:
+    eventName: Creature Move
     soundToPlay:
       Guid:
         Data1: 1061689696
@@ -10963,11 +11019,11 @@ MonoBehaviour:
     eventName: Creature Seek Start
     soundToPlay:
       Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
+        Data1: 1061689696
+        Data2: 1185176142
+        Data3: 2098418108
+        Data4: -908503317
+      Path: "event:/cr\xE9ature"
     isLooped: 0
     volume: 1
     playAtPosition: 1
@@ -10977,11 +11033,11 @@ MonoBehaviour:
     eventName: Creature Stop Seek
     soundToPlay:
       Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
+        Data1: 1061689696
+        Data2: 1185176142
+        Data3: 2098418108
+        Data4: -908503317
+      Path: "event:/cr\xE9ature"
     isLooped: 0
     volume: 1
     playAtPosition: 1
@@ -10991,6 +11047,11 @@ MonoBehaviour:
     eventName: Creature Pacify Start
     soundToPlay:
       Guid:
+        Data1: 1481821241
+        Data2: 1315339832
+        Data3: -4006264
+        Data4: 862407321
+      Path: event:/Pacify
         Data1: 0
         Data2: 0
         Data3: 0
