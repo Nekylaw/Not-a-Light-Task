@@ -1,0 +1,106 @@
+using UnityEngine;
+using UnityEngine.Rendering.Universal;
+
+public class DissolveDecal : MonoBehaviour
+{
+    [SerializeField] private DecalProjector m_firstDecalProjector;
+    
+    [SerializeField] private DecalProjector m_secondDecalProjector;
+    
+    [SerializeField] private DecalProjector m_thirdDecalProjector;
+    
+    [SerializeField] private DecalProjector m_fourthDecalProjector;
+    
+    [SerializeField]
+    private float m_dissolveFirstValue = 1f;
+    [SerializeField] private float m_dissolveSecondValue = 1f;
+    [SerializeField] private float m_dissolveThirdValue = 1f;
+    [SerializeField] private float m_dissolveFourthValue = 1f;
+    
+    [SerializeField]
+    private float m_time = -1f;
+    
+    public bool m_firstIsPlaying = false;
+    public bool m_secondIsPlaying = false;
+    public bool m_thirdIsPlaying = false;
+    public bool m_fourthIsPlaying = false;
+    
+    private Material m_firstMaterial;
+    private Material m_secondMaterial;
+    private Material m_thirdMaterial;
+    private Material m_fourthMaterial;
+
+    public void Start()
+    {
+        m_firstMaterial = m_firstDecalProjector.material;
+        m_secondMaterial = m_secondDecalProjector.material;
+        m_thirdMaterial = m_thirdDecalProjector.material;
+        m_fourthMaterial = m_fourthDecalProjector.material;
+        
+        m_firstMaterial.SetFloat("_DissolveAmount", m_dissolveFirstValue);
+        m_secondMaterial.SetFloat("_DissolveAmount", m_dissolveSecondValue);
+        m_thirdMaterial.SetFloat("_DissolveAmount", m_dissolveThirdValue);
+        m_fourthMaterial.SetFloat("_DissolveAmount", m_dissolveFourthValue);
+    }
+
+    public void Update()
+    {
+        m_firstMaterial.SetFloat("_DissolveAmount", m_dissolveFirstValue);
+        m_secondMaterial.SetFloat("_DissolveAmount", m_dissolveSecondValue);
+        m_thirdMaterial.SetFloat("_DissolveAmount", m_dissolveThirdValue);
+        m_fourthMaterial.SetFloat("_DissolveAmount", m_dissolveFourthValue);
+
+        if (m_firstIsPlaying)
+        {
+            if (m_dissolveFirstValue > m_time)
+            {
+                m_dissolveFirstValue -= Time.deltaTime;
+            }
+            
+        }
+
+        if (m_secondIsPlaying)
+        {
+            if (m_dissolveSecondValue > m_time)
+            {
+                m_dissolveSecondValue -= Time.deltaTime;
+            }
+        }
+
+        if (m_thirdIsPlaying)
+        {
+            if (m_dissolveThirdValue > m_time)
+            {
+                m_dissolveThirdValue -= Time.deltaTime;
+            }
+        }
+
+        if (m_fourthIsPlaying)
+        {
+            if (m_dissolveFourthValue > m_time)
+            {
+                m_dissolveFourthValue -= Time.deltaTime;
+            }
+        }
+    }
+    
+    public void AnimateFirstMat()
+    {
+        m_firstIsPlaying = true;
+    }
+
+    public void AnimateSecondMat()
+    {
+        m_secondIsPlaying = true;
+    }
+
+    public void AnimateThirdMat()
+    {
+        m_thirdIsPlaying = true;
+    }
+
+    public void AnimateFourthMat()
+    {
+        m_fourthIsPlaying = true;
+    }
+}
