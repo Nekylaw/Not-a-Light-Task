@@ -936,7 +936,7 @@ public class AudioService : MonoBehaviour
             _onActivateElevatorSound.Play();
     }
 
-    private void HandleRevealStela1(int stelaIndex)
+    public void HandleRevealStela1(int stelaIndex)
     {
         if (stelaIndex != 1)
             return;
@@ -945,7 +945,7 @@ public class AudioService : MonoBehaviour
             _onRevealStelaSoundFirst.Play();
     }
 
-    private void HandleRevealStela2(int stelaIndex)
+    public void HandleRevealStela2(int stelaIndex)
     {
         if (stelaIndex != 2)
             return;
@@ -954,7 +954,7 @@ public class AudioService : MonoBehaviour
             _onRevealStelaSoundSec.Play();
     }
 
-    private void HandleRevealStela3(int stelaIndex)
+    public void HandleRevealStela3(int stelaIndex)
     {
         if (stelaIndex != 3)
             return;
@@ -963,7 +963,7 @@ public class AudioService : MonoBehaviour
             _onRevealStelaSoundThird.Play();
     }
 
-    private void HandleRevealStela4(int stelaIndex)
+    public void HandleRevealStela4(int stelaIndex)
     {
         if (stelaIndex != 4)
             return;

@@ -56,6 +56,10 @@ MonoBehaviour:
   m_dissolveSecondValue: 1
   m_dissolveThirdValue: 1
   m_dissolveFourthValue: 1
+  firstStela: {fileID: 2119844975242159576}
+  secondStela: {fileID: 8679864839440746129}
+  thirdStela: {fileID: 8452609454841495571}
+  fourthStela: {fileID: 7559930101988336921}
   m_time: 0
   m_firstIsPlaying: 0
   m_secondIsPlaying: 0
@@ -152,6 +156,10 @@ MonoBehaviour:
   m_dissolveSecondValue: 1
   m_dissolveThirdValue: 1
   m_dissolveFourthValue: 1
+  firstStela: {fileID: 6034194268503370831}
+  secondStela: {fileID: 1809771028039254394}
+  thirdStela: {fileID: 4194997137967905586}
+  fourthStela: {fileID: 7152536435659882361}
   m_time: 0
   m_firstIsPlaying: 0
   m_secondIsPlaying: 0
@@ -193,6 +201,10 @@ MonoBehaviour:
   m_dissolveSecondValue: 1
   m_dissolveThirdValue: 1
   m_dissolveFourthValue: 1
+  firstStela: {fileID: 0}
+  secondStela: {fileID: 0}
+  thirdStela: {fileID: 0}
+  fourthStela: {fileID: 0}
   m_time: 0
   m_firstIsPlaying: 0
   m_secondIsPlaying: 0
@@ -293,6 +305,10 @@ PrefabInstance:
     - target: {fileID: 4357821333549231419, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -92.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
@@ -469,6 +485,10 @@ PrefabInstance:
     - target: {fileID: 4357821333549231419, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
@@ -661,6 +681,10 @@ PrefabInstance:
     - target: {fileID: 4357821333549231419, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
@@ -856,6 +880,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
       value: 
       objectReference: {fileID: 9081054754139789993}
@@ -1036,6 +1064,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
       value: 
       objectReference: {fileID: 8304289966548360235}
@@ -1191,6 +1223,10 @@ PrefabInstance:
     - target: {fileID: 4221561418307139546, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.117
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
@@ -1365,6 +1401,10 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget
       value: 
       objectReference: {fileID: 7179183052495290275}
@@ -1515,6 +1555,10 @@ PrefabInstance:
     - target: {fileID: 4221561418307139546, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.079
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
+      propertyPath: stelaIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4800381200405981839, guid: e8d8edd7f6dc92840a41468b971ee60f, type: 3}
       propertyPath: focusTarget

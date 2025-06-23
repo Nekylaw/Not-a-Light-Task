@@ -19,6 +19,11 @@ public class DissolveDecal : MonoBehaviour
     [SerializeField] private float m_dissolveThirdValue = 1f;
     [SerializeField] private float m_dissolveFourthValue = 1f;
     
+    [SerializeField] private GameObject firstStela;
+    [SerializeField] private GameObject secondStela;
+    [SerializeField] private GameObject thirdStela;
+    [SerializeField] private GameObject fourthStela;
+    
     [SerializeField]
     private float m_time = -1f;
     
@@ -36,7 +41,7 @@ public class DissolveDecal : MonoBehaviour
     
     private void Awake()
     {
-        activator = GameObject.FindFirstObjectByType<ActivatorsService>();
+        activator = FindFirstObjectByType<ActivatorsService>();
     }
 
     public void Start()
@@ -100,19 +105,20 @@ public class DissolveDecal : MonoBehaviour
         {
             case 1:
                 m_firstIsPlaying = true;
-                activator.HandleRevealStela(m_firstMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
+                AudioService.Instance.HandleRevealStela1(firstStela.GetComponent<EnhancedFocusComponent>().stelaIndex);
+                
                 break;
             case 2:
                 m_secondIsPlaying = true;
-                activator.HandleRevealStela(m_secondMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
+                AudioService.Instance.HandleRevealStela2(secondStela.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 3:
                 m_thirdIsPlaying = true;
-                activator.HandleRevealStela(m_thirdMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
+                AudioService.Instance.HandleRevealStela3(thirdStela.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 4:
                 m_fourthIsPlaying = true;
-                activator.HandleRevealStela(m_fourthMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
+                AudioService.Instance.HandleRevealStela4(fourthStela.GetComponent<EnhancedFocusComponent>().stelaIndex);
                 break;
             
         }
