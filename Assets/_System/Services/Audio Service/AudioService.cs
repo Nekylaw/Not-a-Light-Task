@@ -360,7 +360,7 @@ public class AudioService : MonoBehaviour
     private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
     private CreatureService _creatureService;
-    private Activators*Service _portals;
+    private ActivatorsService _portals;
 
     // For editor
     [HideInInspector] public bool showLightGroups = true;
@@ -429,7 +429,7 @@ public class AudioService : MonoBehaviour
         _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
-        _portals = FindFirstObjectByType<Activators*Service>(FindObjectsInactive.Exclude);
+        _portals = FindFirstObjectByType<ActivatorsService>(FindObjectsInactive.Exclude);
 
         _lightService = LightSourcesService.Instance;
     }
