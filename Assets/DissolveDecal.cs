@@ -44,9 +44,6 @@ public class DissolveDecal : MonoBehaviour
 
     public void Update()
     {
-        //m_secondMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
-        //m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveThirdValue);
-        //m_fourthMaterial.SetFloat("_OpacityDissolve", m_dissolveFourthValue);
 
         
         if (m_firstIsPlaying)
@@ -63,6 +60,7 @@ public class DissolveDecal : MonoBehaviour
         {
             if (m_dissolveSecondValue > m_time)
             {
+                m_secondMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
                 m_dissolveSecondValue -= Time.deltaTime;
             }
         }
@@ -71,6 +69,7 @@ public class DissolveDecal : MonoBehaviour
         {
             if (m_dissolveThirdValue > m_time)
             {
+                m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
                 m_dissolveThirdValue -= Time.deltaTime;
             }
         }
@@ -79,28 +78,30 @@ public class DissolveDecal : MonoBehaviour
         {
             if (m_dissolveFourthValue > m_time)
             {
+                m_fourthMaterial.SetFloat("_OpacityDissolve", m_dissolveFourthValue);
                 m_dissolveFourthValue -= Time.deltaTime;
             }
         }
     }
     
-    public void AnimateFirstMat()
+    public void AnimateMat(int index)
     {
-        m_firstIsPlaying = true;
-    }
-
-    public void AnimateSecondMat()
-    {
-        m_secondIsPlaying = true;
-    }
-
-    public void AnimateThirdMat()
-    {
-        m_thirdIsPlaying = true;
-    }
-
-    public void AnimateFourthMat()
-    {
-        m_fourthIsPlaying = true;
+        switch (index)
+        {
+            case 1:
+                m_firstIsPlaying = true;
+                break;
+            case 2:
+                m_secondIsPlaying = true;
+                break;
+            case 3:
+                m_thirdIsPlaying = true;
+                break;
+            case 4:
+                m_fourthIsPlaying = true;
+                break;
+            
+        }
+        
     }
 }

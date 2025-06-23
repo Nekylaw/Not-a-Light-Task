@@ -3,6 +3,8 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
 using DG.Tweening;
+using UnityEditor;
+using UnityEditor.TerrainTools;
 
 public class EnhancedFocusComponent : MonoBehaviour
 {
@@ -12,6 +14,10 @@ public class EnhancedFocusComponent : MonoBehaviour
 
     public CameraBobbingComponent handCameraBobbingComponent;
     public CameraBobbingComponent headProcessCameraBobbingComponent;
+
+    [SerializeField]
+    private int MaterialIndex ;
+    
 
     [Header("Target Settings")]
     public Transform focusTarget;
@@ -189,7 +195,7 @@ public class EnhancedFocusComponent : MonoBehaviour
             Debug.Log(playerController.gameObject.name);
             hasTriggered = true;
             StartCoroutine(PlayCinematicFocus());
-            gameObject.GetComponentInParent<DissolveDecal>().AnimateFirstMat();
+            gameObject.GetComponentInParent<DissolveDecal>().AnimateMat(MaterialIndex);
         }
     }
 
@@ -251,6 +257,8 @@ public class EnhancedFocusComponent : MonoBehaviour
             playerController.enabled = true;
             handCameraBobbingComponent.enabled = true;
             headProcessCameraBobbingComponent.enabled = true;
+
+            playerController.transform.rotation = Quaternion.Euler(new Vector3(0,playerController.transform.rotation.eulerAngles.y,0));
         }
         
 
