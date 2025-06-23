@@ -197,7 +197,7 @@ public class AudioService : MonoBehaviour
 
             _fadeCoroutine = null;
 
-            Debug.Log($"[LightGroup] Fade and stop completed for group: {groupName}");
+            //Debug.Log($"[LightGroup] Fade and stop completed for group: {groupName}");
         }
 
     }
@@ -251,7 +251,7 @@ public class AudioService : MonoBehaviour
             _instance.setVolume(volume);
             _instance.start();
 
-            Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
+            //Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
         }
 
         public void StartLoop(Transform transform)
@@ -268,7 +268,7 @@ public class AudioService : MonoBehaviour
             _instance.setVolume(volume);
             _instance.start();
 
-            Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
+            //Debug.Log($"[AudioService] Started looping sound for event: {eventName}");
         }
 
         public void Stop()
@@ -503,7 +503,7 @@ public class AudioService : MonoBehaviour
             GameManager.Instance.OnPause += HandlePauseGame;
         }
 
-        Debug.Log("[AudioService] Subscribed to all events");
+        //Debug.Log("[AudioService] Subscribed to all events");
     }
 
     private void UnsubscribeFromEvents()
@@ -597,13 +597,11 @@ public class AudioService : MonoBehaviour
 
     private void HandleAim()
     {
-        _onAimSound.Play(transform.position);
+        _onAimSound.Play(_movement.transform.position);
     }
 
     private void HandlePickup()
     {
-        FadeAndStopAllGroups();
-
         if (_onPickupSound.isLooped)
             _onPickupSound.StartLoop(_movement.transform.position);
         else
@@ -618,12 +616,20 @@ public class AudioService : MonoBehaviour
 
     private void HandlePacifyStart()
     {
-        _onPacifyStartSound.Play(transform.position);
+        if (_onPacifyStartSound.isLooped)
+            _onPacifyStartSound.StartLoop(_movement.transform.position);
+        else
+            _onPacifyStartSound.Play(_movement.transform.position);
     }
 
     private void HandlePacifyEnd()
     {
-        _onPacifyEndSound.Play(transform.position);
+
+        if (_onPacifyStartSound.isLooped)
+            _onPacifyStartSound.Stop();
+
+        _onPacifyEndSound.Play(_movement.transform.position);
+
         Debug.Log("[AudioService] Pacify ended, playing end sound.");
     }
 
@@ -757,9 +763,14 @@ public class AudioService : MonoBehaviour
 
     private void HandleCreaturePacifyStart(CreatureController creature)
     {
+        Debug.Log("Pacifyyyyyyyyyyyyy");
+
         if (_onCreaturePacifyStartSound != null && !_onCreaturePacifyStartSound.soundToPlay.IsNull)
         {
-            _onCreaturePacifyStartSound.Play(creature.transform.position);
+            if (_onCreaturePacifyStartSound.isLooped)
+                _onCreaturePacifyStartSound.StartLoop(creature.transform.position);
+            else
+                _onCreaturePacifyStartSound.Play(creature.transform.position);
         }
         Debug.Log($"[AudioService] Creature {creature.name} is being pacified");
     }
@@ -770,6 +781,12 @@ public class AudioService : MonoBehaviour
         {
             _onCreaturePacifyEndSound.Play(creature.transform.position);
         }
+
+        if (_onCreaturePacifyEndSound != null && _onCreaturePacifyEndSound.isLooped)
+        {
+            _onCreaturePacifyEndSound.Stop();
+        }
+
         Debug.Log($"[AudioService] Creature {creature.name} pacify ended - Cancelled: {isCancelled}");
     }
 
