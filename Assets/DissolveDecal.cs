@@ -100,19 +100,19 @@ public class DissolveDecal : MonoBehaviour
         {
             case 1:
                 m_firstIsPlaying = true;
-                activator.HandleRevealStela(m_firstMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
+                activator.HandleRevealStela(m_firstMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 2:
                 m_secondIsPlaying = true;
-                activator.HandleRevealStela(m_secondMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
+                activator.HandleRevealStela(m_secondMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 3:
                 m_thirdIsPlaying = true;
-                activator.HandleRevealStela(m_thirdMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
+                activator.HandleRevealStela(m_thirdMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
                 break;
             case 4:
                 m_fourthIsPlaying = true;
-                activator.HandleRevealStela(m_fourthMaterial.GetComponent<EnhancedFocusComponent>().stelaIndex);
+                activator.HandleRevealStela(m_fourthMaterial.GetComponentInParent<EnhancedFocusComponent>().stelaIndex);
                 break;
             
         }
