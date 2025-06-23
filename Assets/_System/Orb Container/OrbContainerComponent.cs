@@ -13,7 +13,7 @@ public class OrbContainerComponent : MonoBehaviour
 
     void Start()
     {
-        _ammo = Math.Clamp(_settings.BaseAmmo, 1, _settings.MaxAmmo); 
+        _ammo = Math.Clamp(_settings.BaseAmmo, 1, _settings.MaxAmmo);
     }
 
     public int Ammo => _ammo;

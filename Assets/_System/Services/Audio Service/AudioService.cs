@@ -83,7 +83,7 @@ public class AudioService : MonoBehaviour
         {
             if (_isInitialized || ambientTrack.IsNull) return;
 
-            _instance = RuntimeManager.CreateInstance(ambientTrack);
+            _instance = RuntimeManager.CreateInstance(ambientTrack); 
             _instance.setVolume(0f);
             _instance.start();
             _isInitialized = true;
@@ -303,14 +303,16 @@ public class AudioService : MonoBehaviour
     [SerializeField] private EventSound _pauseSound = new EventSound { eventName = "Pause" };
     [SerializeField] private EventSound _switchUISound = new EventSound { eventName = "Switch" };
 
-    [Header("Fog Event")]
+    [Header("Ambiant Event")]
     [SerializeField] private EventSound _fogSound = new EventSound { eventName = "Fog" };
+    [SerializeField] private EventSound _windSound = new EventSound { eventName = "Wind" };
 
     [Header("Movement Events")]
     [SerializeField] private EventSound _onWalkSound = new EventSound { eventName = "On Walk" };
 
     [Header("Shoot Events")]
     [SerializeField] private EventSound _onShootSound = new EventSound { eventName = "On Shoot" };
+    [SerializeField] private EventSound _onShootNoAmmoSound = new EventSound { eventName = "On Shoot No Ammo" };
     [SerializeField] private EventSound _onAimSound = new EventSound { eventName = "On Aim" };
     [SerializeField] private EventSound _orbSound = new EventSound { eventName = "Orb" };
 
@@ -358,7 +360,7 @@ public class AudioService : MonoBehaviour
     private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
     private CreatureService _creatureService;
-    private PortalsService _portals;
+    private Activators*Service _portals;
 
     // For editor
     [HideInInspector] public bool showLightGroups = true;
@@ -397,6 +399,7 @@ public class AudioService : MonoBehaviour
         InitializeAllLightGroups();
 
         PlaySound(_fogSound.soundToPlay);
+        PlaySound(_windSound.soundToPlay);
     }
 
     private void OnDestroy()
@@ -426,7 +429,7 @@ public class AudioService : MonoBehaviour
         _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
-        _portals = FindFirstObjectByType<PortalsService>(FindObjectsInactive.Exclude);
+        _portals = FindFirstObjectByType<Activators*Service>(FindObjectsInactive.Exclude);
 
         _lightService = LightSourcesService.Instance;
     }
@@ -441,6 +444,7 @@ public class AudioService : MonoBehaviour
         if (_shoot != null)
         {
             _shoot.OnShoot += HandleShoot;
+            _shoot.OnShootNoAmmo += HandleShootNoAmmo;
             _shoot.OnAim += HandleAim;
         }
 
@@ -483,21 +487,21 @@ public class AudioService : MonoBehaviour
         if (_creatureService != null)
         {
             _creatureService.OnCreatureIdle += HandleCreatureIdle;
-            
+
             _creatureService.OnCreatureBeginEat += HandleCreatureEat;
             _creatureService.OnCreatureEatEnd += HandleCreatureEatEnd;
-            
+
             _creatureService.OnCreatureMoving += HandleCreatureMove;
-            
+
             _creatureService.OnCreatureSeek += HandleCreatureSeek;
             _creatureService.OnCreatureStopSeek += HandleCreatureStopSeek;
-            
+
             _creatureService.OnPacifyStart += HandleCreaturePacifyStart;
             _creatureService.OnPacifyEnd += HandleCreaturePacifyEnd;
 
             _creatureService.OnPetStart += HandleCreaturePetStart;
             _creatureService.OnPetEnd += HandleCreaturePetEnd;
-            
+
             _creatureService.OnCreatureDrainingStart += HandleCreatureDrainStart;
             _creatureService.OnCreatureDrainingEnd += HandleCreatureDrainEnd;
         }
@@ -520,6 +524,7 @@ public class AudioService : MonoBehaviour
         if (_shoot != null)
         {
             _shoot.OnShoot -= HandleShoot;
+            _shoot.OnShootNoAmmo -= HandleShootNoAmmo;
             _shoot.OnAim -= HandleAim;
         }
 
@@ -590,7 +595,7 @@ public class AudioService : MonoBehaviour
 
     private void HandleShoot(OrbComponent orb, Ray aimRay, bool isAiming)
     {
-        _onShootSound.Play(transform.position);
+        _onShootSound.Play(_shoot.transform.position);
 
         if (_orbSound != null && !_orbSound.soundToPlay.IsNull)
         {
@@ -599,6 +604,11 @@ public class AudioService : MonoBehaviour
             else
                 _orbSound.Play(orb.transform.position);
         }
+    }
+
+    private void HandleShootNoAmmo(Ray aimRay, bool isAiming)
+    {
+        _onShootNoAmmoSound.Play(_shoot.transform.position);
     }
 
     private void HandleAim()

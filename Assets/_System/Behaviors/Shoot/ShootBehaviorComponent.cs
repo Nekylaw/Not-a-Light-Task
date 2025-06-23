@@ -3,8 +3,11 @@ using UnityEngine;
 public class ShootBehaviorComponent : MonoBehaviour
 {
 
-    public delegate void ShootDelegate(OrbComponent orb,Ray aimRay, bool isAiming);
+    public delegate void ShootDelegate(OrbComponent orb, Ray aimRay, bool isAiming);
     public event ShootDelegate OnShoot;
+
+    public delegate void ShootNoAmmoDelegate(Ray aimRay, bool isAiming);
+    public event ShootNoAmmoDelegate OnShootNoAmmo;
 
     public delegate void AimDelegate();
     public event AimDelegate OnAim;
@@ -73,10 +76,10 @@ public class ShootBehaviorComponent : MonoBehaviour
 
     public bool Shoot(Ray aimRay, bool isAiming)
     {
-        
+
         if (GameManager.Instance.gameState != GameManager.GameState.Playing)
             return false;
-        
+
         _isAiming = isAiming;
 
         //if (!isAiming)
@@ -89,7 +92,10 @@ public class ShootBehaviorComponent : MonoBehaviour
             return false;
 
         if (_container.Ammo <= 0)
+        {
+            OnShootNoAmmo?.Invoke(aimRay, isAiming);
             return false;
+        }
 
         _timer = _settings.Rate;
         _container.UseBullet();
@@ -97,7 +103,7 @@ public class ShootBehaviorComponent : MonoBehaviour
         OrbComponent orb = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
         orb.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
 
-        OnShoot?.Invoke(orb,aimRay, isAiming);
+        OnShoot?.Invoke(orb, aimRay, isAiming);
 
         return true;
     }

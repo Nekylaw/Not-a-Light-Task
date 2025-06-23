@@ -12,6 +12,7 @@ public class AudioServiceEditor : Editor
     // Ambiant Event Properties
     private SerializedProperty lightGroups;
     private SerializedProperty fogSound;
+    private SerializedProperty windSound;
 
     // POrtal Event properties
     private SerializedProperty onPortalTriggered;
@@ -22,6 +23,7 @@ public class AudioServiceEditor : Editor
     private SerializedProperty onPauseSound;
     private SerializedProperty onWalkSound;
     private SerializedProperty onShootSound;
+    private SerializedProperty onShootNoAmmoSound;
     private SerializedProperty orbSound;
     private SerializedProperty onAimSound;
     private SerializedProperty onPickupSound;
@@ -55,6 +57,7 @@ public class AudioServiceEditor : Editor
         // Get ambiant properties
         lightGroups = serializedObject.FindProperty("_lightGroups");
         fogSound = serializedObject.FindProperty("_fogSound");
+        windSound = serializedObject.FindProperty("_windSound");
 
         // Get UI properties
         onPlaySound = serializedObject.FindProperty("_playSound");
@@ -67,7 +70,8 @@ public class AudioServiceEditor : Editor
         // Get player event properties
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
         onShootSound = serializedObject.FindProperty("_onShootSound");
-        onShootSound = serializedObject.FindProperty("_orbSound");
+        onShootNoAmmoSound = serializedObject.FindProperty("_onShootNoAmmoSound");
+        orbSound = serializedObject.FindProperty("_orbSound");
         onAimSound = serializedObject.FindProperty("_onAimSound");
         onPickupSound = serializedObject.FindProperty("_onPickupSound");
         onLampToggleSound = serializedObject.FindProperty("_onLampToggleSound");
@@ -390,6 +394,7 @@ public class AudioServiceEditor : Editor
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(fogSound, "Self");
+            DrawEventSound(windSound, "Self");
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -432,6 +437,7 @@ public class AudioServiceEditor : Editor
         {
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onShootSound, "_shoot.OnShoot");
+            DrawEventSound(onShootNoAmmoSound, "_shoot.OnShoot (no ammo)");
             DrawEventSound(onAimSound, "_shoot.OnAim");
             DrawEventSound(orbSound, "");
             EditorGUILayout.EndVertical();

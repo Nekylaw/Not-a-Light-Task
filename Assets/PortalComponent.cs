@@ -15,11 +15,11 @@ public class PortalComponent : MonoBehaviour
 
     [SerializeField] private float duration;
 
-    private PortalsService portalService;
+    private Activators*Service portalService;
 
     private void Awake()
     {
-        portalService = FindFirstObjectByType<PortalsService>();
+        portalService = FindFirstObjectByType<Activators*Service>();
     }
 
     public void OpenGateRotateAround()
