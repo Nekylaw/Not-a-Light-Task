@@ -10,8 +10,6 @@ using UnityEngine.Serialization;
 public class UiManager : MonoBehaviour
 {
     public static UiManager Instance;
-    [SerializeField] GameObject LeftAnchor;
-    [SerializeField] GameObject RightAnchor;
     
     private void Awake()
     {

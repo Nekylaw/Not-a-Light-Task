@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7685435915129065061}
   - component: {fileID: 6183409374173809110}
   - component: {fileID: 226978526633149827}
+  - component: {fileID: 1673709640896285641}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   StartGamePanel: {fileID: 0}
   EndGamePanel: {fileID: 0}
   OptionsPanel: {fileID: 0}
+  AudioPanel: {fileID: 0}
   ImmersiveCanvas: {fileID: 0}
   Player: {fileID: 0}
   MenuPoper: {fileID: 0}
@@ -88,11 +90,15 @@ MonoBehaviour:
   LightSourcesToCompleteThirdCheckPoint: []
   LightSourcesToCompleteFourthCheckPoint: []
   LightSourcesToCompleteFifthCheckPoint: []
+  LightSourcesToCompleteSixthCheckPoint: []
   CheckPointsCompleted: 
-  firstObjectEnlighten: {fileID: 0}
   firstCpToOpen: {fileID: 0}
-  secondObjectEnlighten: {fileID: 0}
   secondCpToOpen: {fileID: 0}
+  thirdCpToOpen: {fileID: 0}
+  fourthCpToOpen: {fileID: 0}
+  fifthCpToOpen: {fileID: 0}
+  sixthCpToOpen: {fileID: 0}
+  seventhCpToOpen: {fileID: 0}
 --- !u!114 &226978526633149827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,3 +129,15 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1673709640896285641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3499093723084321153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c3d1ca1f9b129b4b9134a0d8af8c7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
