@@ -9,6 +9,9 @@ using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
+    [SerializeField] GameObject crossairUI;
+    public bool crossairIsOn;
+    
     public static UiManager Instance;
     
     private void Awake()
@@ -28,7 +31,6 @@ public class UiManager : MonoBehaviour
     private void Update()
     {
          UIPlacement();
-        
     }
 
     private void LateUpdate()
@@ -115,11 +117,21 @@ public class UiManager : MonoBehaviour
     public void HideUI()
     {
         ImmersiveCanvas.SetActive(false);
+        if (crossairIsOn)
+        {
+            crossairUI.SetActive(true);
+        }
     }
 
     public void ShowUI()
     {
         ImmersiveCanvas.SetActive(true);
+        crossairUI.SetActive(false);
+    }
+
+    public void SetCrossair(bool value)
+    {
+        crossairIsOn = value;
     }
 
     #endregion
