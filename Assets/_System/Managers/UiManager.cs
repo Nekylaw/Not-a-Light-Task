@@ -9,11 +9,9 @@ using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
-    [SerializeField] GameObject crossairUI;
-    public bool crossairIsOn;
-    
+
     public static UiManager Instance;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,7 +28,19 @@ public class UiManager : MonoBehaviour
 
     private void Update()
     {
-         UIPlacement();
+        UIPlacement();
+
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            if (StartGamePanel.activeSelf)
+            {
+                EventSystem.current.SetSelectedGameObject(playButton);
+            }
+            else if (OptionsPanel.activeSelf)
+            {
+                EventSystem.current.SetSelectedGameObject(backButton);
+            }
+        }
     }
 
     private void LateUpdate()
@@ -46,7 +56,7 @@ public class UiManager : MonoBehaviour
 
             if (hitFeedback == null) return;
             if (scriptFb == hitFeedback) return;
-                
+
             scriptFb = hitFeedback;
             EventSystem.current.SetSelectedGameObject(scriptFb.gameObject);
         }
@@ -56,39 +66,45 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject StartGamePanel;
     [SerializeField] private GameObject EndGamePanel;
     [SerializeField] private GameObject OptionsPanel;
-    [SerializeField] private GameObject AudioPanel;
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject backButton;
 
     [SerializeField] private GameObject ImmersiveCanvas;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject MenuPoper;
     [SerializeField] private Camera MainCamera;
     #endregion
-    
+
     #region PRIVATE ATTRIBUTES
-    
-    //private GameObject _panelClosed;
-    
+
+    private GameObject _panelClosed;
+
     #endregion
-    
+
     #region  PUBLIC METHODS
 
     public void UIStartGame()
     {
         StartGamePanel.SetActive(true);
         OptionsPanel.SetActive(false);
-        AudioPanel.SetActive(false);
         EndGamePanel.SetActive(false);
     }
 
-    public void UINavigate(GameObject nextPanel)
+    public void UIPauseGame(GameObject panelToSave)
     {
-        //_panelClosed = panelToSave;
+        _panelClosed = panelToSave;
 
         OptionsPanel.SetActive(false);
         StartGamePanel.SetActive(false);
-        AudioPanel.SetActive(false);
         EndGamePanel.SetActive(false);
-        nextPanel.SetActive(true);
+        OptionsPanel.SetActive(true);
+
+    }
+    public void UIBack()
+    {
+        OptionsPanel.SetActive(false);
+        _panelClosed.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(playButton);
     }
 
     public void UIEndGame()
@@ -96,46 +112,27 @@ public class UiManager : MonoBehaviour
         EndGamePanel.SetActive(true);
     }
 
-    //public void UIBack(GameObject previousPanel)
-    //{
-    //    OptionsPanel.SetActive(false);
-    //    StartGamePanel.SetActive(false);
-    //    AudioPanel.SetActive(false);
-    //    EndGamePanel.SetActive(false);
-    //    previousPanel.SetActive(true);
-    //}
-
     public void UIPlacement()
     {
-   
-            var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
-            ImmersiveCanvas.transform.DOMove(pos, 0.1f);
-            ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
-            
+
+        var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
+        ImmersiveCanvas.transform.DOMove(pos, 0.1f);
+        ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
+
     }
 
     public void HideUI()
     {
         ImmersiveCanvas.SetActive(false);
-        if (crossairIsOn)
-        {
-            crossairUI.SetActive(true);
-        }
     }
 
     public void ShowUI()
     {
         ImmersiveCanvas.SetActive(true);
-        crossairUI.SetActive(false);
-    }
-
-    public void SetCrossair(bool value)
-    {
-        crossairIsOn = value;
     }
 
     #endregion
-    
+
     private bool CheckMenuVisibility()
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(MainCamera);

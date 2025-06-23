@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     [Header("Event System Selecion Firts")]
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject backButton;
@@ -119,12 +119,11 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
-    public void NavigateMenu(GameObject nextPanel)
+    public void PauseGame(GameObject panel)
     {
-        UiManager.Instance.UINavigate(nextPanel);
+        UiManager.Instance.UIPauseGame(panel);
         Cursor.visible = true;
-        
-        EventSystem.current.SetSelectedGameObject(playButton);
+        EventSystem.current.SetSelectedGameObject(backButton);
         
         gameState = GameState.Paused;
     }
@@ -146,11 +145,11 @@ public class GameManager : MonoBehaviour
         gameState = GameState.GameOver;
     }
 
-    //public void Back(GameObject previousPanel)
-    //{
-    //    UiManager.Instance.UIBack(previousPanel);
-    //    EventSystem.current.SetSelectedGameObject(backButton);
-    //}
+    public void Back()
+    {
+        UiManager.Instance.UIBack();
+        EventSystem.current.SetSelectedGameObject(backButton);
+    }
 
     #endregion
 
