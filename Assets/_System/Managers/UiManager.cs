@@ -23,6 +23,8 @@ public class UiManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        ImmersiveCanvas.transform.position = MenuPoper.transform.position;
     }
 
     public MenuFeedback scriptFb;
@@ -115,10 +117,13 @@ public class UiManager : MonoBehaviour
 
     public void UIPlacement()
     {
-
-        var pos = new Vector3(MenuPoper.transform.position.x, MenuPoper.transform.position.y + 1.8f, MenuPoper.transform.position.z);
-        ImmersiveCanvas.transform.DOMove(pos, 0.1f);
         ImmersiveCanvas.transform.DORotate(Player.transform.rotation.eulerAngles, 0.1f);
+
+        if (CheckMenuVisibility())
+            return;
+        
+        var pos = new Vector3(math.clamp(MainCamera.WorldToScreenPoint(ImmersiveCanvas.transform.position).x, 0, Screen.width), MainCamera.WorldToScreenPoint(new Vector3(0, 1, 6)).y, 6);
+        ImmersiveCanvas.transform.DOMove(MainCamera.ScreenToWorldPoint(pos), 0.1f);
 
     }
 
