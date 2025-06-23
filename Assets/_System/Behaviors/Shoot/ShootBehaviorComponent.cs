@@ -68,7 +68,7 @@ public class ShootBehaviorComponent : MonoBehaviour
         if (_timer <= 0)
             _timer = 0;
 
-        if (_isAiming && GameManager.Instance.gameState == GameManager.GameState.Playing)
+        if (_isAiming && !GameManager.Instance.IsPlaying())
             HandleAim(delta);
         else
             ReleaseAim(delta);
@@ -77,7 +77,7 @@ public class ShootBehaviorComponent : MonoBehaviour
     public bool Shoot(Ray aimRay, bool isAiming)
     {
 
-        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+        if (!GameManager.Instance.IsPlaying())
             return false;
 
         _isAiming = isAiming;

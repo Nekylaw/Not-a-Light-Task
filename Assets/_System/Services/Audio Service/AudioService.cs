@@ -521,12 +521,12 @@ public class AudioService : MonoBehaviour
             _creatureService.OnCreatureDrainingEnd += HandleCreatureDrainEnd;
         }
 
-        // GameManager events
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnPlay += HandlePlayGame;
-            GameManager.Instance.OnPause += HandlePauseGame;
-        }
+        //// GameManager events
+        //if (GameManager.Instance != null)
+        //{
+        //    GameManager.Instance.OnPlay += HandlePlayGame;
+        //    GameManager.Instance.OnPause += HandlePauseGame;
+        //}
 
         //Debug.Log("[AudioService] Subscribed to all events");
     }
@@ -589,11 +589,11 @@ public class AudioService : MonoBehaviour
             _creatureService.OnCreatureDrainingEnd -= HandleCreatureDrainEnd;
         }
 
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnPlay -= HandlePlayGame;
-            GameManager.Instance.OnPause -= HandlePauseGame;
-        }
+        //if (GameManager.Instance != null)
+        //{
+        //    GameManager.Instance.OnPlay -= HandlePlayGame;
+        //    GameManager.Instance.OnPause -= HandlePauseGame;
+        //}
     }
 
     #endregion

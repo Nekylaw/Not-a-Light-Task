@@ -48,7 +48,7 @@ public class CameraBobbingComponent : MonoBehaviour, ICameraModifier
         if (_movementBehavior == null || _detector == null || _shootBehavior == null)
             return;
 
-        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+        if (!GameManager.Instance.IsPlaying())
             return;
 
         bool isMoving = _movementBehavior.IsMoving;

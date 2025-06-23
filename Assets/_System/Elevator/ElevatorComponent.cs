@@ -45,6 +45,8 @@ public class ElevatorComponent : MonoBehaviour
 
     private void Awake()
     {
+        activator = FindFirstObjectByType<ActivatorsService>();
+
         transform.position = _bottomPoint.position;
         _isActivated = false;
         _isTop = false;

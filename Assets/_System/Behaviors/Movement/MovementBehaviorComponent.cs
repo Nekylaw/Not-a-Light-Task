@@ -52,7 +52,7 @@ public class MovementBehaviorComponent : MonoBehaviour
         Vector3 desiredVelocity = direction * speed * slopeInfluence;
 
         _isMoving = desiredVelocity.magnitude > 0.1f;
-        if (direction.magnitude > 0.01f && GameManager.Instance.gameState == GameManager.GameState.Playing)
+        if (direction.magnitude > 0.01f && GameManager.Instance.IsPlaying())
         {
             Vector3 accel = (desiredVelocity - _rigidbody.linearVelocity);
             _rigidbody.AddForce(accel * _settings.AccelerationFactor, ForceMode.Acceleration);

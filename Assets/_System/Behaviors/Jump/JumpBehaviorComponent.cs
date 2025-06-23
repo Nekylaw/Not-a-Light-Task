@@ -30,7 +30,7 @@ public class JumpBehaviorComponent : MonoBehaviour
         if (!_detector.IsGrounded)
             return false;
         
-        if (GameManager.Instance.gameState != GameManager.GameState.Playing)
+        if (!GameManager.Instance.IsPlaying())
             return false;
 
         _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);

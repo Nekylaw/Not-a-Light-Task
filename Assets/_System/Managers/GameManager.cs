@@ -1,21 +1,38 @@
-using System;
-using _System.Game_Manager;
-using Game.Services.LightSources;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
+
+    [Header("Game State")]
+    [SerializeField] private GameState currentGameState = GameState.Paused;
+
+    [Header("Cursor Settings")]
+    [SerializeField] private bool hideCursorInGame = true;
+
+    // Events
+    public event System.Action OnGamePaused;
+    public event System.Action OnGameResumed;
+    public event System.Action OnGameEnded;
+
+    public enum GameState
+    {
+        Paused, 
+        Playing,
+        GameOver
+    }
+
+    public GameState CurrentGameState => currentGameState;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -23,160 +40,116 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [Header("Event System Selecion Firts")]
-    [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject backButton;
- 
-    
-    public delegate void PauseDelegate();
-    public event PauseDelegate OnPause;
-    public delegate void PlayDelegate();
-    public event PlayDelegate OnPlay;
-
-
     private void Start()
     {
-        //gameState = GameState.Playing;
-        
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
-        UiManager.Instance.ShowUI();
-        UiManager.Instance.UIPlacement();
-        EventSystem.current.SetSelectedGameObject(playButton);
-
-        spawnTimer = spawnRate;
-
-        //OnPlay?.Invoke();
+        InitializeGame();
     }
 
-
-    private void OnOption()
+    private void Update()
     {
-        if (gameState == GameState.Playing)
+        if (Keyboard.current?.escapeKey.wasPressedThisFrame == true ||
+            Gamepad.current?.startButton.wasPressedThisFrame == true)
         {
-            gameState = GameState.Paused;
-            UiManager.Instance.ShowUI();
-            UiManager.Instance.UIStartGame();
-            UiManager.Instance.UIPlacement();
-            EventSystem.current.SetSelectedGameObject(playButton);
-            OnPause?.Invoke();  
-        }
-        else if ( gameState == GameState.Paused)
-        {
-            UiManager.Instance.HideUI();
-            gameState = GameState.Playing;
-            EventSystem.current.SetSelectedGameObject(null);
-            OnPlay?.Invoke();
+            TogglePause();
         }
     }
 
-    private void OnPress()
+    private void InitializeGame()
     {
-        if (gameState != GameState.Playing)
-        {
-            Vector3 crossHair = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-            var aimTargetRay = Camera.main.ScreenPointToRay(crossHair);
-
-            if (Physics.Raycast(aimTargetRay, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("UI"))
-                {
-                    return;
-                }
-               
-                GameObject hitObject = hit.collider.gameObject;
-                
-                var button = hitObject.GetComponent<UnityEngine.UI.Button>();
-                if (button != null)
-                {
-                    button.onClick.Invoke();
-                }
-            }
-        }
+        SetGameState(GameState.Paused);
+        Time.timeScale = 0f;
     }
 
-    #region PUBLIC PROPERTIES
-
-    public GameState gameState;
-    public enum GameState
-    {
-        StartMenu,
-        Paused,
-        Playing,
-        GameOver
-    }
-    #endregion
-    
-    #region PUBLIC METHODS
-    
     public void StartGame()
     {
-        UiManager.Instance.HideUI();
-        Cursor.visible = false;
-        gameState = GameState.Playing;
-        EventSystem.current.SetSelectedGameObject(null);
+        SetGameState(GameState.Playing);
+        OnGameResumed?.Invoke();
     }
 
-    public void PauseGame(GameObject panel)
+    public void PauseGame()
     {
-        UiManager.Instance.UIPauseGame(panel);
-        Cursor.visible = true;
-        EventSystem.current.SetSelectedGameObject(backButton);
-        
-        gameState = GameState.Paused;
+        if (currentGameState == GameState.Playing)
+        {
+            SetGameState(GameState.Paused);
+            OnGamePaused?.Invoke();
+        }
     }
 
-    public void QuitGame()
+    public void ResumeGame()
     {
-        Application.Quit();
+        if (currentGameState == GameState.Paused)
+        {
+            SetGameState(GameState.Playing);
+            OnGameResumed?.Invoke();
+        }
     }
 
-    public void Reset()
+    public void TogglePause()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (currentGameState == GameState.Playing)
+        {
+            PauseGame();
+        }
+        else if (currentGameState == GameState.Paused)
+        {
+            ResumeGame();
+        }
     }
 
     public void EndGame()
     {
-        UiManager.Instance.UIEndGame();
-        Cursor.visible = true;
-        gameState = GameState.GameOver;
+        SetGameState(GameState.GameOver);
+        OnGameEnded?.Invoke();
     }
 
-    public void Back()
+    public void RestartGame()
     {
-        UiManager.Instance.UIBack();
-        EventSystem.current.SetSelectedGameObject(backButton);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    #endregion
-
-    #region Creature Spawner
-
-    [SerializeField]
-    private float spawnRate;
-    private float spawnTimer;
-    
-    private void SpawnTimer()
+    public void QuitGame()
     {
-        if (spawnTimer <= 0)
-        {
-            var _lightSources = GameObject.FindGameObjectsWithTag("LightSource");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+    }
 
-            foreach (var VARIABLE in _lightSources)
-            {
-                var comp = VARIABLE.GetComponent<CreatureSpawner>();
+    private void SetGameState(GameState newState)
+    {
+        currentGameState = newState;
 
-                comp.CheckIfSpawn();
-            }
-            spawnTimer = spawnRate;
-            
-        }
-        else
+        switch (newState)
         {
-            spawnTimer -= Time.deltaTime;
+            case GameState.Paused:
+                Time.timeScale = 0f;
+                SetCursorState(true);
+                UiManager.Instance?.ShowStartMenu();
+                break;
+
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                SetCursorState(!hideCursorInGame);
+                UiManager.Instance?.HideAllMenus();
+                break;
+
+            case GameState.GameOver:
+                Time.timeScale = 0f;
+                SetCursorState(true);
+                UiManager.Instance?.ShowEndGameMenu();
+                break;
         }
     }
-    
-    #endregion
+
+    private void SetCursorState(bool visible)
+    {
+        Cursor.visible = visible;
+        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    public bool IsPlaying() => currentGameState == GameState.Playing;
+    public bool IsPaused() => currentGameState == GameState.Paused;
+    public bool IsGameOver() => currentGameState == GameState.GameOver;
 }
