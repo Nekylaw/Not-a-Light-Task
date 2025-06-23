@@ -177,33 +177,33 @@ namespace _System.Game_Manager
 
         private void FirstCheckPoint()
         {
-            firstCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            firstCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
 
         private void SecondCheckPoint()
         {
-            secondCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            secondCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
 
         private void ThirdCheckPoint()
         {
-            thirdCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
-            fourthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            thirdCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
+            fourthCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
 
         private void FourthCheckPoint()
         {
-            fifthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            fifthCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
 
         private void FifthCheckPoint()
         {
-            sixthCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            sixthCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
 
         private void SixthCheckPoint()
         {
-            seventhCpToOpen.GetComponent<GrillageBehaviour>().OpenGateProperly();
+            seventhCpToOpen.GetComponent<PortalComponent>().OpenGateProperly();
         }
         
         #endregion

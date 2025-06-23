@@ -13,6 +13,10 @@ public class AudioServiceEditor : Editor
     private SerializedProperty lightGroups;
     private SerializedProperty fogSound;
 
+    // POrtal Event properties
+    private SerializedProperty onPortalTriggered;
+    private SerializedProperty onPortalOpenned;
+
     // Player Events Properties
     private SerializedProperty onPlaySound;
     private SerializedProperty onPauseSound;
@@ -55,6 +59,10 @@ public class AudioServiceEditor : Editor
         // Get UI properties
         onPlaySound = serializedObject.FindProperty("_playSound");
         onPauseSound = serializedObject.FindProperty("_pauseSound");
+
+        // Get portal events properties
+        onPortalTriggered = serializedObject.FindProperty("_onPortalTriggeredSound");
+        onPortalOpenned = serializedObject.FindProperty("_onPortalOpennedSound");
 
         // Get player event properties
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
@@ -393,6 +401,17 @@ public class AudioServiceEditor : Editor
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onPlaySound, "GameManager.Instance.OnPlay");
             DrawEventSound(onPauseSound, "GameManager.Instance.OnPause");
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        // Portals
+        bool showPortalsEvents = EditorGUILayout.BeginFoldoutHeaderGroup(true, "Portals Events");
+        if (showPortalsEvents)
+        {
+            EditorGUILayout.BeginVertical("box");
+            DrawEventSound(onPortalTriggered, "PortalService.OnPortalTriggered");
+            DrawEventSound(onPortalOpenned, "PortalService.OnPortalTriggered");
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

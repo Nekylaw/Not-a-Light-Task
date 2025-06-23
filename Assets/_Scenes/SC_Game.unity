@@ -1817,6 +1817,17 @@ Transform:
   - {fileID: 921451443}
   m_Father: {fileID: 1112762332}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &61096640 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5127571855881354530, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
+  m_PrefabInstance: {fileID: 5164637682557329979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &61190836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10462,6 +10473,96 @@ MonoBehaviour:
     muteWhenInactive: 1
     showDebugInfo: 0
     debugColor: {r: 0, g: 0, b: 0, a: 0}
+  - groupName: Light Group 2
+    lightSources:
+    - {fileID: 570311181}
+    ambientTrack:
+      Guid:
+        Data1: -2118199313
+        Data2: 1229556532
+        Data3: -1774917220
+        Data4: -460590534
+      Path: event:/Interractive/Glocken
+    targetVolume: 1
+    fadeInTime: 2
+    fadeOutTime: 1
+    requireAllLights: 1
+    startOnAwake: 1
+    muteWhenInactive: 1
+    showDebugInfo: 0
+    debugColor: {r: 0, g: 0, b: 0, a: 0}
+  - groupName: Light Group 3
+    lightSources:
+    - {fileID: 2126177482}
+    ambientTrack:
+      Guid:
+        Data1: 852533244
+        Data2: 1106757212
+        Data3: 997970077
+        Data4: 1901095999
+      Path: event:/Interractive/Kick
+    targetVolume: 1
+    fadeInTime: 2
+    fadeOutTime: 1
+    requireAllLights: 1
+    startOnAwake: 1
+    muteWhenInactive: 1
+    showDebugInfo: 0
+    debugColor: {r: 0, g: 0, b: 0, a: 0}
+  - groupName: Light Group 4
+    lightSources:
+    - {fileID: 1566727069}
+    ambientTrack:
+      Guid:
+        Data1: -522297525
+        Data2: 1202311706
+        Data3: 306274952
+        Data4: -1517181382
+      Path: event:/Interractive/Mallet
+    targetVolume: 1
+    fadeInTime: 2
+    fadeOutTime: 1
+    requireAllLights: 1
+    startOnAwake: 1
+    muteWhenInactive: 1
+    showDebugInfo: 0
+    debugColor: {r: 0, g: 0, b: 0, a: 0}
+  - groupName: Light Group 5
+    lightSources:
+    - {fileID: 1825341726}
+    ambientTrack:
+      Guid:
+        Data1: 709404345
+        Data2: 1114511659
+        Data3: -297253978
+        Data4: -5653848
+      Path: event:/Interractive/Marimba
+    targetVolume: 1
+    fadeInTime: 2
+    fadeOutTime: 1
+    requireAllLights: 1
+    startOnAwake: 1
+    muteWhenInactive: 1
+    showDebugInfo: 0
+    debugColor: {r: 0, g: 0, b: 0, a: 0}
+  - groupName: Light Group 6
+    lightSources:
+    - {fileID: 61096640}
+    ambientTrack:
+      Guid:
+        Data1: -1826022759
+        Data2: 1253837030
+        Data3: -173770594
+        Data4: -4115400
+      Path: "event:/Interractive/Piano accompagn\xE9"
+    targetVolume: 1
+    fadeInTime: 2
+    fadeOutTime: 1
+    requireAllLights: 1
+    startOnAwake: 1
+    muteWhenInactive: 1
+    showDebugInfo: 0
+    debugColor: {r: 0, g: 0, b: 0, a: 0}
   _playSound:
     eventName: Play
     soundToPlay:
@@ -10564,13 +10665,27 @@ MonoBehaviour:
     eventName: Orb
     soundToPlay:
       Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
+        Data1: -1057977067
+        Data2: 1198213472
+        Data3: -688022616
+        Data4: 1583534567
+      Path: event:/Gun/Gun_Tir
     isLooped: 0
     volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onPickupSound:
+    eventName: On Pickup
+    soundToPlay:
+      Guid:
+        Data1: -1710006075
+        Data2: 1315964256
+        Data3: 909423035
+        Data4: -2015894828
+      Path: event:/Aspiro
+    isLooped: 1
+    volume: 0.7
     playAtPosition: 1
     notes: 
     isExpanded: 1
@@ -10606,11 +10721,11 @@ MonoBehaviour:
     eventName: On Pacify Start
     soundToPlay:
       Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
+        Data1: -760689783
+        Data2: 1209209718
+        Data3: 1316214157
+        Data4: 1455780199
+      Path: event:/Ding
     isLooped: 0
     volume: 1
     playAtPosition: 1
@@ -10639,6 +10754,174 @@ MonoBehaviour:
         Data3: 0
         Data4: 0
       Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureEatSound:
+    eventName: Creature Eat Start
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureEatEndSound:
+    eventName: Creature Eat End
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureMoveSound:
+    eventName: Creature Move
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureSeekStartSound:
+    eventName: Creature Seek Start
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureStopSeekSound:
+    eventName: Creature Stop Seek
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreaturePacifyStartSound:
+    eventName: Creature Pacify Start
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreaturePacifyEndSound:
+    eventName: Creature Pacify End
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureDrainStartSound:
+    eventName: Creature Drain Start
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureDrainEndSound:
+    eventName: Creature Drain End
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreaturePetStartSound:
+    eventName: Creature Pet Start
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreaturePetEndSound:
+    eventName: Creature Pet End
+    soundToPlay:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    isLooped: 0
+    volume: 1
+    playAtPosition: 1
+    notes: 
+    isExpanded: 1
+  _onCreatureIdleSound:
+    eventName: Creature Idle
+    soundToPlay:
+      Guid:
+        Data1: -270066511
+        Data2: 1183780161
+        Data3: 385433781
+        Data4: 720864113
+      Path: event:/FFS_grass
     isLooped: 0
     volume: 1
     playAtPosition: 1
@@ -11116,6 +11399,103 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6341193767914089691, guid: 96813101bb69d6a4cac5f61abc3605fc, type: 3}
   m_PrefabInstance: {fileID: 568086835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &570311181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6222291613381403776, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
+  m_PrefabInstance: {fileID: 5164637682557329979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &571181824
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1744752565}
+    m_Modifications:
+    - target: {fileID: 4908972784478995562, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957568949275433056, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: _glowRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957568949275433056, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: _baseIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957568949275433056, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: _glowIntensity
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957568949275433056, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: _glowAnimAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957568949275433056, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915708293818715178, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_Name
+      value: flower medium (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 84.20466
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -20.739414
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.058716
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9502443
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.3115058
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 36.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+--- !u!4 &571181825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6436490444981786256, guid: 6ff6616e94327744685b3db8f0ec969f, type: 3}
+  m_PrefabInstance: {fileID: 571181824}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &573368506
 PrefabInstance:
@@ -20862,11 +21242,11 @@ PrefabInstance:
       objectReference: {fileID: 243824274}
     - target: {fileID: 2058959589590791125, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 963.3594
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2058959589590791125, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 519.84467
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2058959589590791125, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20908,6 +21288,10 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 46338359}
+    - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
+      propertyPath: margin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5335932366480722830, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: MenuPoper
       value: 
@@ -20968,6 +21352,10 @@ PrefabInstance:
       propertyPath: seventhCpToOpen
       value: 
       objectReference: {fileID: 56135586}
+    - target: {fileID: 7685435915129065061, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
+      propertyPath: gameState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7685435915129065061, guid: b38e4c538ac824fdabf306100e377f82, type: 3}
       propertyPath: backButton
       value: 
@@ -29127,6 +29515,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7801008205328657318, guid: 3b309f6b4746d8f4597257cadb897629, type: 3}
   m_PrefabInstance: {fileID: 1564467770}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1566727069 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3811259982981447978, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
+  m_PrefabInstance: {fileID: 5164637682557329979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1566937664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31258,7 +31657,7 @@ MonoBehaviour:
   - 100
   - 200
   - 500
-  _enableLOD: 0
+  _enableLOD: 1
   _enableFrustumCulling: 1
   _enableAnimation: 1
   _animationDuration: 10
@@ -33476,6 +33875,151 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2701578701714439495, guid: 0e6312f64dcb8d945823ff21799f1a4e, type: 3}
   m_PrefabInstance: {fileID: 1808884308}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1825341726 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4960747954378190762, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
+  m_PrefabInstance: {fileID: 5164637682557329979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1825550732
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1744752565}
+    m_Modifications:
+    - target: {fileID: 2187737916978009534, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2211432374500018612, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2211432374500018612, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _baseIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2211432374500018612, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowIntensity
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2211432374500018612, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowAnimAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2211432374500018612, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230927509719929100, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_Name
+      value: Groupe 3 fleurs (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462412033481876113, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521827459106766491, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521827459106766491, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _baseIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521827459106766491, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowIntensity
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521827459106766491, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowAnimAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521827459106766491, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 61.18466
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -46.723778
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.691284
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8152996510957779322, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199292598236276080, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199292598236276080, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _baseIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199292598236276080, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowIntensity
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199292598236276080, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _glowAnimAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199292598236276080, guid: f1611f1a7827add449a891094159e351, type: 3}
+      propertyPath: _visibilityDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f1611f1a7827add449a891094159e351, type: 3}
+--- !u!4 &1825550733 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3730008633208766117, guid: f1611f1a7827add449a891094159e351, type: 3}
+  m_PrefabInstance: {fileID: 1825550732}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1830673194
 GameObject:
@@ -40215,6 +40759,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6341193767914089691, guid: 96813101bb69d6a4cac5f61abc3605fc, type: 3}
   m_PrefabInstance: {fileID: 2123923793}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2126177482 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5324522876077657391, guid: 417891f0527e816429cc7682ed6f2c99, type: 3}
+  m_PrefabInstance: {fileID: 5164637682557329979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c7d954dc1a87542b2bf0811b236982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2131573640
 MonoBehaviour:
   m_ObjectHideFlags: 0

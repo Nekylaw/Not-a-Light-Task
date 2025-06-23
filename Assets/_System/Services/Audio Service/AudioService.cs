@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using UnityEngine;
+
 using DG.Tweening;
 using FMODUnity;
+
 using Game.Services.LightSources;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AudioService : MonoBehaviour
 {
@@ -173,7 +175,7 @@ public class AudioService : MonoBehaviour
         {
             float startVolume = _currentVolume;
             float targetVol = 0f;
-            float fadeTime = fadeOutTime; 
+            float fadeTime = fadeOutTime;
             float elapsed = 0f;
 
             while (elapsed < fadeTime)
@@ -341,6 +343,10 @@ public class AudioService : MonoBehaviour
     [SerializeField] private EventSound _onCreaturePetStartSound = new EventSound { eventName = "Creature Pet Start" };
     [SerializeField] private EventSound _onCreaturePetEndSound = new EventSound { eventName = "Creature Pet End" };
 
+    [Header("Portals")]
+    [SerializeField] private EventSound _onPortalTriggeredSound = new EventSound { eventName = "Portal Triggered" };
+    [SerializeField] private EventSound _onPortalOpennedSound = new EventSound { eventName = "Portal Openned" };
+
     [Header("Custom Events")]
     [SerializeField] private List<EventSound> _customEventSounds = new List<EventSound>();
 
@@ -352,7 +358,7 @@ public class AudioService : MonoBehaviour
     private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
     private CreatureService _creatureService;
-    private GrillageBehaviour _grillage;
+    private PortalsService _portals;
 
     // For editor
     [HideInInspector] public bool showLightGroups = true;
@@ -420,6 +426,8 @@ public class AudioService : MonoBehaviour
         _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
+        _portals = FindFirstObjectByType<PortalsService>(FindObjectsInactive.Exclude);
+
         _lightService = LightSourcesService.Instance;
     }
 
@@ -462,6 +470,13 @@ public class AudioService : MonoBehaviour
         {
             _lightService.OnSwitchOnLight += HandleLightSwitch;
             _lightService.OnSwitchOffLight += HandleLightSwitch;
+        }
+
+        // Portals
+        if (_portals != null)
+        {
+            _portals.OnPortalTriggered += HandlePortalTriggered;
+            _portals.OnPortalOpened += HandlePortalOpened;
         }
 
         // Creatures
@@ -524,6 +539,12 @@ public class AudioService : MonoBehaviour
         {
             _lightService.OnSwitchOnLight -= HandleLightSwitch;
             _lightService.OnSwitchOffLight -= HandleLightSwitch;
+        }
+
+        if (_portals != null)
+        {
+            _portals.OnPortalTriggered -= HandlePortalTriggered;
+            _portals.OnPortalOpened -= HandlePortalOpened;
         }
 
         if (_creatureService != null)
@@ -829,6 +850,34 @@ public class AudioService : MonoBehaviour
         }
     }
     #endregion
+
+    #region Pportals
+
+    private void HandlePortalTriggered(PortalComponent portal)
+    {
+        if (_onPortalTriggeredSound != null && !_onPortalTriggeredSound.soundToPlay.IsNull)
+        {
+            if (_onPortalTriggeredSound.isLooped)
+                _onPortalTriggeredSound.StartLoop(portal.transform.position);
+            else
+                _onPortalTriggeredSound.Play(portal.transform.position);
+        }
+        Debug.Log($"[AudioService] Portal {portal.name} triggered.");
+    }
+
+    private void HandlePortalOpened(PortalComponent portal)
+    {
+        if (_onPortalOpennedSound != null && !_onPortalOpennedSound.soundToPlay.IsNull)
+        {
+            if (_onPortalOpennedSound.isLooped)
+                _onPortalOpennedSound.StartLoop(portal.transform.position);
+            else
+                _onPortalOpennedSound.Play(portal.transform.position);
+        }
+        Debug.Log($"[AudioService] Portal {portal.name} openned.");
+    }
+
+    #endregion 
 
     #region Public API
     public void RegisterCustomEvent(string eventName, Action eventAction, EventReference sound)
