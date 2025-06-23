@@ -134,6 +134,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7aff8b817055d5d4fbea1ec292323610, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1293406792584923826}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7aff8b817055d5d4fbea1ec292323610, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4800381200405981839}
   m_SourcePrefab: {fileID: 100100000, guid: 7aff8b817055d5d4fbea1ec292323610, type: 3}
 --- !u!1 &3593361309812436320 stripped
 GameObject:
@@ -161,6 +164,100 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 5.9999995, z: 6.0000014}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4800381200405981839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3593361309812436320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5c6af5c56123a4592770059723bba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  postProcessVolume: {fileID: 0}
+  handCameraBobbingComponent: {fileID: 0}
+  headProcessCameraBobbingComponent: {fileID: 0}
+  focusTarget: {fileID: 0}
+  triggerRadius: 10
+  drawDebugGizmos: 1
+  focusFOV: 35
+  focusDuration: 2
+  holdDuration: 2
+  focusCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useVignette: 1
+  vignetteIntensity: 0.5
+  useDepthOfField: 1
+  dofFocusDistance: 10
+  dofFocalLength: 50
+  useChromaticAberration: 1
+  chromaticIntensity: 0.3
+  useCameraShake: 1
+  shakeIntensity: 0.1
+  shakeFrequency: 1
+  useSlowMotion: 1
+  slowMotionScale: 0.5
+  showCinematicBars: 1
+  barHeight: 100
+  barAnimationSpeed: 2
+  barColor: {r: 0, g: 0, b: 0, a: 1}
+  focusSound: {fileID: 0}
+  ambientSound: {fileID: 0}
+  audioVolume: 0.7
+  useDissolveEffect: 1
+  targetRenderer: {fileID: 0}
+  dissolvePropertyName: _DissolveAmount
+  dissolveDuration: 3
+  dissolveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  triggerRevealComponent: 1
 --- !u!4 &4221561418307139546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7aff8b817055d5d4fbea1ec292323610, type: 3}
