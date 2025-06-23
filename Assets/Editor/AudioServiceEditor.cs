@@ -9,13 +9,16 @@ public class AudioServiceEditor : Editor
 {
     private AudioService audioService;
 
-    // Play Properties
+    // Ambiant Event Properties
     private SerializedProperty lightGroups;
     private SerializedProperty fogSound;
+
+    // Player Events Properties
     private SerializedProperty onPlaySound;
     private SerializedProperty onPauseSound;
     private SerializedProperty onWalkSound;
     private SerializedProperty onShootSound;
+    private SerializedProperty orbSound;
     private SerializedProperty onAimSound;
     private SerializedProperty onPickupSound;
     private SerializedProperty onLampToggleSound;
@@ -45,7 +48,7 @@ public class AudioServiceEditor : Editor
     {
         audioService = (AudioService)target;
 
-        // Get core properties
+        // Get ambiant properties
         lightGroups = serializedObject.FindProperty("_lightGroups");
         fogSound = serializedObject.FindProperty("_fogSound");
 
@@ -56,6 +59,7 @@ public class AudioServiceEditor : Editor
         // Get player event properties
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
         onShootSound = serializedObject.FindProperty("_onShootSound");
+        onShootSound = serializedObject.FindProperty("_orbSound");
         onAimSound = serializedObject.FindProperty("_onAimSound");
         onPickupSound = serializedObject.FindProperty("_onPickupSound");
         onLampToggleSound = serializedObject.FindProperty("_onLampToggleSound");
@@ -410,6 +414,7 @@ public class AudioServiceEditor : Editor
             EditorGUILayout.BeginVertical("box");
             DrawEventSound(onShootSound, "_shoot.OnShoot");
             DrawEventSound(onAimSound, "_shoot.OnAim");
+            DrawEventSound(orbSound, "");
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

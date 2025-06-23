@@ -5,6 +5,7 @@ using DG.Tweening;
 using FMODUnity;
 using Game.Services.LightSources;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AudioService : MonoBehaviour
 {
@@ -125,7 +126,6 @@ public class AudioService : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / fadeTime;
 
-                // Use a curve for smoother fades
                 t = Mathf.SmoothStep(0f, 1f, t);
 
                 _currentVolume = Mathf.Lerp(startVolume, targetVol, t);
@@ -147,6 +147,8 @@ public class AudioService : MonoBehaviour
                 _instance.release();
                 _isInitialized = false;
                 _currentVolume = 0f;
+
+                Debug.Log("Stoppppppppppp");
             }
         }
 
@@ -161,9 +163,41 @@ public class AudioService : MonoBehaviour
 
         public void FadeAndStop()
         {
-            _fadeCoroutine = Instance.StartCoroutine(FadeVolume(Instance, 0));
-            Stop();
+            if (_fadeCoroutine != null)
+                Instance.StopCoroutine(_fadeCoroutine);
+
+            _fadeCoroutine = Instance.StartCoroutine(FadeVolumeAndStop());
         }
+
+        private System.Collections.IEnumerator FadeVolumeAndStop()
+        {
+            float startVolume = _currentVolume;
+            float targetVol = 0f;
+            float fadeTime = fadeOutTime; 
+            float elapsed = 0f;
+
+            while (elapsed < fadeTime)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / fadeTime;
+                t = Mathf.SmoothStep(0f, 1f, t);
+
+                _currentVolume = Mathf.Lerp(startVolume, targetVol, t);
+                _instance.setVolume(_currentVolume);
+
+                yield return null;
+            }
+
+            _currentVolume = 0f;
+            _instance.setVolume(0f);
+
+            Stop();
+
+            _fadeCoroutine = null;
+
+            Debug.Log($"[LightGroup] Fade and stop completed for group: {groupName}");
+        }
+
     }
 
     [System.Serializable]
@@ -383,7 +417,7 @@ public class AudioService : MonoBehaviour
         _shoot = FindFirstObjectByType<ShootBehaviorComponent>(FindObjectsInactive.Exclude);
         _pickUp = FindFirstObjectByType<PickUpBehaviorComponent>(FindObjectsInactive.Exclude);
         _pacify = FindFirstObjectByType<PacifyBehaviorComponent>(FindObjectsInactive.Exclude);
-        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude); 
+        _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
         _lightService = LightSourcesService.Instance;
@@ -420,7 +454,7 @@ public class AudioService : MonoBehaviour
         if (_pet != null)
         {
             _pet.OnPetStart += HandlePlayerPetStart;
-            _pet.OnPetEnd +=HandlePlayerPetEnd;
+            _pet.OnPetEnd += HandlePlayerPetEnd;
         }
 
         // Lights
@@ -482,7 +516,7 @@ public class AudioService : MonoBehaviour
 
         if (_pet != null)
         {
-            _pet.OnPetStart -=  HandlePlayerPetStart;
+            _pet.OnPetStart -= HandlePlayerPetStart;
             _pet.OnPetEnd -= HandlePlayerPetEnd;
         }
 
@@ -527,9 +561,17 @@ public class AudioService : MonoBehaviour
         }
     }
 
-    private void HandleShoot(Ray aimRay, bool isAiming)
+    private void HandleShoot(OrbComponent orb, Ray aimRay, bool isAiming)
     {
         _onShootSound.Play(transform.position);
+
+        if (_orbSound != null && !_orbSound.soundToPlay.IsNull)
+        {
+            if (_orbSound.isLooped)
+                _orbSound.StartLoop(orb.transform);
+            else
+                _orbSound.Play(orb.transform.position);
+        }
     }
 
     private void HandleAim()
@@ -539,6 +581,8 @@ public class AudioService : MonoBehaviour
 
     private void HandlePickup()
     {
+        FadeAndStopAllGroups();
+
         if (_onPickupSound.isLooped)
             _onPickupSound.StartLoop(_movement.transform.position);
         else
@@ -829,15 +873,19 @@ public class AudioService : MonoBehaviour
     /// Fades and stops all light groups except the ones in the excluded list.
     /// </summary>
     /// <param name="excludedDroups"></param>
-    public void FadeAndStopAllGroups(List<LightGroup> excludedDroups)
+    public void FadeAndStopAllGroups(List<LightGroup> excludedGroups = null)
     {
-        var filteredGroups = _lightGroups.Where(g => !excludedDroups.Contains(g)).ToList();
+        if (excludedGroups == null)
+            excludedGroups = new List<LightGroup>();
+
+        List<LightGroup> filteredGroups = _lightGroups.Where(g => !excludedGroups.Contains(g)).ToList();
+
         foreach (var group in filteredGroups)
         {
             if (!group.IsInitialized)
                 continue;
 
-            group.FadeAndStop();
+            FadeAndStopStem(group);
             Debug.Log($"[AudioService] Fading and stopping group: {group.groupName}");
         }
     }

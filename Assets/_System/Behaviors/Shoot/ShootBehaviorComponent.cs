@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShootBehaviorComponent : MonoBehaviour
 {
 
-    public delegate void ShootDelegate(Ray aimRay, bool isAiming);
+    public delegate void ShootDelegate(OrbComponent orb,Ray aimRay, bool isAiming);
     public event ShootDelegate OnShoot;
 
     public delegate void AimDelegate();
@@ -94,10 +94,10 @@ public class ShootBehaviorComponent : MonoBehaviour
         _timer = _settings.Rate;
         _container.UseBullet();
 
-        OrbComponent bullet = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
+        OrbComponent orb = Instantiate(_container.Orb, _firePoint.position + aimRay.direction * 0.2f, Quaternion.identity);
+        orb.GetComponent<Rigidbody>().AddForce(aimRay.direction * _settings.FireForce, ForceMode.Impulse);
 
-        OnShoot?.Invoke(aimRay, isAiming);
+        OnShoot?.Invoke(orb,aimRay, isAiming);
 
         return true;
     }
