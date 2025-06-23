@@ -32,18 +32,18 @@ public class TrailCulling : MonoBehaviour,ICullable
         TrailRenderer = GetComponentInChildren<TrailRenderer>();
     }
 
-    private bool _isCulled;
+    //private bool _isCulled;
 
     public void OnBecomeVisible()
     {
-        _isCulled = false;
+        //_isCulled = false;
         VFX.enabled = true;
         TrailRenderer.enabled = true;
     }
 
     public void OnBecomeInvisible()
     {
-        _isCulled = true;
+        //_isCulled = true;
         
         VFX.enabled = false;
         TrailRenderer.enabled = false;

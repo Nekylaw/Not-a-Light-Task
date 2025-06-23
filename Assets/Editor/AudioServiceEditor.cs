@@ -14,9 +14,15 @@ public class AudioServiceEditor : Editor
     private SerializedProperty fogSound;
     private SerializedProperty windSound;
 
-    // POrtal Event properties
+    // Activator Event properties
     private SerializedProperty onPortalTriggered;
     private SerializedProperty onPortalOpenned;
+    private SerializedProperty onElevatorTriggered;
+    private SerializedProperty onRevealStela1;
+    private SerializedProperty onRevealStela2;
+    private SerializedProperty onRevealStela3;
+    private SerializedProperty onRevealStela4;
+
 
     // Player Events Properties
     private SerializedProperty onPlaySound;
@@ -63,9 +69,14 @@ public class AudioServiceEditor : Editor
         onPlaySound = serializedObject.FindProperty("_playSound");
         onPauseSound = serializedObject.FindProperty("_pauseSound");
 
-        // Get portal events properties
+        // Get activators events properties
         onPortalTriggered = serializedObject.FindProperty("_onPortalTriggeredSound");
         onPortalOpenned = serializedObject.FindProperty("_onPortalOpennedSound");
+        onElevatorTriggered = serializedObject.FindProperty("_onActivateElevatorSound");
+        onRevealStela1 = serializedObject.FindProperty("_onRevealStelaSoundFirst");
+        onRevealStela2 = serializedObject.FindProperty("_onRevealStelaSoundSec");
+        onRevealStela3 = serializedObject.FindProperty("_onRevealStelaSoundThird");
+        onRevealStela4 = serializedObject.FindProperty("_onRevealStelaSoundFourth");
 
         // Get player event properties
         onWalkSound = serializedObject.FindProperty("_onWalkSound");
@@ -411,12 +422,17 @@ public class AudioServiceEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Portals
-        bool showPortalsEvents = EditorGUILayout.BeginFoldoutHeaderGroup(true, "Portals Events");
+        bool showPortalsEvents = EditorGUILayout.BeginFoldoutHeaderGroup(true, "Activators Events");
         if (showPortalsEvents)
         {
             EditorGUILayout.BeginVertical("box");
-            DrawEventSound(onPortalTriggered, "PortalService.OnPortalTriggered");
-            DrawEventSound(onPortalOpenned, "PortalService.OnPortalTriggered");
+            DrawEventSound(onPortalTriggered, "ActivatorService.OnPortalTriggered");
+            DrawEventSound(onPortalOpenned, "ActivatorService.OnPortalTriggered");
+            DrawEventSound(onElevatorTriggered, "ActivatorService.OnElevatorActivated");
+            DrawEventSound(onRevealStela1, "ActivatorService.OnStelaRevealed (1)");
+            DrawEventSound(onRevealStela2, "ActivatorService.OnStelaRevealed (2)");
+            DrawEventSound(onRevealStela3, "ActivatorService.OnStelaRevealed (3)");
+            DrawEventSound(onRevealStela4, "ActivatorService.OnStelaRevealed (4)");
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

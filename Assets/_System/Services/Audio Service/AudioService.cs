@@ -83,7 +83,7 @@ public class AudioService : MonoBehaviour
         {
             if (_isInitialized || ambientTrack.IsNull) return;
 
-            _instance = RuntimeManager.CreateInstance(ambientTrack); 
+            _instance = RuntimeManager.CreateInstance(ambientTrack);
             _instance.setVolume(0f);
             _instance.start();
             _isInitialized = true;
@@ -345,9 +345,15 @@ public class AudioService : MonoBehaviour
     [SerializeField] private EventSound _onCreaturePetStartSound = new EventSound { eventName = "Creature Pet Start" };
     [SerializeField] private EventSound _onCreaturePetEndSound = new EventSound { eventName = "Creature Pet End" };
 
-    [Header("Portals")]
+    [Header("Activators")]
     [SerializeField] private EventSound _onPortalTriggeredSound = new EventSound { eventName = "Portal Triggered" };
     [SerializeField] private EventSound _onPortalOpennedSound = new EventSound { eventName = "Portal Openned" };
+    [SerializeField] private EventSound _onActivateElevatorSound = new EventSound { eventName = "Elevator Activated" };
+
+    [SerializeField] private EventSound _onRevealStelaSoundFirst = new EventSound { eventName = "Stela Revealated(1)" };
+    [SerializeField] private EventSound _onRevealStelaSoundSec = new EventSound { eventName = "Stela Revealated(2)" };
+    [SerializeField] private EventSound _onRevealStelaSoundThird = new EventSound { eventName = "Stela Revealated(3)" };
+    [SerializeField] private EventSound _onRevealStelaSoundFourth = new EventSound { eventName = "Stela Revealated(4)" };
 
     [Header("Custom Events")]
     [SerializeField] private List<EventSound> _customEventSounds = new List<EventSound>();
@@ -360,7 +366,7 @@ public class AudioService : MonoBehaviour
     private PetBehaviorComponent _pet;
     private LightSourcesService _lightService;
     private CreatureService _creatureService;
-    private ActivatorsService _portals;
+    private ActivatorsService _activator;
 
     // For editor
     [HideInInspector] public bool showLightGroups = true;
@@ -429,7 +435,7 @@ public class AudioService : MonoBehaviour
         _pet = FindFirstObjectByType<PetBehaviorComponent>(FindObjectsInactive.Exclude);
 
         _creatureService = FindFirstObjectByType<CreatureService>(FindObjectsInactive.Exclude);
-        _portals = FindFirstObjectByType<ActivatorsService>(FindObjectsInactive.Exclude);
+        _activator = FindFirstObjectByType<ActivatorsService>(FindObjectsInactive.Exclude);
 
         _lightService = LightSourcesService.Instance;
     }
@@ -476,11 +482,20 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOffLight += HandleLightSwitch;
         }
 
-        // Portals
-        if (_portals != null)
+        if (_activator != null)
         {
-            _portals.OnPortalTriggered += HandlePortalTriggered;
-            _portals.OnPortalOpened += HandlePortalOpened;
+            // Portals
+            _activator.OnPortalTriggered += HandlePortalTriggered;
+            _activator.OnPortalOpened += HandlePortalOpened;
+
+            // Elevator
+            _activator.OnElevatorActivated += HandleElevatorActivated;
+
+            // Stela 
+            _activator.OnRevealStela += HandleRevealStela1;
+            _activator.OnRevealStela += HandleRevealStela2;
+            _activator.OnRevealStela += HandleRevealStela3;
+            _activator.OnRevealStela += HandleRevealStela4;
         }
 
         // Creatures
@@ -552,10 +567,10 @@ public class AudioService : MonoBehaviour
             _lightService.OnSwitchOffLight -= HandleLightSwitch;
         }
 
-        if (_portals != null)
+        if (_activator != null)
         {
-            _portals.OnPortalTriggered -= HandlePortalTriggered;
-            _portals.OnPortalOpened -= HandlePortalOpened;
+            _activator.OnPortalTriggered -= HandlePortalTriggered;
+            _activator.OnPortalOpened -= HandlePortalOpened;
         }
 
         if (_creatureService != null)
@@ -913,6 +928,48 @@ public class AudioService : MonoBehaviour
                 _onPortalOpennedSound.Play(portal.transform.position);
         }
         Debug.Log($"[AudioService] Portal {portal.name} openned.");
+    }
+
+    private void HandleElevatorActivated(ElevatorComponent elevator)
+    {
+        if (_onActivateElevatorSound != null && !_onActivateElevatorSound.soundToPlay.IsNull)
+            _onActivateElevatorSound.Play();
+    }
+
+    private void HandleRevealStela1(int stelaIndex)
+    {
+        if (stelaIndex != 1)
+            return;
+
+        if (_onRevealStelaSoundFirst != null && !_onRevealStelaSoundFirst.soundToPlay.IsNull)
+            _onRevealStelaSoundFirst.Play();
+    }
+
+    private void HandleRevealStela2(int stelaIndex)
+    {
+        if (stelaIndex != 2)
+            return;
+
+        if (_onRevealStelaSoundSec != null && !_onRevealStelaSoundSec.soundToPlay.IsNull)
+            _onRevealStelaSoundSec.Play();
+    }
+
+    private void HandleRevealStela3(int stelaIndex)
+    {
+        if (stelaIndex != 3)
+            return;
+
+        if (_onRevealStelaSoundThird != null && !_onRevealStelaSoundThird.soundToPlay.IsNull)
+            _onRevealStelaSoundThird.Play();
+    }
+
+    private void HandleRevealStela4(int stelaIndex)
+    {
+        if (stelaIndex != 4)
+            return;
+
+        if (_onRevealStelaSoundFourth != null && !_onRevealStelaSoundFourth.soundToPlay.IsNull)
+            _onRevealStelaSoundFourth.Play();
     }
 
     #endregion 
