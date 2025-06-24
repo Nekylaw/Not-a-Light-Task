@@ -14,19 +14,25 @@ public class UiManager : MonoBehaviour
 
     [Header("World Space UI Settings")]
     [SerializeField] private Transform worldSpaceCanvas;
-    [SerializeField] private float distanceFromCamera = 5f;
-    [SerializeField] private float heightOffset = 1.5f;
+    [SerializeField] private float distanceFromCamera = 10f;
+    [SerializeField] private float heightOffset = 0f;
     [SerializeField] private float minHeightFromGround = 1f;
     [SerializeField] private float smoothTime = 0.2f;
     [SerializeField] private LayerMask groundLayers = -1;
+    [SerializeField] private float canvasScale = 0.005f;
+
+    [Header("Menu Spawn Settings")]
+    [SerializeField] private float horizontalOffset = -2f; 
+    [SerializeField] private bool spawnInFrontOnPause = true;
+    [SerializeField] private bool lockYRotation = true; 
 
     [Header("Menu Boundaries")]
     [SerializeField] private float horizontalMargin = 0.1f; 
     [SerializeField] private float verticalMargin = 0.1f;
 
     [Header("First Selected Objects")]
-    [SerializeField] private GameObject startPanelFirstSelected;
-    [SerializeField] private GameObject optionsPanelFirstSelected;
+    [SerializeField] private GameObject startPanelFirstSelected; 
+    [SerializeField] private GameObject optionsPanelFirstSelected; 
     [SerializeField] private GameObject endGamePanelFirstSelected; 
 
     [Header("Menu Animation")]
@@ -63,7 +69,7 @@ public class UiManager : MonoBehaviour
 
         if (worldSpaceCanvas)
         {
-            worldSpaceCanvas.localScale = Vector3.one; 
+            worldSpaceCanvas.localScale = Vector3.one * canvasScale;
         }
 
         ShowStartMenu();
@@ -76,7 +82,10 @@ public class UiManager : MonoBehaviour
             UpdateMenuPosition();
 
             Vector3 lookDirection = mainCamera.transform.position - worldSpaceCanvas.position;
-            lookDirection.y = 0; 
+            if (lockYRotation)
+            {
+                lookDirection.y = 0; 
+            }
             if (lookDirection != Vector3.zero)
             {
                 worldSpaceCanvas.rotation = Quaternion.LookRotation(-lookDirection);
@@ -88,35 +97,52 @@ public class UiManager : MonoBehaviour
 
     private void UpdateMenuPosition()
     {
-        Vector3 cameraForward = mainCamera.transform.forward;
-        cameraForward.y = 0;
-        cameraForward.Normalize();
-
-        Vector3 basePosition = mainCamera.transform.position + cameraForward * distanceFromCamera;
-        basePosition.y = mainCamera.transform.position.y + heightOffset;
-
-        if (Physics.Raycast(basePosition + Vector3.up * 10f, Vector3.down, out RaycastHit hit, 50f, groundLayers))
+        if (spawnInFrontOnPause && GameManager.Instance.IsPaused())
         {
-            float groundHeight = hit.point.y + minHeightFromGround;
-            if (basePosition.y < groundHeight)
+            Vector3 cameraForward = mainCamera.transform.forward;
+            if (lockYRotation)
             {
-                basePosition.y = groundHeight;
+                cameraForward.y = 0;
+                cameraForward.Normalize();
             }
+
+            Vector3 basePosition = mainCamera.transform.position + cameraForward * distanceFromCamera;
+
+            Vector3 cameraRight = mainCamera.transform.right;
+            if (lockYRotation)
+            {
+                cameraRight.y = 0;
+                cameraRight.Normalize();
+            }
+            basePosition += cameraRight * horizontalOffset;
+
+            basePosition.y = mainCamera.transform.position.y + heightOffset;
+
+
+            if (Physics.Raycast(basePosition + Vector3.up * 10f, Vector3.down, out RaycastHit hit, 50f, groundLayers))
+            {
+                float groundHeight = hit.point.y + minHeightFromGround;
+                if (basePosition.y < groundHeight)
+                {
+                    basePosition.y = groundHeight;
+                }
+            }
+
+            Vector3 screenPos = mainCamera.WorldToViewportPoint(basePosition);
+
+            screenPos.x = Mathf.Clamp(screenPos.x, horizontalMargin, 1f - horizontalMargin);
+
+            screenPos.y = Mathf.Clamp(screenPos.y, verticalMargin, 1f - verticalMargin);
+
+            targetPosition = mainCamera.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, distanceFromCamera));
+
+            worldSpaceCanvas.position = Vector3.SmoothDamp(
+                worldSpaceCanvas.position,
+                targetPosition,
+                ref currentVelocity,
+                smoothTime
+            );
         }
-
-        Vector3 screenPos = mainCamera.WorldToViewportPoint(basePosition);
-        screenPos.x = Mathf.Clamp(screenPos.x, horizontalMargin, 1f - horizontalMargin);
-        screenPos.y = Mathf.Clamp(screenPos.y, verticalMargin, 1f - verticalMargin);
-
-        targetPosition = mainCamera.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, distanceFromCamera));
-
-        // Smooth movement
-        worldSpaceCanvas.position = Vector3.SmoothDamp(
-            worldSpaceCanvas.position,
-            targetPosition,
-            ref currentVelocity,
-            smoothTime
-        );
     }
 
     private void MaintainUISelection()
@@ -176,17 +202,21 @@ public class UiManager : MonoBehaviour
     {
         if (panel == null) return;
 
-        // Hide all panels first
         startPanel?.SetActive(false);
         optionsPanel?.SetActive(false);
         endGamePanel?.SetActive(false);
 
-        // Show the canvas
         if (worldSpaceCanvas && !worldSpaceCanvas.gameObject.activeSelf)
         {
             worldSpaceCanvas.gameObject.SetActive(true);
+
+            if (spawnInFrontOnPause && panel == startPanel)
+            {
+                PositionMenuInFront();
+            }
+
             worldSpaceCanvas.localScale = Vector3.zero;
-            worldSpaceCanvas.DOScale(0.1f, menuScaleInDuration).SetUpdate(true);
+            worldSpaceCanvas.DOScale(canvasScale, menuScaleInDuration).SetUpdate(true);
         }
 
         // Show the specific panel
@@ -201,9 +231,53 @@ public class UiManager : MonoBehaviour
             canvasGroup.DOFade(1f, menuFadeInDuration).SetUpdate(true);
         }
 
+        // Set first selected
         if (firstSelected && EventSystem.current)
         {
             EventSystem.current.SetSelectedGameObject(firstSelected);
+        }
+    }
+
+    private void PositionMenuInFront()
+    {
+        if (!mainCamera || !worldSpaceCanvas) return;
+
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
+
+        if (lockYRotation)
+        {
+            cameraForward.y = 0;
+            cameraRight.y = 0;
+            cameraForward.Normalize();
+            cameraRight.Normalize();
+        }
+
+        Vector3 targetPos = mainCamera.transform.position +
+                           cameraForward * distanceFromCamera +
+                           cameraRight * horizontalOffset;
+
+        targetPos.y = mainCamera.transform.position.y + heightOffset;
+
+        if (Physics.Raycast(targetPos + Vector3.up * 10f, Vector3.down, out RaycastHit hit, 50f, groundLayers))
+        {
+            float groundHeight = hit.point.y + minHeightFromGround;
+            if (targetPos.y < groundHeight)
+            {
+                targetPos.y = groundHeight;
+            }
+        }
+
+        worldSpaceCanvas.position = targetPos;
+
+        Vector3 lookDirection = mainCamera.transform.position - worldSpaceCanvas.position;
+        if (lockYRotation)
+        {
+            lookDirection.y = 0;
+        }
+        if (lookDirection != Vector3.zero)
+        {
+            worldSpaceCanvas.rotation = Quaternion.LookRotation(-lookDirection);
         }
     }
 
@@ -214,7 +288,7 @@ public class UiManager : MonoBehaviour
 
     public void OnPlayButtonClicked()
     {
-        GameManager.Instance.ResumeGame(); 
+        GameManager.Instance.ResumeGame();
     }
 
     public void OnResumeButtonClicked()

@@ -67,7 +67,6 @@ public class EnhancedFocusComponent : MonoBehaviour
     public AnimationCurve dissolveCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     public bool triggerRevealComponent = true;
 
-    // Private variables
     private Camera mainCamera;
     private Material dissolveMaterial;
     private PlayerController playerController;
@@ -269,7 +268,7 @@ public class EnhancedFocusComponent : MonoBehaviour
 
     private IEnumerator AnimateCameraFocus()
     {
-        playerController.gameObject.transform.DOLookAt(transform.position, focusDuration);
+        playerController.gameObject.transform.DOLookAt(gameObject.transform.position, focusDuration);
         yield return null;
     }
 

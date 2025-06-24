@@ -124,7 +124,6 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Paused:
-                Time.timeScale = 0f;
                 SetCursorState(true);
                 UiManager.Instance?.ShowStartMenu();
                 break;

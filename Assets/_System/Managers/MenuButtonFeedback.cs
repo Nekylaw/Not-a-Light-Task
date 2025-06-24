@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Selectable))]
 public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
@@ -16,11 +17,6 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
     [SerializeField] private float clickScale = 0.95f;
     [SerializeField] private float clickDuration = 0.1f;
 
-    [Header("Audio")]
-    [SerializeField] private AudioClip hoverSound;
-    [SerializeField] private AudioClip clickSound;
-    [SerializeField] private AudioSource audioSource;
-
     [Header("Additional Effects")]
     [SerializeField] private bool useOutline = true;
     [SerializeField] private Outline outlineComponent;
@@ -33,20 +29,31 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
     private Vector3 originalScale;
     private bool isHovered = false;
 
+    [Header("Effects")]
+    [SerializeField] private VisualEffect buttonVFX;
+
     private void Awake()
     {
         selectable = GetComponent<Selectable>();
         graphics = GetComponentsInChildren<Graphic>();
         originalScale = transform.localScale;
 
-        // Sauvegarder les couleurs originales
         originalColors = new Color[graphics.Length];
         for (int i = 0; i < graphics.Length; i++)
         {
             originalColors[i] = graphics[i].color;
         }
 
-        // Setup outline si nécessaire
+        if ( buttonVFX == null)
+        {
+            buttonVFX = GetComponentInChildren<VisualEffect>();
+        }
+
+        if (buttonVFX != null)
+        {
+            buttonVFX.Stop();
+        }
+
         if (useOutline && outlineComponent == null)
         {
             outlineComponent = GetComponent<Outline>();
@@ -63,18 +70,6 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
             outlineComponent.enabled = false;
         }
 
-        // Setup audio
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null && (hoverSound != null || clickSound != null))
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-            }
-        }
-
-        // Ajouter un listener pour le clic
         Button button = GetComponent<Button>();
         if (button != null)
         {
@@ -108,8 +103,12 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
             outlineComponent.enabled = true;
         }
 
-        // Sound effect
-        PlaySound(hoverSound);
+        // VFX effect
+        if (buttonVFX != null)
+        {
+            buttonVFX.Play();
+        }
+
     }
 
     public void OnHoverExit()
@@ -135,6 +134,12 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             outlineComponent.enabled = false;
         }
+
+        // Stop VFX
+        if (buttonVFX != null)
+        {
+            buttonVFX.Stop();
+        }
     }
 
     private void OnClick()
@@ -152,19 +157,8 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
                     .SetUpdate(true);
             });
 
-        // Sound effect
-        PlaySound(clickSound);
     }
 
-    private void PlaySound(AudioClip clip)
-    {
-        if (audioSource && clip)
-        {
-            audioSource.PlayOneShot(clip);
-        }
-    }
-
-    // Interface implementations pour EventSystem
     public void OnPointerEnter(PointerEventData eventData)
     {
         OnHoverEnter();
@@ -187,7 +181,6 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void OnDisable()
     {
-        // Reset quand désactivé
         transform.localScale = originalScale;
 
         if (graphics != null && originalColors != null)
@@ -201,6 +194,11 @@ public class MenuButtonFeedback : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (outlineComponent)
         {
             outlineComponent.enabled = false;
+        }
+
+        if (buttonVFX != null)
+        {
+            buttonVFX.Stop();
         }
     }
 }

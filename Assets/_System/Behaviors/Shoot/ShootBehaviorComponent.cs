@@ -68,7 +68,7 @@ public class ShootBehaviorComponent : MonoBehaviour
         if (_timer <= 0)
             _timer = 0;
 
-        if (_isAiming && !GameManager.Instance.IsPlaying())
+        if (_isAiming && GameManager.Instance.IsPlaying())
             HandleAim(delta);
         else
             ReleaseAim(delta);
