@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using UnityEngine;
-
 using DG.Tweening;
 using FMODUnity;
-
 using Game.Services.LightSources;
+using UnityEngine;
 
 public class AudioService : MonoBehaviour
 {
@@ -404,8 +401,8 @@ public class AudioService : MonoBehaviour
         SubscribeToEvents();
         InitializeAllLightGroups();
 
-        PlaySound(_fogSound.soundToPlay);
-        PlaySound(_windSound.soundToPlay);
+        //PlaySound(_fogSound.soundToPlay);
+        //PlaySound(_windSound.soundToPlay);
     }
 
     private void OnDestroy()
@@ -996,7 +993,12 @@ public class AudioService : MonoBehaviour
     public void PlaySound(EventReference eventRef, Vector3 position = default)
     {
         if (!eventRef.IsNull)
+        {
             RuntimeManager.PlayOneShot(eventRef, position);
+            Debug.Log("Trigger Fog" + eventRef);
+        }
+        else
+            Debug.Log("Event null");
     }
 
     public void PlaySound(string eventPath, Vector3 position = default)
