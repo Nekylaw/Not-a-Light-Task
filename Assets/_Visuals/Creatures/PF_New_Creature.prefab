@@ -574,6 +574,7 @@ MonoBehaviour:
   currentState: 1
   debugMode: 0
   showGizmos: 0
+  _isPettable: 0
   OrbPrefab: {fileID: -7065618330261555498, guid: 4d3e356f031a8524d8b351197705b07d, type: 3}
   detectionRadius: 40
   groupAwarenessRadius: 12
@@ -593,8 +594,8 @@ MonoBehaviour:
   acceleration: 4
   rotationSpeed: 50
   enableObstacleAvoidance: 1
-  avoidanceRadius: 3
-  avoidanceStrength: 5
+  avoidanceRadius: 15
+  avoidanceStrength: 10
   avoidanceRayCount: 5
   avoidanceAngle: 45
   bobAmount: 0.15

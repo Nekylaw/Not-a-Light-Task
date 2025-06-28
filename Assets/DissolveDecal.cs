@@ -84,7 +84,7 @@ public class DissolveDecal : MonoBehaviour
         {
             if (m_dissolveThirdValue > m_time)
             {
-                m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveSecondValue);
+                m_thirdMaterial.SetFloat("_OpacityDissolve", m_dissolveThirdValue);
                 m_dissolveThirdValue -= Time.deltaTime;
             }
         }
@@ -106,7 +106,6 @@ public class DissolveDecal : MonoBehaviour
             case 1:
                 m_firstIsPlaying = true;
                 AudioService.Instance.HandleRevealStela1(firstStela.GetComponent<EnhancedFocusComponent>().stelaIndex);
-                
                 break;
             case 2:
                 m_secondIsPlaying = true;
