@@ -6,6 +6,7 @@ using System.Linq;
 using DG.Tweening;
 using Game.Services.CullingService;
 using Game.Services.LightSources;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -104,6 +105,9 @@ public class CreatureController : MonoBehaviour, ICullable
 
     #region  Settings
 
+    [SerializeField] private bool isTutoPet = false;
+    [SerializeField] private GameObject player;
+    
     [Header("Orb ref")]
     [SerializeField] private OrbComponent OrbPrefab;
 
@@ -258,6 +262,18 @@ public class CreatureController : MonoBehaviour, ICullable
         lastPositionCheck = transform.position;
         SetNewWanderTarget();
         ChangeState(ECreatureState.Wandering);
+
+        if (isTutoPet)
+        {
+            SetPetTuto();
+        }
+    }
+
+    private void SetPetTuto()
+    {
+        ChangeState(ECreatureState.Pacified);
+        player.GetComponent<PetBehaviorComponent>().AssignPettableCreature(this);
+        SetPettable(true);
     }
 
     void Update()

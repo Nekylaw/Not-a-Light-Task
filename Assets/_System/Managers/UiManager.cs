@@ -65,14 +65,16 @@ public class UiManager : MonoBehaviour
 
     private void Start()
     {
-        HideAllMenus();
-
+        
         if (worldSpaceCanvas)
         {
             worldSpaceCanvas.localScale = Vector3.one * canvasScale;
         }
-
+        
+        HideAllMenus();
+        
         ShowStartMenu();
+        PositionMenuInFront();
     }
 
     private void LateUpdate()

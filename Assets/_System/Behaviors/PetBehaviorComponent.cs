@@ -201,7 +201,7 @@ public class PetBehaviorComponent : MonoBehaviour
         return selected;
     }
 
-    private void AssignPettableCreature(CreatureController creature)
+    public void AssignPettableCreature(CreatureController creature)
     {
         // Clear previous pettable
         ClearCurrentPettable();
