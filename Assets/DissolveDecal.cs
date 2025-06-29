@@ -1,6 +1,3 @@
-using System;
-using Unity.VisualScripting;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 

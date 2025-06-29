@@ -3,8 +3,6 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
 using DG.Tweening;
-using UnityEditor;
-using UnityEditor.TerrainTools;
 
 public class EnhancedFocusComponent : MonoBehaviour
 {
