@@ -2,10 +2,13 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 
 public class EnhancedFocusComponent : MonoBehaviour
 {
+    [SerializeField] private bool isLast;
+    
     [Header("Refs")]
     public Canvas canvas;
     public Volume postProcessVolume;
@@ -195,7 +198,15 @@ public class EnhancedFocusComponent : MonoBehaviour
             hasTriggered = true;
             StartCoroutine(PlayCinematicFocus());
             gameObject.GetComponentInParent<DissolveDecal>().AnimateMat(MaterialIndex);
+            if (isLast)
+                StartCoroutine(PlayCredits());
         }
+    }
+
+    private IEnumerator PlayCredits()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        GameManager.Instance.gameObject.GetComponent<CreditsAppearer>().ResetLogo();
     }
 
     private IEnumerator PlayCinematicFocus()

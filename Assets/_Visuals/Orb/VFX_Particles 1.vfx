@@ -18,9 +18,9 @@ MonoBehaviour:
   uiBounds:
     serializedVersion: 2
     x: 2716
-    y: 122
+    y: 121
     width: 775
-    height: 2215
+    height: 2223
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 43.7
+      m_SerializableObject: 25
     m_Space: -1
   m_Property:
     name: Rate
@@ -876,7 +876,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 8.45
+      m_SerializableObject: 2
     m_Space: -1
   m_Property:
     name: frequency
@@ -910,7 +910,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
+      m_SerializableObject: 2
     m_Space: -1
   m_Property:
     name: octaves
@@ -1687,7 +1687,7 @@ MonoBehaviour:
   - {fileID: 8926484042661618003}
   - {fileID: 8926484042661618026}
   dataType: 0
-  capacity: 175
+  capacity: 100
   stripCapacity: 1
   particlePerStripCount: 128
   needsComputeBounds: 1
@@ -1853,7 +1853,7 @@ MonoBehaviour:
   positionMode: 0
   spawnMode: 0
   shape: 2
-  heightMode: 0
+  heightMode: 1
   applyOrientation: 1
   killOutliers: 0
   projectionSteps: 2
@@ -2588,7 +2588,7 @@ MonoBehaviour:
   - {fileID: 8926484042661618172}
   - {fileID: 8926484042661618189}
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
+  m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_MasterSlot: {fileID: 8926484042661618171}
   m_MasterData:
@@ -2597,7 +2597,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.TArcCone, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"cone":{"transform":{"position":{"x":0.0,"y":0.0,"z":0.0},"angles":{"x":0.0,"y":0.0,"z":0.0},"scale":{"x":1.0,"y":1.0,"z":1.0}},"baseRadius":1.0,"topRadius":0.10000000149011612,"height":1.0},"arc":6.2831854820251469}'
+      m_SerializableObject: '{"cone":{"transform":{"position":{"x":0.0000014620145520893857,"y":0.390155553817749,"z":-0.0000017483516785432585},"angles":{"x":0.0,"y":0.0,"z":0.0},"scale":{"x":1.0,"y":1.0,"z":1.0}},"baseRadius":3.0,"topRadius":1.0,"height":1.0},"arc":1.9500000476837159}'
     m_Space: 0
   m_Property:
     name: arcCone
@@ -2626,7 +2626,7 @@ MonoBehaviour:
   - {fileID: 8926484042661618187}
   - {fileID: 8926484042661618188}
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
+  m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_MasterSlot: {fileID: 8926484042661618171}
   m_MasterData:
